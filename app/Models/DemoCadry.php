@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Auth;
+
+class DemoCadry extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'cadry_id',
+        'railway_id',
+        'organization_id',
+        'department_id',
+        'birth_region_id',
+        'birth_city_id',
+        'category_id',
+        'pass_region_id',
+        'pass_city_id',
+        'address_region_id',
+        'address_city_id',
+        'education_id',
+        'staff_id',
+        'stavka',
+        'photo',
+        'phone',
+        'nationality_id',
+        'party_id',
+        'academictitle_id',
+        'academicdegree_id',
+        'worklevel_id',
+        'military_rank',
+        'deputy',
+        'language',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'birht_date',
+        'post_date',
+        'post_name',
+        'passport',
+        'jshshir',
+        'pass_date',
+        'address',
+        'sex',
+        'job_date',
+        'number',
+        'comment',
+        'status'
+    ];
+    
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class,'organization_id');
+    }
+       
+    public function scopeFilter()
+    {
+        return self::query()
+        ->when(request('org_id'), function ($query, $org_id) {
+            return $query->where('organization_id', $org_id);
+
+        })->when(request('dep_id'), function ($query, $dep_id) {
+            return $query->where('department_id', $dep_id);
+
+        })->when(request('railway_id'), function ($query, $railway_id) {
+            return $query->where('railway_id', $railway_id);
+        })->with('organization');
+    }
+
+    public function scopeDemoFilter()
+    {
+        return self::query()
+        ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
+        ->where('status', 0)
+        ->when(\Request::input('name_se'),function($query,$name_se){
+            $query->where(function ($query) use ($name_se) {
+                foreach(explode(' ',$name_se) as $item)
+                $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
+                    ->orWhere('first_name', 'LIKE', '%'.$item.'%')
+                    ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
+               
+            });
+        })->when(request('staff_se'), function ($query, $staff_se) {
+            return $query->where('staff_id', $staff_se);
+
+        })->when(request('education_se'), function ($query, $education_se) {
+            return $query->where('education_id', $education_se);
+
+        })->when(request('region_se'), function ($query, $region_se) {
+            return $query->where('birth_region_id', $region_se);
+
+        })->when(request('department_se'), function ($query, $department_se) {
+            return $query->where('department_id', $department_se);
+
+        })->when(request('sex_se'), function ($query, $sex_se) {
+            return $query->where('sex', $sex_se);
+
+        });
+    }
+
+
+    public function scopeOrgFilter()
+    {
+        return self::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'));
+    }
+
+}
