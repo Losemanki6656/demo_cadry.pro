@@ -1,52 +1,77 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('login-page/fonts/icomoon/style.css')}}">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
-    <link rel="stylesheet" href="{{asset('login-page/css/owl.carousel.min.css')}}">
+<head>
+    <title>Exodim</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('login-page/css/bootstrap.min.css')}}">
-    
-    <!-- Style -->
-    <link rel="stylesheet" href="{{asset('login-page/css/style.css')}}">
+    <link rel="icon" type="image/png" href="{{ asset('auth-login/images/icons/favicon.ico') }}" />
 
-    <title>E-xodim</title>
-  </head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/vendor/bootstrap/css/bootstrap.min.css') }}">
 
-  <div class="content">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <img src="{{asset('login-page/login.svg')}}" alt="Image" class="img-fluid">
-        </div>
-        <div class="col-md-6 contents">
-          <div class="row justify-content-center">
-            <div class="col-md-8">
-              <div class="mb-4">
-              <h3>Kirish</h3>
-              <p class="mb-4">Xush kelibsiz! Login va parolni kiriting!</p>
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('auth-login/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('auth-login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/vendor/animate/animate.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/vendor/css-hamburgers/hamburgers.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/vendor/select2/select2.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/css/main.css') }}">
+
+    <meta name="robots" content="noindex, follow">
+</head>
+
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('images/img-01.jpg');">
+            <div class="wrap-login100 p-t-190 p-b-30">
+                @yield('content')
             </div>
-                    @yield('content')
-            </div>
-          </div>
-          
         </div>
-        
-      </div>
     </div>
-  </div>
-  
-    <script src="{{asset('login-page/js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('login-page/js/popper.min.js')}}"></script>
-    <script src="{{asset('login-page/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('login-page/js/main.js')}}"></script>
-  </body>
+    <script>
+        function showDateTime() {
+            var myDiv = document.getElementById("myDiv");
+
+            var date = new Date();
+            var dayList = ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"];
+            var monthNames = [
+                "Yanvar",
+                "Fevral",
+                "Mart",
+                "Aprel",
+                "May",
+                "Iyun",
+                "Iyul",
+                "Avgust",
+                "Sentyabr",
+                "Oktyabr",
+                "Noyabr",
+                "Dekabr"
+            ];
+            var dayName = dayList[date.getDay()];
+            var monthName = monthNames[date.getMonth()];
+            var today = `${dayName}, ${monthName} ${date.getDate()}, ${date.getFullYear()}`;
+
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+
+            var time = hour + ":" + min + ":" + sec;
+            myDiv.innerText = `${today}. ${time}`;
+        }
+        setInterval(showDateTime, 1000);
+    </script>
+   
+</body>
+
 </html>

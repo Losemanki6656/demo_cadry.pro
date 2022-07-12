@@ -1,28 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-
-<form class="mt-4 pt-2" method="POST" action="{{ route('login') }}">
-    @csrf
-    <div class="form-group first">
-        <label for="username">Elektron manzil</label>
-        <input type="text" class="form-control" id="username" name="email">
-
-      </div>
-      <div class="form-group last mb-4">
-        <label for="password">Parol</label>
-        <input type="password" class="form-control" id="password" name="password">
-        
-      </div>
-      
-      <div class="d-flex mb-5 align-items-center">
-        <label class="control control--checkbox mb-0"><span class="caption">Eslab qolish</span>
-          <input type="checkbox" checked="checked"/>
-          <div class="control__indicator"></div>
-        </label>
-        <span class="ml-auto"><a href="/" class="forgot-pass">Parolni unutdingizmi?</a></span> 
-      </div>
-
-      <button type="submit" class="btn btn-block btn-primary"> Kirish </button>
-</form>
+    <form class="login100-form validate-form" action="{{route('login')}}" method="POST">
+      @csrf
+        <div class="login100-form-avatar">
+            <img src="{{ asset('auth-login/images/logo.png') }}" alt="AVATAR">
+        </div>
+        <span class="login100-form-title p-t-20 p-b-45">
+            O'zbekiston Temir Yo'llari
+        </span>
+        <div class="wrap-input100 validate-input m-b-10" data-validate="Username is required">
+            <input class="input100" type="text" name="email" placeholder="Email">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="fa fa-at"></i>
+            </span>
+        </div>
+        <div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
+            <input class="input100" type="password" name="password" placeholder="Password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="fa fa-lock"></i>
+            </span>
+        </div>
+        <div class="container-login100-form-btn p-t-10">
+            <button class="login100-form-btn" type="submit">
+                Login
+            </button>
+        </div>
+        <div class="text-center w-full p-t-25 p-b-230">
+            <a href="#" class="txt1">
+            </a>
+        </div>
+        <div class="text-center w-full">
+            <a class="txt1" href="javascript:void(0)" id="myDiv"></a>
+        </div>
+    </form>
 @endsection

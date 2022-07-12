@@ -1006,15 +1006,7 @@ class CadryController extends Controller
 
     public function ssss()
     {
-      $cadries = Cadry::where('organization_id',39)->get();
-      foreach ($cadries as $item)
-      {
-        if($item->education_id == 2) 
-        {
-            $item->education_id = 1;
-            $item->save();
-        }
-      }
+      return view('auth.login2');
     }
 
     public function userPhone()
