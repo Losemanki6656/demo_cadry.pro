@@ -123,7 +123,7 @@
                     </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-sm">
                             <thead >
                                 <tr>    
                                     <th class="text-center">#</th>

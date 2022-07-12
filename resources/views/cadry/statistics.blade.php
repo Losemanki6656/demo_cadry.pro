@@ -19,7 +19,7 @@
         <div class="col-xl-4 col-md-6">
             <div class="card card-h-100">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1"> Xodmilarning yoshi bo'yicha</h4>
+                    <h4 class="card-title mb-0 flex-grow-1"> Xodimlarning yoshi bo'yicha</h4>
                     <div class="flex-shrink-0">
                         <button type="submit" class="btn btn-success btn-sm"> Barchasini ko'rish</button>
                     </div>
@@ -35,7 +35,7 @@
         <div class="col-xl-4 col-md-6">
             <div class="card card-h-100">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1"> Xodmilarning ma'lumoti bo'yicha</h4>
+                    <h4 class="card-title mb-0 flex-grow-1"> Xodimlarning ma'lumoti bo'yicha</h4>
                     <div class="flex-shrink-0">
                         <button type="submit" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
                     </div>
