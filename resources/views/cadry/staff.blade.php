@@ -144,7 +144,7 @@
                             <th class="text-center fw-bold">Soni</th>
                             <th class="text-center fw-bold">Soni(Fakt)</th>
                             <th class="text-center fw-bold">Vakant/Sverx</th>
-                            <th class="text-center fw-bold" width="190">{{ __('messages.action') }}</th>
+                            <th class="text-center fw-bold" width="230">{{ __('messages.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,6 +179,13 @@
                                             data-bs-placement="bottom" title="Xodimlarni ko'rish">
                                             <i class="bx bx-user font-size-16 align-middle"></i>
                                         </a>
+                                        <span data-bs-toggle="modal" data-bs-target="#addfile{{ $staff->id }}">
+                                            <button type="button" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Faylni yuklash"
+                                                class="btn btn-soft-dark waves-effect">
+                                                <i class="bx bx-plus font-size-16 align-middle"></i>
+                                            </button>
+                                        </span>
                                         <span data-bs-toggle="modal" data-bs-target="#editstaff{{ $staff->id }}">
                                             <button type="button" data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom" title="Taxrirlash"
@@ -239,6 +246,33 @@
                                                     <button class="btn btn-secondary" type="submit"> <i
                                                             class="bx bx-edit font-size-16 align-middle"></i>
                                                         Taxrirlash </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="addfile{{ $staff->id }}" tabindex="-1"
+                                    role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Yo'riqnoma</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action=""
+                                                method="post">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label>Lavozim yo'riqnomasini yuklang:</label>
+                                                        <input class="form-control" type="file" name="file_staff" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success" type="submit"> <i
+                                                            class="bx bx-save font-size-16 align-middle"></i>
+                                                        Saqlash </button>
                                                 </div>
                                             </form>
                                         </div>

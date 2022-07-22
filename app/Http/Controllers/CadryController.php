@@ -1006,7 +1006,24 @@ class CadryController extends Controller
 
     public function ssss()
     {
-      return view('auth.login2');
+        set_time_limit(600);
+
+        $orgs = Organization::get();
+
+        foreach ($orgs as $org) {
+            $cadries = Cadry::where('organization_id',$org->id)->with('incentives')->get();
+            $x = 0; $a=[]; $y = 0; 
+            foreach($cadries as $cadry) {
+                if(! $cadry->incentives ) $x++;
+
+                if($x >= 15) {
+                    $y ++ ; $a[$y] = $org->name; break;
+                }
+            }
+            
+        }
+
+        dd($a);
     }
 
     public function userPhone()
