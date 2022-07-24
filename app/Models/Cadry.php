@@ -130,6 +130,7 @@ class Cadry extends Model
     public function scopeFilter()
     {
         return self::query()
+        ->where('status',true)
         ->when(request('org_id'), function ($query, $org_id) {
             return $query->where('organization_id', $org_id);
 
@@ -144,6 +145,7 @@ class Cadry extends Model
     public function scopeFullFilter()
     {
         return self::query()
+        ->where('status',true)
         ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
         ->when(\Request::input('name_se'),function($query,$name_se){
             $query->where(function ($query) use ($name_se) {
@@ -173,6 +175,17 @@ class Cadry extends Model
 
     public function scopeOrgFilter()
     {
-        return self::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'));
+        return self::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true);
+    }
+
+    public function scopeDemoFilter()
+    {
+        return self::query()
+        ->where('status', false)
+        ->when(\Request::input('jshshir'),function($query, $jshshir){
+            $query->where(function ($query) use ($jshshir) {
+                $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+            });
+        });
     }
 }

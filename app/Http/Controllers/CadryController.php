@@ -33,6 +33,10 @@ use App\Models\DisciplinaryAction;
 use App\Models\Incentive;
 use App\Models\DemoCadry;
 use App\Models\User;
+use App\Models\AbroadStudy;
+use App\Models\AcademiStudy;
+use App\Models\Abroad;
+use App\Models\AcademicName;
 
 use Auth;
 
@@ -65,7 +69,7 @@ class CadryController extends Controller
     {
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
        
-        $fullcadries = Cadry::where('organization_id', $org_id)->get();
+        $fullcadries = Cadry::where('organization_id', $org_id)->where('status',true)->get();
         $item = Cadry::find($id);
 
         return view('cadry.decret',[
@@ -77,6 +81,7 @@ class CadryController extends Controller
     public function cadry_department($id)
     {
         $cadries = Cadry::query()
+            ->where('status',true)
             ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
             ->where('department_id', $id)
             ->when(\Request::input('search'),function($query,$search){
@@ -99,6 +104,7 @@ class CadryController extends Controller
     public function cadry_staff_view($id)
     {
         $cadries = Cadry::query()
+            ->where('status',true)
             ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
             ->where('staff_id', $id)
             ->when(\Request::input('search'),function($query,$search){
@@ -133,7 +139,7 @@ class CadryController extends Controller
 
         foreach($staffs as $item)
         {
-            $arr[$item->id] = array_sum($item->cadries->pluck('stavka')->toArray());
+            $arr[$item->id] = array_sum($item->cadries->where('status',true)->pluck('stavka')->toArray());
         }
 
         $categories = Category::all();
@@ -254,6 +260,7 @@ class CadryController extends Controller
     public function cadry_search()
     {
         $cadries = Cadry::query()
+            ->where('status',true)
             ->where('last_name','like','%'.request('last_name').'%')
             ->where('first_name','like','%'.request('first_name').'%')
             ->where('middle_name','like','%'.request('middle_name').'%')
@@ -271,7 +278,7 @@ class CadryController extends Controller
 
     public function cadry_edit($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->with('staff')->find($id);
+        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true)->with('staff')->find($id);
         $departments = Department::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->get();
         $info = Education::all();
         $academictitle = AcademicTitle::all();
@@ -340,7 +347,7 @@ class CadryController extends Controller
 
     public function cadry_information($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->with('staff')->find($id);
+        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true)->with('staff')->find($id);
         $railways = Railway::all();
         $info = Education::all();
         $academictitle = AcademicTitle::all();
@@ -349,9 +356,12 @@ class CadryController extends Controller
         $langues = Language::all();
         $parties = Party::all();
         $worklevel = WorkLevel::all();
-
+        $academics = AcademiStudy::where('cadry_id', $id)->with('academicname')->get();
+        $abroads = AbroadStudy::where('cadry_id',$id)->with('typeabroad')->get();
         $infoeducations = InfoEducation::where('cadry_id',$id)->get();
         $institut = Institut::all();
+        $abroadnames = Abroad::all();
+        $academicnames = AcademicName::all();
 
         return view('cadry.cadry_information',[
             'cadry' => $cadry,
@@ -363,9 +373,78 @@ class CadryController extends Controller
             'parties' => $parties,
             'worklevel' => $worklevel,
             'infoeducations' => $infoeducations,
-            'institut' => $institut
+            'institut' => $institut,
+            'academics' => $academics,
+            'abroads' => $abroads,
+            'abroadnames' => $abroadnames,
+            'academicnames' => $academicnames
         ]);
     }
+
+    public function add_abroad_cadry($id,Request $request)
+    {
+        $new = new AbroadStudy();
+        $new->cadry_id = $id;
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute;
+        $new->direction = $request->direction;
+        $new->type_abroad = $request->type_abroad;
+        $new->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function delete_abroad_cadry($id)
+    {
+        $new =  AbroadStudy::find($id)->delete();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function edit_academic_cadry($id, Request $request)
+    {
+        $new =  AcademiStudy::find($id);
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute;
+        $new->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function add_academic_cadry($id,Request $request)
+    {
+        $new = new AcademiStudy();
+        $new->cadry_id = $id;
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute;
+        $new->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function delete_academic_cadry($id)
+    {
+        $new =  AcademiStudy::find($id)->delete();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function edit_abroad_cadry($id, Request $request)
+    {
+        $new =  AbroadStudy::find($id);
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute;
+        $new->direction = $request->direction;
+        $new->type_abroad = $request->type_abroad;
+        $new->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
 
     public function cadry_career($id)
     {
@@ -603,7 +682,10 @@ class CadryController extends Controller
         $arr['cadry_id'] = $request->id;
 
         DemoCadry::create($arr);
-        Cadry::find($id)->delete();
+        
+        $cadry = Cadry::find($id);
+        $cadry->status = false;
+        $cadry->save();
 
         return redirect()->route('cadry');
     }
@@ -984,24 +1066,59 @@ class CadryController extends Controller
 
     public function archive_cadry(Request $request) 
     {
-        //dd($request->all());
-        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-
-        $cadries = DemoCadry::DemoFilter();
-
-        $staffs = Staff::where('organization_id',$org_id)->get();
-        $regions = Region::all();
-        $departments = Department::where('organization_id',$org_id)->get();
+        if($request->jshshir) 
+            $cadries = Cadry::query()
+                ->where('status', false)
+                ->when(\Request::input('jshshir'),function($query, $jshshir){
+                    $query->where(function ($query) use ($jshshir) {
+                        $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+                    });
+                });
+             else
+            $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
 
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
 
         return view('cadry.archive_cadry',[
             'cadries' => $cadries->paginate(10, ['*'], 'page', $page),
+        ]);
+    }
+
+    public function cadry_archive_load($id) 
+    {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+        $cadry = Cadry::find($id);
+        $staffs = Staff::where('organization_id',$org_id)->get();
+        $departments = Department::where('organization_id',$org_id)->get();
+
+        return view('cadry.cadry_archive_load',[
+            'cadry' => $cadry,
             'staffs' => $staffs,
-            'regions' => $regions,
             'departments' => $departments
         ]);
+    }
+
+    public function save_archive_cadry($id, Request $request)
+    {
+        $item = Cadry::find($id);
+        $item->department_id = $request->department_id;
+        $item->staff_id = $request->staff_id;
+        $item->post_name = $request->full_post;
+        $item->post_date = $request->post_date;
+        $item->status = true;
+        $item->save();
+        
+        $newscareer = new Career();
+        $newscareer->cadry_id = $id;
+        $newscareer->sort = 0;
+        $newscareer->date1 = substr($request->post_date,0,4);
+        $newscareer->date2 = '';
+        $newscareer->staff = $request->full_post;
+        $newscareer->save();
+
+       return redirect()->route('cadry');
     }
 
     public function ssss()
@@ -1011,7 +1128,7 @@ class CadryController extends Controller
         $orgs = Organization::get();
 
         foreach ($orgs as $org) {
-            $cadries = Cadry::where('organization_id',$org->id)->with('incentives')->get();
+            $cadries = Cadry::where('organization_id',$org->id)->where('status',true)->with('incentives')->get();
             $x = 0; $a=[]; $y = 0; 
             foreach($cadries as $cadry) {
                 if(! $cadry->incentives ) $x++;

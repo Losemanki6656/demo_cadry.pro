@@ -70,6 +70,7 @@ class OrganizationController extends Controller
         $departments = Department::query()->where('organization_id', request('org_id', 0))->get();
         
         $cadries = Cadry::query()
+        ->where('status',true)
             ->with(['address_region', 'address_city'])
             ->when(\Request::input('search'),function($query,$search){
                 $query->where(function ($query) use ($search) {
@@ -187,7 +188,7 @@ class OrganizationController extends Controller
 
     public function incentives()
     {
-        $cadries = Cadry::query()
+        $cadries = Cadry::query()->where('status',true)
         ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
         ->when(\Request::input('search'),function($query,$search){
             $query->where(function ($query) use ($search) {
@@ -448,7 +449,7 @@ class OrganizationController extends Controller
 
     public function newcadries()
     {
-        $cadries = Cadry::filter()->whereDate('created_at',now()->format('Y-m-d'))->get();
+        $cadries = Cadry::filter()->where('status',true)->whereDate('created_at',now()->format('Y-m-d'))->get();
         
         return view('statistics.newcadries',[
             'cadries' => $cadries
@@ -470,6 +471,7 @@ class OrganizationController extends Controller
     public function birthcadries()
     {
         $cadries = Cadry::filter()
+        ->where('status',true)
         ->whereMonth('birht_date', '=', now()->format('m'))
         ->whereDay('birht_date', '=', now()->format('d'))
         ->orderBy('org_order','asc')

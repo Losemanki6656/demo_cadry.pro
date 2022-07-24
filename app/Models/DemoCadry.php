@@ -56,7 +56,14 @@ class DemoCadry extends Model
     {
         return $this->belongsTo(Organization::class,'organization_id');
     }
-       
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    } 
     public function scopeFilter()
     {
         return self::query()
@@ -68,37 +75,18 @@ class DemoCadry extends Model
 
         })->when(request('railway_id'), function ($query, $railway_id) {
             return $query->where('railway_id', $railway_id);
-        })->with('organization');
+        })->with(['organization','region','city']);
     }
 
     public function scopeDemoFilter()
     {
         return self::query()
-        ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
         ->where('status', 0)
-        ->when(\Request::input('name_se'),function($query,$name_se){
-            $query->where(function ($query) use ($name_se) {
-                foreach(explode(' ',$name_se) as $item)
-                $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$item.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
+        ->when(\Request::input('jshshir'),function($query, $jshshir){
+            $query->where(function ($query) use ($jshshir) {
+                $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
                
             });
-        })->when(request('staff_se'), function ($query, $staff_se) {
-            return $query->where('staff_id', $staff_se);
-
-        })->when(request('education_se'), function ($query, $education_se) {
-            return $query->where('education_id', $education_se);
-
-        })->when(request('region_se'), function ($query, $region_se) {
-            return $query->where('birth_region_id', $region_se);
-
-        })->when(request('department_se'), function ($query, $department_se) {
-            return $query->where('department_id', $department_se);
-
-        })->when(request('sex_se'), function ($query, $sex_se) {
-            return $query->where('sex', $sex_se);
-
         });
     }
 

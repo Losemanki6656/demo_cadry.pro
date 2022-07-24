@@ -67,6 +67,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/cadry/adddiscip/{id}', [App\Http\Controllers\CadryController::class, 'add_discip_cadry'])->name('add_discip_cadry');
     Route::post('/cadry/editdiscip/{id}', [App\Http\Controllers\CadryController::class, 'edit_discip_cadry'])->name('edit_discip_cadry');
     Route::post('/cadry/deletediscip/{id}', [App\Http\Controllers\CadryController::class, 'delete_discip_cadry'])->name('delete_discip_cadry');
+    
+    Route::post('/cary/cadry-information/{id}', [App\Http\Controllers\CadryController::class, 'add_abroad_cadry'])->name('add_abroad_cadry');
+    Route::post('/cary/editAbroad/{id}', [App\Http\Controllers\CadryController::class, 'edit_abroad_cadry'])->name('edit_abroad_cadry');
+    Route::post('/cary/delete_abroad_cadry/{id}', [App\Http\Controllers\CadryController::class, 'delete_abroad_cadry'])->name('delete_abroad_cadry');
+
+    Route::post('/cary/cadryAcademic/{id}', [App\Http\Controllers\CadryController::class, 'add_academic_cadry'])->name('add_academic_cadry');
+    Route::post('/cary/editAcademic/{id}', [App\Http\Controllers\CadryController::class, 'edit_academic_cadry'])->name('edit_academic_cadry');
+    Route::post('/cary/deleteAcademic/{id}', [App\Http\Controllers\CadryController::class, 'delete_academic_cadry'])->name('delete_academic_cadry');
 
     Route::post('/cadry/addmed/{id}', [App\Http\Controllers\CadryController::class, 'add_med_cadry'])->name('add_med_cadry');
     Route::post('/cadry/editmed/{id}', [App\Http\Controllers\CadryController::class, 'edit_med_cadry'])->name('edit_med_cadry');
@@ -82,6 +90,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/relatives/sortable', [App\Http\Controllers\CadryController::class, 'sortable_relatives']);
 
     Route::get('/cadry/archive', [App\Http\Controllers\CadryController::class, 'archive_cadry'])->name('archive_cadry');
+    Route::get('/cadry/archive/view/{id}', [App\Http\Controllers\CadryController::class, 'cadry_archive_load'])->name('cadry_archive_load');
+    Route::post('/cadry/archiveSave/{id}', [App\Http\Controllers\CadryController::class, 'save_archive_cadry'])->name('save_archive_cadry');
 
     Route::get('/cadry/decret/{id}', [App\Http\Controllers\CadryController::class, 'decret_cadry'])->name('decret_cadry');
 
@@ -91,9 +101,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/word-export-demo/{id}', [App\Http\Controllers\OrganizationController::class, 'word_export_demo'])->name('word_export_demo');
 
-    Route::get('/send-archive-cadry', [App\Http\Controllers\OrganizationController::class, 'send_archive_cadry'])->name('send_archive_cadry');
+   // Route::get('/send-archive-cadry', [App\Http\Controllers\OrganizationController::class, 'send_archive_cadry'])->name('send_archive_cadry');
     Route::get('/cadry/cadry-export-all', [App\Http\Controllers\OrganizationController::class, 'export_excel'])->name('export_excel');
-    Route::get('/cadry/cadry-export-archive-all', [App\Http\Controllers\OrganizationController::class, 'export_excel_arhive'])->name('export_excel_arhive');
+    //Route::get('/cadry/cadry-export-archive-all', [App\Http\Controllers\OrganizationController::class, 'export_excel_arhive'])->name('export_excel_arhive');
     //democadry
     Route::get('/cadry/demo-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_cadry'])->name('demo_to_cadry');
     Route::get('/cadry/delete-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_delete'])->name('demo_to_delete');

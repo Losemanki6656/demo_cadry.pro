@@ -94,7 +94,7 @@
                                             {{ $departments->currentPage() * 10 - 10 + $loop->index + 1 }}</td>
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
-                                        <td class="text-center fw-bold">{{ $department->cadries->count() }}</td>
+                                        <td class="text-center fw-bold">{{ $department->cadries->where('status',true)->count() }}</td>
                                         <td class="text-center">
                                             <a type="button"
                                                 href="{{ route('cadry_department', ['id' => $department->id]) }}"

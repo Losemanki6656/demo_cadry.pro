@@ -222,7 +222,7 @@ label.cabinet input.file{
                                         <input type="date" class="form-control" name="pass_date" required>
                                     </td>
                                     <td>
-                                        <input type="text" class="jshshir form-control" name="jshshir" required>
+                                        <input type="number" class="jshshir form-control" name="jshshir" required>
                                     </td>
                                 </tr>
                             </tbody>

@@ -1,71 +1,116 @@
 @extends('layouts.master')
 @section('content')
-    <style>
-        .page_404 {
-            padding: 40px 0;
-            background: #fff;
-            font-family: 'Arvo', serif;
-        }
-
-        .page_404 img {
-            width: 100%;
-        }
-
-        .four_zero_four_bg {
-
-            background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-            height: 400px;
-            background-position: center;
-        }
-
-
-        .four_zero_four_bg h1 {
-            font-size: 80px;
-        }
-
-        .four_zero_four_bg h3 {
-            font-size: 80px;
-        }
-
-        .link_404 {
-            color: #fff !important;
-            padding: 10px 20px;
-            background: #39ac31;
-            margin: 20px 0;
-            display: inline-block;
-        }
-
-        .contant_box_404 {
-            margin-top: -50px;
-        }
-    </style>
-
-    <section class="page_404">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <div class="col-sm-10 col-sm-offset-1  text-center">
-                        <div class="four_zero_four_bg">
-                            <h1 class="text-center "></h1>
-
-
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Arxivdan qidirish</h4>
+                    <form class="outer-repeater" action="{{ route('archive_cadry') }}" method="get">
+                        @csrf
+                        <div data-repeater-list="outer-group" class="outer">
+                            <div data-repeater-item class="outer">
+                                <div class="form-group row mb-4">
+                                    <label for="taskname" class="col-form-label col-lg-2">JSHSHIR</label>
+                                    <div class="col-7">
+                                        <input id="taskname" name="jshshir" type="number" class="form-control"
+                                            placeholder="JSHSHIR ni kiriting..." value="{{request('jshshir')}}">
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-primary" type="submit" style="width: 100%"> <i class="fa fa-search"></i>
+                                            Search</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="contant_box_404">
-                            <h3 class="h2">
-                                Страница Архив в разработке!
-                            </h3>
-
-                            <p>Скоро будет доступна!</p>
-
-                            <a href="{{route('cadry')}}" class="btn btn-primary">Go to Home</a>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if ($cadries->count())
+                    <div class="table-responsive">
+                        <table class="table align-middle table-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Photo</th>
+                                    <th>FIO / Korxona</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cadries as $item)
+                                <tr>
+                                    <td>
+                                        {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
+                                    </td>
+                                    <td><a href="{{ asset('storage/' . $item->photo) }}"
+                                        class="image-popup-desc"
+                                        data-title="{{ $item->last_name }} {{ $item->first_name }} {{ $item->middle_name }}"
+                                        data-description="{{ $item->post_name }}">
+                                        <img class="rounded avatar"
+                                            src="{{ asset('storage/' . $item->photo) }}" height="40"
+                                            width="40">
+                                    </a>
+                                </td>
+                                    <td>
+                                        <p class="mb-1 fw-bold">{{ $item->last_name }} {{ $item->first_name }}
+                                            {{ $item->middle_name }}</p>
+                                        <p class="mb-0">{{$item->organization->name}}</p>
+                                    </td>
+                                    
+                                    <td>{{$item->region->name ?? ''}},{{$item->city->name ?? ''}},{{$item->address ?? ''}}</td>
+                                    <td>
+                                        <span>
+                                            <a type="button" href="{{ route('cadry_archive_load',['id' => $item->id]) }}" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Ma'lumotlarni yuklash"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fas fa-check-circle"></i>
+                                            </a>
+                                        </span>
+                                    
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                @if (count($cadries) > 9)
+                                    <form action="{{ route('cadry') }}" method="get">
+                                        <div class="dataTables_length" id="datatable_length">
+                                            <label><input type="number" class="form-control form-control"
+                                                    placeholder="{{ __('messages.page') }} ..." name="page"
+                                                    value="{{ request()->query('page') }}"></label>
+                                        </div>
+                                    </form>
+                                @endif
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="datatable_filter" class="dataTables_filter">
+                                    <label>
+                                        {{ $cadries->withQueryString()->links() }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                        <h5 class="text-center text-danger">Ma'lumot topilmadi</h5>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
+
 @endsection

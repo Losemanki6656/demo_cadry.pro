@@ -341,7 +341,344 @@
             </div>
         </div>
     </div>
+</div>
 
+
+<div class="card">                                      
+    <div class="card-body">
+        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="datatable_length">
+                        <h5>Xorijda ta'lim olganlar</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="datatable_filter" class="dataTables_filter">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addmed"><i class="fas fa-plus"></i> Qo'shish</button>
+                    </div>
+                    <div class="modal fade" id="addmed" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumot qo'shish</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('add_abroad_cadry',['id' => $cadry->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachondan:</label>
+                                                    <input type="text" class="form-control" name="date1" required>   
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachongacha:</label>
+                                                    <input type="text" class="form-control" name="date2" required>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Ta'lum muassasasi nomi:</label></h6>
+                                            <input type="text" class="form-control" name="institute" required>   
+                                        </div>    
+                                        <div class="mb-3">
+                                            <label>Yo'nalishi:</label>
+                                            <input type="text" class="form-control" name="direction" required>   
+                                        </div>   
+                                        <div class="mb-3">
+                                            <label>Mablag'lashtirish:</label>
+                                            <select name="type_abroad" class="form-select">
+                                                @foreach ($abroadnames as $abr)
+                                                    <option value="{{$abr->id}}"> {{$abr->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>   
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"> <i class="feather icon-save"></i> Saqlash </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Qachondan</th>
+                        <th>Qachongacha</th>
+                        <th>Ta'lim muassasasi</th>   
+                        <th>Yo'nalishi</th>
+                        <th>Mablag'lashtirish</th>                                                          
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($abroads as $abroad)
+                    <tr>
+                        <th>{{$abroad->date1}}</th>
+                        <td >{{$abroad->date2}}</td>
+                        <th>{{$abroad->institute}}</th>
+                        <td >{{$abroad->direction}}</td>
+                        <td >{{$abroad->typeabroad->name}}</td>
+                        <td width="180">
+                            <button type="button" class="btn btn-soft-secondary waves-effect"
+                                data-bs-toggle="modal" data-bs-target="#editmed{{$abroad->id}}">
+                                <i class="bx bx-edit font-size-16 align-middle"></i>
+                            </button>
+                            <button type="button" class="btn btn-soft-danger waves-effect"
+                                data-bs-toggle="modal" data-bs-target="#deletemed{{$abroad->id}}">
+                                <i class="bx bx-trash font-size-16 align-middle"></i>
+                            </button> 
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="editmed{{$abroad->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumotni taxrirlash</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('edit_abroad_cadry',['id' => $abroad->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachondan:</label>
+                                                    <input type="text" class="form-control" name="date1" value="{{$abroad->date1}}" required>   
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachongacha:</label>
+                                                    <input type="text" class="form-control" name="date2" value="{{$abroad->date2}}" required>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Ta'lum muassasasi nomi:</label></h6>
+                                            <input type="text" class="form-control" name="institute" value="{{$abroad->institute}}" required>   
+                                        </div>    
+                                        <div class="mb-3">
+                                            <label>Yo'nalishi:</label>
+                                            <input type="text" class="form-control" name="direction" value="{{$abroad->direction}}" required>   
+                                        </div>   
+                                        <div class="mb-3">
+                                            <label>Mablag'lashtirish:</label>
+                                            <select name="type_abroad" class="form-select">
+                                                @foreach ($abroadnames as $abr)
+                                                    <option value="{{$abr->id}}" @if ($abroad->type_abroad == $abr->id)
+                                                        selected
+                                                    @endif> {{$abr->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>   
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"> <i class="fas fa-save"></i> Saqlash </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deletemed{{$abroad->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumotni taxrirlash</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('delete_abroad_cadry',['id' => $abroad->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label>Malumotni o'chirishni xoxlaysizmi ?</label>
+                                        </div>    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-danger" type="submit"> <i class="fas fa-trash"></i> Xa, O'chirish </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="card">                                      
+    <div class="card-body">
+        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="datatable_length">
+                        <h5>Akademiyani o'qiganlar</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="datatable_filter" class="dataTables_filter">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addacademic"><i class="fas fa-plus"></i> Qo'shish</button>
+                    </div>
+                    <div class="modal fade" id="addacademic" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumot qo'shish</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('add_academic_cadry',['id' => $cadry->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachondan:</label>
+                                                    <input type="text" class="form-control" name="date1" required>   
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachongacha:</label>
+                                                    <input type="text" class="form-control" name="date2" required>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Akademiya nomi</label>
+                                            <select name="institute" class="form-select">
+                                                @foreach ($academicnames as $academic)
+                                                    <option value="{{$academic->id}}"> {{$academic->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>   
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"> <i class="feather icon-save"></i> Saqlash </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Qachondan</th>
+                        <th>Qachongacha</th>
+                        <th>Akademiya nomi</th>      
+                        <th>Action</th>                                                     
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($academics as $acs)
+                    <tr>
+                        <th>{{$acs->date1}}</th>
+                        <td >{{$acs->date2}}</td>
+                        <th>{{$acs->academicname->name}}</th>
+                        <td width="180">
+                            <button type="button" class="btn btn-soft-secondary waves-effect"
+                                data-bs-toggle="modal" data-bs-target="#editacs{{$acs->id}}">
+                                <i class="bx bx-edit font-size-16 align-middle"></i>
+                            </button>
+                            <button type="button" class="btn btn-soft-danger waves-effect"
+                                data-bs-toggle="modal" data-bs-target="#deleteacs{{$acs->id}}">
+                                <i class="bx bx-trash font-size-16 align-middle"></i>
+                            </button> 
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="editacs{{$acs->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumotni taxrirlash</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('edit_academic_cadry',['id' => $acs->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachondan:</label>
+                                                    <input type="text" class="form-control" name="date1" value="{{$acs->date1}}" required>   
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label>Qachongacha:</label>
+                                                    <input type="text" class="form-control" name="date2" value="{{$acs->date2}}" required>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Akademiya nomi</label>
+                                            <select name="institute" class="form-select">
+                                                @foreach ($academicnames as $academic)
+                                                    <option value="{{$academic->id}}" @if ($acs->institute == $academic->id)
+                                                        selected
+                                                    @endif> {{$academic->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>  
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"> <i class="fas fa-save"></i> Saqlash </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deleteacs{{$acs->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumotni o'chirish</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('delete_academic_cadry',['id' => $acs->id])}}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label>Malumotni o'chirishni xoxlaysizmi ?</label>
+                                        </div>    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-danger" type="submit"> <i class="fas fa-trash"></i> Xa, O'chirish </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
 
 @endsection

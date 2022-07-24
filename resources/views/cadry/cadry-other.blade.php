@@ -480,7 +480,6 @@
 
 </div>    
 
-
 @endsection
 
 @section('scripts')
