@@ -37,6 +37,7 @@ use App\Models\AbroadStudy;
 use App\Models\AcademiStudy;
 use App\Models\Abroad;
 use App\Models\AcademicName;
+use App\Models\StaffFile;
 
 use Auth;
 
@@ -278,7 +279,7 @@ class CadryController extends Controller
 
     public function cadry_edit($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true)->with('staff')->find($id);
+        $cadry = Cadry::find($id);
         $departments = Department::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->get();
         $info = Education::all();
         $academictitle = AcademicTitle::all();
@@ -347,7 +348,7 @@ class CadryController extends Controller
 
     public function cadry_information($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true)->with('staff')->find($id);
+        $cadry = Cadry::find($id);
         $railways = Railway::all();
         $info = Education::all();
         $academictitle = AcademicTitle::all();
@@ -448,7 +449,7 @@ class CadryController extends Controller
 
     public function cadry_career($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->with('staff')->find($id);
+        $cadry = Cadry::find($id);
      
         $careers = Career::where('cadry_id',$id)
             ->orderBy('sort','asc')->get();
@@ -477,17 +478,19 @@ class CadryController extends Controller
     }
     public function cadry_other($id)
     {
-        $cadry = Cadry::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->with('staff')->find($id);
+        $cadry = Cadry::find($id);
 
-        $meds = MedicalExamination::where('cadry_id',$cadry->id)->get();
-        $discips = DisciplinaryAction::where('cadry_id',$cadry->id)->get();
-        $incentives = Incentive::where('cadry_id',$cadry->id)->get();
+        $meds = MedicalExamination::where('cadry_id',$id)->get();
+        $discips = DisciplinaryAction::where('cadry_id',$id)->get();
+        $incentives = Incentive::where('cadry_id',$id)->get();
+        $stafffiles = StaffFile::where('cadry_id',$id)->get();
 
         return view('cadry.cadry-other',[
             'cadry' => $cadry,
             'meds' => $meds,
             'discips' => $discips,
-            'incentives' => $incentives
+            'incentives' => $incentives,
+            'stafffiles' => $stafffiles
         ]);
     }
 
@@ -676,16 +679,15 @@ class CadryController extends Controller
 
     public function delete_cadry(Request $request,$id)
     {
+        $cadry = Cadry::find($id);
+        $cadry->status = false;
+        $cadry->save();
+
         $arr = Cadry::find($id)->toArray();
         $arr['number'] = $request->number ?? '';
         $arr['comment'] = $request->comment ?? '';
         $arr['cadry_id'] = $request->id;
-
         DemoCadry::create($arr);
-        
-        $cadry = Cadry::find($id);
-        $cadry->status = false;
-        $cadry->save();
 
         return redirect()->route('cadry');
     }
@@ -1025,8 +1027,8 @@ class CadryController extends Controller
 
             $newcadries = Cadry::OrgFilter()->whereDate('created_at',now()->format('Y-m-d'));
        
-            $democadries = DemoCadry::OrgFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
-            $democadriesback = DemoCadry::OrgFilter()->where('status',1);
+            $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
+            $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
 
             $y = 0; $z = 0;
             foreach ( $staffs as $staf) {
@@ -1102,7 +1104,12 @@ class CadryController extends Controller
 
     public function save_archive_cadry($id, Request $request)
     {
+        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $rail_id = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
+
         $item = Cadry::find($id);
+        $item->railway_id = $rail_id;
+        $item->organization_id = $org_id;
         $item->department_id = $request->department_id;
         $item->staff_id = $request->staff_id;
         $item->post_name = $request->full_post;
@@ -1155,6 +1162,43 @@ class CadryController extends Controller
       }
 
       dd($a);
+    }
+
+    public function add_filestaff_cadry($id, Request $request)
+    {
+        $fileName = time().'.'.$request->file_path->extension();
+
+        $path = $request->file_path->storeAs('stafffiles', $fileName);
+
+        $newfile = new StaffFile();
+        $newfile->cadry_id = $id;
+        $newfile->comment = $request->comment;
+        $newfile->file_path = 'storage/' . $path;
+        $newfile->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function edit_stafffile_cadry($id, Request $request)
+    {
+        $fileName = time().'.'.$request->file_path->extension();
+
+        $path = $request->file_path->storeAs('stafffiles', $fileName);
+
+        $newfile =  StaffFile::find($id);
+        $newfile->comment = $request->comment;
+        $newfile->file_path = 'storage/' . $path;
+        $newfile->save();
+
+        return redirect()->back()->with('msg' ,1);
+    }
+
+    public function delete_stafffile_cadry($id)
+    {
+
+        $newfile =  StaffFile::find($id)->delete();
+
+        return redirect()->back()->with('msg' ,1);
     }
 
 }

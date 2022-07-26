@@ -480,6 +480,129 @@
 
 </div>    
 
+<div class="card">
+    <div class="card-body">
+        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="datatable_length">
+                        <h5>Lavozim yo'riqnomasi</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="datatable_filter" class="dataTables_filter">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addstaff"><i class="fas fa-plus"></i> Qo'shish</button>
+                    </div>
+                    <div class="modal fade" id="addstaff" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ma'lumot qo'shish</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{route('add_filestaff_cadry',['id' => $cadry->id])}}" method="post" enctype='multipart/form-data'>
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label>Izoh:</label>
+                                            <input type="text" class="form-control" name="comment" required>   
+                                        </div> 
+                                        <div class="mb-3">
+                                            <label>Fayl:</label>
+                                            <input type="file" class="form-control" name="file_path" required>   
+                                        </div>    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit"> <i class="fas fa-save"></i> Saqlash </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                                    
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Izoh</th>  
+                    <th>Action</th>                                                       
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($stafffiles as $stafffile)
+                <tr>
+                    <th>{{$stafffile->comment}}</th>
+                    <td width="180">
+                        <button type="button" class="btn btn-soft-secondary waves-effect"
+                            data-bs-toggle="modal" data-bs-target="#stafffileedit{{$stafffile->id}}">
+                            <i class="bx bx-edit font-size-16 align-middle"></i>
+                        </button>
+                        <button type="button" class="btn btn-soft-danger waves-effect"
+                            data-bs-toggle="modal" data-bs-target="#stafffiledelete{{$stafffile->id}}">
+                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                        </button>  
+                    </td>
+                </tr>
+                <div class="modal fade" id="stafffileedit{{$stafffile->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ma'lumot qo'shish</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{route('edit_stafffile_cadry',['id' => $stafffile->id])}}" method="post" enctype='multipart/form-data'>
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Kim tomonidan:</label>
+                                        <input type="text" class="form-control" name="comment" value="{{$stafffile->comment}}" required>   
+                                    </div> 
+                                    <div class="mb-3">
+                                        <label>Buyruq raqami:</label>
+                                        <input type="file" class="form-control" name="file_path" required>   
+                                    </div>     
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" type="submit"> <i class="fas fa-save"></i> Saqlash </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="stafffiledelete{{$stafffile->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ma'lumotni o'chirish</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{route('delete_stafffile_cadry',['id' => $stafffile->id])}}" method="post">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label>Ma'lumotlarni o'chirishni xoxlaysizmi ?</label>
+                                    </div>     
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" type="submit"> <i class="fas fa-trash"></i> Xa, O'chirish </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+                
+            </tbody>
+        </table>   
+    </div>     
+
+</div>    
+
 @endsection
 
 @section('scripts')

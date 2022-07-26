@@ -95,6 +95,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/cadry/decret/{id}', [App\Http\Controllers\CadryController::class, 'decret_cadry'])->name('decret_cadry');
 
+    Route::post('/cadry/add_filestaff_cadry/{id}', [App\Http\Controllers\CadryController::class, 'add_filestaff_cadry'])->name('add_filestaff_cadry');
+    Route::post('/cadry/edit_filestaff_cadry/{id}', [App\Http\Controllers\CadryController::class, 'edit_stafffile_cadry'])->name('edit_stafffile_cadry');
+    Route::post('/cadry/delete_filestaff_cadry/{id}', [App\Http\Controllers\CadryController::class, 'delete_stafffile_cadry'])->name('delete_stafffile_cadry');
     //word export
 
     Route::get('/word-export/{id}', [App\Http\Controllers\OrganizationController::class, 'word_export'])->name('word_export');

@@ -64,8 +64,6 @@
     </div><!-- end card header -->
 
     <div class="card-body">
-
-        <!-- Tab panes -->
         <div class="tab-content text-muted">
             <div class="tab-pane active" id="home2" role="tabpanel">
                 <form action="{{route('edit_cadry_us',['cadry' => $cadry->id])}}" method="post" class="needs-validation"

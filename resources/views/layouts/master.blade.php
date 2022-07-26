@@ -243,7 +243,6 @@
                             <li>
                                 <a href="{{route('cadry_statistics')}}">
                                     <i data-feather="pie-chart"></i>
-                                    <span class="badge rounded-pill bg-soft-success text-success float-end">New</span>
                                     <span data-key="t-dashboard">{{ __('messages.statistika') }}</span>
                                 </a>
                               </li>
