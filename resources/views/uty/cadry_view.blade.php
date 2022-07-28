@@ -87,7 +87,7 @@
                     </tr>
                     <tr style="font-size: 14.5px; margin-bottom: 4pt">
                         <td colspan='3' style="vertical-align: top">
-                            {{$cadry->education->name}}
+                            {{$cadry->education->name ?? ''}}
                         </td>
                         <td></td>
                         <td colspan="4">   
