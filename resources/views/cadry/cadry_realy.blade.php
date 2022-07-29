@@ -85,7 +85,7 @@
                                                     <input class="form-control" type="text" name="fullname" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label>Tug'ilgan joyi:</label></h6>
+                                                    <label>Tug'ilgan yili va joyi:</label></h6>
                                                     <input class="form-control" type="text" name="birth_place" required>
                                                 </div>
                                                 <div class="mb-3">

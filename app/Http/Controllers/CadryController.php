@@ -1130,24 +1130,13 @@ class CadryController extends Controller
 
     public function ssss()
     {
-        set_time_limit(600);
-
-        $orgs = Organization::get();
-
-        foreach ($orgs as $org) {
-            $cadries = Cadry::where('organization_id',$org->id)->where('status',true)->with('incentives')->get();
-            $x = 0; $a=[]; $y = 0; 
-            foreach($cadries as $cadry) {
-                if(! $cadry->incentives ) $x++;
-
-                if($x >= 15) {
-                    $y ++ ; $a[$y] = $org->name; break;
-                }
-            }
-            
+        $cadries = DemoCadry::where('status', true)->whereDate('created_at','>=','2022-07-05')->get();
+        foreach ($cadries as $item)
+        {
+            $item->status = false;
+            $item->save();
         }
-
-        dd($a);
+        return redirect()->back()->with('msg' ,1);
     }
 
     public function userPhone()
