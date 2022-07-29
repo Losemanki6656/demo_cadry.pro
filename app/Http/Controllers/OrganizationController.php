@@ -460,7 +460,7 @@ class OrganizationController extends Controller
     {
         $cadries = DemoCadry::filter()->where('status',0)
         ->whereDate('created_at',now()->format('Y-m-d'))
-        ->get();
+        ->paginate(10);
         
         return view('statistics.delcadries',[
             'cadries' => $cadries
