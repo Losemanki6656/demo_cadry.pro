@@ -79,6 +79,10 @@ class Cadry extends Model
     {
         return $this->hasMany(Incentive::class);
     }
+    public function relatives()
+    {
+        return $this->hasMany(CadryRelative::class);
+    }
     public function careers()
     {
         return $this->hasMany(Career::class);
