@@ -144,6 +144,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('products', ProductController::class);
         Route::get('/excelimport', [App\Http\Controllers\CadryController::class, 'excelimport'])->name('excelimport');
         Route::get('/taxrir', [App\Http\Controllers\CadryController::class, 'ssss'])->name('ssss');
+        Route::get('/taxrir2', [App\Http\Controllers\CadryController::class, 'userPhone'])->name('userPhone');
         Route::get('/relations/organizations', [App\Http\Controllers\CadryController::class, 'organization_index'])->name('organization_table');
         Route::get('/relations/enterprices', [App\Http\Controllers\CadryController::class, 'enterprice_index'])->name('enterprice_table');
         Route::post('file-import', [App\Http\Controllers\CadryController::class, 'fileImport'])->name('file-import');

@@ -1130,27 +1130,30 @@ class CadryController extends Controller
 
     public function ssss()
     {
-        $cadries = DemoCadry::where('status', true)->whereDate('created_at','>=','2022-07-05')->get();
+        $cadries = Cadry::with('careers')->get();
+        $a = []; $x = 0;
         foreach ($cadries as $item)
         {
-            $item->status = false;
-            $item->save();
+            if(!count($item->careers)) {
+                $x ++;
+                $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
+            }
         }
-        return redirect()->back()->with('msg' ,1);
+        dd($a);
     }
 
     public function userPhone()
     {
-        $users = UserOrganization::with('organization')->get();
+        $cadries = Cadry::with('incentives')->get();
         $a = []; $x = 0;
-      foreach ($users as $user){
-        if($user->post_id == 1 && $user->phone == "998977226656") {
-            $x++;
-            $a[$x] = $user->railway->name.">".$user->organization->name;
+        foreach ($cadries as $item)
+        {
+            if(!count($item->incentives)) {
+                $x ++;
+                $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
+            }
         }
-      }
-
-      dd($a);
+        dd($a);
     }
 
     public function add_filestaff_cadry($id, Request $request)
