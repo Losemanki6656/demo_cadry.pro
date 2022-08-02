@@ -1130,7 +1130,7 @@ class CadryController extends Controller
 
     public function ssss()
     {
-        $cadries = Cadry::with('careers')->get();
+        $cadries = Cadry::where('status',true)->with('careers')->get();
         $a = []; $x = 0;
         foreach ($cadries as $item)
         {
@@ -1144,7 +1144,7 @@ class CadryController extends Controller
 
     public function userPhone()
     {
-        $cadries = Cadry::with('incentives')->get();
+        $cadries = Cadry::where('status',true)->with('incentives')->get();
         $a = []; $x = 0;
         foreach ($cadries as $item)
         {
