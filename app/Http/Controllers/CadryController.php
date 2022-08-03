@@ -1144,7 +1144,7 @@ class CadryController extends Controller
 
     public function userPhone()
     {
-        set_time_limit(600);
+        set_time_limit(1200);
 
         $cadries = Cadry::where('status',true)->with('relatives')->get();
         $a = []; $x = 0;
