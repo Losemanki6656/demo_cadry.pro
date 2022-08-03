@@ -1145,16 +1145,20 @@ class CadryController extends Controller
     public function userPhone()
     {
         set_time_limit(1200);
-
-        $cadries = Cadry::where('status',true)->with('relatives')->get();
+        $orgs = Organization::get();
         $a = []; $x = 0;
-        foreach ($cadries as $item)
+        foreach($orgs as $org)
         {
-            if(!count($item->relatives)) {
-                $x ++;
-                $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
+            $cadries = Cadry::where('status',true)->where('organization_id',$org->id)->with('relatives')->get();
+            foreach ($cadries as $item)
+            {
+                if(!count($item->relatives)) {
+                    $x ++;
+                    $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
+                }
             }
         }
+      
         dd($a);
     }
 
