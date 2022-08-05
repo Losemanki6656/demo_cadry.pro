@@ -845,6 +845,7 @@ class CadryController extends Controller
 
                         $newItem = new Career();
                         $newItem->cadry_id = $item->id;
+                        $newItem->sort = 1;
                         $newItem->date1 = $row[1] ?? '';
                         $newItem->date2 = $row[2] ?? '';
                         $newItem->staff = $row[3] ?? '';
