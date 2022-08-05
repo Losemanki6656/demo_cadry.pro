@@ -838,11 +838,21 @@ class CadryController extends Controller
 
         $arr = $collections[0];
         $x = 0;
-        
+
             foreach ($arr as $row) { 
                 foreach($cadries as $item) {
                     if($row[0] == $item->jshshir) {
-                        $x ++;
+
+                        $newItem = new CadryRelative();
+                        $newItem->cadry_id = $item->id;
+                        $newItem->relative_id = $row[1];
+                        $newItem->sort = 1;
+                        $newItem->fullname = $row[2];
+                        $newItem->birth_place = $row[3];
+                        $newItem->post = $row[4];
+                        $newItem->address = $row[5];
+                        $newItem->save();
+                        
                         break;
                     }
                 }
