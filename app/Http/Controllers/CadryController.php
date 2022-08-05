@@ -834,61 +834,21 @@ class CadryController extends Controller
         set_time_limit(600);
 
         $collections = Excel::toCollection(new ExcelImport, $request->file('file'));
+        $cadries = Cadry::where('organization_id',202)->get();
+
+        $arr = $collections[0];
+        $x = 0;
         
-            $arr = $collections[0];
-            $x = 0;
-            $y = 0;
-            $a = [];
-
             foreach ($arr as $row) { 
-            $cadry = DemoCadry::create([
-                    'cadry_id' => 0,
-                    'railway_id' => $row[9],
-                    'organization_id' => $row[10],
-                    'department_id' => 0,
-                    'birth_region_id' => 0,
-                    'birth_city_id' => 0,
-                    'category_id' => 0,
-                    'pass_region_id' => 0,
-                    'pass_city_id' => 0,
-                    'address_region_id' =>0,
-                    'address_city_id' => 0,
-                    'education_id' => 0,
-                    'staff_id' => 0,
-                    'stavka' => "1",
-                    'photo' => "-",
-                    'phone' => "-",
-                    'nationality_id' => 1,
-                    'party_id' => 3,
-                    'academictitle_id' => 3,
-                    'academicdegree_id' => 5,
-                    'worklevel_id' => 3,
-                    'military_rank' => "Yo'q",
-                    'deputy' => "Yo'q",
-                    'language' => "1,2",
-                    'last_name' => $row[1],
-                    'first_name' => $row[2],
-                    'middle_name' => $row[3] ?? ' ',
-                    'birht_date' => \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d'),
-                    'post_date' => '2022-02-02',
-                    'post_name' => $row[5] ?? '',
-                    'passport' => '',
-                    'jshshir' => $row[6] ?? '',
-                    'pass_date' => '2022-02-02',
-                    'address' =>  '',
-                    'sex' => '1',
-                    'number' =>  'P0',
-                    'comment' => $row[7],
-                    'status' => 1,
-                    'job_date' =>  \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[8]))->format('Y-m-d'),
-                ]);
-
-                $x ++;
+                foreach($cadries as $item) {
+                    if($row[0] == $item->jshshir) {
+                        $x ++;
+                        break;
+                    }
+                }
             }
 
         dd($x);
-
-       
 
     }
 
