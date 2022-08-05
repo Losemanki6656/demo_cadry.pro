@@ -843,16 +843,13 @@ class CadryController extends Controller
                 foreach($cadries as $item) {
                     if($row[0] == $item->jshshir) {
 
-                        $newItem = new CadryRelative();
+                        $newItem = new Career();
                         $newItem->cadry_id = $item->id;
-                        $newItem->relative_id = $row[1];
-                        $newItem->sort = 1;
-                        $newItem->fullname = $row[2];
-                        $newItem->birth_place = $row[3];
-                        $newItem->post = $row[4];
-                        $newItem->address = $row[5];
+                        $newItem->date1 = $row[1] ?? '';
+                        $newItem->date2 = $row[2] ?? '';
+                        $newItem->staff = $row[3] ?? '';
                         $newItem->save();
-                        
+                        $x ++;
                         break;
                     }
                 }
