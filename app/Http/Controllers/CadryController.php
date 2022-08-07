@@ -1099,7 +1099,7 @@ class CadryController extends Controller
     public function ssss()
     {
         
-        $cadries = Cadry::where('status',true)->has('careers', '=', 0)->get();
+        $cadries = Cadry::where('status',true)->has('careers', '<', 1)->paginate(10);
 
         dd($cadries);
     }
@@ -1108,7 +1108,7 @@ class CadryController extends Controller
     {
         set_time_limit(2000);
        
-        $cadries = Cadry::where('status',true)->has('relatives', '=', 0)->paginate(50);
+        $cadries = Cadry::where('status',true)->has('relatives', '<', 1)->paginate(50);
 
         dd($cadries);
     }
