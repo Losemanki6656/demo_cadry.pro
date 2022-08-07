@@ -1098,36 +1098,19 @@ class CadryController extends Controller
 
     public function ssss()
     {
-        $cadries = Cadry::where('status',true)->with('careers')->get();
-        $a = []; $x = 0;
-        foreach ($cadries as $item)
-        {
-            if(!count($item->careers)) {
-                $x ++;
-                $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
-            }
-        }
-        dd($a);
+        
+        $cadries = Cadry::where('status',true)->has('careers', '=', 0)->get();
+
+        dd($cadries);
     }
 
     public function userPhone()
     {
         set_time_limit(2000);
-        $orgs = Organization::get();
-        $a = []; $x = 0;
-        foreach($orgs as $org)
-        {
-            $cadries = Cadry::where('organization_id',$org->id)->where('status',true)->with('relatives')->get();
-            foreach ($cadries as $item)
-            {
-                if(!count($item->relatives)) {
-                    $x ++;
-                    $a[$x] = $item->last_name.' '.$item->first_name.' '.$item->middle_name.'#'.$item->organization->name;
-                }
-            }
-        }
-      
-        dd($a);
+       
+        $cadries = Cadry::where('status',true)->has('relatives', '=', 0)->get();
+
+        dd($cadries);
     }
 
     public function add_filestaff_cadry($id, Request $request)
