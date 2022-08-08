@@ -33,4 +33,9 @@ class CadryRelative extends Model
     {
         return $this->belongsTo(City::class,'address_city_id');
     }
+
+    public function cadry()
+    {
+        return $this->hasMany(Cadry::class,'id','cadry_id');
+    }
 }

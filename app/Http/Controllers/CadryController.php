@@ -1097,20 +1097,38 @@ class CadryController extends Controller
     }
 
     public function ssss()
-    {
-        
-        $cadries = Cadry::where('status',true)->has('careers', '<', 1)->paginate(10);
+    { 
+       
+        set_time_limit(600);
+       
+        $cadries = Cadry::where('status',true)->has('careers', '=', 0)->with('organization')->get();
 
-        dd($cadries);
+        $x = []; $y = 0;
+        foreach($cadries as $item){
+            $y ++;
+            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
+        }
+
+        dd($x);
     }
 
     public function userPhone()
     {
+
         set_time_limit(2000);
        
-        $cadries = Cadry::where('status',true)->has('relatives', '<', 1)->paginate(50);
+        $cadries = Career::select('cadry_id')->groupBy('cadry_id')->get();
+        $x =0;
+        foreach($cadries as $item)
+        {
+            if(!Cadry::find($item->cadry_id)) 
+            {
+                //Career::where('cadry_id',$item->cadry_id)->delete();
+                $x++;
+            }
+        }
 
-        dd($cadries);
+        dd($x);
     }
 
     public function add_filestaff_cadry($id, Request $request)
