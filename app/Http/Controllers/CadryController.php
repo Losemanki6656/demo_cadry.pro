@@ -161,8 +161,15 @@ class CadryController extends Controller
             ->where('name','like','%'.$search.'%');
         })->with('cadries');
 
+        $staffs = Staff::all();
+
+        $page = request('page', session('department_page', 1));
+        session(['department_page' => $page]);
+
+
         return view('cadry.departments',[
-            'departments' => $departments->paginate(10)
+            'departments' => $departments->paginate(10, ['*'], 'page', $page),
+            'staffs' => $staffs
         ]);
     }
 

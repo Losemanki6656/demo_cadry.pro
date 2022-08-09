@@ -47,8 +47,7 @@
                                         <i class="bx bx-plus font-size-16 align-middle me-2"></i> Bo'lim qo'shish
                                     </button>
                                 </div>
-                                <div class="modal fade" id="adddepartment" tabindex="-1" role="dialog"
-                                    aria-hidden="true">
+                                <div class="modal fade" id="adddepartment" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -83,7 +82,9 @@
                                 <tr>
                                     <th class="text-center fw-bold">#</th>
                                     <th class="text-center fw-bold">Bo'lim nomi</th>
-                                    <th class="text-center fw-bold">Ishchilar soni</th>
+                                    <th class="text-center fw-bold">Lavozimlar bo'yicha</th>
+                                    <th class="text-center fw-bold" width="80">Action</th>
+                                    <th class="text-center fw-bold">Amaldagi xodimlar</th>
                                     <th class="text-center" width="180">Action</th>
                                 </tr>
                             </thead>
@@ -94,7 +95,15 @@
                                             {{ $departments->currentPage() * 10 - 10 + $loop->index + 1 }}</td>
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
-                                        <td class="text-center fw-bold">{{ $department->cadries->where('status',true)->count() }}</td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <a href="" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Ish o'rni yaratish">
+                                                <i class="bx bx-plus font-size-16 align-middle"></i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center fw-bold">
+                                            {{ $department->cadries->where('status', true)->count() }}</td>
                                         <td class="text-center">
                                             <a type="button"
                                                 href="{{ route('cadry_department', ['id' => $department->id]) }}"
@@ -105,14 +114,12 @@
 
                                             <span data-bs-toggle="modal" data-bs-target="#del{{ $department->id }}">
                                                 <button type="button" class="btn btn-soft-secondary waves-effect"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Taxrirlash">
+                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Taxrirlash">
                                                     <i class="bx bx-edit font-size-16 align-middle"></i>
                                                 </button>
                                             </span>
 
-                                            <span data-bs-toggle="modal"
-                                                data-bs-target="#delete{{ $department->id }}">
+                                            <span data-bs-toggle="modal" data-bs-target="#delete{{ $department->id }}">
                                                 <button type="button" class="btn btn-soft-danger waves-effect"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                     title="O'chirish">
@@ -123,8 +130,8 @@
 
                                         </td>
                                     </tr>
-                                    <div class="modal fade" id="del{{ $department->id }}" tabindex="-1"
-                                        role="dialog" aria-hidden="true">
+                                    <div class="modal fade" id="del{{ $department->id }}" tabindex="-1" role="dialog"
+                                        aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -132,8 +139,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
-                                                <form
-                                                    action="{{ route('edit_department', ['id' => $department->id]) }}"
+                                                <form action="{{ route('edit_department', ['id' => $department->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     <div class="modal-body">
@@ -160,8 +166,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
-                                                <form
-                                                    action="{{ route('delete_department', ['id' => $department->id]) }}"
+                                                <form action="{{ route('delete_department', ['id' => $department->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     <div class="modal-body">
