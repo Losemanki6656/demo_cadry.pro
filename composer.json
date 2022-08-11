@@ -16,7 +16,8 @@
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpword": "^0.18.3",
         "spatie/laravel-permission": "^5.5",
-        "zoilomora/doctrine-dbal-msaccess": "^1.0"
+        "zoilomora/doctrine-dbal-msaccess": "^1.0",
+        "venturecraft/revisionable": "1.*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

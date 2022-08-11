@@ -35,14 +35,38 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $macAddr = exec('getmac');
+        $data = \Request::ip();
+        dd($data);
+        $request->session()->put('key', 'value');
+        //$request->session()->put('my_name','Virat Gandhi');
+
         $quotrand = Quote::find(rand(1,8));
 
         return view('home',[
             'quotrand' => $quotrand
         ]);
     }
+    public function getUserIpAddr(){
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';    
+        return $ipaddress;
+     }
     public function sendtask()
     {
         $str = UserSelect::where('user_id',Auth::user()->id)->value('selected_users');

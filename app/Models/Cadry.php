@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasUploadFields;
+use \Venturecraft\Revisionable\RevisionableTrait;
 use Auth;
 
 class Cadry extends Model
 {
     use HasFactory;
     use HasUploadFields;
-
+    use RevisionableTrait;
    
     protected $guarded = ['id'];
     

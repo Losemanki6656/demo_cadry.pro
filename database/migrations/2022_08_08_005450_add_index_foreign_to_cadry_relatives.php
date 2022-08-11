@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIndexForegnToCareers extends Migration
+class AddIndexForeignToCadryRelatives extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddIndexForegnToCareers extends Migration
      */
     public function up()
     {
-        Schema::table('careers', function (Blueprint $table) {
-            //$table->BigInteger('cadry_id')->unsigned()->change();
-            //$table->index('cadry_id');
-            //$table->foreign('cadry_id')->references('id')->on('cadries');
+        Schema::table('cadry_relatives', function (Blueprint $table) {
+            $table->index('cadry_id');
+            $table->foreign('cadry_id')->references('id')->on('cadries');
         });
     }
 
@@ -27,7 +26,7 @@ class AddIndexForegnToCareers extends Migration
      */
     public function down()
     {
-        Schema::table('careers', function (Blueprint $table) {
+        Schema::table('cadry_relatives', function (Blueprint $table) {
             //
         });
     }
