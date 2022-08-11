@@ -1105,18 +1105,22 @@ class CadryController extends Controller
 
     public function ssss()
     { 
+        set_time_limit(2000);
        
-        set_time_limit(600);
-       
-        $cadries = Cadry::where('status',true)->has('careers', '=', 0)->with('organization')->get();
-
-        $x = []; $y = 0;
-        foreach($cadries as $item){
-            $y ++;
-            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
+        $cadries = Cadry::where('status',true)->with('staff')->get();
+        $x = 0; $a = [];
+        foreach($cadries as $item)
+        {
+            if(!$item->staff) 
+            {
+                //Career::where('cadry_id',$item->cadry_id)->delete();
+                $x++;
+                $a[$x] = $item->last_name . $item->organization->name;
+            }
         }
 
-        dd($x);
+        dd($a);
+      
     }
 
     public function userPhone()
@@ -1133,6 +1137,18 @@ class CadryController extends Controller
                 //Career::where('cadry_id',$item->cadry_id)->delete();
                 $x++;
             }
+        }
+
+        dd($x);
+
+        set_time_limit(600);
+       
+        $cadries = Cadry::where('status',true)->has('careers', '=', 0)->with('organization')->get();
+
+        $x = []; $y = 0;
+        foreach($cadries as $item){
+            $y ++;
+            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
         }
 
         dd($x);

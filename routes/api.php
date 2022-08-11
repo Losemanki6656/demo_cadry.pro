@@ -33,10 +33,3 @@ Route::post('control', function (Request $request) {
 
     return response()->json(['message' => 'success'], 200);
 });
-
-Route::post('test', function (Request $request) {
-
-    $responce = app('App\Http\Controllers\ChatController')->sms($request->phone, $request->text);
-
-    return response($responce);
-});

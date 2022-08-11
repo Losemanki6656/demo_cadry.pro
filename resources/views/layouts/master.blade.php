@@ -8,7 +8,7 @@
   <meta content="Exodim" name="description" />
   <meta content="Themesbrand" name="author" />
   <!-- App favicon -->
-  <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+  <link rel="shortcut icon" href="{{asset('assets/images/logo.png')}}">
 
   <!-- plugin css -->
   <link href="{{asset('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css" />
@@ -51,7 +51,7 @@
 
                           <a href="/" class="logo logo-light">
                               <span class="logo-sm">
-                                  <img src="{{asset('assets/images/logo-sm.svg')}}" alt="" height="30">
+                                  <img src="{{asset('assets/images/logo.png')}}" alt="" height="30">
                               </span>
                               <span class="logo-lg">
                                   <img src="{{asset('assets/images/logo.png')}}" alt="" height="50" width="43"> <span class="logo-txt">Exodim</span>

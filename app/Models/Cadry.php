@@ -172,7 +172,14 @@ class Cadry extends Model
             return $query->where('department_id', $department_se);
 
         })->when(request('sex_se'), function ($query, $sex_se) {
-            return $query->where('sex', $sex_se);
+            if($sex_se == "true") $z = true; else $z = false;
+            return $query->where('sex', $z);
+
+        })->when(request('start_se'), function ($query, $start_se) {
+            return $query->whereYear('birht_date', '<=', now()->format('Y') - $start_se);
+
+        })->when(request('end_se'), function ($query, $end_se) {
+            return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
 
         });
     }

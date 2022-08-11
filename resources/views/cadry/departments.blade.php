@@ -97,7 +97,7 @@
                                             {{ $department->name }}</td>
                                         <td></td>
                                         <td class="text-center">
-                                            <a href="" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+                                            <a href="{{ route('addstaffToDepartment',['id' => $department->id]) }}" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom" title="Ish o'rni yaratish">
                                                 <i class="bx bx-plus font-size-16 align-middle"></i>
                                             </a>

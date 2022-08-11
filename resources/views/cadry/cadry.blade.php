@@ -24,7 +24,7 @@
                 <div class="row mb-2">
                     <div class="col-12 col-sm-6 col-lg-2">
                         <label class="mb-0">FIO</label>
-                        <input type="search" id="name_se" class="form-control form-control" placeholder="Search ..."
+                        <input type="search" id="name_se" class="form-control" placeholder="Search ..."
                             value="{{ request('name_se') }}" name="name_se" value="{{ request()->query('search') }}">
                     </div>
                     <div class="col-12 col-sm-6 col-lg-2">
@@ -60,9 +60,9 @@
                         <label class="mb-0"> Yoshi</label>
                         <div class="input-daterange input-group" data-provide="datepicker">
                             <input type="number" class="form-control" placeholder="Start Date" id="start_se"
-                                name="start_se" value="0" />
+                                name="start_se" value="{{request('start_se')}}" />
                             <input type="number" class="form-control" placeholder="End Date" id="end_se" name="end_se"
-                                value="100" />
+                                value="{{request('end_se')}}" />
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-2">
@@ -81,8 +81,8 @@
                         <label class="mb-0"> Jinsi</label>
                         <select class="form-select" style="width: 100%" id="sex_se" name="sex_se">
                             <option value="">--Barchasi--</option>
-                            <option value="1"  @if (1 == request('sex_se')) selected @endif>Erkak</option>
-                            <option value="0"  @if ('0' == request('sex_se')) selected @endif>Ayol</option>
+                            <option value = "true"  @if ("true" == request('sex_se')) selected @endif>Erkak</option>
+                            <option value = "false"  @if ("false" == request('sex_se')) selected @endif>Ayol</option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-2">
@@ -164,7 +164,7 @@
                 <div class="col-12">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped animate__animated animate__fadeIn table-sm">
-                            <thead class="thead-dark">
+                            <thead class="thead-dark ">
                                 <tr>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.no') }}</th>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.photo') }}</th>

@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="icon" type="image/png" href="{{ asset('auth-login/images/icons/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('auth-login/images/logo.png') }}" />
 
     <link rel="stylesheet" type="text/css" href="{{ asset('auth-login/vendor/bootstrap/css/bootstrap.min.css') }}">
 
@@ -32,7 +32,7 @@
 
 <body>
     <div class="limiter">
-        <div class="container-login100" style="background-image: url('images/img-01.jpg');">
+        <div class="container-login100" style="background-image: url('auth-login/images/img-01.jpg');">
             <div class="wrap-login100 p-t-190 p-b-30">
                 @yield('content')
             </div>

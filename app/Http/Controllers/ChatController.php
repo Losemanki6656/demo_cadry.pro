@@ -51,4 +51,9 @@ class ChatController extends Controller
 
         return $response;
     }
+
+    public function addstaffToDepartment()
+    {
+        return view('cadry.addstaffdep');
+    }
 }
