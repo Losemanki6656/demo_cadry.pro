@@ -14,9 +14,9 @@ class AddIndexForegnToCareers extends Migration
     public function up()
     {
         Schema::table('careers', function (Blueprint $table) {
-            //$table->BigInteger('cadry_id')->unsigned()->change();
-            //$table->index('cadry_id');
-            //$table->foreign('cadry_id')->references('id')->on('cadries');
+            $table->BigInteger('cadry_id')->unsigned()->change();
+            $table->index('cadry_id');
+            $table->foreign('cadry_id')->references('id')->on('cadries');
         });
     }
 

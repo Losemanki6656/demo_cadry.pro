@@ -37,36 +37,30 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $macAddr = exec('getmac');
-        $data = \Request::ip();
-        dd($data);
-        $request->session()->put('key', 'value');
-        //$request->session()->put('my_name','Virat Gandhi');
-
+        //$all = User::find(1)->lastLoginIp();
+        //dd($all);
         $quotrand = Quote::find(rand(1,8));
 
         return view('home',[
             'quotrand' => $quotrand
         ]);
     }
-    public function getUserIpAddr(){
-        $ipaddress = '';
-        if (isset($_SERVER['HTTP_CLIENT_IP']))
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if(isset($_SERVER['REMOTE_ADDR']))
-            $ipaddress = $_SERVER['REMOTE_ADDR'];
-        else
-            $ipaddress = 'UNKNOWN';    
-        return $ipaddress;
-     }
+   
+    function getOriginalClientIp(Request $request = null) : string
+    {
+        $request = $request ?? request();
+        $xForwardedFor = $request->header('x-forwarded-for');
+        if (empty($xForwardedFor)) {
+            // Si está vacío, tome la IP del request.
+            $ip = $request->ip();
+        } else {
+            // Si no, viene de API gateway y se transforma para usar.
+            $ips = is_array($xForwardedFor) ? $xForwardedFor : explode(', ', $xForwardedFor);
+            $ip = $ips[0];
+        }
+        return $ip;
+    }
+
     public function sendtask()
     {
         $str = UserSelect::where('user_id',Auth::user()->id)->value('selected_users');

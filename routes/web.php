@@ -19,17 +19,7 @@ use App\Http\Controllers\ProductController;
 Auth::routes(['register' => false]);
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', function () {
-    // Retrieve a piece of data from the session...
-    $value = session('key');
- 
-    // Specifying a default value...
-    $value = session('key', 'default');
- 
-    // Store a piece of data in the session...
-    session(['key' => 'value']);
-    
-})->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
     

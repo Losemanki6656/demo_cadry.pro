@@ -1105,40 +1105,36 @@ class CadryController extends Controller
 
     public function ssss()
     { 
-        set_time_limit(2000);
+        set_time_limit(600);
        
-        $cadries = Cadry::where('status',true)->with('staff')->get();
-        $x = 0; $a = [];
-        foreach($cadries as $item)
-        {
-            if(!$item->staff) 
-            {
-                //Career::where('cadry_id',$item->cadry_id)->delete();
-                $x++;
-                $a[$x] = $item->last_name . $item->organization->name;
-            }
+        $cadries = Cadry::where('status',true)->has('relatives', '=', 0)->with('organization')->get();
+
+        $x = []; $y = 0;
+        foreach($cadries as $item){
+            $y ++;
+            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
         }
 
-        dd($a);
+        dd($x);
       
     }
 
     public function userPhone()
     {
 
-        set_time_limit(2000);
+        set_time_limit(3000);
        
-        $cadries = Career::select('cadry_id')->groupBy('cadry_id')->get();
-        $x =0;
+        $cadries = CadryRelative::select('cadry_id')->groupBy('cadry_id')->get();
+        $x = 0; $a = [];
         foreach($cadries as $item)
         {
             if(!Cadry::find($item->cadry_id)) 
             {
-                //Career::where('cadry_id',$item->cadry_id)->delete();
-                $x++;
+                //CadryRelative::where('cadry_id',$item->cadry_id)->delete();
+                $x++; $a[$x] = $item->cadry_id;
             }
         }
-
+        //CadryRelative::whereIn('cadry_id',$a)->delete();
         dd($x);
 
         set_time_limit(600);
