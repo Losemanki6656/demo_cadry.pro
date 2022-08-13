@@ -17,7 +17,9 @@ use App\Models\Turnicet;
 use App\Models\Reception;
 use App\Models\Language;
 use App\Models\CadryRelative;
+use App\Models\AuthenticationLog;
 use App\Models\InfoEducation;
+use App\Models\Revision;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,6 +27,7 @@ use App\Exports\UsersExport;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use File;
+use DB;
 
 class OrganizationController extends Controller
 {
@@ -542,5 +545,21 @@ class OrganizationController extends Controller
         return view('cadry.includes.inc_options',[
                 'options'=> $options,
         ]);
+    }
+
+    public function userDevices() 
+    {
+        $devices = AuthenticationLog::where('login_successful',true)->with('user')->paginate(10);
+        return view('admin.userdevices',[
+            'devices'=> $devices,
+    ]);
+    }
+
+    public function sessions() 
+    {
+        $sessions = Revision::with(['user','cadry','cadry.organization'])->paginate(10);
+        return view('admin.sessions',[
+            'sessions'=> $sessions,
+    ]);
     }
 }

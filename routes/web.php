@@ -135,6 +135,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/organizations/shtat', [App\Http\Controllers\OrganizationController::class, 'shtat'])->name('shtat');
         Route::get('/organizations/cadry-view/{id}', [App\Http\Controllers\OrganizationController::class, 'cadry_view'])->name('cadry_view');
         Route::get('/organizations/cadry-downlaod/{id}', [App\Http\Controllers\OrganizationController::class, 'cadry_downlaod'])->name('cadry_downlaod');
+        Route::get('/organizations/users', [App\Http\Controllers\UserController::class, 'users'])->name('users');
+        Route::get('/organizations/userDevices', [App\Http\Controllers\OrganizationController::class, 'userDevices'])->name('userDevices');
+        Route::get('/organizations/sessions', [App\Http\Controllers\OrganizationController::class, 'sessions'])->name('sessions');
     });
     Route::group(['middleware' => ['can:role-edit']], function () {
         Route::get('/railway/organizations', [App\Http\Controllers\OrganizationController::class, 'cadry_leader'])->name('cadry_leader');  

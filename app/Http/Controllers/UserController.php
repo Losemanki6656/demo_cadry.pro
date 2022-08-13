@@ -88,6 +88,15 @@ class UserController extends Controller
     
         return view('users.edit',compact('user','roles','userRole'));
     }
+
+    public function users()
+    {
+        $users = User::whereNotIn('id',[1,3])->with(['userorganization','userorganization.organization'])->paginate(15);
+    
+        return view('admin.users',[
+            'users' => $users
+        ]);
+    }
     
     /**
      * Update the specified resource in storage.

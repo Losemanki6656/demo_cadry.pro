@@ -224,6 +224,17 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i data-feather="codesandbox"></i>
+                                    <span data-key="t-contacts">Authentication</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{route('users')}}" data-key="t-user-list">Users</a></li>
+                                    <li><a href="{{route('userDevices')}}" data-key="t-user-list">User Devices</a></li>
+                                    <li><a href="{{route('sessions')}}" data-key="t-user-list">Sessions</a></li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="{{route('turnicet')}}">
                                     <i data-feather="log-in"></i>
                                     <span data-key="t-dashboard">Turnicet</span>
