@@ -38,6 +38,7 @@ use App\Models\AcademiStudy;
 use App\Models\Abroad;
 use App\Models\AcademicName;
 use App\Models\StaffFile;
+use App\Models\Vacation;
 
 use Auth;
 
@@ -1105,18 +1106,23 @@ class CadryController extends Controller
 
     public function ssss()
     { 
-        set_time_limit(600);
+        set_time_limit(3000);
        
-        $cadries = Cadry::where('status',true)->has('relatives', '=', 0)->with('organization')->get();
+        $cadries = Cadry::get();
+        $x = 0; $a = [];
+        foreach($cadries as $item)
+        {
+           
+            if(!Education::find($item->education_id)) 
+            {
+                $x++; 
+                $item->education_id = 3;
+                $item->save();
 
-        $x = []; $y = 0;
-        foreach($cadries as $item){
-            $y ++;
-            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
+            }
         }
 
         dd($x);
-      
     }
 
     public function userPhone()

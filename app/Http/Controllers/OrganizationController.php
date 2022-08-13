@@ -14,6 +14,7 @@ use App\Models\Staff;
 use App\Models\User;
 use App\Models\Career;
 use App\Models\Turnicet;
+use App\Models\Region;
 use App\Models\Reception;
 use App\Models\Language;
 use App\Models\CadryRelative;
@@ -31,21 +32,15 @@ use DB;
 
 class OrganizationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+       // dd($request->all());
         $railways = Railway::all();
-
+        $regions = Region::all();
         $organizations = Organization::query()->where('railway_id', request('railway_id', 0))->get();
         $departments = Department::query()->where('organization_id', request('org_id', 0))->get();
         
         $cadries = Cadry::filter()
-        ->when(\Request::input('search'),function($query,$search){
-            $query->where(function ($query) use ($search) {
-                $query->orWhere('last_name','like','%'.$search.'%')
-                    ->orWhere('first_name','like','%'.$search.'%')
-                    ->orWhere('middle_name','like','%'.$search.'%');
-            });
-        })
         ->orderBy('org_order','asc')
         ->orderBy('dep_order','asc')
         ->with(['address_region', 'address_city']);
@@ -61,7 +56,8 @@ class OrganizationController extends Controller
             'railways' => $railways,
             'cadries' => $cadries->paginate(10),
             'staffs' => $staffs,
-            'countcadries' => $countcadries
+            'countcadries' => $countcadries,
+            'regions' => $regions
         ]);
     }
 
