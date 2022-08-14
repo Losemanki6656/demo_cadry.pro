@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Staff;
+use App\Models\Classification;
+use App\Models\DepartmentStaff;
+use App\Models\Cadry;
+use Auth;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -52,8 +57,69 @@ class ChatController extends Controller
         return $response;
     }
 
-    public function addstaffToDepartment()
+    public function addstaffToDepartment($id)
     {
-        return view('cadry.addstaffdep');
+        $org_id = Auth::user()->userorganization->organization_id;
+        $staffs = Staff::where('organization_id',$org_id)->get();
+        $depstaff = DepartmentStaff::where('department_id',$id)->with(['department','staff'])->get();
+
+        return view('cadry.addstaffdep',[
+            'staffs' => $staffs,
+            'depstaff' => $depstaff
+        ]);
+    }
+    public function loadClassification(Request $request)
+    {
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data = Classification::where('name_uz','LIKE',"%$search%")
+            ->OrWhere('code_staff','LIKE',"%$search%")
+            ->take(50)->get();
+        }
+        return response()->json($data);
+    }
+
+    public function loadCadry(Request $request)
+    {
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            
+            $data = Cadry::OrgFilter()
+                    ->where(function ($query) use ($search) {
+                        $query->Orwhere('last_name','like','%'.$search.'%')
+                            ->orWhere('first_name','like','%'.$search.'%')
+                            ->orWhere('middle_name','like','%'.$search.'%');
+                    })
+                ->get();
+
+        }
+        return response()->json($data);
+    }
+
+    public function stafftoDepartment(Request $request)
+    {
+        $newItem = new DepartmentStaff();
+        $newItem->department_id = $request->department_id;
+        $newItem->staff_id = $request->staff_id;
+        $newItem->cadry_id = $request->cadry_id;
+        $newItem->status = true;
+        $newItem->save();
+
+        $StaffClass = Staff::find($request->staff_id);
+        $StaffClass->classification_id = $request->class_staff_id;
+        $StaffClass->save();
+
+        if($request->cadry_id){
+            $cadry = Cadry::find($request->cadry_id);
+            $cadry->department_id = $request->department_id;
+            $cadry->staff_id = $request->staff_id;
+            $cadry->save();
+        }
+
+        return redirect()->back()->with('msg' ,1);
     }
 }

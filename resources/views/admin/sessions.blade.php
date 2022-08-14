@@ -67,14 +67,20 @@
                                         <td>{{ $item->cadry->organization->name }}</td>
                                         <td>{{ $item->key }}</td>
                                         <td>
-                                            @if ( $item->old_value == 'status')
+                                            @if ( $item->key == 'status')
                                                 Mehnat faoliyati yakunlandi
                                             @else
                                                 {{ $item->old_value }}
                                             @endif
                                             
                                         </td>
-                                        <td>{{ $item->new_value }}</td>
+                                        <td>
+                                            @if ( $item->key == 'status')
+                                                Mehnat faoliyati yakunlandi
+                                            @else
+                                                {{ $item->old_value }}
+                                            @endif
+                                        </td>
                                         <td>{{ $item->created_at }}</td>
                                     </tr>
                                 @endforeach

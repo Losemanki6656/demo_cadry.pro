@@ -39,6 +39,7 @@ use App\Models\Abroad;
 use App\Models\AcademicName;
 use App\Models\StaffFile;
 use App\Models\Vacation;
+use App\Models\Classification;
 
 use Auth;
 
@@ -842,30 +843,23 @@ class CadryController extends Controller
         set_time_limit(600);
 
         $collections = Excel::toCollection(new ExcelImport, $request->file('file'));
-        $cadries = Cadry::where('organization_id',202)->get();
 
         $arr = $collections[0];
         $x = 0;
 
-            foreach ($arr as $row) { 
-                foreach($cadries as $item) {
-                    if($row[0] == $item->jshshir) {
-
-                        $newItem = new Career();
-                        $newItem->cadry_id = $item->id;
-                        $newItem->sort = 1;
-                        $newItem->date1 = $row[1] ?? '';
-                        $newItem->date2 = $row[2] ?? '';
-                        $newItem->staff = $row[3] ?? '';
-                        $newItem->save();
-                        $x ++;
-                        break;
-                    }
-                }
-            }
+        foreach($arr as $item)
+        {
+            $x ++;
+            Classification::create([
+                'name_ru' => $item[0],
+                'name_uz' => $item[1],
+                'code_staff' => $item[2],
+                'type_staff' => $item[3],
+                'category' => $item[4],
+            ]);
+        }
 
         dd($x);
-
     }
 
 
@@ -1108,16 +1102,15 @@ class CadryController extends Controller
     { 
         set_time_limit(3000);
        
-        $cadries = Cadry::get();
+        $cadries = Vacation::get();
         $x = 0; $a = [];
         foreach($cadries as $item)
         {
            
-            if(!Education::find($item->education_id)) 
+            if(!Cadry::find($item->cadry_id)) 
             {
                 $x++; 
-                $item->education_id = 3;
-                $item->save();
+               // $item->delete();
 
             }
         }

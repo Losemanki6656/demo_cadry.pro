@@ -119,7 +119,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/organizations/user-edit-success/{id}', [App\Http\Controllers\OrganizationController::class, 'user_edit_success'])->name('user_edit_success');
 
     
+    Route::post('/stafftoDepartment', [App\Http\Controllers\ChatController::class, 'stafftoDepartment'])->name('stafftoDepartment');
     Route::get('/addstaffToDepartment/{id}', [App\Http\Controllers\ChatController::class, 'addstaffToDepartment'])->name('addstaffToDepartment');
+    Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');
+    Route::get('/loadCadry', [App\Http\Controllers\ChatController::class, 'loadCadry'])->name('loadCadry');
 
     Route::group(['middleware' => ['can:product-list']], function () {
         Route::get('/cadry/administration/turnicet', [App\Http\Controllers\OrganizationController::class, 'turnicet'])->name('turnicet');

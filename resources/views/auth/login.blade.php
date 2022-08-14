@@ -19,7 +19,7 @@
         </div>
         <div class="wrap-input100 validate-input m-b-10" data-validate="Password is required">
             <input class="input100  @error('password') is-invalid @enderror" type="password" name="password"
-                placeholder="Password" required autocomplete="current-password">
+                placeholder="Parol" required autocomplete="current-password">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
                 <i class="fa fa-lock"></i>
@@ -30,7 +30,7 @@
         @enderror
         <div class="container-login100-form-btn p-t-10">
             <button class="login100-form-btn" type="submit">
-                Login
+                Kirish
             </button>
         </div>
         <div class="text-center w-full p-t-25 p-b-230">

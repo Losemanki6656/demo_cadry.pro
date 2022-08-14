@@ -25,17 +25,17 @@
                         <table class="table table-centered align-middle table-nowrap table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">Brand</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="">Email</th>
+                                    <th scope="col"><h6>{{$depstaff[0]->department->name}}ga tegishli ish o'rinlari</h6></th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>WayneMcclain@gmail.com</td>
-                                    <td>07/10/2020</td>
-                                    <td>86</td>
-                                </tr>
+                                @foreach ($depstaff as $ds)
+                                    <td>{{ $ds->staff->name }}</td>
+                                    <td>
+                                        <button class="btn btn-danger"> <i class="fa fa-trash"></i></button>
+                                    </td>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -48,20 +48,37 @@
             <!-- card -->
             <div class="card">
                 <!-- card body -->
-                <div class="card-body">
-                    <div class="d-flex flex-wrap align-items-center mb-4">
-                        <h5 class="card-title me-2">Lavozimni biriktirish</h5>
-                    </div>
-
-                    <div class="px-2 py-2">
-                        <p class="mb-1">USA <span class="float-end">75%</span></p>
-                        <div class="progress mt-2" style="height: 6px;">
-                            <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 75%"
-                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="75">
-                            </div>
+                <form action="{{ route('stafftoDepartment') }}" method="post">
+                    @csrf
+                    <div class="card-body">
+                        <input type="hidden" name="department_id" value="{{ request('id') }}">
+                        <div class="d-flex flex-wrap align-items-center mb-4">
+                            <h5 class="card-title me-2">Lavozimni biriktirish</h5>
+                            <select class="staff_id js-example-basic-single" name="staff_id" required>
+                                <option value="">-- Lavozimni tanlang --</option>
+                                @foreach ($staffs as $staff)
+                                    <option value="{{ $staff->id }}">{{ $staff->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        <div class="d-flex flex-wrap align-items-center mb-4">
+                            <h5 class="card-title me-2">Klassifikatordagi lavozim ko'rinishini tanlang</h5>
+                            <select class="js-example-basic-single js-data-example-ajax" name="class_staff_id"
+                                id="classifications" style="width: 100%" required>
+                            </select>
+                        </div>
+
+                        <div class="d-flex flex-wrap align-items-center mb-4">
+                            <h5 class="card-title me-2">Xodimni tanlash</h5>
+                            <select class="js-example-basic-single cadry" style="width: 100%" name="cadry_id" required>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>
+
                     </div>
-                </div>
+                </form>
                 <!-- end card body -->
             </div>
             <!-- end card -->
@@ -69,5 +86,92 @@
         <!-- end col -->
     </div>
     <!-- END ROW -->
-    
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            @if (\Session::has('msg'))
+                @if (Session::get('msg') == 1)
+                    Swal.fire({
+                        title: "Muvaffaqqiyatli!",
+                        text: "Yangi ish o'rni yaratildi!",
+                        icon: "success",
+                        showCancelButton: !0,
+                        confirmButtonColor: "#1c84ee",
+                        cancelButtonColor: "#fd625e",
+                    });
+                @endif
+            @endif
+        });
+    </script>
+    <script>
+        $('.staff_id').select2();
+    </script>
+    <script>
+        $('.cadry').select2({
+            ajax: {
+                url: '{{ route('loadCadry') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.last_name + ' ' + item.first_name + ' ' + item.middle_name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Xodim ismini kiriting',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.js-data-example-ajax').select2({
+            ajax: {
+                url: '{{ route('loadClassification') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.code_staff + '-' + item.name_uz,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Lavozim nomini kiriting',
+            minimumInputLength: 1,
+        });
+    </script>
 @endsection
