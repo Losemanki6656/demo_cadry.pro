@@ -22,19 +22,40 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-centered align-middle table-nowrap table-hover mb-0">
+                        <table class="table table-centered align-middle table-nowrap table-hover mb-0 table-sm">
                             <thead>
                                 <tr>
-                                    <th scope="col"><h6>{{$depstaff[0]->department->name}}ga tegishli ish o'rinlari</h6></th>
+                                    <th scope="col">
+                                        <h6>{{ $department->name }}ga tegishli ish o'rinlari</h6>
+                                    </th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($depstaff as $ds)
-                                    <td>{{ $ds->staff->name }}</td>
-                                    <td>
-                                        <button class="btn btn-danger"> <i class="fa fa-trash"></i></button>
-                                    </td>
+                                    <tr>
+                                        <td>{{ $ds->staff->name }}</td>
+                                        <td>
+                                            @if ($ds->status == true)
+                                                {{ $ds->cadry->last_name }} {{ $ds->cadry->first_name }}
+                                                {{ $ds->cadry->middle_name }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($ds->status == false && $ds->status_sv == false)
+                                                <button class="btn btn-outline-success btn-sm"> Bo'sh </button>
+                                            @elseif ($ds->status == false && $ds->status_sv == true)
+                                                <button class="btn btn-outline-danger btn-sm" 
+                                                @if ($ds->status == true)
+                                                    disabled
+                                                @endif> Ortiqcha </button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -71,8 +92,15 @@
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
                             <h5 class="card-title me-2">Xodimni tanlash</h5>
-                            <select class="js-example-basic-single cadry" style="width: 100%" name="cadry_id" required>
+                            <select class="js-example-basic-single cadry" style="width: 100%" name="cadry_id">
                             </select>
+                            <span>Majburiy emas!</span>
+                        </div>
+                        <div class="mb-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck1" name="status_sv">
+                              <label class="form-check-label" for="formCheck1">
+                                Ortiqcha ish o'rni
+                             </label>
                         </div>
 
                         <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>

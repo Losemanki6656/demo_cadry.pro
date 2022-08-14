@@ -82,9 +82,10 @@
                                 <tr>
                                     <th class="text-center fw-bold">#</th>
                                     <th class="text-center fw-bold">Bo'lim nomi</th>
-                                    <th class="text-center fw-bold">Lavozimlar bo'yicha</th>
+                                    <th class="text-center fw-bold">Ish o'rinlari</th>
                                     <th class="text-center fw-bold" width="80">Action</th>
-                                    <th class="text-center fw-bold">Amaldagi xodimlar</th>
+                                    <th class="text-center fw-bold">Bo'sh va ortiqcha ish o'rinlari</th>
+                                    <th class="text-center fw-bold">Xodimlar soni</th>
                                     <th class="text-center" width="180">Action</th>
                                 </tr>
                             </thead>
@@ -95,15 +96,32 @@
                                             {{ $departments->currentPage() * 10 - 10 + $loop->index + 1 }}</td>
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
-                                        <td></td>
+                                        <td class="text-center fw-bold">
+                                            {{ $department->departmentstaff->count() }}
+                                        </td>
                                         <td class="text-center">
-                                            <a href="{{ route('addstaffToDepartment',['id' => $department->id]) }}" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+                                            <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
+                                                type="button" class="btn btn-primary " data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom" title="Ish o'rni yaratish">
-                                                <i class="bx bx-plus font-size-16 align-middle"></i>
+                                                <i class="bx bx-plus font-size-14 align-middle"></i>
                                             </a>
                                         </td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->cadries->where('status', true)->count() }}</td>
+                                            @if ($department->departmentstaff->where('status', false)->where('status_sv', false)->count() != 0)
+                                                <button class="btn btn-outline-success btn-sm" disabled>
+                                                    +{{ $department->departmentstaff->where('status', false)->where('status_sv', false)->count() }}
+                                                </button>
+                                            @endif
+                                            @if ($department->departmentstaff->where('status_sv', true)->count() != 0)
+                                                <button class="btn btn-outline-danger btn-sm" disabled>
+                                                    -{{ $department->departmentstaff->where('status_sv', true)->count() }}
+                                                </button>
+                                            @endif
+
+                                        </td>
+                                        <td class="text-center fw-bold">
+                                            {{ $department->departmentstaff->where('status', true)->count() }}
+                                        </td>
                                         <td class="text-center">
                                             <a type="button"
                                                 href="{{ route('cadry_department', ['id' => $department->id]) }}"
@@ -114,7 +132,8 @@
 
                                             <span data-bs-toggle="modal" data-bs-target="#del{{ $department->id }}">
                                                 <button type="button" class="btn btn-soft-secondary waves-effect"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Taxrirlash">
+                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                    title="Taxrirlash">
                                                     <i class="bx bx-edit font-size-16 align-middle"></i>
                                                 </button>
                                             </span>

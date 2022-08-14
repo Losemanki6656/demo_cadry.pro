@@ -57,17 +57,13 @@
                                 @foreach ($users as $item)
                                     <tr>
                                         <td class="text-center fw-bold">
-                                            {{ $users->currentPage() * 10 - 10 + $loop->index + 1 }}</td>
+                                            {{ $users->currentPage() * 15 - 15 + $loop->index + 1 }}</td>
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $item->name }}</td>
                                         <td>{{ $item->userorganization->organization->name ?? ''}}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>
-                                            @if ($item->userorganization->post_id == 1)
-                                                user12345
-                                            @else
-                                                {{ $item->userorganization->post_id ?? ''}}
-                                            @endif
+                                            Password
                                         </td>
                                     </tr>
                                 @endforeach

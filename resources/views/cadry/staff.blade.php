@@ -141,9 +141,7 @@
                             <th class="text-center fw-bold">{{ __('messages.no') }}</th>
                             <th class="text-center fw-bold">{{ __('messages.staff') }}</th>
                             <th class="text-center fw-bold">Kategoriya</th>
-                            <th class="text-center fw-bold">Soni</th>
-                            <th class="text-center fw-bold">Soni(Fakt)</th>
-                            <th class="text-center fw-bold">Vakant/Sverx</th>
+                            <th class="text-center fw-bold">Xodimlar</th>
                             <th class="text-center fw-bold" width="230">{{ __('messages.action') }}</th>
                         </tr>
                     </thead>
@@ -159,19 +157,7 @@
                                             {{ $staff->category->name }}
                                         @endif
                                     </td>
-                                    <td class="text-center fw-bold">{{ $staff->staff_count }}</td>
-                                    <td class="text-center fw-bold">{{ $arr[$staff->id] }}</td>
-                                    <td class="text-center">
-                                        @if ($arr[$staff->id] > floatval($staff->staff_count))
-                                            <span class="text-danger fw-bold">Sverx -
-                                                {{ $arr[$staff->id] - floatval($staff->staff_count) }}</span>
-                                        @elseif($arr[$staff->id] < floatval($staff->staff_count))
-                                            <span class="text-success fw-bold">Vakant -
-                                                {{ floatval($staff->staff_count) - $arr[$staff->id] }}</span>
-                                        @else
-                                            <span class="fw-bold">0/0</span>
-                                        @endif
-                                    </td>
+                                    <td class="text-center fw-bold">{{ $staff->cadries->where('status',true)->count() }}</td>
                                     <td class="text-center">
                                         <a type="button"
                                             href="{{ route('cadry_staff_view', ['id' => $staff->id]) }}"

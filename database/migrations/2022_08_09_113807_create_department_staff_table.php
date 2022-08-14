@@ -20,6 +20,7 @@ class CreateDepartmentStaffTable extends Migration
             $table->bigInteger('department_id')->unsigned()->index()->nullable();
             $table->bigInteger('staff_id')->unsigned()->index()->nullable();
             $table->bigInteger('cadry_id')->unsigned()->index()->nullable();
+            $table->boolean('status_sv')->default(false);
             $table->boolean('status')->default(false);
             $table->foreign('railway_id')->references('id')->on('railways');
             $table->foreign('organization_id')->references('id')->on('organizations');

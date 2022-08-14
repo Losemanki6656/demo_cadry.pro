@@ -130,48 +130,37 @@ class CadryController extends Controller
     public function staff()
     {
         $staffs = Staff::query()
-        ->where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
+        ->where('organization_id', Auth::user()->userorganization->organization_id)
         ->when(\Request::input('search'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
         })
         ->with('cadries')->paginate(10);
 
-        $con = 0;
-        $arr = [];
-
-        foreach($staffs as $item)
-        {
-            $arr[$item->id] = array_sum($item->cadries->where('status',true)->pluck('stavka')->toArray());
-        }
-
         $categories = Category::all();
 
         return view('cadry.staff',[
             'staffs' => $staffs,
             'categories' => $categories,
-            'arr' => $arr
         ]);
     }
 
     public function departments()
     {
 
-        $departments = Department::query()->where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
+        $departments = Department::query()
+        ->where('organization_id', Auth::user()->userorganization->organization_id)
         ->when(\Request::input('search'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
-        })->with('cadries');
-
-        $staffs = Staff::all();
+        })->with(['cadries','departmentstaff']);
 
         $page = request('page', session('department_page', 1));
         session(['department_page' => $page]);
 
 
         return view('cadry.departments',[
-            'departments' => $departments->paginate(10, ['*'], 'page', $page),
-            'staffs' => $staffs
+            'departments' => $departments->paginate(10, ['*'], 'page', $page)
         ]);
     }
 

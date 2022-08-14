@@ -20,5 +20,10 @@ class Department extends Model
     {
         return $this->hasMany(Cadry::class);
     }
+
+    public function departmentstaff()
+    {
+        return $this->hasMany(DepartmentStaff::class);
+    }
     
 }

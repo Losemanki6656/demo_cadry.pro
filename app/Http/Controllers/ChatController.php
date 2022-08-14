@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Staff;
 use App\Models\Classification;
 use App\Models\DepartmentStaff;
+use App\Models\Department;
 use App\Models\Cadry;
 use Auth;
 use Illuminate\Http\Request;
@@ -60,12 +61,14 @@ class ChatController extends Controller
     public function addstaffToDepartment($id)
     {
         $org_id = Auth::user()->userorganization->organization_id;
+        $department = Department::find($id);
         $staffs = Staff::where('organization_id',$org_id)->get();
-        $depstaff = DepartmentStaff::where('department_id',$id)->with(['department','staff'])->get();
+        $depstaff = DepartmentStaff::where('department_id',$id)->with(['department','staff','cadry'])->get();
 
         return view('cadry.addstaffdep',[
             'staffs' => $staffs,
-            'depstaff' => $depstaff
+            'depstaff' => $depstaff,
+            'department' => $department
         ]);
     }
     public function loadClassification(Request $request)
@@ -103,10 +106,17 @@ class ChatController extends Controller
     public function stafftoDepartment(Request $request)
     {
         $newItem = new DepartmentStaff();
+        $newItem->railway_id = Auth::user()->userorganization->railway_id;
+        $newItem->organization_id = Auth::user()->userorganization->organization_id;
         $newItem->department_id = $request->department_id;
         $newItem->staff_id = $request->staff_id;
-        $newItem->cadry_id = $request->cadry_id;
-        $newItem->status = true;
+        if($request->status_sv == 'on') {
+            $newItem->status_sv = true;
+        }
+        if($request->cadry_id){
+            $newItem->cadry_id = $request->cadry_id;
+            $newItem->status = true;
+        }
         $newItem->save();
 
         $StaffClass = Staff::find($request->staff_id);
