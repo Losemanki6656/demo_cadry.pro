@@ -49,17 +49,12 @@ class CadryController extends Controller
 
     public function index(Request $request)
     {
- 
-        $cadries = Cadry::FullFilter()->with('vacation')->paginate(10, ['*'], 'page', $page);
-
-        $a = [];
-        foreach($cadries as $item)
-        {
-            if($item->vacation)
-        }
-
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
+        $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
+            $query->where('status', true);
+        }])->paginate(10, ['*'], 'page', $page);
+
         return view('cadry.cadry',[
             'cadries' => $cadries
         ]);

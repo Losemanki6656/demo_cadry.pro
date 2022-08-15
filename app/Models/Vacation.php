@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Vacation extends Model
 {
     use HasFactory;
+
+    protected $dates = ['date1','date2'];
 }
