@@ -25,24 +25,25 @@
                         <table class="table table-centered align-middle table-nowrap table-hover mb-0 table-sm">
                             <thead>
                                 <tr>
-                                    <th scope="col">
+                                    <th class="text-center">
                                         <h6>{{ $department->name }}ga tegishli ish o'rinlari</h6>
                                     </th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
+                                    <th class="text-center">Xodim ismi</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($depstaff as $ds)
                                     <tr>
-                                        <td>{{ $ds->staff->name }}</td>
-                                        <td>
+                                        <td class="text-center">{{ $ds->staff->name }}</td>
+                                        <td class="text-center">
                                             @if ($ds->status == true)
                                                 {{ $ds->cadry->last_name }} {{ $ds->cadry->first_name }}
                                                 {{ $ds->cadry->middle_name }}
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             @if ($ds->status == false && $ds->status_sv == false)
                                                 <button class="btn btn-outline-success btn-sm"> Bo'sh </button>
                                             @elseif ($ds->status == false && $ds->status_sv == true)
@@ -52,7 +53,7 @@
                                                 @endif> Ortiqcha </button>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <button class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -91,10 +92,9 @@
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
-                            <h5 class="card-title me-2">Xodimni tanlash</h5>
+                            <h5 class="card-title me-2">Xodimni tanlash (Majburiy emas)</h5> 
                             <select class="js-example-basic-single cadry" style="width: 100%" name="cadry_id">
                             </select>
-                            <span>Majburiy emas!</span>
                         </div>
                         <div class="mb-4">
                             <input class="form-check-input" type="checkbox" id="formCheck1" name="status_sv">
@@ -103,7 +103,7 @@
                              </label>
                         </div>
 
-                        <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>
+                        <button class="btn btn-outline-primary" disabled style="width: 100%"> Saqlash </button>
 
                     </div>
                 </form>

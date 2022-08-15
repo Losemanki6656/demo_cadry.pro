@@ -545,7 +545,7 @@ class OrganizationController extends Controller
 
     public function userDevices() 
     {
-        $devices = AuthenticationLog::where('login_successful',true)->with('user')->paginate(10);
+        $devices = AuthenticationLog::where('login_successful',true)->with('user')->orderBy('login_at','desc')->paginate(10);
         return view('admin.userdevices',[
             'devices'=> $devices,
     ]);
@@ -553,7 +553,7 @@ class OrganizationController extends Controller
 
     public function sessions() 
     {
-        $sessions = Revision::with(['user','cadry','cadry.organization'])->paginate(10);
+        $sessions = Revision::with(['user','cadry','cadry.organization'])->orderBy('created_at','desc')->paginate(10);
         return view('admin.sessions',[
             'sessions'=> $sessions,
     ]);
