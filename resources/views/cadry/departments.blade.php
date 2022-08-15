@@ -97,7 +97,7 @@
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->departmentstaff->count() }}
+                                             <span class="text-success">{{ $a[$department->id] }}</span> + <span class="text-danger">{{ $b[$department->id] }}</span>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
@@ -107,20 +107,20 @@
                                             </a>
                                         </td>
                                         <td class="text-center fw-bold">
-                                            @if ($department->departmentstaff->where('status', false)->where('status_sv', false)->count() != 0)
-                                                <button class="btn btn-outline-success btn-sm" disabled>
-                                                    +{{ $department->departmentstaff->where('status', false)->where('status_sv', false)->count() }}
+                                            @if ($a[$department->id] > $c[$department->id])
+                                                <button class="btn btn-success btn-sm">
+                                                    {{ $a[$department->id] - $c[$department->id] }}
                                                 </button>
                                             @endif
-                                            @if ($department->departmentstaff->where('status_sv', true)->count() != 0)
-                                                <button class="btn btn-outline-danger btn-sm" disabled>
-                                                    -{{ $department->departmentstaff->where('status_sv', true)->count() }}
+                                            @if ($b[$department->id] > $d[$department->id])
+                                                <button class="btn btn-danger btn-sm">
+                                                    {{ $b[$department->id] - $d[$department->id] }}
                                                 </button>
                                             @endif
 
                                         </td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->departmentstaff->where('status', true)->count() }}
+                                            {{ $department->departmentcadry->count() }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button"

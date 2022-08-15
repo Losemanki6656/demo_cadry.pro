@@ -8,6 +8,7 @@ use App\Models\DepartmentStaff;
 use App\Models\Department;
 use App\Models\Cadry;
 use App\Models\Region;
+use App\Models\DepartmentCadry;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -107,26 +108,96 @@ class ChatController extends Controller
         $newItem->organization_id = Auth::user()->userorganization->organization_id;
         $newItem->department_id = $request->department_id;
         $newItem->staff_id = $request->staff_id;
+        $newItem->classification_id = $request->class_staff_id;
+        $newItem->staff_full = $request->staff_full;
+        $newItem->stavka = $request->st_1 + $request->st_2;
         if($request->status_sv == 'on') {
-            $newItem->status_sv = true;
-        }
-        if($request->cadry_id){
-            $newItem->cadry_id = $request->cadry_id;
             $newItem->status = true;
         }
         $newItem->save();
 
-        $StaffClass = Staff::find($request->staff_id);
-        $StaffClass->classification_id = $request->class_staff_id;
-        $StaffClass->save();
-
-        if($request->cadry_id){
-            $cadry = Cadry::find($request->cadry_id);
-            $cadry->department_id = $request->department_id;
-            $cadry->staff_id = $request->staff_id;
-            $cadry->save();
-        }
-
         return redirect()->back()->with('msg' ,1);
+    }
+
+    public function department_cadry_add($id)
+    {
+        $depstaff = DepartmentStaff::with(['staff','department','classification','cadry'])->find($id);
+
+        return view('cadry.addCadryToDepartmentStaff',[
+            'depstaff' => $depstaff
+        ]);
+    }
+
+    public function addCadryToDepartmentStaff($id, Request $request)
+    {
+        $dep = DepartmentStaff::with('cadry')->find($id);
+        
+        if($request->st_1 + $request->st_2 <= $dep->stavka - $dep->cadry->sum('stavka'))
+            {
+                $newItem = new DepartmentCadry();
+                $newItem->railway_id = $dep->railway_id;
+                $newItem->organization_id = $dep->organization_id;
+                $newItem->department_id = $dep->department_id;
+                $newItem->department_staff_id = $id;
+                $newItem->staff_id = $dep->staff_id;
+                $newItem->staff_full = $dep->staff_full;
+                $newItem->status_sv = $dep->status;
+                $newItem->cadry_id = $request->cadry_id;
+                $newItem->stavka = $request->st_1 + $request->st_2;
+                $newItem->save();
+
+                return redirect()->route('addstaffToDepartment',['id' => $dep->department_id])->with('msg' , 1);
+            } else  return redirect()->back()->with('msg' ,1);
+
+    }
+
+    public function department_staffs($id)
+    {
+        $cadries = DepartmentCadry::where('department_staff_id', $id)->with('cadry')->get();
+
+        return view('cadry.DepartmentCadries',[
+            'cadries' => $cadries
+        ]);
+    }
+
+    public function deleteDepCadry(Request $request)
+    {
+        DepartmentCadry::find($request->id)->delete();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
+        ], 200);
+    }
+
+    public function deleteDepStaff(Request $request)
+    {
+        if(DepartmentCadry::where('department_staff_id',$request->id)->count()) {
+            return response()->json([
+                'message' => "error"
+            ], 500); 
+        } else {
+            DepartmentStaff::find($request->id)->delete();
+            return response()->json([
+                'message' => "Muvaffaqqiyatli o'chirildi!"
+            ], 200); 
+        }
+    }
+
+    public function editCadryStaff($id)
+    {
+        $cadries = DepartmentCadry::where('cadry_id', $id)->with(['staff','department'])->get();
+
+        return view('cadry.editstaffCadry',[
+            'cadries' => $cadries
+        ]);
+    }
+
+    public function StaffCadryEdit($id)
+    {
+        $item =  DepartmentCadry::find($id);
+
+        return view('cadry.StaffCadryEdit',[
+            'item' => $item
+        ]);
     }
 }

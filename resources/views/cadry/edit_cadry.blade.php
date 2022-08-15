@@ -309,56 +309,8 @@
                                 <table class="table table-borderless">
                                     <thead>
                                         <tr>
-                                            <th>Qachondan beri ishlaydi</th>
-                                            <th>Bo'lim nomi</th>
-                                            <th>Shtat bo'yicha lavozimi</th>
-                                            <th>Stavkasi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="date" class="form-control" value="{{$cadry->job_date}}" name="job_date" required> 
-                                            </td>
-                                          
-                                            <td>
-                                                <select class="js-example-basic-single" name="department_id" required>
-                                                    <option value="">-- Bo'limni tanlang --</option>
-                                                    @foreach ($departments as $department)
-                                                        @if ($department->id == $cadry->department_id)
-                                                            <option value={{$department->id}} selected>{{$department->name}}</option>
-                                                        @else
-                                                            <option value={{$department->id}}>{{$department->name}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>  
-                                                <div class="invalid-feedback">Обязательное поле</div>
-                                            </td>
-                                            <td>
-                                                <select class="js-example-basic-single" name="staff_id" required>
-                                                    <option value="">-- Lavozimni tanlang --</option>
-                                                    @foreach ($staffs as $staff)
-                                                        <option value="{{$staff->id}}" @if($staff->id == $cadry->staff_id) selected @endif>{{$staff->name}}</option>
-                                                    @endforeach
-                                                </select>  
-                                                <div class="invalid-feedback">Обязательное поле</div>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control" value="{{$cadry->stavka}}"  name="stavka" required>                                          
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-12">
-                            <div class="table-responsive border rounded px-1">
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
                                             <th width = "200px">Lavozim sanasi</th>
+                                            <th width = "200px">Qachondan beri ishlaydi</th>
                                             <th>Lavozimi</th>
                                         </tr>
                                     </thead>
@@ -368,7 +320,10 @@
                                                  <input type="date" class="form-control" value="{{$cadry->post_date}}" name="post_date" required> 
                                             </td>
                                             <td>
-                                                 <input type="text" class="form-control" value="{{$cadry->post_name}}" name="post_name" required>                                          
+                                                <input type="date" class="form-control" value="{{$cadry->job_date}}" name="job_date" required> 
+                                            </td>
+                                            <td>
+                                                 <input readonly class="form-control" value="{{implode(',',$a)}}">                                        
                                             </td>
                                         </tr>
                                     </tbody>

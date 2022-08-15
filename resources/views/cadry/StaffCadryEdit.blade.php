@@ -15,115 +15,44 @@
             </div>
         </div>
     </div>
-    <!-- end page title -->
 
     <div class="row">
-        <div class="col-xl-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-centered align-middle table-nowrap table-hover mb-0 table-sm">
-                            <thead>
-                                <tr>
-                                    <th class="text-center fw-bold" width="40px">Status</th>
-                                    <th class="text-center fw-bold">
-                                        {{ $department->name }}ga tegishli ish o'rinlari
-                                    </th>
-                                    <th class="text-center fw-bold">Stavka</th>
-                                    <th class="text-center fw-bold">Mavjud xodimlar</th>
-                                    <th class="text-center fw-bold" width="80px">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($depstaff as $ds)
-                                    <tr>
-                                        <td>
-                                            @if ($ds->status == false)
-                                                <div class="bg-success bg-gradient p-2"></div>
-                                            @else
-                                                <div class="bg-danger bg-gradient p-2"></div>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{{ $ds->staff->name }}</td>
-                                        <td class="text-center">{{ $ds->stavka }}</td>
-                                        <td class="text-center">
-                                            @if ($ds->cadry->sum('stavka') < $ds->stavka)
-                                                @if ($ds->status == false)
-                                                    <a href="{{ route('department_cadry_add', ['id' => $ds->id]) }}"
-                                                        class="btn btn-outline-success btn-sm">
-                                                        Bo'sh ish o'rni - {{ $ds->stavka - $ds->cadry->sum('stavka') }} </a>
-                                                @else
-                                                    <a href="{{ route('department_cadry_add', ['id' => $ds->id]) }}"
-                                                        class="btn btn-outline-danger btn-sm">
-                                                        Xodim qo'shish - {{ $ds->stavka - $ds->cadry->sum('stavka') }} </a>
-                                                @endif
-                                            @else
-                                                {{ $ds->stavka }}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <a type="button" href="{{ route('department_staffs', ['id' => $ds->id]) }}"
-                                                class="btn btn-primary btn-sm"> <i class="fa fa-eye"></i></a>
-                                            <button class="btn btn-danger btn-sm" onclick="deleteFunc({{$ds->id}})"> <i class="fa fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-            <table>
-                <tbody>
-                    <tr>
-                        <td style="width: 120px;">
-                            <span>Asosiy ish o'rni</span>
-                        </td>
-                        <td style="width: 50px;">
-                            <div class="bg-success bg-gradient p-2"></div>
-                        </td>
-                        <td style="width: 30px;"></td>
-                        <td style="width: 135px;">
-                            <span>Ortiqcha ish o'rni</span>
-                        </td>
-                        <td style="width: 50px;">
-                            <div class="bg-danger p-2"></div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
         <div class="col-xl-4">
-            <!-- card -->
             <div class="card">
-                <!-- card body -->
-                <form action="{{ route('stafftoDepartment') }}" method="post">
+                <form action="{{ route('addCadryToDepartmentStaff', ['id' => 1]) }}" method="post">
                     @csrf
                     <div class="card-body">
-                        <input type="hidden" name="department_id" value="{{ request('id') }}">
+                        <div class="mb-4">
+                            <label>FIO:</label>
+                            <h5>{{ $item->cadry->last_name}} {{ $item->cadry->first_name}} {{ $item->cadry->middle_name}}</h5>
+                        </div>
+                        <div class="mb-4">
+                            <label>Bo'linma:</label>
+                            <h5>{{ $item->department->name}}</h5>
+                        </div>
+                        <div class="mb-4">
+                            <label>Lavozimi:</label>
+                            <h5>{{ $item->staff_full}}</h5>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label>Stavka</label>
+                            <h5>{{ $item->stavka}}</h5>
+                        </div>
+
                         <div class="d-flex flex-wrap align-items-center mb-4">
-                            <h5 class="card-title me-2">Lavozimni biriktirish</h5>
-                            <select class="staff_id js-example-basic-single" name="staff_id" required>
-                                <option value="">-- Lavozimni tanlang --</option>
-                                @foreach ($staffs as $staff)
-                                    <option value="{{ $staff->id }}">{{ $staff->name }}</option>
-                                @endforeach
+                            <label>Bo'linmani tanlang</label>
+                            <select class="js-example-basic-single department" name="department_id" id="department_id" style="width: 100%" required>
                             </select>
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
-                            <h5 class="card-title me-2">Lavozim to'liq nomi</h5>
-                            <textarea name="staff_full" class="form-control"></textarea>
-                        </div>
+                            <label>Lavozimni tanlang</label>
+                            <select name="staff_if" id="staff_id" class="form-control">
 
-                        <div class="d-flex flex-wrap align-items-center mb-4">
-                            <h5 class="card-title me-2">Klassifikatordagi lavozim ko'rinishini tanlang</h5>
-                            <select class="js-example-basic-single js-data-example-ajax" name="class_staff_id"
-                                id="classifications" style="width: 100%" required>
                             </select>
                         </div>
+
                         <div class="mb-4">
                             <h5 class="card-title me-2">Stavka</h5>
                             <div class="row">
@@ -239,96 +168,54 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <input class="form-check-input" type="checkbox" id="formCheck1" name="status_sv">
-                            <label class="form-check-label" for="formCheck1">
-                                Ortiqcha ish o'rni
-                            </label>
-                        </div>
 
-                        <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>
+                        <button class="btn btn-outline-primary" style="width: 100%"> O'zgartirish </button>
 
                     </div>
                 </form>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
         </div>
-        <!-- end col -->
     </div>
+    @push('scripts')
+    <script>
+       
+        $('#department_id').change(function(e) {
+            myFilter();
+        })
+
+        function myFilter() {
+            let department_id = $('#department_id').val();
+            let url = '{{ route('cadry') }}';
+
+            window.location.href = `${url}?
+            department_id=${department_id}&`;
+        }
+    </script>
+@endpush
 @endsection
 
 @section('scripts')
-    <script>
-        function deleteFunc(id) {
-            Swal.fire({
-                text: "Ushbu ish o'rnini o'chirishni xoxlaysizmi",
-                icon: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Xa, bajarish!",
-                cancelButtonText: "Yo'q, qaytish!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ms-2 mt-2",
-                buttonsStyling: !1,
-            }).then(function(e) {
-                if (e.value) {
-
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('deleteDepStaff') }}",
-                        data: {
-                            "id": id,
-                            "_token": "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Success!",
-                                text: "Ish o'rni o'chirildi",
-                                icon: "success",
-                                confirmButtonColor: "#1c84ee",
-                            }).then(function() {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Ushbu lavozimga biriktirilgan xodimlar mavjud :)",
-                                icon: "error",
-                                confirmButtonColor: "#1c84ee",
-                            });
-                        }
-                    });
-
-                } else {
-                    e.dismiss;
-                }
-            });
-        }
-    </script>
     <script>
         $(document).ready(function() {
             @if (\Session::has('msg'))
                 @if (Session::get('msg') == 1)
                     Swal.fire({
-                        title: "Muvaffaqqiyatli!",
-                        text: "Yangi ish o'rni yaratildi!",
-                        icon: "success",
-                        showCancelButton: !0,
-                        confirmButtonColor: "#1c84ee",
-                        cancelButtonColor: "#fd625e",
+                        title: "Amalga oshirilmadi",
+                        text: "Xodimning stavkasi amaldagi bo'sh lavozim stavkasiga to'gri kelmadi!",
+                        icon: "warning",
+                        confirmButtonColor: "#1c84ee"
                     });
                 @endif
             @endif
         });
     </script>
     <script>
-        $('.staff_id').select2();
+        $('.staff').select2();
     </script>
     <script>
-        $('.cadry').select2({
+        $('.department').select2({
             ajax: {
-                url: '{{ route('loadCadry') }}',
+                url: '{{ route('loadDepartment') }}',
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {
@@ -343,7 +230,7 @@
                     return {
                         results: $.map(data, function(item) {
                             return {
-                                text: item.last_name + ' ' + item.first_name + ' ' + item.middle_name,
+                                text: item.name,
                                 id: item.id
                             }
                         }),
@@ -354,40 +241,7 @@
                 },
                 cache: true
             },
-            placeholder: 'Xodim ismini kiriting',
-            minimumInputLength: 1,
-        });
-    </script>
-    <script>
-        $('.js-data-example-ajax').select2({
-            ajax: {
-                url: '{{ route('loadClassification') }}',
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        q: params.term,
-                        page: params.page
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                text: item.code_staff + '-' + item.name_uz,
-                                id: item.id
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-            placeholder: 'Lavozim nomini kiriting',
+            placeholder: "Bo'linmani tanlang",
             minimumInputLength: 1,
         });
     </script>

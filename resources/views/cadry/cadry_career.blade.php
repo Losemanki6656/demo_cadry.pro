@@ -107,7 +107,7 @@
                 </div>
                 <div class="card-body px-75">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0">
+                        <table class="table table-bordered table-striped mb-0 table-sm">
                             <thead>
                                 <tr>
                                     <th class="text-center fw-bold">Saralash</th>
@@ -121,15 +121,15 @@
                                 @foreach ($careers as $career)
                                 <tr class="row1" data-id="{{ $career->id }}">
                                     <th class="text-center"><i class="fas fa-stream" style="color: blue; cursor: pointer"></i></th>
-                                    <th class="text-center">{{$career->date1}}</th>
-                                    <td class="text-center">{{$career->date2}}</td>
+                                    <th class="text-center fw-bold">{{$career->date1}}</th>
+                                    <td class="text-center fw-bold">{{$career->date2}}</td>
                                     <td class="text-center">{{$career->staff}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-soft-secondary waves-effect"
+                                        <button type="button" class="btn btn-secondary btn-sm"
                                             data-bs-toggle="modal" data-bs-target="#editcareercadry{{$career->id}}">
                                             <i class="bx bx-edit font-size-16 align-middle"></i>
                                         </button>
-                                        <button type="button" class="btn btn-soft-danger waves-effect"
+                                        <button type="button" class="btn btn-danger btn-sm"
                                             data-bs-toggle="modal" data-bs-target="#deletecareercadry{{$career->id}}">
                                             <i class="bx bx-trash font-size-16 align-middle"></i>
                                         </button>

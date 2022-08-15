@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table-bordered mt-2 mb-2">
-                    <table class="table table-striped mb-0">
+                    <table class="table table-striped mb-0 table-sm">
                         <thead>
                             <tr>
                                 <th class="text-center fw-bold">Qachondan</th>
@@ -136,11 +136,11 @@
                                 <td class="text-center">{{$infoeducation->institut}}</td>
                                 <td class="text-center">{{$infoeducation->speciality}}</td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-soft-secondary waves-effect"
+                                    <button type="button" class="btn btn-secondary btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#editinscadry{{$infoeducation->id}}">
                                         <i class="bx bx-edit font-size-16 align-middle"></i>
                                     </button>
-                                    <button type="button" class="btn btn-soft-danger waves-effect"
+                                    <button type="button" class="btn btn-danger btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#deleteinscadry{{$infoeducation->id}}">
                                         <i class="bx bx-trash font-size-16 align-middle"></i>
                                     </button>
@@ -230,7 +230,7 @@
                     @csrf
                     <div class="row mt-1">
                         <div class="col-12">
-                            <div class="table-responsive border rounded px-1 ">
+                            <div class="table-responsive border rounded px-1">
                                 <table class="table table-borderless">
                                     <thead>
                                         <tr>

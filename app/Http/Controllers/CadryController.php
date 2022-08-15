@@ -39,6 +39,7 @@ use App\Models\Abroad;
 use App\Models\AcademicName;
 use App\Models\StaffFile;
 use App\Models\Vacation;
+use App\Models\StavkaDou;
 use App\Models\Classification;
 
 use Auth;
@@ -49,13 +50,18 @@ class CadryController extends Controller
     public function index(Request $request)
     {
  
-        $cadries = Cadry::FullFilter();
+        $cadries = Cadry::FullFilter()->with('vacation')->paginate(10, ['*'], 'page', $page);
+
+        $a = [];
+        foreach($cadries as $item)
+        {
+            if($item->vacation)
+        }
 
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
-
         return view('cadry.cadry',[
-            'cadries' => $cadries->paginate(10, ['*'], 'page', $page)
+            'cadries' => $cadries
         ]);
     }
     
@@ -139,19 +145,42 @@ class CadryController extends Controller
     public function departments()
     {
 
+        $page = request('page', session('department_page', 1));
+        session(['department_page' => $page]);
+
         $departments = Department::query()
         ->where('organization_id', Auth::user()->userorganization->organization_id)
         ->when(\Request::input('search'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
-        })->with(['cadries','departmentstaff']);
+        })->with(['cadries','departmentstaff'])->paginate(10, ['*'], 'page', $page);
 
-        $page = request('page', session('department_page', 1));
-        session(['department_page' => $page]);
+        $a = []; $b = []; $c = []; $d = [];
+        foreach ($departments as $item)
+        {
+            $x = $item->departmentstaff->where('status',false);
+            $a[$item->id] = $x->sum('stavka');
+            $y = $item->departmentstaff->where('status',true);
+            $b[$item->id] = $y->sum('stavka');
 
+            $z = 0;
+            foreach($x as $i) {
+                $z = $z + $i->cadry->sum('stavka');
+            }
+            $c[$item->id] = $z;
+            $z = 0;
+            foreach($y as $k) {
+                $z = $z + $k->cadry->sum('stavka');
+            }
+            $d[$item->id] = $z;
+        }
 
         return view('cadry.departments',[
-            'departments' => $departments->paginate(10, ['*'], 'page', $page)
+            'departments' => $departments,
+            'a' => $a,
+            'b' => $b,
+            'c' => $c,
+            'd' => $d,
         ]);
     }
 
@@ -268,8 +297,14 @@ class CadryController extends Controller
 
     public function cadry_edit($id)
     {
-        $cadry = Cadry::find($id);
-        $departments = Department::where('organization_id',UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->get();
+        $cadry = Cadry::with(['allStaffs','allStaffs.depstaff'])->find($id);
+       
+        $x = 0; $a = [];
+        foreach ($cadry->allStaffs as $item ) {
+            $x ++;
+            $a[$x] = $item->depstaff[0]->staff_full;
+        }
+
         $info = Education::all();
         $academictitle = AcademicTitle::all();
         $academicdegree = AcademicDegree::all();
@@ -277,14 +312,12 @@ class CadryController extends Controller
         $langues = Language::all();
         $parties = Party::all();
         $worklevel = WorkLevel::all();
-        $staffs = Staff::where('organization_id', $cadry->organization_id)->get();
         $relatives = Relative::all();
         $regions = Region::all();
         $cities = City::all();
 
         return view('cadry.edit_cadry',[
             'cadry' => $cadry,
-            'departments' => $departments,
             'regions' => $regions,
             'cities' => $cities,
             'info' => $info,
@@ -294,7 +327,7 @@ class CadryController extends Controller
             'langues' => $langues,
             'parties' => $parties,
             'worklevel' => $worklevel,
-            'staffs' => $staffs
+            'a' => $a
         ]);
     }
 
@@ -1080,7 +1113,12 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-       dd(request()->ip());
+       for($i = 0; $i <= 99; $i ++)
+       {
+         $item = new StavkaDou();
+         $item->val_dou = $i;
+         $item->save();
+       }
     }
 
     public function userPhone()
@@ -1145,10 +1183,10 @@ class CadryController extends Controller
 
     public function delete_stafffile_cadry($id)
     {
-
         $newfile =  StaffFile::find($id)->delete();
-
         return redirect()->back()->with('msg' ,1);
     }
+
+    
 
 }

@@ -59,7 +59,8 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-2">
                         <label class="mb-0"> Bo'limlar</label>
-                        <select class="js-example-basic-single department" style="width: 100%" id="department_se" name="department_se">
+                        <select class="js-example-basic-single department" style="width: 100%" id="department_se"
+                            name="department_se">
                             <option value=""> --Barchasi-- </option>
                         </select>
                     </div>
@@ -166,7 +167,13 @@
                                     @foreach ($cadries as $key => $item)
                                         <tr>
                                             <td class="text-center fw-bold align-middle">
-                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}</td>
+                                                @if ($item->vacation->where('status', 1))
+                                                    
+                                                @else
+                                                    
+                                                @endif
+                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
+                                            </td>
                                             <td class="text-center">
                                                 <a href="{{ asset('storage/' . $item->photo) }}" class="image-popup-desc"
                                                     data-title="{{ $item->last_name }} {{ $item->first_name }} {{ $item->middle_name }}"
@@ -198,16 +205,18 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bs-toggle="modal"
                                                                 data-bs-target="#vacation{{ $item->id }}"
-                                                                type="button" class="dropdown-item fw-bold"> Mehnat
+                                                                type="button" class="dropdown-item fw-bold text-success"><i class="fa fa-plus"></i> Mehnat
                                                                 ta'tili</a></li>
                                                         <li>
                                                             @if ($item->sex == 0)
                                                                 <a href="{{ route('decret_cadry', ['id' => $item->id]) }}"
                                                                     type="button"
-                                                                    class="dropdown-item fw-bold text-primary"> Bola
+                                                                    class="dropdown-item fw-bold text-primary"><i class="fa fa-plus"></i> Bola
                                                                     parvarish ta'tili</a>
                                                             @endif
                                                         </li>
+                                                        <li><a href="{{ route('editCadryStaff',['id' => $item->id]) }}" 
+                                                            type="button" class="dropdown-item fw-bold text-danger"><i class="fa fa-edit"></i> Lavozimni o'zgartirish </a></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -244,11 +253,6 @@
                                                                             id="datepicker-basic" name="date2">
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label>Keyingi chiqish sanasi:</label>
-                                                                <input type="text" class="form-control text-center"
-                                                                    id="datepicker-basic" name="datenext">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -323,72 +327,72 @@
 @endsection
 
 @section('scripts')
-<script>
-    $('.region').select2({
-        ajax: {
-            url: '{{ route('loadRegion') }}',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    q: params.term,
-                    page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                params.page = params.page || 1;
+    <script>
+        $('.region').select2({
+            ajax: {
+                url: '{{ route('loadRegion') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
 
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.name,
-                            id: item.id
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
                         }
-                    }),
-                    pagination: {
-                        more: (params.page * 30) < data.total_count
-                    }
-                };
+                    };
+                },
+                cache: true
             },
-            cache: true
-        },
-        placeholder: "Viloyatni belgilang",
-        minimumInputLength: 1,
-    });
-</script>
-<script>
-    $('.department').select2({
-        ajax: {
-            url: '{{ route('loadDepartment') }}',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    q: params.term,
-                    page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                params.page = params.page || 1;
+            placeholder: "Viloyatni belgilang",
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.department').select2({
+            ajax: {
+                url: '{{ route('loadDepartment') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
 
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.name,
-                            id: item.id
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
                         }
-                    }),
-                    pagination: {
-                        more: (params.page * 30) < data.total_count
-                    }
-                };
+                    };
+                },
+                cache: true
             },
-            cache: true
-        },
-        placeholder: "Bo'limni belgilang",
-        minimumInputLength: 1,
-    });
-</script>
+            placeholder: "Bo'limni belgilang",
+            minimumInputLength: 1,
+        });
+    </script>
     <script>
         $('.staff').select2({
             ajax: {

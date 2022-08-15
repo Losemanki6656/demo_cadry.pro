@@ -30,7 +30,10 @@ class Cadry extends Model
             }
         });
     }
-
+    public function vacation()
+    {
+        return $this->hasMany(Vacation::class);
+    }
     public function cadry_degree()
     {
         return $this->belongsTo(AcademicDegree::class,'academicdegree_id');
@@ -84,6 +87,10 @@ class Cadry extends Model
     {
         return $this->hasMany(CadryRelative::class);
     }
+    public function allStaffs()
+    {
+        return $this->hasMany(DepartmentCadry::class);
+    }
     public function careers()
     {
         return $this->hasMany(Career::class);
@@ -94,7 +101,7 @@ class Cadry extends Model
     }
     public function department()
     {
-        return $this->belongsTo(Staff::class,'department_id');
+        return $this->belongsTo(Department::class,'department_id');
     }
     public function staff()
     {

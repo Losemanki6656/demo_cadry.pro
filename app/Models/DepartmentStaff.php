@@ -21,6 +21,13 @@ class DepartmentStaff extends Model
 
     public function cadry()
     {
-        return $this->belongsTo(Cadry::class);
+        return $this->hasMany(DepartmentCadry::class);
     }
+
+    public function classification()
+    {
+        return $this->belongsTo(Classification::class);
+    }
+
+
 }

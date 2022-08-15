@@ -111,7 +111,7 @@
                 </div>
                 <div class="card-body px-75">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th class="text-center fw-bold">Saralash</th>
@@ -129,7 +129,7 @@
                                 <tr class="row1" data-id="{{ $cadryrelative->id }}">
                                     <td class="text-center"><i class="fas fa-stream"
                                             style="color: blue; cursor: pointer"></i></td>
-                                    <td>
+                                    <td class="text-center fw-bold">
                                         @if ($cadryrelative->relative_id != 1)
                                         {{$cadryrelative->relative->name}}
                                         @endif
@@ -143,12 +143,12 @@
                                         {{$cadryrelative->address}}
                                     </td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-soft-secondary waves-effect"
+                                        <button type="button" class="btn btn-secondary btn-sm"
                                             data-bs-toggle="modal"
                                             data-bs-target="#editrelativcadry{{$cadryrelative->id}}">
                                             <i class="bx bx-edit font-size-16 align-middle"></i>
                                         </button>
-                                        <button type="button" class="btn btn-soft-danger waves-effect"
+                                        <button type="button" class="btn btn-danger btn-sm"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleterelativcadry{{$cadryrelative->id}}">
                                             <i class="bx bx-trash font-size-16 align-middle"></i>

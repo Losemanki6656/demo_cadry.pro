@@ -121,6 +121,13 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::post('/stafftoDepartment', [App\Http\Controllers\ChatController::class, 'stafftoDepartment'])->name('stafftoDepartment');
     Route::get('/addstaffToDepartment/{id}', [App\Http\Controllers\ChatController::class, 'addstaffToDepartment'])->name('addstaffToDepartment');
+    Route::get('/addCadryToDepartment/{id}', [App\Http\Controllers\ChatController::class, 'department_cadry_add'])->name('department_cadry_add');
+    Route::post('/addCadryToDepartmentStaff/{id}', [App\Http\Controllers\ChatController::class, 'addCadryToDepartmentStaff'])->name('addCadryToDepartmentStaff');
+    Route::get('/CadryDepartmentStaff/{id}', [App\Http\Controllers\ChatController::class, 'department_staffs'])->name('department_staffs');
+    Route::post('/deleteDepCadry', [App\Http\Controllers\ChatController::class, 'deleteDepCadry'])->name('deleteDepCadry');
+    Route::post('/deleteDepStaff', [App\Http\Controllers\ChatController::class, 'deleteDepStaff'])->name('deleteDepStaff');
+    Route::get('/editCadryStaff/{id}', [App\Http\Controllers\ChatController::class, 'editCadryStaff'])->name('editCadryStaff');
+    Route::get('/StaffCadryEdit/{id}', [App\Http\Controllers\ChatController::class, 'StaffCadryEdit'])->name('StaffCadryEdit');
 
     //AjaxLoading
     Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');

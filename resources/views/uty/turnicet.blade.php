@@ -52,7 +52,7 @@
                                             <td class="text-center fw-bold">{{ $item->organization_name }}</td>
                                             <td class="text-center">{{ $item->tabel }}</td>
                                             <td class="text-center">
-                                                @if ($item->department_name = '1')
+                                                @if ($item->department_name == '1')
                                                     <span class="badge bg-danger font-size-12"> Chiqish</span>
                                                 @else
                                                     <span class="badge bg-success font-size-12"> Kirish</span>
