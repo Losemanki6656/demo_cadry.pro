@@ -48,23 +48,14 @@ class CadryController extends Controller
 
     public function index(Request $request)
     {
-       // dd($request->all());
-        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-       
+ 
         $cadries = Cadry::FullFilter();
-
-        $staffs = Staff::where('organization_id',$org_id)->get();
-        $regions = Region::all();
-        $departments = Department::where('organization_id',$org_id)->get(); 
 
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
 
         return view('cadry.cadry',[
-            'cadries' => $cadries->paginate(10, ['*'], 'page', $page),
-            'staffs' => $staffs,
-            'regions' => $regions,
-            'departments' => $departments
+            'cadries' => $cadries->paginate(10, ['*'], 'page', $page)
         ]);
     }
     
@@ -1087,24 +1078,9 @@ class CadryController extends Controller
        return redirect()->route('cadry');
     }
 
-    public function ssss()
+    public function ssss(Request $request)
     { 
-        set_time_limit(3000);
-       
-        $cadries = Vacation::get();
-        $x = 0; $a = [];
-        foreach($cadries as $item)
-        {
-           
-            if(!Cadry::find($item->cadry_id)) 
-            {
-                $x++; 
-               // $item->delete();
-
-            }
-        }
-
-        dd($x);
+       dd(request()->ip());
     }
 
     public function userPhone()
