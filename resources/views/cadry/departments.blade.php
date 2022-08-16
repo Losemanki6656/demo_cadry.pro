@@ -97,8 +97,7 @@
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
                                         <td class="text-center fw-bold">
-                                            <span class="text-success">{{ $a[$department->id] }}</span> +
-                                            <span class="text-danger">{{ $b[$department->id] }}</span>
+                                            <span class="text-success">{{ $a[$department->id] }}</span>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
