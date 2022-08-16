@@ -121,7 +121,7 @@
                         <div class="d-flex flex-wrap align-items-center mb-4">
                             <h5 class="card-title me-2">Klassifikatordagi lavozim ko'rinishini tanlang</h5>
                             <select class="js-example-basic-single js-data-example-ajax" name="class_staff_id"
-                                id="classifications" style="width: 100%" required>
+                                id="classifications" style="width: 100%">
                             </select>
                         </div>
                         <div class="mb-4">

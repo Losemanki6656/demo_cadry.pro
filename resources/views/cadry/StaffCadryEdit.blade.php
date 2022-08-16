@@ -19,50 +19,54 @@
     <div class="row">
         <div class="col-xl-4">
             <div class="card">
-                <form action="{{ route('addCadryToDepartmentStaff', ['id' => 1]) }}" method="post">
+                <form action="{{ route('successEditStaffCadry', ['id' => $item->id]) }}" method="post">
                     @csrf
                     <div class="card-body">
                         <div class="mb-4">
                             <label>FIO:</label>
-                            <h5>{{ $item->cadry->last_name}} {{ $item->cadry->first_name}} {{ $item->cadry->middle_name}}</h5>
+                            <h5>{{ $item->cadry->last_name }} {{ $item->cadry->first_name }} {{ $item->cadry->middle_name }}
+                            </h5>
                         </div>
                         <div class="mb-4">
                             <label>Bo'linma:</label>
-                            <h5>{{ $item->department->name}}</h5>
+                            <h5>{{ $item->department->name }}</h5>
                         </div>
                         <div class="mb-4">
                             <label>Lavozimi:</label>
-                            <h5>{{ $item->staff_full}}</h5>
+                            <h5>{{ $item->staff_full }}</h5>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label>Stavka</label>
-                            <h5>{{ $item->stavka}}</h5>
+                            <h5>{{ $item->stavka }}</h5>
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
                             <label>Bo'linmani tanlang</label>
-                            <select class="js-example-basic-single department" name="department_id" id="department_id" style="width: 100%" required>
+                            <select class="js-example-basic-single department" name="department_id" id="department_id"
+                                style="width: 100%" required>
                             </select>
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
                             <label>Lavozimni tanlang</label>
-                            <select name="staff_if" id="staff_id" class="form-control">
+                            <select name="staff_id" id="staff_id" class="form-control" required>
 
                             </select>
                         </div>
 
                         <div class="mb-4">
-                            <h5 class="card-title me-2">Stavka</h5>
+
                             <div class="row">
                                 <div class="col">
+                                    <span>Stavka (butun)</span>
                                     <select class="form-select" name="st_1">
                                         <option value="1">1</option>
                                         <option value="0">0</option>
                                     </select>
                                 </div>
                                 <div class="col">
+                                    <span>Stavka(qo'shimcha)</span>
                                     <select class="form-select" name="st_2">
                                         <option value="0">.00</option>
                                         <option value="0.01">.01</option>
@@ -166,10 +170,15 @@
                                         <option value="0.99">.99</option>
                                     </select>
                                 </div>
+                                <div class="col">
+                                    <span>Lavozim sanasi</span>
+                                    <input type="date" name="staff_date" class="form-control">
+                                </div>
                             </div>
                         </div>
 
-                        <button class="btn btn-outline-primary" style="width: 100%"> O'zgartirish </button>
+                        <button class="btn btn-outline-primary" type="submit" style="width: 100%"> O'zgartirish
+                        </button>
 
                     </div>
                 </form>
@@ -177,33 +186,73 @@
         </div>
     </div>
     @push('scripts')
-    <script>
-       
-        $('#department_id').change(function(e) {
-            myFilter();
-        })
+        <script>
+            $('#department_id').change(function(e) {
+                let department_id = $('#department_id').val();
+                $.ajax({
+                    url: '{{ route('loadVacan') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    cache: false,
+                    data: {
+                        department_id: department_id
+                    },
+                    success: function(data) {
+                        var len = 0;
+                        if (data != null) {
+                            len = data.length;
+                        }
 
-        function myFilter() {
-            let department_id = $('#department_id').val();
-            let url = '{{ route('cadry') }}';
+                        if (len > 0) {
+                            $("#staff_id").empty();
+                            for (var i = 0; i < len; i++) {
+                                console.log(len);
+                                var id = data[i].id;
+                                var name = data[i].staff_full;
+                                var stavka = data[i].stavka - data[i].oth_st;
+                                var option = "<option value='" + id + "'>" + stavka + " - " + name +
+                                    "</option>";
+                                $("#staff_id").append(option);
+                            }
+                        } else {
+                            $("#staff_id").empty();
+                            var option = "<option value=''>" + "Bo'sh ish o'rni mavjud emas!" + "</option>";
+                            $("#staff_id").append(option);
+                        }
+                    }
+                });
+            })
 
-            window.location.href = `${url}?
+            function myFilter() {
+                let department_id = $('#department_id').val();
+                let url = '{{ route('cadry') }}';
+
+                window.location.href = `${url}?
             department_id=${department_id}&`;
-        }
-    </script>
-@endpush
+            }
+        </script>
+    @endpush
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
             @if (\Session::has('msg'))
-                @if (Session::get('msg') == 1)
+                @if (Session::get('msg') == 2)
                     Swal.fire({
                         title: "Amalga oshirilmadi",
                         text: "Xodimning stavkasi amaldagi bo'sh lavozim stavkasiga to'gri kelmadi!",
                         icon: "warning",
                         confirmButtonColor: "#1c84ee"
+                    });
+                @else
+                    Swal.fire({
+                        title: "Good!",
+                        text: "Xodim lavozimi o'zgartirildi",
+                        icon: "success",
+                        confirmButtonColor: "#1c84ee",
+                    }).then(function() {
+                        location.reload();
                     });
                 @endif
             @endif

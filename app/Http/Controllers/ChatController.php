@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\DepartmentCadry;
 use Auth;
 use Illuminate\Http\Request;
+use DB;
 
 class ChatController extends Controller
 {
@@ -23,11 +24,11 @@ class ChatController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data = Classification::where('name_uz','LIKE',"%$search%")
-            ->OrWhere('code_staff','LIKE',"%$search%")
-            ->take(50)->get();
+            $data = Classification::where('name_uz', 'LIKE', "%$search%")
+                ->OrWhere('code_staff', 'LIKE', "%$search%")
+                ->take(50)->get();
         }
         return response()->json($data);
     }
@@ -36,14 +37,14 @@ class ChatController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
             $data = Cadry::OrgFilter()
-                    ->where(function ($query) use ($search) {
-                        $query->Orwhere('last_name','like','%'.$search.'%')
-                            ->orWhere('first_name','like','%'.$search.'%')
-                            ->orWhere('middle_name','like','%'.$search.'%');
-                    })
+                ->where(function ($query) use ($search) {
+                    $query->Orwhere('last_name', 'like', '%' . $search . '%')
+                        ->orWhere('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('middle_name', 'like', '%' . $search . '%');
+                })
                 ->get();
         }
         return response()->json($data);
@@ -52,12 +53,12 @@ class ChatController extends Controller
     public function loadDepartment(Request $request)
     {
         $data = [];
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
             $data = Department::where('organization_id', Auth::user()->userorganization->organization_id)
-                    ->where(function ($query) use ($search) {
-                        $query->where('name','like','%'.$search.'%');
-                    })
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
                 ->get();
         }
         return response()->json($data);
@@ -66,12 +67,12 @@ class ChatController extends Controller
     public function loadStaff(Request $request)
     {
         $data = [];
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
             $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)
-                    ->where(function ($query) use ($search) {
-                        $query->where('name','like','%'.$search.'%');
-                    })
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
                 ->get();
         }
         return response()->json($data);
@@ -80,9 +81,9 @@ class ChatController extends Controller
     public function loadRegion(Request $request)
     {
         $data = [];
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data = Region::where('name','like','%'.$search.'%')->get();
+            $data = Region::where('name', 'like', '%' . $search . '%')->get();
         }
         return response()->json($data);
     }
@@ -91,10 +92,10 @@ class ChatController extends Controller
     {
         $org_id = Auth::user()->userorganization->organization_id;
         $department = Department::find($id);
-        $staffs = Staff::where('organization_id',$org_id)->get();
-        $depstaff = DepartmentStaff::where('department_id',$id)->with(['department','staff','cadry'])->get();
+        $staffs = Staff::where('organization_id', $org_id)->get();
+        $depstaff = DepartmentStaff::where('department_id', $id)->with(['department', 'staff', 'cadry'])->get();
 
-        return view('cadry.addstaffdep',[
+        return view('cadry.addstaffdep', [
             'staffs' => $staffs,
             'depstaff' => $depstaff,
             'department' => $department
@@ -108,22 +109,23 @@ class ChatController extends Controller
         $newItem->organization_id = Auth::user()->userorganization->organization_id;
         $newItem->department_id = $request->department_id;
         $newItem->staff_id = $request->staff_id;
-        $newItem->classification_id = $request->class_staff_id;
+        if ($request->class_staff_id)
+            $newItem->classification_id = $request->class_staff_id;
         $newItem->staff_full = $request->staff_full;
         $newItem->stavka = $request->st_1 + $request->st_2;
-        if($request->status_sv == 'on') {
+        if ($request->status_sv == 'on') {
             $newItem->status = true;
         }
         $newItem->save();
 
-        return redirect()->back()->with('msg' ,1);
+        return redirect()->back()->with('msg', 1);
     }
 
     public function department_cadry_add($id)
     {
-        $depstaff = DepartmentStaff::with(['staff','department','classification','cadry'])->find($id);
+        $depstaff = DepartmentStaff::with(['staff', 'department', 'classification', 'cadry'])->find($id);
 
-        return view('cadry.addCadryToDepartmentStaff',[
+        return view('cadry.addCadryToDepartmentStaff', [
             'depstaff' => $depstaff
         ]);
     }
@@ -131,31 +133,29 @@ class ChatController extends Controller
     public function addCadryToDepartmentStaff($id, Request $request)
     {
         $dep = DepartmentStaff::with('cadry')->find($id);
-        
-        if($request->st_1 + $request->st_2 <= $dep->stavka - $dep->cadry->sum('stavka'))
-            {
-                $newItem = new DepartmentCadry();
-                $newItem->railway_id = $dep->railway_id;
-                $newItem->organization_id = $dep->organization_id;
-                $newItem->department_id = $dep->department_id;
-                $newItem->department_staff_id = $id;
-                $newItem->staff_id = $dep->staff_id;
-                $newItem->staff_full = $dep->staff_full;
-                $newItem->status_sv = $dep->status;
-                $newItem->cadry_id = $request->cadry_id;
-                $newItem->stavka = $request->st_1 + $request->st_2;
-                $newItem->save();
 
-                return redirect()->route('addstaffToDepartment',['id' => $dep->department_id])->with('msg' , 1);
-            } else  return redirect()->back()->with('msg' ,1);
+        if ($request->st_1 + $request->st_2 <= $dep->stavka - $dep->cadry->sum('stavka')) {
+            $newItem = new DepartmentCadry();
+            $newItem->railway_id = $dep->railway_id;
+            $newItem->organization_id = $dep->organization_id;
+            $newItem->department_id = $dep->department_id;
+            $newItem->department_staff_id = $id;
+            $newItem->staff_id = $dep->staff_id;
+            $newItem->staff_full = $dep->staff_full;
+            $newItem->status_sv = $dep->status;
+            $newItem->cadry_id = $request->cadry_id;
+            $newItem->stavka = $request->st_1 + $request->st_2;
+            $newItem->save();
 
+            return redirect()->route('addstaffToDepartment', ['id' => $dep->department_id])->with('msg', 1);
+        } else  return redirect()->back()->with('msg', 1);
     }
 
     public function department_staffs($id)
     {
         $cadries = DepartmentCadry::where('department_staff_id', $id)->with('cadry')->get();
 
-        return view('cadry.DepartmentCadries',[
+        return view('cadry.DepartmentCadries', [
             'cadries' => $cadries
         ]);
     }
@@ -171,23 +171,23 @@ class ChatController extends Controller
 
     public function deleteDepStaff(Request $request)
     {
-        if(DepartmentCadry::where('department_staff_id',$request->id)->count()) {
+        if (DepartmentCadry::where('department_staff_id', $request->id)->count()) {
             return response()->json([
                 'message' => "error"
-            ], 500); 
+            ], 500);
         } else {
             DepartmentStaff::find($request->id)->delete();
             return response()->json([
                 'message' => "Muvaffaqqiyatli o'chirildi!"
-            ], 200); 
+            ], 200);
         }
     }
 
     public function editCadryStaff($id)
     {
-        $cadries = DepartmentCadry::where('cadry_id', $id)->with(['staff','department'])->get();
+        $cadries = DepartmentCadry::where('cadry_id', $id)->with(['staff', 'department'])->get();
 
-        return view('cadry.editstaffCadry',[
+        return view('cadry.editstaffCadry', [
             'cadries' => $cadries
         ]);
     }
@@ -196,8 +196,56 @@ class ChatController extends Controller
     {
         $item =  DepartmentCadry::find($id);
 
-        return view('cadry.StaffCadryEdit',[
+        return view('cadry.StaffCadryEdit', [
             'item' => $item
         ]);
+    }
+
+    public function loadVacan(Request $request)
+    {
+        $deartmentCadry = DepartmentCadry::query()
+            ->select(['department_staff_id', DB::raw('sum(stavka) as stavka')])
+            ->groupBy('department_staff_id');
+
+        $data =  DepartmentStaff::query()
+            ->where('department_id', $request->department_id)
+            ->select([
+                'department_staff.*',
+                DB::raw('cadries.stavka as oth_st')
+            ])
+            ->leftJoinSub($deartmentCadry, 'cadries', function ($join) {
+                $join->on('cadries.department_staff_id', '=', 'department_staff.id');
+            })
+            ->whereRaw('department_staff.stavka > cadries.stavka')
+            ->get();
+
+            //$data = DepartmentCadry::where('department_id', $request->department_id)->get();
+
+        return response()->json($data, 200);
+    }
+
+    public function successEditStaffCadry($id, Request $request)
+    {
+        $newItem = DepartmentCadry::find($id);
+        $editstaff = DepartmentStaff::find($request->staff_id);
+
+        if ($request->st_1 + $request->st_2 <= $editstaff->stavka) {
+            $newItem->department_id = $request->department_id;
+            $newItem->department_staff_id = $request->staff_id;
+            $newItem->staff_id = $editstaff->staff_id;
+            $newItem->staff_full = $editstaff->staff_full;
+            $newItem->status_sv = $editstaff->status;
+            $newItem->stavka = $request->st_1 + $request->st_2;
+            $newItem->save();
+
+            $cadry = Cadry::find($newItem->cadry_id);
+            $cadry->department_id = $request->department_id;
+            $cadry->staff_id = $editstaff->staff_id;
+            $cadry->post_name = $editstaff->staff_full;
+            $cadry->post_date = $request->staff_date;
+            $cadry->save();
+
+            return redirect()->back()->with('msg', 1);
+        } else return redirect()->back()->with('msg', 2);
     }
 }

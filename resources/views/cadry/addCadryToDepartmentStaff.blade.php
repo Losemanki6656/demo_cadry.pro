@@ -38,7 +38,7 @@
 
                         <div class="mb-4">
                             <label>Klassifikatordagi lavozim ko'rinishi</label>
-                            <h6>{{ $depstaff->classification->name_uz }}</h6>
+                            <h6>{{ $depstaff->classification->name_uz ?? '' }}</h6>
                         </div>
 
                         <div class="mb-4">

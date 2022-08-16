@@ -128,6 +128,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/deleteDepStaff', [App\Http\Controllers\ChatController::class, 'deleteDepStaff'])->name('deleteDepStaff');
     Route::get('/editCadryStaff/{id}', [App\Http\Controllers\ChatController::class, 'editCadryStaff'])->name('editCadryStaff');
     Route::get('/StaffCadryEdit/{id}', [App\Http\Controllers\ChatController::class, 'StaffCadryEdit'])->name('StaffCadryEdit');
+    Route::post('/successEditStaffCadry/{id}', [App\Http\Controllers\ChatController::class, 'successEditStaffCadry'])->name('successEditStaffCadry');
 
     //AjaxLoading
     Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');
@@ -135,6 +136,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/loadDepartment', [App\Http\Controllers\ChatController::class, 'loadDepartment'])->name('loadDepartment');
     Route::get('/loadStaff', [App\Http\Controllers\ChatController::class, 'loadStaff'])->name('loadStaff');
     Route::get('/loadRegion', [App\Http\Controllers\ChatController::class, 'loadRegion'])->name('loadRegion');
+    Route::get('/loadVacan', [App\Http\Controllers\ChatController::class, 'loadVacan'])->name('loadVacan');
 
     Route::group(['middleware' => ['can:product-list']], function () {
         Route::get('/cadry/administration/turnicet', [App\Http\Controllers\OrganizationController::class, 'turnicet'])->name('turnicet');

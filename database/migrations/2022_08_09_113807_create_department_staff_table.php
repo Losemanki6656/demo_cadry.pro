@@ -23,6 +23,7 @@ class CreateDepartmentStaffTable extends Migration
             $table->text('staff_full')->nullable();
             $table->double('stavka')->default(1);
             $table->boolean('status')->default(false);
+            $table->boolean('status_decret')->default(false);
             $table->foreign('railway_id')->references('id')->on('railways');
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->foreign('department_id')->references('id')->on('departments');
