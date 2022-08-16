@@ -43,7 +43,13 @@
 
                         <div class="mb-4">
                             <label>Stavka</label>
-                            <h6>{{ $depstaff->stavka }} - <button class="btn btn-outline-success" disabled>Bo'sh ish o'rni - {{ $depstaff->stavka - $depstaff->cadry->sum('stavka') }}</button></h6>
+                            <h6>{{ $depstaff->stavka }} -
+                                @if ($depstaff->stavka > $depstaff->cadry->sum('stavka'))
+                                    <button class="btn btn-outline-success" disabled>Bo'sh ish o'rni -
+                                        {{ $depstaff->stavka - $depstaff->cadry->sum('stavka') }}</button>
+                                @else
+                                    <button class="btn btn-outline-danger" disabled>Bo'sh ish o'rni mavjud emas</button>
+                                @endif
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">

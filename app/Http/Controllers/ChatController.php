@@ -134,7 +134,6 @@ class ChatController extends Controller
     {
         $dep = DepartmentStaff::with('cadry')->find($id);
 
-        if ($request->st_1 + $request->st_2 <= $dep->stavka - $dep->cadry->sum('stavka')) {
             $newItem = new DepartmentCadry();
             $newItem->railway_id = $dep->railway_id;
             $newItem->organization_id = $dep->organization_id;
@@ -142,13 +141,19 @@ class ChatController extends Controller
             $newItem->department_staff_id = $id;
             $newItem->staff_id = $dep->staff_id;
             $newItem->staff_full = $dep->staff_full;
-            $newItem->status_sv = $dep->status;
+            if($dep->stavka <= $dep->cadry->sum('stavka')) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
             $newItem->cadry_id = $request->cadry_id;
             $newItem->stavka = $request->st_1 + $request->st_2;
             $newItem->save();
 
+            $cadr = Cadry::find($request->cadry_id);
+            $cadr->post_name = $dep->staff_full;
+            $cadr->save();
+
             return redirect()->route('addstaffToDepartment', ['id' => $dep->department_id])->with('msg', 1);
-        } else  return redirect()->back()->with('msg', 1);
     }
 
     public function department_staffs($id)
@@ -203,23 +208,8 @@ class ChatController extends Controller
 
     public function loadVacan(Request $request)
     {
-        $deartmentCadry = DepartmentCadry::query()
-            ->select(['department_staff_id', DB::raw('sum(stavka) as stavka')])
-            ->groupBy('department_staff_id');
-
-        $data =  DepartmentStaff::query()
-            ->where('department_id', $request->department_id)
-            ->select([
-                'department_staff.*',
-                DB::raw('cadries.stavka as oth_st')
-            ])
-            ->leftJoinSub($deartmentCadry, 'cadries', function ($join) {
-                $join->on('cadries.department_staff_id', '=', 'department_staff.id');
-            })
-            ->whereRaw('department_staff.stavka > cadries.stavka')
-            ->get();
-
-            //$data = DepartmentCadry::where('department_id', $request->department_id)->get();
+        
+        $data = DepartmentStaff::where('department_id', $request->department_id)->get();
 
         return response()->json($data, 200);
     }
@@ -227,14 +217,19 @@ class ChatController extends Controller
     public function successEditStaffCadry($id, Request $request)
     {
         $newItem = DepartmentCadry::find($id);
-        $editstaff = DepartmentStaff::find($request->staff_id);
+        $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
         if ($request->st_1 + $request->st_2 <= $editstaff->stavka) {
             $newItem->department_id = $request->department_id;
             $newItem->department_staff_id = $request->staff_id;
             $newItem->staff_id = $editstaff->staff_id;
             $newItem->staff_full = $editstaff->staff_full;
-            $newItem->status_sv = $editstaff->status;
+
+            if($editstaff->stavka <= $editstaff->cadry->sum('stavka')) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
+
             $newItem->stavka = $request->st_1 + $request->st_2;
             $newItem->save();
 
@@ -247,5 +242,90 @@ class ChatController extends Controller
 
             return redirect()->back()->with('msg', 1);
         } else return redirect()->back()->with('msg', 2);
+
+         
+    }
+
+    public function editDepStaff($id,Request $request) 
+    {
+        $newItem = DepartmentStaff::find($id);
+        $newItem->stavka = $request->st_1 + $request->st_2;
+        $newItem->save();
+
+        return redirect()->back()->with('msg', 1);
+    }
+
+    public function editcadryStaffStatus($id, Request $request)
+    {
+        $item = DepartmentCadry::find($id);
+        if($request->status_sv == 'on') {
+            $item->status_sv = true;
+        }
+        if($request->status_decret == 'on') {
+            $item->status = true;
+        }
+        $item->save();
+
+         return redirect()->back()->with('msg', 1);
+    }
+
+    public function control()
+    {
+        set_time_limit(5000);
+
+        $cadries = Cadry::where('status_bs',null)->get();
+        $x = 0;
+
+        foreach ( $cadries as $item) {
+            $y = DepartmentStaff::where('department_id',$item->department_id)->where('staff_id',$item->staff_id)->get();
+            if(count($y) < 1 )
+             {
+                $x ++;
+                $newItem = new DepartmentStaff();
+                $newItem->railway_id = $item->railway_id;
+                $newItem->organization_id = $item->organization_id;
+                $newItem->department_id = $item->department_id;
+                $newItem->staff_id = $item->staff_id;
+                $newItem->staff_full = $item->post_name;
+                $newItem->stavka = (double)$item->stavka;
+                $newItem->save();
+
+                $newStaff = new DepartmentCadry();
+                $newStaff->railway_id = $item->railway_id;
+                $newStaff->organization_id = $item->organization_id;
+                $newStaff->department_id = $item->department_id;
+                $newStaff->department_staff_id = $newItem->id;
+                $newStaff->staff_id = $item->staff_id;
+                $newStaff->cadry_id = $item->id;
+                $newStaff->stavka = (double)$item->stavka;
+                $newStaff->staff_full = $item->post_name;
+                $newStaff->save();
+
+                $item->status_bs = 1;
+                $item->save();
+            } else {
+                $x ++;
+                $newItem = DepartmentStaff::find($y[0]->id);
+                $newItem->stavka = $y[0]->stavka + (double)$item->stavka;
+                $newItem->save();
+
+                $newStaff = new DepartmentCadry();
+                $newStaff->railway_id = $item->railway_id;
+                $newStaff->organization_id = $item->organization_id;
+                $newStaff->department_id = $item->department_id;
+                $newStaff->department_staff_id = $newItem->id;
+                $newStaff->staff_id = $item->staff_id;
+                $newStaff->cadry_id = $item->id;
+                $newStaff->stavka = (double)$item->stavka;
+                $newStaff->staff_full = $item->post_name;
+                $newStaff->save();
+
+                $item->status_bs = 1;
+                $item->save();
+            }
+        }
+
+        dd($x);
+
     }
 }

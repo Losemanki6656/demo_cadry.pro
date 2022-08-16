@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="table-responsive mt-1">
-                        <table class="table table-bordered table-striped table-sm">
+                        <table class="table table-bordered table-striped table-centered align-middle table-sm">
                             <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center fw-bold">#</th>
@@ -97,7 +97,8 @@
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
                                         <td class="text-center fw-bold">
-                                             <span class="text-success">{{ $a[$department->id] }}</span> + <span class="text-danger">{{ $b[$department->id] }}</span>
+                                            <span class="text-success">{{ $a[$department->id] }}</span> +
+                                            <span class="text-danger">{{ $b[$department->id] }}</span>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
@@ -112,15 +113,15 @@
                                                     {{ $a[$department->id] - $c[$department->id] }}
                                                 </button>
                                             @endif
-                                            @if ($b[$department->id] > $d[$department->id])
+                                            @if ($b[$department->id])
                                                 <button class="btn btn-danger btn-sm">
-                                                    {{ $b[$department->id] - $d[$department->id] }}
+                                                    {{ $b[$department->id] }}
                                                 </button>
                                             @endif
 
                                         </td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->departmentcadry->count() }}
+                                            {{ $department->cadries->count() }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button"

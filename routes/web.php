@@ -129,6 +129,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/editCadryStaff/{id}', [App\Http\Controllers\ChatController::class, 'editCadryStaff'])->name('editCadryStaff');
     Route::get('/StaffCadryEdit/{id}', [App\Http\Controllers\ChatController::class, 'StaffCadryEdit'])->name('StaffCadryEdit');
     Route::post('/successEditStaffCadry/{id}', [App\Http\Controllers\ChatController::class, 'successEditStaffCadry'])->name('successEditStaffCadry');
+    Route::post('/editDepStaff/{id}', [App\Http\Controllers\ChatController::class, 'editDepStaff'])->name('editDepStaff');
+    Route::post('/editcadryStaffStatus/{id}', [App\Http\Controllers\ChatController::class, 'editcadryStaffStatus'])->name('editcadryStaffStatus');
+
+    
+    Route::get('/control', [App\Http\Controllers\ChatController::class, 'control'])->name('control');
 
     //AjaxLoading
     Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');

@@ -48,9 +48,9 @@
                             </select>
                         </div>
 
-                        <div class="d-flex flex-wrap align-items-center mb-4">
+                        <div class="mb-4">
                             <label>Lavozimni tanlang</label>
-                            <select name="staff_id" id="staff_id" class="form-control" required>
+                            <select name="staff_id" id="staff_id" style="width: 100%" class="js-example-basic-single staff" required>
 
                             </select>
                         </div>
@@ -209,8 +209,7 @@
                                 console.log(len);
                                 var id = data[i].id;
                                 var name = data[i].staff_full;
-                                var stavka = data[i].stavka - data[i].oth_st;
-                                var option = "<option value='" + id + "'>" + stavka + " - " + name +
+                                var option = "<option value='" + id + "'>"  + id + " - " + name +
                                     "</option>";
                                 $("#staff_id").append(option);
                             }

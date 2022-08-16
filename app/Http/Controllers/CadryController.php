@@ -148,34 +148,26 @@ class CadryController extends Controller
         ->when(\Request::input('search'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
-        })->with(['cadries','departmentstaff'])->paginate(10, ['*'], 'page', $page);
+        })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
 
         $a = []; $b = []; $c = []; $d = [];
         foreach ($departments as $item)
         {
-            $x = $item->departmentstaff->where('status',false);
+            $x = $item->departmentstaff;
             $a[$item->id] = $x->sum('stavka');
-            $y = $item->departmentstaff->where('status',true);
+            $y = $item->departmentcadry->where('status_sv',true);
             $b[$item->id] = $y->sum('stavka');
 
-            $z = 0;
-            foreach($x as $i) {
-                $z = $z + $i->cadry->sum('stavka');
-            }
-            $c[$item->id] = $z;
-            $z = 0;
-            foreach($y as $k) {
-                $z = $z + $k->cadry->sum('stavka');
-            }
-            $d[$item->id] = $z;
+            $z = $item->departmentcadry->where('status_sv',false);
+            $c[$item->id] = $z->sum('stavka');
+
         }
 
         return view('cadry.departments',[
             'departments' => $departments,
             'a' => $a,
             'b' => $b,
-            'c' => $c,
-            'd' => $d,
+            'c' => $c
         ]);
     }
 
