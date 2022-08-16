@@ -271,9 +271,9 @@ class ChatController extends Controller
 
     public function control()
     {
-        set_time_limit(5000);
+        set_time_limit(7000);
 
-        $cadries = Cadry::where('status_bs',null)->get();
+        $cadries = Cadry::where('status',true)->where('status_bs',null)->get();
         $x = 0;
 
         foreach ( $cadries as $item) {
