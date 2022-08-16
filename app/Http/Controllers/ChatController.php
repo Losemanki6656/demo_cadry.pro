@@ -271,6 +271,12 @@ class ChatController extends Controller
 
     public function control()
     {
+       
+
+    }
+
+    public function xx()
+    {
         set_time_limit(7000);
 
         $cadries = Cadry::where('status',true)->where('status_bs',null)->get();
@@ -326,6 +332,5 @@ class ChatController extends Controller
         }
 
         dd($x);
-
     }
 }
