@@ -121,7 +121,7 @@
 
                                         </td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->cadries->count() }}
+                                            {{ $department->cadries->where('status',true)->count() }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button"
