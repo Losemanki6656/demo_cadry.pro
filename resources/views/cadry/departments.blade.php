@@ -29,19 +29,26 @@
             <div class="card">
                 <div class="card-body">
 
-                    <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
                                 <form action="{{ route('departments') }}" method="get">
-                                    <div class="dataTables_length" id="datatable_length">
-                                        <label><input type="search" class="form-control form-control"
-                                                placeholder="Search ..." name="search"
-                                                value="{{ request()->query('search') }}"></label>
+                                    <div class="dataTables_length">
+                                        <label>
+                                            <input type="search" class="form-control form-control" placeholder="Search ..."
+                                                name="search" value="{{ request()->query('search') }}">
+                                        </label>
+                                        <label class="align-middle">
+                                            <button type="button" class="btn btn-success btn-sm">Bo'sh ish o'rinlari - {{ $all }}</button>
+                                            <button type="button" class="btn btn-danger btn-sm">Ortiqcha ish o'rinlari - {{ $allSv }}</button>
+                                           
+                                        </label>
                                     </div>
                                 </form>
+
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <div id="datatable_filter" class="dataTables_filter">
+                                <div class="dataTables_filter">
                                     <button type="button" class="btn btn-primary w-sm waves-effect waves-ligh"
                                         data-bs-toggle="modal" data-bs-target="#adddepartment">
                                         <i class="bx bx-plus font-size-16 align-middle me-2"></i> Bo'lim qo'shish
@@ -102,8 +109,8 @@
                                         <td class="text-center">
                                             <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
                                                 type="button" class="btn btn-primary " data-bs-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Ish o'rni yaratish">
-                                                <i class="bx bx-plus font-size-14 align-middle"></i>
+                                                data-bs-placement="bottom" title="Ish o'rinlarini ko'rish">
+                                                <i class="fa fa-eye align-middle"></i>
                                             </a>
                                         </td>
                                         <td class="text-center fw-bold">
@@ -120,7 +127,7 @@
 
                                         </td>
                                         <td class="text-center fw-bold">
-                                            {{ $department->cadries->where('status',true)->count() }}
+                                            {{ $department->cadries->where('status', true)->count() }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button"

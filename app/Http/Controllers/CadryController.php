@@ -163,11 +163,16 @@ class CadryController extends Controller
 
         }
 
+        $all = array_sum($a) - array_sum($c);
+        $allSv = array_sum($b);
+
         return view('cadry.departments',[
             'departments' => $departments,
             'a' => $a,
             'b' => $b,
-            'c' => $c
+            'c' => $c,
+            'all' => $all,
+            'allSv' => $allSv
         ]);
     }
 
