@@ -278,6 +278,10 @@ class ChatController extends Controller
         } else $item->status = false;
         $item->save();
 
+        $cadry = Cadry::find($item->cadry_id);
+        $cadry->department_id = $item->department_id;
+        $cadry->save();
+
          return redirect()->back()->with('msg', 1);
     }
 

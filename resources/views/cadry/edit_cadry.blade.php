@@ -278,12 +278,13 @@
                                     <table class="table table-borderless">
                                         <thead>
                                             <tr>
-                                                <th width="220px">Passport berilgan sanasi</th>
+                                                <th width="150px">Passport berilgan sanasi</th>
                                                 <th width="220px">Passport ma'lumotlari</th>
                                                 <th width="250px">JSHSHIR</th>
                                                 <th width="130px">Jinsi</th>
                                                 <th width="220px">Tel raqami</th>
                                                 <th width="200px">Xizmat darajasi</th>
+                                                <th width="150px">Qachondan beri ishlaydi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -328,6 +329,11 @@
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
+                                                
+                                                <td>
+                                                    <input type="date" class="form-control"
+                                                        value="{{ $cadry->job_date }}" name="job_date" required>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -341,7 +347,6 @@
                                         <thead>
                                             <tr>
                                                 <th width="200px">Lavozim sanasi</th>
-                                                <th width="200px">Qachondan beri ishlaydi</th>
                                                 <th>Lavozimi</th>
                                             </tr>
                                         </thead>
@@ -350,10 +355,6 @@
                                                 <td>
                                                     <input type="date" class="form-control"
                                                         value="{{ $cadry->post_date }}" name="post_date" required>
-                                                </td>
-                                                <td>
-                                                    <input type="date" class="form-control"
-                                                        value="{{ $cadry->job_date }}" name="job_date" required>
                                                 </td>
                                                 <td>
                                                     <input readonly class="form-control" value="{{ implode(',', $a) }}">
