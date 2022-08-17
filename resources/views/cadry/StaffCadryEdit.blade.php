@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="col">
                                     <span>Lavozim sanasi</span>
-                                    <input type="date" name="staff_date" class="form-control">
+                                    <input type="date" name="staff_date" class="form-control" required>
                                 </div>
                             </div>
                         </div>
