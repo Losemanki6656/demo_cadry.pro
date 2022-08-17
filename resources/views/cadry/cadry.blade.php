@@ -19,136 +19,96 @@
 
     <div class="card">
         <div class="card-body">
+            <form action="{{ route('cadry') }}" method="get" id="myfilter">
+                @csrf
+                <div class="dataTables_wrapper dt-bootstrap4 no-footer mb-2">
+                    <div class="row mb-2">
 
-            <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer mb-2">
-                <div class="row mb-2">
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0">FIO</label>
-                        <input type="search" id="name_se" class="form-control" placeholder="Search ..."
-                            value="{{ request('name_se') }}" name="name_se" value="{{ request()->query('search') }}">
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Lavozimi</label>
-                        <select class="js-example-basic-single staff" style="width: 100%" id="staff_se" name="staff_se">
-                            <option value=""> --Barchasi--</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Ma'lumoti </label>
-                        <select class="form-select" style="width: 100%" id="education_se" name="education_se">
-                            <option value="">--Barchasi--</option>
-                            <option value="1" @if (1 == request('education_se')) selected @endif>Oliy</option>
-                            <option value="3" @if (3 == request('education_se')) selected @endif>O'rta-maxsus</option>
-                            <option value="4" @if (4 == request('education_se')) selected @endif>O'rta</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Viloyati</label>
-                        <select class="js-example-basic-single region" style="width: 100%" id="region_se" name="region_se">
-                            <option value=""> --Barchasi-- </option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Yoshi</label>
-                        <div class="input-daterange input-group" data-provide="datepicker">
-                            <input type="number" class="form-control" placeholder="Start Date" id="start_se"
-                                name="start_se" value="{{ request('start_se') }}" />
-                            <input type="number" class="form-control" placeholder="End Date" id="end_se" name="end_se"
-                                value="{{ request('end_se') }}" />
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0">FIO</label>
+                            <input type="search" id="name_se" class="form-control" placeholder="Search ..."
+                                value="{{ request('name_se') }}" name="name_se">
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Lavozimi</label>
+                            <select class="js-example-basic-single staff" style="width: 100%" id="staff_se"
+                                name="staff_se">
+                                <option value=""> --Barchasi--</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Ma'lumoti </label>
+                            <select class="form-select" style="width: 100%" id="education_se" name="education_se">
+                                <option value="">--Barchasi--</option>
+                                <option value="1" @if (1 == request('education_se')) selected @endif>Oliy</option>
+                                <option value="3" @if (3 == request('education_se')) selected @endif>O'rta-maxsus
+                                </option>
+                                <option value="4" @if (4 == request('education_se')) selected @endif>O'rta</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Viloyati</label>
+                            <select class="js-example-basic-single region" style="width: 100%" id="region_se"
+                                name="region_se">
+                                <option value=""> --Barchasi-- </option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Yoshi</label>
+                            <div class="input-daterange input-group" data-provide="datepicker">
+                                <input type="number" class="form-control" placeholder="Start Date" id="start_se"
+                                    name="start_se" value="{{ request('start_se') }}" />
+                                <input type="number" class="form-control" placeholder="End Date" id="end_se"
+                                    name="end_se" value="{{ request('end_se') }}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Bo'limlar</label>
+                            <select class="js-example-basic-single department" style="width: 100%" id="department_se"
+                                name="department_se">
+                                <option value=""> --Barchasi-- </option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Bo'limlar</label>
-                        <select class="js-example-basic-single department" style="width: 100%" id="department_se"
-                            name="department_se">
-                            <option value=""> --Barchasi-- </option>
-                        </select>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Jinsi</label>
+                            <select class="form-select" style="width: 100%" id="sex_se" name="sex_se">
+                                <option value="">--Barchasi--</option>
+                                <option value="true" @if ('true' == request('sex_se')) selected @endif>Erkak</option>
+                                <option value="false" @if ('false' == request('sex_se')) selected @endif>Ayol</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> Ta'til</label>
+                            <select class="form-select" style="width: 100%" id="vacation_se" name="vacation_se">
+                                <option value="">--Barchasi--</option>
+                                <option value="1">Bs</option>
+                                <option value="0">Mehnat ta'tili</option>
+                                <option value="0">Bola parvarishi</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> </label>
+                            <a href="{{ route('export_excel') }}" type="button"
+                                class="btn btn-success waves-effect btn-label waves-light" style="width: 100%"><i
+                                    class="bx bxs-file label-icon"></i> Export</a>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <label class="mb-0"> </label>
+                            <a href="{{ route('addworker') }}" type="button"
+                                class="btn btn-primary waves-effect btn-label waves-light" style="width: 100%"><i
+                                    class="bx bx-plus label-icon"></i> Xodim qo'shish</a>
+                        </div>
+
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Jinsi</label>
-                        <select class="form-select" style="width: 100%" id="sex_se" name="sex_se">
-                            <option value="">--Barchasi--</option>
-                            <option value="true" @if ('true' == request('sex_se')) selected @endif>Erkak</option>
-                            <option value="false" @if ('false' == request('sex_se')) selected @endif>Ayol</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> Ta'til</label>
-                        <select class="form-select" style="width: 100%" id="vacation_se" name="vacation_se">
-                            <option value="">--Barchasi--</option>
-                            <option value="1">Bs</option>
-                            <option value="0">Mehnat ta'tili</option>
-                            <option value="0">Bola parvarishi</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> </label>
-                        <a href="{{ route('export_excel') }}" type="button"
-                            class="btn btn-success waves-effect btn-label waves-light" style="width: 100%"><i
-                                class="bx bxs-file label-icon"></i> Export</a>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-2">
-                        <label class="mb-0"> </label>
-                        <a href="{{ route('addworker') }}" type="button"
-                            class="btn btn-primary waves-effect btn-label waves-light" style="width: 100%"><i
-                                class="bx bx-plus label-icon"></i> Xodim qo'shish</a>
-                    </div>
+            </form>
 
-                </div>
-            </div>
-            @push('scripts')
-                <script>
-                    function myFilter() {
-                        let name_se = $('#name_se').val();
-                        let staff_se = $('#staff_se').val();
-                        let education_se = $('#education_se').val();
-                        let region_se = $('#region_se').val();
-                        let start_se = $('#start_se').val();
-                        let end_se = $('#end_se').val();
-                        let department_se = $('#department_se').val();
-                        let sex_se = $('#sex_se').val();
-                        let vacation_se = $('#vacation_se').val();
-
-                        let url = '{{ route('cadry') }}';
-                        window.location.href = `${url}?
-                                name_se=${name_se}&
-                                staff_se=${staff_se}&
-                                education_se=${education_se}&
-                                region_se=${region_se}&
-                                start_se=${start_se}&
-                                end_se=${end_se}&
-                                department_se=${department_se}&
-                                sex_se=${sex_se}&
-                                vacation_se=${vacation_se}&`;
-                    }
-                    $('#name_se').keyup(function(e) {
-                        if (e.keyCode == 13) {
-                            myFilter();
-                        }
-                    })
-                    $('#staff_se').change(function(e) {
-                        myFilter();
-                    })
-                    $('#education_se').change(function(e) {
-                        myFilter();
-                    })
-                    $('#region_se').change(function(e) {
-                        myFilter();
-                    })
-                    $('#department_se').change(function(e) {
-                        myFilter();
-                    })
-                    $('#sex_se').change(function(e) {
-                        myFilter();
-                    })
-                </script>
-            @endpush
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
@@ -157,7 +117,7 @@
                                 <tr>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.no') }}</th>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.photo') }}</th>
-                                    <th class="text-center fw-bold">{{ __('messages.fio') }}</th>
+                                    <th class="text-center fw-bold" width="350px">{{ __('messages.fio') }}</th>
                                     <th class="text-center fw-bold">{{ __('messages.staff') }}</th>
                                     <th width="130px" class="text-center fw-bold">{{ __('messages.action') }}</th>
                                 </tr>
@@ -174,7 +134,7 @@
                                                         {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
                                                     @endif
                                                 @else
-                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
+                                                    {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
                                                 @endif
                                             </td>
                                             <td class="text-center">
@@ -199,7 +159,7 @@
                                                     <i class=" bx bxs-file-doc font-size-16 align-middle"></i></a>
 
                                                 <div class="btn-group" role="group">
-                                                    <button id="btnGroupDrop1" type="button"
+                                                    <button type="button"
                                                         class="btn btn-soft-dark dropdown-toggle"
                                                         data-bs-toggle="dropdown">
                                                         <i class="bx bx-filter font-size-16 align-middle"></i>
@@ -208,18 +168,24 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bs-toggle="modal"
                                                                 data-bs-target="#vacation{{ $item->id }}"
-                                                                type="button" class="dropdown-item fw-bold text-success"><i class="fa fa-plus"></i> Mehnat
+                                                                type="button"
+                                                                class="dropdown-item fw-bold text-success"><i
+                                                                    class="fa fa-plus"></i> Mehnat
                                                                 ta'tili</a></li>
                                                         <li>
                                                             @if ($item->sex == 0)
                                                                 <a href="{{ route('decret_cadry', ['id' => $item->id]) }}"
                                                                     type="button"
-                                                                    class="dropdown-item fw-bold text-primary"><i class="fa fa-plus"></i> Bola
+                                                                    class="dropdown-item fw-bold text-primary"><i
+                                                                        class="fa fa-plus"></i> Bola
                                                                     parvarish ta'tili</a>
                                                             @endif
                                                         </li>
-                                                        <li><a href="{{ route('editCadryStaff',['id' => $item->id]) }}" 
-                                                            type="button" class="dropdown-item fw-bold text-danger"><i class="fa fa-edit"></i> Lavozimni o'zgartirish </a></li>
+                                                        <li><a href="{{ route('editCadryStaff', ['id' => $item->id]) }}"
+                                                                type="button"
+                                                                class="dropdown-item fw-bold text-danger"><i
+                                                                    class="fa fa-edit"></i> Lavozimni o'zgartirish </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -274,7 +240,7 @@
                     </div>
                 </div>
             </div>
-            <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                         @if (count($cadries) > 9)
@@ -298,7 +264,34 @@
             </div>
         </div>
     </div>
-
+    @push('scripts')
+        <script>
+            function myFilter() {
+                var form = document.getElementById("myfilter");
+                form.submit();
+            }
+            $('#name_se').keyup(function(e) {
+                if (e.keyCode == 13) {
+                    myFilter();
+                }
+            })
+            $('#staff_se').change(function(e) {
+                myFilter();
+            })
+            $('#education_se').change(function(e) {
+                myFilter();
+            })
+            $('#region_se').change(function(e) {
+                myFilter();
+            })
+            $('#department_se').change(function(e) {
+                myFilter();
+            })
+            $('#sex_se').change(function(e) {
+                myFilter();
+            })
+        </script>
+    @endpush
     <table>
         <tbody>
             <tr>

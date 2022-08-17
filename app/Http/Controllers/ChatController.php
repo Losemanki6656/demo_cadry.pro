@@ -272,10 +272,10 @@ class ChatController extends Controller
         $item->stavka = $request->st_1 + $request->st_2;
         if($request->status_sv == 'on') {
             $item->status_sv = true;
-        }
+        } else $item->status_sv = false;
         if($request->status_decret == 'on') {
             $item->status = true;
-        }
+        } else $item->status = false;
         $item->save();
 
          return redirect()->back()->with('msg', 1);
