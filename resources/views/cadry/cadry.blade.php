@@ -157,7 +157,6 @@
                                                     class="btn btn-soft-primary" data-bs-toggle="tooltip"
                                                     data-bs-placement="bottom" title="Yuklab olish">
                                                     <i class=" bx bxs-file-doc font-size-16 align-middle"></i></a>
-
                                                 <div class="btn-group" role="group">
                                                     <button type="button"
                                                         class="btn btn-soft-dark dropdown-toggle"

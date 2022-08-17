@@ -58,6 +58,21 @@
                             </select>
                         </div>
                         <div class="mb-4">
+                            <div class="row">
+                                <div class="col">
+                                    <h5> Ish faoliyati turi </h5>
+                                    <select name="staff_status" class="form-select">
+                                        <option value="0">Asosiy</option>
+                                        <option value="1">O'rindosh</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <h5> Lavozim sanasi</h5>
+                                    <input type="date" name="staff_date" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
                             <h5 class="card-title me-2">Stavka</h5>
                             <div class="row">
                                 <div class="col">
@@ -191,8 +206,8 @@
             @if (\Session::has('msg'))
                 @if (Session::get('msg') == 1)
                     Swal.fire({
-                        title: "Amalga oshirilmadi",
-                        text: "Xodimning stavkasi amaldagi bo'sh lavozim stavkasiga to'gri kelmadi!",
+                        title: "Xatolik",
+                        text: "Ushbu xodimda asosiy ish faoliyati mavjud!",
                         icon: "warning",
                         confirmButtonColor: "#1c84ee"
                     });

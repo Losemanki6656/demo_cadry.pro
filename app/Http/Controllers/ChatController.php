@@ -132,6 +132,11 @@ class ChatController extends Controller
 
     public function addCadryToDepartmentStaff($id, Request $request)
     {
+        //dd($request->all());
+        
+        $all = DepartmentCadry::where('cadry_id',$request->cadry_id)->where('staff_status',false)->get();
+        if(count($all) && $request->staff_status == 0)  return redirect()->back()->with('msg', 1);
+
         $dep = DepartmentStaff::with('cadry')->find($id);
 
             $newItem = new DepartmentCadry();
@@ -141,7 +146,9 @@ class ChatController extends Controller
             $newItem->department_staff_id = $id;
             $newItem->staff_id = $dep->staff_id;
             $newItem->staff_full = $dep->staff_full;
-            if($dep->stavka <= $dep->cadry->sum('stavka')) 
+            $newItem->staff_date = $request->staff_date;
+            $newItem->staff_status = $request->staff_status;
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->st_1 + $request->st_2) 
                 $newItem->status_sv = true; 
             else
                 $newItem->status_sv = false;
@@ -288,65 +295,20 @@ class ChatController extends Controller
     public function control()
     {
        
+        set_time_limit(7000);
 
+        $cadries = DepartmentCadry::with('cadry')->get();
+        $x = 0;
+        foreach ( $cadries as $item) {
+            $x ++ ;
+            $item->staff_date = $item->cadry->post_date;
+            $item->save();
+        }
+        dd($x);
     }
 
     public function xx()
     {
-        set_time_limit(7000);
-
-        $cadries = Cadry::where('status',true)->where('status_bs',null)->get();
-        $x = 0;
-
-        foreach ( $cadries as $item) {
-            $y = DepartmentStaff::where('department_id',$item->department_id)->where('staff_id',$item->staff_id)->get();
-            if(count($y) < 1 )
-             {
-                $x ++;
-                $newItem = new DepartmentStaff();
-                $newItem->railway_id = $item->railway_id;
-                $newItem->organization_id = $item->organization_id;
-                $newItem->department_id = $item->department_id;
-                $newItem->staff_id = $item->staff_id;
-                $newItem->staff_full = $item->post_name;
-                $newItem->stavka = (double)$item->stavka;
-                $newItem->save();
-
-                $newStaff = new DepartmentCadry();
-                $newStaff->railway_id = $item->railway_id;
-                $newStaff->organization_id = $item->organization_id;
-                $newStaff->department_id = $item->department_id;
-                $newStaff->department_staff_id = $newItem->id;
-                $newStaff->staff_id = $item->staff_id;
-                $newStaff->cadry_id = $item->id;
-                $newStaff->stavka = (double)$item->stavka;
-                $newStaff->staff_full = $item->post_name;
-                $newStaff->save();
-
-                $item->status_bs = 1;
-                $item->save();
-            } else {
-                $x ++;
-                $newItem = DepartmentStaff::find($y[0]->id);
-                $newItem->stavka = $y[0]->stavka + (double)$item->stavka;
-                $newItem->save();
-
-                $newStaff = new DepartmentCadry();
-                $newStaff->railway_id = $item->railway_id;
-                $newStaff->organization_id = $item->organization_id;
-                $newStaff->department_id = $item->department_id;
-                $newStaff->department_staff_id = $newItem->id;
-                $newStaff->staff_id = $item->staff_id;
-                $newStaff->cadry_id = $item->id;
-                $newStaff->stavka = (double)$item->stavka;
-                $newStaff->staff_full = $item->post_name;
-                $newStaff->save();
-
-                $item->status_bs = 1;
-                $item->save();
-            }
-        }
-
-        dd($x);
+        
     }
 }
