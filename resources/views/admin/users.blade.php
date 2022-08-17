@@ -32,7 +32,7 @@
                     <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
-                                <form action="{{ route('sessions') }}" method="get">
+                                <form action="{{ route('users') }}" method="get">
                                     <div class="dataTables_length" id="datatable_length">
                                         <label><input type="search" class="form-control form-control"
                                                 placeholder="Search ..." name="search"
@@ -63,8 +63,12 @@
                                         <td>{{ $item->userorganization->organization->name ?? ''}}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>
-                                           @if (Auth::user()->id ==1 )
-                                               
+                                           @if (Auth::user()->id == 1 ||  Auth::user()->id == 239)
+                                               @if ($item->userorganization->post_id == 1)
+                                                   user12345
+                                               @else
+                                                   {{ $item->userorganization->post_id }}
+                                               @endif
                                            @else
                                                Password
                                            @endif

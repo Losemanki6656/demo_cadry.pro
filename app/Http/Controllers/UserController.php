@@ -91,7 +91,12 @@ class UserController extends Controller
 
     public function users()
     {
-        $users = User::whereNotIn('id',[1,3])->with(['userorganization','userorganization.organization'])->paginate(15);
+        $users = User::query()
+        ->when(\Request::input('search'),function($query,$search){
+            $query
+            ->where('email','like','%'.$search.'%');
+        })->
+        whereNotIn('id',[1,3])->with(['userorganization','userorganization.organization'])->paginate(15);
     
         return view('admin.users',[
             'users' => $users
