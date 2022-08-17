@@ -145,9 +145,9 @@ class ChatController extends Controller
                 $newItem->status_sv = true; 
             else
                 $newItem->status_sv = false;
-            $newItem->cadry_id = $request->cadry_id;
-            $newItem->stavka = $request->st_1 + $request->st_2;
-            $newItem->save();
+                $newItem->cadry_id = $request->cadry_id;
+                $newItem->stavka = $request->st_1 + $request->st_2;
+                $newItem->save();
 
             $cadr = Cadry::find($request->cadry_id);
             $cadr->post_name = $dep->staff_full;
@@ -249,8 +249,19 @@ class ChatController extends Controller
     public function editDepStaff($id,Request $request) 
     {
         $newItem = DepartmentStaff::find($id);
+        $newItem->staff_full = $request->staff_full;
         $newItem->stavka = $request->st_1 + $request->st_2;
         $newItem->save();
+
+        $cadries = DepartmentCadry::where('department_staff_id',$id)->get();
+        foreach($cadries as $item) {
+            $item->staff_full = $request->staff_full;
+            $item->save();
+
+            $cadry = Cadry::find($item->cadry_id);
+            $cadry->post_name = $request->staff_full;
+            $cadry->save();
+        }
 
         return redirect()->back()->with('msg', 1);
     }

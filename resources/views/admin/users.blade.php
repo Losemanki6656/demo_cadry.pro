@@ -63,7 +63,11 @@
                                         <td>{{ $item->userorganization->organization->name ?? ''}}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>
-                                            Password
+                                           @if (Auth::user()->id ==1 )
+                                               
+                                           @else
+                                               Password
+                                           @endif
                                         </td>
                                     </tr>
                                 @endforeach

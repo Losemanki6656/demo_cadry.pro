@@ -86,6 +86,10 @@
                                                             {{ $ds->staff->name }}
                                                         </div>
                                                         <div class="mb-3">
+                                                            <h5 class="fw-bold">Lavozim to'liq nomi </h5>
+                                                            <textarea name="staff_full" class="form-control">{{$ds->staff_full}}</textarea>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <h5 class="fw-bold">Stavka:<h5>
                                                                     <div class="row">
                                                                         <div class="col">
