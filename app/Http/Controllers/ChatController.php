@@ -258,6 +258,7 @@ class ChatController extends Controller
     public function editcadryStaffStatus($id, Request $request)
     {
         $item = DepartmentCadry::find($id);
+        $item->stavka = $request->st_1 + $request->st_2;
         if($request->status_sv == 'on') {
             $item->status_sv = true;
         }

@@ -972,9 +972,6 @@ class CadryController extends Controller
 
     public function cadry_statistics()
     {
-     
-            $staffs = Staff::OrgFilter()->get();
-
             $all = Cadry::OrgFilter()->count();
             $man = Cadry::OrgFilter()->where('sex',1)->count();
             $woman = $all - $man;
@@ -983,9 +980,6 @@ class CadryController extends Controller
             $decret =  Cadry::OrgFilter()->where('status_dec',1)->count();
             $med =  Cadry::OrgFilter()->where('status_med',1)->count();
             $bs =  Cadry::OrgFilter()->where('status_bs',1)->count();
-
-            $vakant = 0;
-            $sverx = 0;
 
             $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1977-01-01')->count();
@@ -1005,17 +999,25 @@ class CadryController extends Controller
             $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
 
-            $y = 0; $z = 0;
-            foreach ( $staffs as $staf) {
-                $y = $y + (int)$staf->staff_count;
-                $x = $staf->cadries->count();
-                $z = $z + $x;
-                if( $x <= (int)$staf->staff_count)  {
-                    $vakant = $vakant + (int)$staf->staff_count - $x; 
-                }
-                    else
-                        $sverx = $sverx + $x - (int)$staf->staff_count;
-            } 
+            $departments = Department::
+            where('organization_id', Auth::user()->userorganization->organization_id)
+            ->with(['cadries','departmentstaff','departmentcadry'])->get();
+
+            $a = []; $b = []; $c = [];
+            foreach ($departments as $item)
+            {
+                $x = $item->departmentstaff;
+                $a[$item->id] = $x->sum('stavka');
+                $y = $item->departmentcadry->where('status_sv',true);
+                $b[$item->id] = $y->sum('stavka');
+
+                $z = $item->departmentcadry->where('status_sv',false);
+                $c[$item->id] = $z->sum('stavka');
+
+            }
+
+            $vakant = array_sum($a) - array_sum($c);
+            $sverx = array_sum($b);
 
         return view('cadry.statistics', [
             'decret' => $decret,
@@ -1029,7 +1031,6 @@ class CadryController extends Controller
             'cadry30' => $cadry30,
             'vakant' => $vakant,
             'sverx' => $sverx,
-            'staffs' => $staffs,
             'dog' => $dog,
             'birthdays' => $birthdays->count(),
             'newcadries' => $newcadries->count(),

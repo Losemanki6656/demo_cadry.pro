@@ -111,7 +111,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Bo'sh ish o'rinlari</span>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Bo'sh va ortiqcha ish o'rinlari</span>
                             <h5 class="mb-3">
                                 Vakant-<span class="counter-value text-primary fw-bold"
                                     data-target="{{ $vakant }}">0</span>;
@@ -119,8 +119,8 @@
                                     data-target="{{ $sverx }}">0</span>
                             </h5>
                             <div class="text-nowrap">
-                                <span class="ms-1 text-muted font-size-13">Shtat lavozimlari</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $staffs->count() }}
+                                <span class="ms-1 text-muted font-size-13">Umumiy xodimlar</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $all }}
                                     ta</span>
                             </div>
                         </div>
