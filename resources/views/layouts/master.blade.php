@@ -276,6 +276,12 @@
                               </a>
                             </li>
                             <li>
+                                <a href="{{route('vacations')}}">
+                                    <i data-feather="bar-chart-2"></i>
+                                    <span data-key="t-dashboard">Ta'tillar</span>
+                                </a>
+                              </li>
+                            <li>
                                 <a href="{{route('regions')}}">
                                     <i data-feather="bar-chart-2"></i>
                                     <span data-key="t-dashboard">{{ __('messages.regions') }}</span>

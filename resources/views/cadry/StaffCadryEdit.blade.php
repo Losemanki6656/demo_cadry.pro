@@ -45,145 +45,41 @@
                             <label>Bo'linmani tanlang</label>
                             <select class="js-example-basic-single department" name="department_id" id="department_id"
                                 style="width: 100%" required>
+                                <option value="{{ $item->department_id }}">{{ $item->department->name }}</option>
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label>Lavozimni tanlang</label>
-                            <select name="staff_id" id="staff_id" style="width: 100%" class="js-example-basic-single staff" required>
-
+                            <select name="staff_id" id="staff_id" style="width: 100%" class="js-example-basic-single staff"
+                                required>
+                                @foreach ($staffs as $staff)
+                                    <option value="{{ $staff->id }}" @if ($item->department_staff_id == $staff->id) selected @endif>
+                                        {{ $staff->id }} - {{ $staff->staff_full }}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <div class="row">
                                 <div class="col">
-                                    <span>Stavka (butun)</span>
-                                    <select class="form-select" name="st_1">
-                                        <option value="1">1</option>
-                                        <option value="0">0</option>
-                                    </select>
+                                    <span>Stavka</span>
+                                    <input type="number" name="st_1" value="{{ $item->stavka }}" class="form-control"
+                                        step="0.01">
                                 </div>
-                                <div class="col">
-                                    <span>Stavka(qo'shimcha)</span>
-                                    <select class="form-select" name="st_2">
-                                        <option value="0">.00</option>
-                                        <option value="0.01">.01</option>
-                                        <option value="0.02">.02</option>
-                                        <option value="0.03">.03</option>
-                                        <option value="0.04">.04</option>
-                                        <option value="0.05">.05</option>
-                                        <option value="0.06">.06</option>
-                                        <option value="0.07">.07</option>
-                                        <option value="0.08">.08</option>
-                                        <option value="0.09">.09</option>
-                                        <option value="0.1">.1</option>
-                                        <option value="0.11">.11</option>
-                                        <option value="0.12">.12</option>
-                                        <option value="0.13">.13</option>
-                                        <option value="0.14">.14</option>
-                                        <option value="0.15">.15</option>
-                                        <option value="0.16">.16</option>
-                                        <option value="0.17">.17</option>
-                                        <option value="0.18">.18</option>
-                                        <option value="0.19">.19</option>
-                                        <option value="0.2">.2</option>
-                                        <option value="0.21">.21</option>
-                                        <option value="0.22">.22</option>
-                                        <option value="0.23">.23</option>
-                                        <option value="0.24">.24</option>
-                                        <option value="0.25">.25</option>
-                                        <option value="0.26">.26</option>
-                                        <option value="0.27">.27</option>
-                                        <option value="0.28">.28</option>
-                                        <option value="0.29">.29</option>
-                                        <option value="0.30">.3</option>
-                                        <option value="0.31">.31</option>
-                                        <option value="0.32">.32</option>
-                                        <option value="0.33">.33</option>
-                                        <option value="0.34">.34</option>
-                                        <option value="0.35">.35</option>
-                                        <option value="0.36">.36</option>
-                                        <option value="0.37">.37</option>
-                                        <option value="0.38">.38</option>
-                                        <option value="0.39">.39</option>
-                                        <option value="0.4">.4</option>
-                                        <option value="0.41">.41</option>
-                                        <option value="0.42">.42</option>
-                                        <option value="0.43">.43</option>
-                                        <option value="0.44">.44</option>
-                                        <option value="0.45">.45</option>
-                                        <option value="0.46">.46</option>
-                                        <option value="0.47">.47</option>
-                                        <option value="0.48">.48</option>
-                                        <option value="0.49">.49</option>
-                                        <option value="0.5">.5</option>
-                                        <option value="0.51">.51</option>
-                                        <option value="0.52">.52</option>
-                                        <option value="0.53">.53</option>
-                                        <option value="0.54">.54</option>
-                                        <option value="0.55">.55</option>
-                                        <option value="0.56">.56</option>
-                                        <option value="0.57">.57</option>
-                                        <option value="0.58">.58</option>
-                                        <option value="0.59">.59</option>
-                                        <option value="0.6">.6</option>
-                                        <option value="0.61">.61</option>
-                                        <option value="0.62">.62</option>
-                                        <option value="0.63">.63</option>
-                                        <option value="0.64">.64</option>
-                                        <option value="0.65">.65</option>
-                                        <option value="0.66">.66</option>
-                                        <option value="0.67">.67</option>
-                                        <option value="0.68">.68</option>
-                                        <option value="0.69">.69</option>
-                                        <option value="0.7">.7</option>
-                                        <option value="0.71">.71</option>
-                                        <option value="0.72">.72</option>
-                                        <option value="0.73">.73</option>
-                                        <option value="0.74">.74</option>
-                                        <option value="0.75">.75</option>
-                                        <option value="0.76">.76</option>
-                                        <option value="0.77">.77</option>
-                                        <option value="0.78">.78</option>
-                                        <option value="0.79">.79</option>
-                                        <option value="0.8">.8</option>
-                                        <option value="0.81">.81</option>
-                                        <option value="0.82">.82</option>
-                                        <option value="0.83">.83</option>
-                                        <option value="0.84">.84</option>
-                                        <option value="0.85">.85</option>
-                                        <option value="0.86">.86</option>
-                                        <option value="0.87">.87</option>
-                                        <option value="0.88">.88</option>
-                                        <option value="0.89">.89</option>
-                                        <option value="0.9">.9</option>
-                                        <option value="0.91">.91</option>
-                                        <option value="0.92">.92</option>
-                                        <option value="0.93">.93</option>
-                                        <option value="0.94">.94</option>
-                                        <option value="0.95">.95</option>
-                                        <option value="0.96">.96</option>
-                                        <option value="0.97">.97</option>
-                                        <option value="0.98">.98</option>
-                                        <option value="0.99">.99</option>
-                                    </select>
-                                </div>
-                               
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <div class="row">
                                 <div class="col">
                                     <span>Faoliyat turi</span>
                                     <select name="staff_status" id="staff_status" class="form-select">
-                                        <option value="0">Asosiy</option>
-                                        <option value="1">O'rindosh</option>
+                                        <option value="0" @if ($item->staff_status == false) selected @endif>Asosiy
+                                        </option>
+                                        <option value="1" @if ($item->staff_status == true) selected @endif>O'rindosh
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <span>Lavozim sanasi</span>
-                                    <input type="date" name="staff_date" class="form-control" required>
+                                    <input type="date" name="staff_date" value="{{ $item->staff_date }}"
+                                        class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +116,7 @@
                                 console.log(len);
                                 var id = data[i].id;
                                 var name = data[i].staff_full;
-                                var option = "<option value='" + id + "'>"  + id + " - " + name +
+                                var option = "<option value='" + id + "'>" + id + " - " + name +
                                     "</option>";
                                 $("#staff_id").append(option);
                             }

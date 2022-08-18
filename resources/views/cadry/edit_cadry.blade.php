@@ -183,14 +183,9 @@
                                     <tr>
                                         <td class="font-weight-bold">Tug'lgan joyi(T,SH)</td>
                                         <td>
-                                            <select class="js-example-basic-single" name="birth_city_id"
-                                                style="max-width: 220px" required>
-                                                <option value="">--Tanlash--</option>
-                                                @foreach ($cities as $city)
-                                                    <option value="{{ $city->id }}"
-                                                        @if ($city->id == $cadry->birth_city_id) selected @endif>
-                                                        {{ $city->name }}</option>
-                                                @endforeach
+                                            <select class="loadcity" name="birth_city_id"
+                                                style="max-width: 220px; width: 100%" required>
+                                                <option value="{{ $cadry->birth_city_id }}">{{ $cadry->birth_city->name }}</option>
                                             </select>
                                             <div class="invalid-feedback">Tug'ilgan tuman yoki shaharni tanlang</div>
                                         </td>
@@ -432,6 +427,39 @@
 @endsection
 
 @section('scripts')
+<script>
+    $('.loadcity').select2({
+        ajax: {
+            url: '{{ route('loadcity') }}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Qidirish',
+        minimumInputLength: 1,
+    });
+</script>
     <script>
         $('.js-example-basic-single').select2();
     </script>

@@ -134,6 +134,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     
     Route::get('/control', [App\Http\Controllers\ChatController::class, 'control'])->name('control');
+    Route::get('/cadry/vacations', [App\Http\Controllers\VacationController::class, 'vacations'])->name('vacations');
 
     //AjaxLoading
     Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');
@@ -142,6 +143,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/loadStaff', [App\Http\Controllers\ChatController::class, 'loadStaff'])->name('loadStaff');
     Route::get('/loadRegion', [App\Http\Controllers\ChatController::class, 'loadRegion'])->name('loadRegion');
     Route::get('/loadVacan', [App\Http\Controllers\ChatController::class, 'loadVacan'])->name('loadVacan');
+    Route::get('/loadcity', [App\Http\Controllers\CadryController::class, 'loadcity'])->name('loadcity');
+
 
     Route::group(['middleware' => ['can:product-list']], function () {
         Route::get('/cadry/administration/turnicet', [App\Http\Controllers\OrganizationController::class, 'turnicet'])->name('turnicet');

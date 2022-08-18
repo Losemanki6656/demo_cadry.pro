@@ -16,7 +16,7 @@ class DepartmentCadry extends Model
 
     public function depstaff()
     {
-        return $this->hasMany(DepartmentStaff::class,'id','department_staff_id');
+        return $this->belongsTo(DepartmentStaff::class,'department_staff_id');
     }
 
     public function staff()

@@ -41,6 +41,7 @@ use App\Models\StaffFile;
 use App\Models\Vacation;
 use App\Models\StavkaDou;
 use App\Models\Classification;
+use App\Models\DepartmentCadry;
 
 use Auth;
 
@@ -139,7 +140,6 @@ class CadryController extends Controller
 
     public function departments()
     {
-
         $page = request('page', session('department_page', 1));
         session(['department_page' => $page]);
 
@@ -236,7 +236,16 @@ class CadryController extends Controller
     }
     public function delete_department($id)
     {
-        Department::find($id)->delete();
+        if (DepartmentCadry::where('department_id', $id)->count()) {
+            return response()->json([
+                'message' => "error"
+            ], 500);
+        } else {
+            Department::find($id)->delete();
+            return response()->json([
+                'message' => "Muvaffaqqiyatli o'chirildi!"
+            ], 200);
+        }
 
         return redirect()->back()->with('msg' ,1);
     }
@@ -290,13 +299,6 @@ class CadryController extends Controller
     public function cadry_edit($id)
     {
         $cadry = Cadry::with(['allStaffs','allStaffs.depstaff'])->find($id);
-       
-        $x = 0; $a = [];
-        foreach ($cadry->allStaffs as $item ) {
-            $x ++;
-            $a[$x] = $item->depstaff[0]->staff_full;
-        }
-
         $info = Education::all();
         $academictitle = AcademicTitle::all();
         $academicdegree = AcademicDegree::all();
@@ -319,7 +321,6 @@ class CadryController extends Controller
             'langues' => $langues,
             'parties' => $parties,
             'worklevel' => $worklevel,
-            'a' => $a
         ]);
     }
 
@@ -750,7 +751,7 @@ class CadryController extends Controller
         
         return response('Update Successfully.', 200);   
     }
-
+    
     public function cadry_career_delete($id)
     {
         Career::find($id)->delete();
@@ -1182,6 +1183,14 @@ class CadryController extends Controller
         return redirect()->back()->with('msg' ,1);
     }
 
-    
+    public function loadcity(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = City::where('name', 'like', '%' . $search . '%')->get();
+        }
+        return response()->json($data);
+    }
 
 }

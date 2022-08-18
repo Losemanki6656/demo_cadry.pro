@@ -145,15 +145,11 @@
                                                 </button>
                                             </span>
 
-                                            <span data-bs-toggle="modal" data-bs-target="#delete{{ $department->id }}">
-                                                <button type="button" class="btn btn-soft-danger waves-effect"
+                                                <button type="button" onclick="deleteFunc({{ $department->id }})" class="btn btn-soft-danger waves-effect"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                     title="O'chirish">
                                                     <i class="bx bx-trash font-size-16 align-middle"></i>
                                                 </button>
-
-                                            </span>
-
                                         </td>
                                     </tr>
                                     <div class="modal fade" id="del{{ $department->id }}" tabindex="-1" role="dialog"
@@ -229,4 +225,51 @@
 @endsection
 
 @section('scripts')
+<script>
+    function deleteFunc(id) {
+        Swal.fire({
+            text: "Ushbu bo'limni o'chirishni xoxlaysizmi ?!",
+            icon: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Xa, bajarish!",
+            cancelButtonText: "Yo'q, qaytish!",
+            confirmButtonClass: "btn btn-success mt-2",
+            cancelButtonClass: "btn btn-danger ms-2 mt-2",
+            buttonsStyling: !1,
+        }).then(function(e) {
+            if (e.value) {
+
+                $.ajax({
+                    type: 'POST',
+                    url:  "/cadry/delete-department/"+id,
+                    data: {
+                        "id": id,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Ish o'rni o'chirildi",
+                            icon: "success",
+                            confirmButtonColor: "#1c84ee",
+                        }).then(function() {
+                            location.reload();
+                        });
+                    },
+                    error: function(response) {
+                        Swal.fire({
+                            title: "Xato",
+                            text: "Ushbu bo'limga tegishli xodimlar mavjud :)",
+                            icon: "error",
+                            confirmButtonColor: "#1c84ee",
+                        });
+                    }
+                });
+
+            } else {
+                e.dismiss;
+            }
+        });
+    }
+</script>
 @endsection
