@@ -303,8 +303,8 @@
                         },
                         error: function(response) {
                             Swal.fire({
-                                title: "Error",
-                                text: "Your imaginary file is safe :)",
+                                title: "Xato",
+                                text: "Xodomning asosiy ish faoliyatini o'chirish xatoiligi :)",
                                 icon: "error",
                                 confirmButtonColor: "#1c84ee",
                             });

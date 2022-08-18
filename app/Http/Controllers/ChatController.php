@@ -174,11 +174,16 @@ class ChatController extends Controller
 
     public function deleteDepCadry(Request $request)
     {
-        DepartmentCadry::find($request->id)->delete();
-
+        $x = DepartmentCadry::find($request->id);
+        if(count(DepartmentCadry::where('cadry_id',$x->cadry_id)->get()) > 1) {
+            DepartmentCadry::find($request->id)->delete();
+            return response()->json([
+                'message' => "Muvaffaqqiyatli o'chirildi!"
+            ], 200);
+        } else
         return response()->json([
-            'message' => "Muvaffaqqiyatli o'chirildi!"
-        ], 200);
+            'message' => "Error!"
+        ], 500);
     }
 
     public function deleteDepStaff(Request $request)
