@@ -42,6 +42,8 @@ use App\Models\Vacation;
 use App\Models\StavkaDou;
 use App\Models\Classification;
 use App\Models\DepartmentCadry;
+use App\Models\DepartmentStaff;
+use Validator;
 
 use Auth;
 
@@ -544,14 +546,42 @@ class CadryController extends Controller
 
     public function addworkersuccess(Request $request)
     {
-       // dd($request->all());
-        $array = $request->all();
-        $array['railway_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
-        $array['organization_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+        $validator = Validator::make($request->all(), [
+            'jshshir' => 'required|unique:cadries',
+        ]);
 
-        $cadry = Cadry::create($array);
+        if ($validator->fails()) {
+            return back();
+        } else {
 
-        return redirect()->route('cadry_edit',[$cadry->id]);
+            $array = $request->all();
+            $array['railway_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
+            $array['organization_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+
+            $cadry = Cadry::create($array);
+
+            $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
+            $newItem = new DepartmentCadry();
+            $newItem->railway_id = $array['railway_id'];
+            $newItem->organization_id = $array['organization_id'];
+            $newItem->department_id = $request->department_id;
+            $newItem->department_staff_id = $request->staff_id;
+            $newItem->staff_id = $dep->staff_id;
+            $newItem->staff_full = $dep->staff_full;
+            $newItem->staff_date = $request->post_date;
+            //$newItem->staff_status = $request->staff_status;
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
+                $newItem->cadry_id = $cadry->id;
+                $newItem->stavka = $request->stavka;
+                $newItem->save();
+        
+            return redirect()->route('cadry_edit',[$cadry->id])->with('msg',3);
+        }
+
+       
     }
 
     public function edit_cadry_us(Request $request, Cadry $cadry)

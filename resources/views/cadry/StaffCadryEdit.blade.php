@@ -143,15 +143,17 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            @if (\Session::has('msg'))
-                @if (Session::get('msg') == 2)
+            var msg = '{{ Session::get('msg') }}';
+            var exist = '{{ Session::has('msg') }}';
+            if (exist) {
+                if (msg == 2) {
                     Swal.fire({
                         title: "Amalga oshirilmadi",
                         text: "Xodimning stavkasi amaldagi bo'sh lavozim stavkasiga to'gri kelmadi!",
                         icon: "warning",
                         confirmButtonColor: "#1c84ee"
                     });
-                @else
+                } else if (msg == 1) {
                     Swal.fire({
                         title: "Good!",
                         text: "Xodim lavozimi o'zgartirildi",
@@ -160,8 +162,9 @@
                     }).then(function() {
                         location.reload();
                     });
-                @endif
-            @endif
+                }
+            }
+
         });
     </script>
     <script>

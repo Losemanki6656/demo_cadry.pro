@@ -157,18 +157,20 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            @if (\Session::has('msg'))
-                @if (Session::get('msg') == 1)
+            var msg = '{{ Session::get('msg') }}';
+            var exist = '{{ Session::has('msg') }}';
+            if (exist) {
+                if (msg == 1) {
                     Swal.fire({
                         title: "Good!",
                         text: "Muvaffaqqiyatli bajarildi!",
                         icon: "success",
-                        showCancelButton: !0,
                         confirmButtonColor: "#1c84ee",
-                        cancelButtonColor: "#fd625e",
+                    }).then(function() {
+                        location.reload();
                     });
-                @endif
-            @endif
+                }
+            }
         });
     </script>
     <script>

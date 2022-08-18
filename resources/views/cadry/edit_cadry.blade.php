@@ -627,13 +627,22 @@
         });
     </script>
     <script>
-        function warningfunc() {
-            Swal.fire({
-                title: "Amalga oshirilmadi",
-                text: "Xizmat faoliyatini yakunlash amaliyoti vaqtincha ishlamaydi!",
-                icon: "warning",
-                confirmButtonColor: "#1c84ee"
-            });
-        }
+        $(document).ready(function() {
+            var msg = '{{ Session::get('msg') }}';
+            var exist = '{{ Session::has('msg') }}';
+            if (exist) {
+                if (msg == 3) {
+                    Swal.fire({
+                        title: "Good!",
+                        text: "Muvafaqqiyatli qo'shildi",
+                        icon: "success",
+                        confirmButtonColor: "#1c84ee",
+                    }).then(function() {
+                        location.reload();
+                    });
+                }
+            }
+
+        });
     </script>
 @endsection

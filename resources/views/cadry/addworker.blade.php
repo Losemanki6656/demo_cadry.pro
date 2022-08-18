@@ -245,26 +245,18 @@ label.cabinet input.file{
                             <tbody>
                                 <tr>
                                     <td>
-                                        <input type="date" class="form-control" name="job_date" required>
+                                        <input type="date" class="form-control" width="120px" name="job_date" required>
                                     </td>
                                     <td>
-                                        <select class="js-example-basic-single" name="department_id" required>
-                                            <option value="">-- Bo'limni tanlang --</option>
-                                            @foreach ($departments as $department)
-                                            <option value={{$department->id}}>{{$department->name}}</option>
-                                            @endforeach
+                                        <select class="department" style="width: 100%" name="department_id" id="department_id" required>
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="js-example-basic-single" name="staff_id" required>
-                                            <option value="">-- Lavozimni tanlang --</option>
-                                            @foreach ($staffs as $staff)
-                                            <option value="{{$staff->id}}">{{$staff->name}}</option>
-                                            @endforeach
+                                        <select class="staff" style="width: 100%" id="staff_id" name="staff_id" required>
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" value="1" name="stavka" required>
+                                        <input type="number" class="form-control" value="1" name="stavka" step="0.01" required>
                                     </td>
                                 </tr>
                             </tbody>
@@ -415,6 +407,83 @@ label.cabinet input.file{
 <script src="{{asset('assets/croppie/croppie.js')}}"></script>
 <script src="{{asset('assets/croppie/croppie.min.js')}}"></script>
 <script>
+    $('#department_id').change(function(e) {
+        let department_id = $('#department_id').val();
+        $.ajax({
+            url: '{{ route('loadVacan') }}',
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+            data: {
+                department_id: department_id
+            },
+            success: function(data) {
+                var len = 0;
+                if (data != null) {
+                    len = data.length;
+                }
+
+                if (len > 0) {
+                    $("#staff_id").empty();
+                    for (var i = 0; i < len; i++) {
+                        console.log(len);
+                        var id = data[i].id;
+                        var name = data[i].staff_full;
+                        var option = "<option value='" + id + "'>" + id + " - " + name +
+                            "</option>";
+                        $("#staff_id").append(option);
+                    }
+                } else {
+                    $("#staff_id").empty();
+                    var option = "<option value=''>" + "Bo'sh ish o'rni mavjud emas!" + "</option>";
+                    $("#staff_id").append(option);
+                }
+            }
+        });
+    })
+
+    function myFilter() {
+        let department_id = $('#department_id').val();
+        let url = '{{ route('cadry') }}';
+
+        window.location.href = `${url}?
+    department_id=${department_id}&`;
+    }
+</script>
+<script>
+    $('.department').select2({
+        ajax: {
+            url: '{{ route('loadDepartment') }}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            cache: true
+        },
+        placeholder: "Bo'linmani tanlang",
+        minimumInputLength: 1,
+    });
+</script>
+<script>
     var $uploadCrop,
     tempFilename,
     rawImg,
@@ -484,6 +553,7 @@ label.cabinet input.file{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>  
 <script>
+     $('.staff').select2();
     $('.js-example-basic-single').select2();
     $('.js-example-basic-multiple').select2();
     $(document).ready(function(){  

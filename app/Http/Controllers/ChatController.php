@@ -12,6 +12,7 @@ use App\Models\DepartmentCadry;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
+use URL;
 
 class ChatController extends Controller
 {
@@ -261,8 +262,7 @@ class ChatController extends Controller
             $cadry->post_date = $request->staff_date;
             $cadry->save();
 
-            return redirect()->back()->with('msg', 1);
-
+            return back()->with('msg',1);
          
     }
 
@@ -308,6 +308,7 @@ class ChatController extends Controller
         $cadry->department_id = $item->department_id;
         $cadry->save();
 
+        //\Session::flash('msm', 1);
          return redirect()->back()->with('msg', 1);
     }
 
