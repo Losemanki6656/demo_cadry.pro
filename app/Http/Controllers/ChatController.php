@@ -132,7 +132,6 @@ class ChatController extends Controller
 
     public function addCadryToDepartmentStaff($id, Request $request)
     {
-        //dd($request->all());
         
         $all = DepartmentCadry::where('cadry_id',$request->cadry_id)->where('staff_status',false)->get();
         if(count($all) && $request->staff_status == 0)  return redirect()->back()->with('msg', 1);
@@ -155,10 +154,13 @@ class ChatController extends Controller
                 $newItem->cadry_id = $request->cadry_id;
                 $newItem->stavka = $request->st_1 + $request->st_2;
                 $newItem->save();
-
-            $cadr = Cadry::find($request->cadry_id);
-            $cadr->post_name = $dep->staff_full;
-            $cadr->save();
+                
+            if($request->staff_status == 0) {
+                $cadr = Cadry::find($request->cadry_id);
+                $cadr->post_name = $dep->staff_full;
+                $cadr->save();
+            }
+           
 
             return redirect()->route('addstaffToDepartment', ['id' => $dep->department_id])->with('msg', 1);
     }
@@ -202,10 +204,10 @@ class ChatController extends Controller
 
     public function editCadryStaff($id)
     {
-        $cadries = DepartmentCadry::where('cadry_id', $id)->with(['staff', 'department'])->get();
+        $item = DepartmentStaff::find($id);
 
         return view('cadry.editstaffCadry', [
-            'cadries' => $cadries
+            'item' => $item
         ]);
     }
 
@@ -236,6 +238,8 @@ class ChatController extends Controller
             $newItem->department_staff_id = $request->staff_id;
             $newItem->staff_id = $editstaff->staff_id;
             $newItem->staff_full = $editstaff->staff_full;
+            $newItem->staff_status = $request->staff_status;
+            $newItem->staff_date = $request->staff_date;
 
             if($editstaff->stavka <= $editstaff->cadry->sum('stavka')) 
                 $newItem->status_sv = true; 
@@ -248,7 +252,10 @@ class ChatController extends Controller
             $cadry = Cadry::find($newItem->cadry_id);
             $cadry->department_id = $request->department_id;
             $cadry->staff_id = $editstaff->staff_id;
-            $cadry->post_name = $editstaff->staff_full;
+
+            if($request->staff_status == 0)
+                $cadry->post_name = $editstaff->staff_full;
+
             $cadry->post_date = $request->staff_date;
             $cadry->save();
 
@@ -263,6 +270,9 @@ class ChatController extends Controller
         $newItem = DepartmentStaff::find($id);
         $newItem->staff_full = $request->staff_full;
         $newItem->stavka = $request->st_1 + $request->st_2;
+        if($request->class_staff_id) {
+            $newItem->classification_id  = $request->class_staff_id;
+        }
         $newItem->save();
 
         $cadries = DepartmentCadry::where('department_staff_id',$id)->get();
@@ -270,9 +280,12 @@ class ChatController extends Controller
             $item->staff_full = $request->staff_full;
             $item->save();
 
-            $cadry = Cadry::find($item->cadry_id);
-            $cadry->post_name = $request->staff_full;
-            $cadry->save();
+            if($item->staff_status == 0) {
+                $cadry = Cadry::find($item->cadry_id);
+                $cadry->post_name = $request->staff_full;
+                $cadry->save();
+            }
+            
         }
 
         return redirect()->back()->with('msg', 1);

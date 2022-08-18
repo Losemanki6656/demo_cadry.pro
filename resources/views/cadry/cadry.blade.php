@@ -180,11 +180,6 @@
                                                                     parvarish ta'tili</a>
                                                             @endif
                                                         </li>
-                                                        <li><a href="{{ route('editCadryStaff', ['id' => $item->id]) }}"
-                                                                type="button"
-                                                                class="dropdown-item fw-bold text-danger"><i
-                                                                    class="fa fa-edit"></i> Lavozimni o'zgartirish </a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </td>

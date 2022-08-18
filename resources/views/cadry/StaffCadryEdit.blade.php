@@ -56,7 +56,6 @@
                         </div>
 
                         <div class="mb-4">
-
                             <div class="row">
                                 <div class="col">
                                     <span>Stavka (butun)</span>
@@ -168,6 +167,18 @@
                                         <option value="0.97">.97</option>
                                         <option value="0.98">.98</option>
                                         <option value="0.99">.99</option>
+                                    </select>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col">
+                                    <span>Faoliyat turi</span>
+                                    <select name="staff_status" id="staff_status" class="form-select">
+                                        <option value="0">Asosiy</option>
+                                        <option value="1">O'rindosh</option>
                                     </select>
                                 </div>
                                 <div class="col">

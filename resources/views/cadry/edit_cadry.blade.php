@@ -85,8 +85,8 @@
                                     <div id="datatable_filter" class="dataTables_filter">
                                         <a type="button" class="btn btn-primary btn-sm" id="sa-params"><i
                                                 class="fas fa-angle-double-right"></i> Cyrillic To Latin </a>
-                                        <a type="button" onclick="warningfunc()" data-bs-toggle="modal"
-                                            data-bs-target="#delcadryy" class="btn btn-danger btn-sm"><i
+                                        <a type="button" data-bs-toggle="modal"
+                                            data-bs-target="#delcadry" class="btn btn-danger btn-sm"><i
                                                 class="fa fa-trash"></i> Xizmat faoliyatini yakunlash </a>
                                         <label>
                                             <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i>
@@ -346,20 +346,39 @@
                                     <table class="table table-borderless">
                                         <thead>
                                             <tr>
-                                                <th width="200px">Lavozim sanasi</th>
-                                                <th>Lavozimi</th>
+                                                <th class="fw-bold" width="200px">Lavozim sanasi</th>
+                                                <th class="fw-bold">Lavozimi</th>
+                                                <th class="fw-bold text-center" width="80px">Stavka</th>
+                                                <th class="fw-bold text-center" width="130px">Faoliyat turi</th>
+                                                <th class="fw-bold text-center" width="120px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <input type="date" class="form-control"
-                                                        value="{{ $cadry->post_date }}" name="post_date" required>
-                                                </td>
-                                                <td>
-                                                    <input readonly class="form-control" value="{{ implode(',', $a) }}">
-                                                </td>
-                                            </tr>
+                                            @foreach ($cadry->allStaffs as $staff)
+                                                <tr>
+                                                    <td>
+                                                        <input type="date" class="form-control"
+                                                            value="{{ $staff->staff_date }}" name="post_date" required>
+                                                    </td>
+                                                    <td>
+                                                        <input readonly class="form-control" value="{{ $staff->staff_full }}">
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        {{ $staff->stavka }}
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        @if ($staff->staff_status == false)
+                                                            Asosiy
+                                                        @else
+                                                            O'rindosh
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a type="button" href="{{ route('StaffCadryEdit',['id' => $staff->id]) }}" class="btn btn-secondary"> <i class="fa fa-edit"></i></a>
+                                                        <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i></button>
+                                                    </td>
+                                                </tr> 
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -583,7 +602,7 @@
         function warningfunc() {
             Swal.fire({
                 title: "Amalga oshirilmadi",
-                text: "Xizmat faoliyatini yakunlash amaliyoti vaqtincha 15:00 gacha ishlamaydi!",
+                text: "Xizmat faoliyatini yakunlash amaliyoti vaqtincha ishlamaydi!",
                 icon: "warning",
                 confirmButtonColor: "#1c84ee"
             });

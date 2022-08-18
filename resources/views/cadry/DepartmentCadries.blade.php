@@ -28,6 +28,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center fw-bold" width="50px">Status</th>
+                                    <th class="text-center fw-bold" width="100px">Photo</th>
                                     <th class="text-center fw-bold">
                                         {{ $cadries[0]->staff->name }} lavozimiga tegishli xodimlar
                                     </th>
@@ -44,6 +45,13 @@
                                             @else
                                                 <div class="bg-danger bg-gradient p-2"></div>
                                             @endif
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a href="{{ asset('storage/' . $item->cadry->photo) }}" class="image-popup-desc">
+                                                <img class="rounded avatar"
+                                                    src="{{ asset('storage/' . $item->cadry->photo) }}" height="40"
+                                                    width="40">
+                                            </a>
                                         </td>
                                         <td class="text-center">{{ $item->cadry->last_name }} {{ $item->cadry->first_name }}
                                             {{ $item->cadry->middle_name }}
@@ -304,7 +312,7 @@
                         error: function(response) {
                             Swal.fire({
                                 title: "Xato",
-                                text: "Xodomning asosiy ish faoliyatini o'chirish xatoiligi :)",
+                                text: "Xodimning asosiy ish faoliyatini o'chirish xatoiligi :)",
                                 icon: "error",
                                 confirmButtonColor: "#1c84ee",
                             });

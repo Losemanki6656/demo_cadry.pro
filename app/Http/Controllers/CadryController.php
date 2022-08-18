@@ -53,8 +53,8 @@ class CadryController extends Controller
         session(['cadry_page' => $page]);
         $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
             $query->where('status', true);
-        }])->paginate(10, ['*'], 'page', $page);
-
+        },'allStaffs'])->paginate(10, ['*'], 'page', $page);
+    
         return view('cadry.cadry',[
             'cadries' => $cadries
         ]);
@@ -696,6 +696,8 @@ class CadryController extends Controller
         $cadry = Cadry::find($id);
         $cadry->status = false;
         $cadry->save();
+        
+        DepartmentCadry::where('cadry_id',$id)->delete();
 
         $arr = Cadry::find($id)->toArray();
         $arr['number'] = $request->number ?? '';
