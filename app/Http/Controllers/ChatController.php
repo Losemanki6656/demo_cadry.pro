@@ -227,7 +227,7 @@ class ChatController extends Controller
     public function loadVacan(Request $request)
     {
         
-        $data = DepartmentStaff::where('department_id', $request->department_id)->get();
+        $data = DepartmentStaff::where('department_id', $request->department_id)->with('staff')->get();
 
         return response()->json($data, 200);
     }

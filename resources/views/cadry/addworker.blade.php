@@ -239,7 +239,6 @@ label.cabinet input.file{
                                     <th>Qachondan beri ishlaydi</th>
                                     <th>Bo'lim nomi</th>
                                     <th>Shtat bo'yicha lavozimi</th>
-                                    <th width="120px">Stavkasi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -255,9 +254,6 @@ label.cabinet input.file{
                                         <select class="staff" style="width: 100%" id="staff_id" name="staff_id" required>
                                         </select>
                                     </td>
-                                    <td>
-                                        <input type="number" class="form-control" value="1" name="stavka" step="0.01" required>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -271,17 +267,17 @@ label.cabinet input.file{
                             <thead>
                                 <tr>
                                     <th width="200px">Lavozim sanasi</th>
-                                    <th>Lavozimi</th>
+                                    <th width="120px">Stavkasi</th>
                                     <th>Jinsi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <input type="date" class="form-control" name="post_date" required>
+                                        <input type="number" class="form-control" value="1" name="stavka" step="0.01" required>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="post_name" required>
+                                        <input type="date" class="form-control" name="post_date" required>
                                     </td>
                                     <td>
                                         <select class="form-control" name="sex" required>
@@ -428,7 +424,7 @@ label.cabinet input.file{
                     for (var i = 0; i < len; i++) {
                         console.log(len);
                         var id = data[i].id;
-                        var name = data[i].staff_full;
+                        var name = data[i].staff.name;
                         var option = "<option value='" + id + "'>" + id + " - " + name +
                             "</option>";
                         $("#staff_id").append(option);
@@ -550,7 +546,25 @@ label.cabinet input.file{
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        var msg = '{{ Session::get('msg') }}';
+        var exist = '{{ Session::has('msg') }}';
+        if (exist) {
+            if (msg == 4) {
+                Swal.fire({
+                    title: "Xatolik",
+                    text: "Ushbu xodim mavjud!",
+                    icon: "warning",
+                    confirmButtonColor: "#1c84ee"
+                }).then(function() {
+                    location.reload();
+                });
+            }
+        }
 
+    });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>  
 <script>
      $('.staff').select2();

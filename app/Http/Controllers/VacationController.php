@@ -11,9 +11,11 @@ class VacationController extends Controller
 
    public function vacations()
    {
-      $vacations = Vacation::Filter()->get();
+      $cadries = Vacation::Filter()->get();
 
-      dd($vacations);
+      return view('vacations.vacations',[
+         'cadries' => $cadries
+      ]);
    }
     
 }

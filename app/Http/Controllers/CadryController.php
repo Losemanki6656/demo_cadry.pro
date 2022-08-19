@@ -551,16 +551,17 @@ class CadryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back();
+            return redirect()->back()->with('msg',4);
         } else {
 
+            $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
             $array = $request->all();
             $array['railway_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
             $array['organization_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-
+            $array['post_name'] = $dep->staff_full;
+            
             $cadry = Cadry::create($array);
 
-            $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
             $newItem = new DepartmentCadry();
             $newItem->railway_id = $array['railway_id'];
             $newItem->organization_id = $array['organization_id'];

@@ -640,7 +640,7 @@
                     }).then(function() {
                         location.reload();
                     });
-                }
+                } 
             }
 
         });

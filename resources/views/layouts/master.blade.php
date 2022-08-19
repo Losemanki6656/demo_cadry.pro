@@ -298,7 +298,6 @@
                                     <span data-key="t-dashboard">{{ __('messages.bulimlar') }}</span>
                                 </a>
                             </li>
-                          
                             <li>
                                 <a href="{{ route('regions') }}">
                                     <i data-feather="bar-chart-2"></i>
