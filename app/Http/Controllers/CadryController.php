@@ -555,11 +555,13 @@ class CadryController extends Controller
         } else {
 
             $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
+
             $array = $request->all();
             $array['railway_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
             $array['organization_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
             $array['post_name'] = $dep->staff_full;
-            
+            $array['staff_id'] = $dep->staff_id;
+
             $cadry = Cadry::create($array);
 
             $newItem = new DepartmentCadry();
