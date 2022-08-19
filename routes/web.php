@@ -144,6 +144,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/loadRegion', [App\Http\Controllers\ChatController::class, 'loadRegion'])->name('loadRegion');
     Route::get('/loadVacan', [App\Http\Controllers\ChatController::class, 'loadVacan'])->name('loadVacan');
     Route::get('/loadcity', [App\Http\Controllers\CadryController::class, 'loadcity'])->name('loadcity');
+    Route::get('/loadCareer', [App\Http\Controllers\CadryController::class, 'loadCareer'])->name('loadCareer');
 
 
     Route::group(['middleware' => ['can:product-list']], function () {

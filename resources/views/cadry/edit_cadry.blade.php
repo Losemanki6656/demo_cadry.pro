@@ -85,9 +85,9 @@
                                     <div id="datatable_filter" class="dataTables_filter">
                                         <a type="button" class="btn btn-primary btn-sm" id="sa-params"><i
                                                 class="fas fa-angle-double-right"></i> Cyrillic To Latin </a>
-                                        <a type="button" data-bs-toggle="modal"
-                                            data-bs-target="#delcadry" class="btn btn-danger btn-sm"><i
-                                                class="fa fa-trash"></i> Xizmat faoliyatini yakunlash </a>
+                                        <a type="button" data-bs-toggle="modal" data-bs-target="#delcadry"
+                                            class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Xizmat faoliyatini
+                                            yakunlash </a>
                                         <label>
                                             <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i>
                                                 Saqlash</button>
@@ -169,13 +169,10 @@
                                     <tr>
                                         <td class="font-weight-bold">Tug'ilgan joyi(V)</td>
                                         <td>
-                                            <select class="js-example-basic-single" name="birth_region_id" required>
-                                                <option value="">--Tanlash--</option>
-                                                @foreach ($regions as $region)
-                                                    <option value="{{ $region->id }}"
-                                                        @if ($region->id == $cadry->birth_region_id) selected @endif>
-                                                        {{ $region->name }}</option>
-                                                @endforeach
+                                            <select class="loadregion" name="birth_region_id"
+                                                style="max-width: 220px; width: 100%" required>
+                                                <option value="{{ $cadry->birth_region_id }}">
+                                                    {{ $cadry->birth_region->name }}</option>
                                             </select>
                                             <div class="invalid-feedback">Tug'ilgan viloyatini tanlang</div>
                                         </td>
@@ -185,7 +182,8 @@
                                         <td>
                                             <select class="loadcity" name="birth_city_id"
                                                 style="max-width: 220px; width: 100%" required>
-                                                <option value="{{ $cadry->birth_city_id }}">{{ $cadry->birth_city->name }}</option>
+                                                <option value="{{ $cadry->birth_city_id }}">
+                                                    {{ $cadry->birth_city->name }}</option>
                                             </select>
                                             <div class="invalid-feedback">Tug'ilgan tuman yoki shaharni tanlang</div>
                                         </td>
@@ -209,26 +207,18 @@
                                         <tbody>
                                             <tr>
                                                 <td width="220px">
-                                                    <select class="js-example-basic-single" name="address_region_id"
-                                                        style="max-width: 200px" required>
-                                                        <option value="">--Tanlash--</option>
-                                                        @foreach ($regions as $region)
-                                                            <option value="{{ $region->id }}"
-                                                                @if ($region->id == $cadry->address_region_id) selected @endif>
-                                                                {{ $region->name }}</option>
-                                                        @endforeach
+                                                    <select class="loadregion1" name="address_region_id"
+                                                        style="max-width: 220px; width: 100%" required>
+                                                        <option value="{{ $cadry->address_region_id }}">
+                                                            {{ $cadry->address_region->name }}</option>
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
                                                 <td width="220px">
-                                                    <select class="js-example-basic-single" name="address_city_id"
-                                                        style="max-width: 200px" required>
-                                                        <option value="">--Tanlash--</option>
-                                                        @foreach ($cities as $city)
-                                                            <option value="{{ $city->id }}"
-                                                                @if ($city->id == $cadry->address_city_id) selected @endif>
-                                                                {{ $city->name }}</option>
-                                                        @endforeach
+                                                    <select class="loadcity1" name="address_city_id"
+                                                        style="max-width: 220px; width: 100%" required>
+                                                        <option value="{{ $cadry->address_city_id }}">
+                                                            {{ $cadry->address_city->name }}</option>
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
@@ -237,26 +227,18 @@
                                                         value="{{ $cadry->address }}" name="address">
                                                 </td>
                                                 <td width="220px">
-                                                    <select class="js-example-basic-single" name="pass_region_id"
-                                                        style="max-width: 200px" required>
-                                                        <option value="">--Tanlash--</option>
-                                                        @foreach ($regions as $region)
-                                                            <option value="{{ $region->id }}"
-                                                                @if ($region->id == $cadry->pass_region_id) selected @endif>
-                                                                {{ $region->name }}</option>
-                                                        @endforeach
+                                                    <select class="loadregion2" name="pass_region_id"
+                                                        style="max-width: 220px; width: 100%" required>
+                                                        <option value="{{ $cadry->pass_region_id }}">
+                                                            {{ $cadry->pass_region->name }}</option>
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
                                                 <td width="220px">
-                                                    <select class="js-example-basic-single" name="pass_city_id"
-                                                        style="max-width: 200px" required>
-                                                        <option value="">--Tanlash--</option>
-                                                        @foreach ($cities as $city)
-                                                            <option value="{{ $city->id }}"
-                                                                @if ($city->id == $cadry->pass_city_id) selected @endif>
-                                                                {{ $city->name }}</option>
-                                                        @endforeach
+                                                    <select class="loadcity2" name="pass_city_id"
+                                                        style="max-width: 220px; width: 100%" required>
+                                                        <option value="{{ $cadry->pass_city_id }}">
+                                                            {{ $cadry->pass_city->name }}</option>
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
@@ -324,7 +306,7 @@
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
-                                                
+
                                                 <td>
                                                     <input type="date" class="form-control"
                                                         value="{{ $cadry->job_date }}" name="job_date" required>
@@ -345,7 +327,7 @@
                                                 <th class="fw-bold">Lavozimi</th>
                                                 <th class="fw-bold text-center" width="80px">Stavka</th>
                                                 <th class="fw-bold text-center" width="130px">Faoliyat turi</th>
-                                                <th class="fw-bold text-center" width="120px">Action</th>
+                                                <th class="fw-bold text-center" width="360px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -356,7 +338,8 @@
                                                             value="{{ $staff->staff_date }}" name="post_date" required>
                                                     </td>
                                                     <td>
-                                                        <input readonly class="form-control" value="{{ $staff->staff_full }}">
+                                                        <input readonly class="form-control"
+                                                            value="{{ $staff->staff_full }}">
                                                     </td>
                                                     <td class="text-center align-middle">
                                                         {{ $staff->stavka }}
@@ -368,11 +351,15 @@
                                                             O'rindosh
                                                         @endif
                                                     </td>
-                                                    <td class="text-center">
-                                                        <a type="button" href="{{ route('StaffCadryEdit',['id' => $staff->id]) }}" class="btn btn-secondary"> <i class="fa fa-edit"></i></a>
-                                                        <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i></button>
+                                                    <td class="text-center align-middle">
+                                                        <a type="button"
+                                                            href="{{ route('StaffCadryEdit', ['id' => $staff->id]) }}"
+                                                            class="btn btn-secondary btn-sm"> <i class="fa fa-edit"></i>
+                                                            Lavozimni o'zgartirish</a>
+                                                        <button type="button" class="btn btn-danger btn-sm"> <i
+                                                                class="fa fa-trash"></i> Faoiliyatni yakunlash</button>
                                                     </td>
-                                                </tr> 
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -427,39 +414,204 @@
 @endsection
 
 @section('scripts')
-<script>
-    $('.loadcity').select2({
-        ajax: {
-            url: '{{ route('loadcity') }}',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    q: params.term,
-                    page: params.page
-                };
-            },
-            processResults: function(data, params) {
-                params.page = params.page || 1;
+    <script>
+        $('.loadcity').select2({
+            ajax: {
+                url: '{{ route('loadcity') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
 
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.name,
-                            id: item.id
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
                         }
-                    }),
-                    pagination: {
-                        more: (params.page * 30) < data.total_count
-                    }
-                };
+                    };
+                },
+                cache: true
             },
-            cache: true
-        },
-        placeholder: 'Qidirish',
-        minimumInputLength: 1,
-    });
-</script>
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.loadcity1').select2({
+            ajax: {
+                url: '{{ route('loadcity') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.loadcity2').select2({
+            ajax: {
+                url: '{{ route('loadcity') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.loadregion').select2({
+            ajax: {
+                url: '{{ route('loadRegion') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.loadregion1').select2({
+            ajax: {
+                url: '{{ route('loadRegion') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('.loadregion2').select2({
+            ajax: {
+                url: '{{ route('loadRegion') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Qidirish',
+            minimumInputLength: 1,
+        });
+    </script>
     <script>
         $('.js-example-basic-single').select2();
     </script>
@@ -640,7 +792,7 @@
                     }).then(function() {
                         location.reload();
                     });
-                } 
+                }
             }
 
         });

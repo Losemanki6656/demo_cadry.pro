@@ -13,6 +13,7 @@ use Auth;
 use Illuminate\Http\Request;
 use DB;
 use URL;
+use App\Models\Career;
 
 class ChatController extends Controller
 {
@@ -237,33 +238,60 @@ class ChatController extends Controller
         $newItem = DepartmentCadry::find($id);
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
-            $newItem->department_id = $request->department_id;
-            $newItem->department_staff_id = $request->staff_id;
-            $newItem->staff_id = $editstaff->staff_id;
-            $newItem->staff_full = $editstaff->staff_full;
-            $newItem->staff_status = $request->staff_status;
-            $newItem->staff_date = $request->staff_date;
+        $x = 0;
+        $vakant = DepartmentCadry::where('department_staff_id',$request->staff_id)->where('staff_status', false )->get();
+        foreach ($vakant as $item) {
+            if($item->cadry_id != $newItem->cadry_id) $x ++;
+        }
 
-            if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
-                $newItem->status_sv = true; 
-            else
-                $newItem->status_sv = false;
+        if( $x >= 1 && $request->staff_status == false)
+        {
+            return back()->with('msg',2);
 
-            $newItem->stavka = $request->st_1;
-            $newItem->save();
+        } else  {
+                $newItem->department_id = $request->department_id;
+                $newItem->department_staff_id = $request->staff_id;
+                $newItem->staff_id = $editstaff->staff_id;
+                $newItem->staff_full = $editstaff->staff_full;
+                $newItem->staff_status = $request->staff_status;
+                $newItem->staff_date = $request->staff_date;
 
-            $cadry = Cadry::find($newItem->cadry_id);
-            $cadry->department_id = $request->department_id;
-            $cadry->staff_id = $editstaff->staff_id;
+                if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
+                    $newItem->status_sv = true; 
+                else
+                    $newItem->status_sv = false;
 
-            if($request->staff_status == 0)
-                $cadry->post_name = $editstaff->staff_full;
+                $newItem->stavka = $request->st_1;
+                $newItem->save();
 
-            $cadry->post_date = $request->staff_date;
-            $cadry->save();
+                $cadry = Cadry::find($newItem->cadry_id);
+                $cadry->department_id = $request->department_id;
+                $cadry->staff_id = $editstaff->staff_id;
 
-            return back()->with('msg',1);
-         
+                if($request->staff_status == 0)
+                    $cadry->post_name = $editstaff->staff_full;
+
+                $cadry->post_date = $request->staff_date;
+                $cadry->save();
+
+                if($request->careerCheck == 'on') {
+                    $careerItem = Career::find($request->career);
+                    $careerItem->date2 = date("Y", strtotime($request->staff_date));
+                    $careerItem->save();
+
+                    $itC = new Career();
+                    $itC->cadry_id = $newItem->cadry_id;
+                    $itC->sort = $careerItem->sort + 1;
+                    $itC->date1 =  date("Y", strtotime($request->staff_date));
+                    $itC->date2 = '';
+                    $itC->staff = $editstaff->staff_full;
+                    $itC->save();
+
+                }
+
+                return back()->with('msg', 1);
+        }
+
     }
 
     public function editDepStaff($id,Request $request) 

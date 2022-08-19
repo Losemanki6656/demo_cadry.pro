@@ -17,32 +17,33 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-6">
             <div class="card">
                 <form action="{{ route('successEditStaffCadry', ['id' => $item->id]) }}" method="post">
                     @csrf
                     <div class="card-body">
                         <div class="mb-4">
-                            <label>FIO:</label>
+                            <label class="fw-bold text-primary">FIO:</label>
                             <h5>{{ $item->cadry->last_name }} {{ $item->cadry->first_name }} {{ $item->cadry->middle_name }}
                             </h5>
+                            <input type="hidden" name="cadr" id="cadr" value="{{ $item->cadry_id }}">
                         </div>
                         <div class="mb-4">
-                            <label>Bo'linma:</label>
+                            <label class="fw-bold text-primary">Bo'linma:</label>
                             <h5>{{ $item->department->name }}</h5>
                         </div>
                         <div class="mb-4">
-                            <label>Lavozimi:</label>
+                            <label class="fw-bold text-primary">Lavozimi:</label>
                             <h5>{{ $item->staff_full }}</h5>
                         </div>
 
                         <div class="mb-4">
-                            <label>Stavka</label>
+                            <label class="fw-bold text-primary">Stavka</label>
                             <h5>{{ $item->stavka }}</h5>
                         </div>
 
                         <div class="d-flex flex-wrap align-items-center mb-4">
-                            <label>Bo'linmani tanlang</label>
+                            <label class="fw-bold text-primary">Bo'linmani tanlang</label>
                             <select class="js-example-basic-single department" name="department_id" id="department_id"
                                 style="width: 100%" required>
                                 <option value="{{ $item->department_id }}">{{ $item->department->name }}</option>
@@ -50,7 +51,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label>Lavozimni tanlang</label>
+                            <label class="fw-bold text-primary">Lavozimni tanlang</label>
                             <select name="staff_id" id="staff_id" style="width: 100%" class="js-example-basic-single staff"
                                 required>
                                 @foreach ($staffs as $staff)
@@ -63,12 +64,12 @@
                         <div class="mb-4">
                             <div class="row">
                                 <div class="col">
-                                    <span>Stavka</span>
+                                    <span class="fw-bold text-primary">Stavka</span>
                                     <input type="number" name="st_1" value="{{ $item->stavka }}" class="form-control"
                                         step="0.01">
                                 </div>
                                 <div class="col">
-                                    <span>Faoliyat turi</span>
+                                    <span class="fw-bold text-primary">Faoliyat turi</span>
                                     <select name="staff_status" id="staff_status" class="form-select">
                                         <option value="0" @if ($item->staff_status == false) selected @endif>Asosiy
                                         </option>
@@ -77,11 +78,26 @@
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <span>Lavozim sanasi</span>
+                                    <span class="fw-bold text-primary">Lavozim sanasi</span>
                                     <input type="date" name="staff_date" value="{{ $item->staff_date }}"
                                         class="form-control" required>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <input class="form-check-input" type="checkbox" id="careerCheck" onclick="CareerFunc()"
+                                name="careerCheck">
+                            <label class="form-check-label" for="careerCheck">
+                                Xodim mehnat faoliyatiga yangi lavozim nomi qo'shilsinmi ?!
+                            </label>
+                        </div>
+
+                        <div class="mb-4" id="carSt" style="display: none">
+                            <label class="fw-bold text-primary">Mehnat faoliyatidagi qaysi lavozim yakunlanishini
+                                ko'rsating</label>
+                            <select name="career" id="career" style="width: 100%" class="career">
+                            </select>
                         </div>
 
                         <button class="btn btn-outline-primary" type="submit" style="width: 100%"> O'zgartirish
@@ -93,6 +109,52 @@
         </div>
     </div>
     @push('scripts')
+        <script>
+            function CareerFunc() {
+                if ($('#careerCheck').is(':checked')) {
+                    var x = document.getElementById("carSt");
+                    x.style.display = "block";
+                    let cadry_id = $('#cadr').val();
+                    $.ajax({
+                        url: '{{ route('loadCareer') }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        cache: false,
+                        data: {
+                            cadry_id: cadry_id
+                        },
+                        success: function(data) {
+                            var len = 0;
+                            if (data != null) {
+                                len = data.length;
+                            }
+
+                            if (len > 0) {
+                                $("#career").empty();
+                                for (var i = 0; i < len; i++) {
+                                    console.log(len);
+                                    var id = data[i].id;
+                                    var date1 = data[i].date1;
+                                    var date2 = data[i].date2;
+                                    var name = data[i].staff;
+                                    var option = "<option value='" + id + "'>" + date1 + " - " + date2 + " - " +
+                                        name +
+                                        "</option>";
+                                    $("#career").append(option);
+                                }
+                            } else {
+                                $("#career").empty();
+                                var option = "<option value=''>" + "Bo'sh ish o'rni mavjud emas!" + "</option>";
+                                $("#career").append(option);
+                            }
+                        }
+                    });
+                } else {
+                    var x = document.getElementById("carSt");
+                    x.style.display = "none";
+                }
+            }
+        </script>
         <script>
             $('#department_id').change(function(e) {
                 let department_id = $('#department_id').val();
@@ -128,14 +190,6 @@
                     }
                 });
             })
-
-            function myFilter() {
-                let department_id = $('#department_id').val();
-                let url = '{{ route('cadry') }}';
-
-                window.location.href = `${url}?
-            department_id=${department_id}&`;
-            }
         </script>
     @endpush
 @endsection
@@ -169,6 +223,7 @@
     </script>
     <script>
         $('.staff').select2();
+        $('.career').select2();
     </script>
     <script>
         $('.department').select2({

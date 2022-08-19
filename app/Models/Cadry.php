@@ -71,6 +71,14 @@ class Cadry extends Model
     {
         return $this->belongsTo(City::class,'birth_city_id');
     }
+    public function pass_city()
+    {
+        return $this->belongsTo(City::class,'pass_city_id');
+    }
+    public function pass_region()
+    {
+        return $this->belongsTo(Region::class,'pass_region_id');
+    }
     public function education()
     {
         return $this->belongsTo(Education::class,'education_id');

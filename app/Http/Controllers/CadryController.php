@@ -309,13 +309,9 @@ class CadryController extends Controller
         $parties = Party::all();
         $worklevel = WorkLevel::all();
         $relatives = Relative::all();
-        $regions = Region::all();
-        $cities = City::all();
 
         return view('cadry.edit_cadry',[
             'cadry' => $cadry,
-            'regions' => $regions,
-            'cities' => $cities,
             'info' => $info,
             'academictitle' => $academictitle,
             'academicdegree' => $academicdegree,
@@ -1222,6 +1218,16 @@ class CadryController extends Controller
         if ($request->has('q')) {
             $search = $request->q;
             $data = City::where('name', 'like', '%' . $search . '%')->get();
+        }
+        return response()->json($data);
+    }
+
+    public function loadCareer(Request $request)
+    {
+        $data = [];
+        if ($request->has('cadry_id')) {
+            $id = $request->cadry_id;
+            $data = Career::where('cadry_id', $id )->orderBy('sort', 'desc')->get();
         }
         return response()->json($data);
     }

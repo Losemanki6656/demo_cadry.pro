@@ -249,12 +249,12 @@
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow">
                                     <i data-feather="codesandbox"></i>
-                                    <span data-key="t-contacts">Authentication</span>
+                                    <span data-key="t-contacts">Qo'shimcha</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="{{ route('users') }}" data-key="t-user-list">Users</a></li>
-                                    <li><a href="{{ route('userDevices') }}" data-key="t-user-list">User Devices</a></li>
-                                    <li><a href="{{ route('sessions') }}" data-key="t-user-list">Sessions</a></li>
+                                    <li><a href="{{ route('users') }}" data-key="t-user-list">Foydalanuvchilar</a></li>
+                                    <li><a href="{{ route('userDevices') }}" data-key="t-user-list">Kirishlar</a></li>
+                                    <li><a href="{{ route('sessions') }}" data-key="t-user-list">Amallar</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -298,6 +298,12 @@
                                     <span data-key="t-dashboard">{{ __('messages.bulimlar') }}</span>
                                 </a>
                             </li>
+                            <!--<li>
+                                <a href="{{ route('vacations') }}">
+                                    <i data-feather="bar-chart-2"></i>
+                                    <span data-key="t-dashboard">Ta'tillar</span>
+                                </a>
+                            </li>-->
                             <li>
                                 <a href="{{ route('regions') }}">
                                     <i data-feather="bar-chart-2"></i>
