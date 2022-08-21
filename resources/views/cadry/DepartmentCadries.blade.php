@@ -33,7 +33,7 @@
                                         {{ $cadries[0]->staff->name }} lavozimiga tegishli xodimlar
                                     </th>
                                     <th class="text-center fw-bold">Stavka</th>
-                                    <th class="text-center fw-bold" width="80px">Action</th>
+                                    <th class="text-center fw-bold" width="110px">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,9 +63,7 @@
                                         <td class="text-center fw-bold">
                                             <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#editcadryStaff{{ $item->id }}"> <i
-                                                    class="fa fa-edit"></i></button>
-                                            <button class="btn btn-danger btn-sm" onclick="deleteFunc({{ $item->id }})">
-                                                <i class="fa fa-trash"></i></button>
+                                                    class="fa fa-edit"></i> Taxrirlash</button>
                                         </td>
                                     </tr>
                                     <div class="modal fade" id="editcadryStaff{{ $item->id }}" tabindex="-1"
@@ -172,52 +170,5 @@
                 }
             }
         });
-    </script>
-    <script>
-        function deleteFunc(id) {
-            Swal.fire({
-                text: "Ushbu ish o'rnini o'chirishni xoxlaysizmi",
-                icon: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Xa, bajarish!",
-                cancelButtonText: "Yo'q, qaytish!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ms-2 mt-2",
-                buttonsStyling: !1,
-            }).then(function(e) {
-                if (e.value) {
-
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('deleteDepCadry') }}",
-                        data: {
-                            "id": id,
-                            "_token": "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Success!",
-                                text: "Ish o'rni o'chirildi",
-                                icon: "success",
-                                confirmButtonColor: "#1c84ee",
-                            }).then(function() {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                title: "Xato",
-                                text: "Xodimning asosiy ish faoliyatini o'chirish xatoiligi :)",
-                                icon: "error",
-                                confirmButtonColor: "#1c84ee",
-                            });
-                        }
-                    });
-
-                } else {
-                    e.dismiss;
-                }
-            });
-        }
     </script>
 @endsection

@@ -9,6 +9,7 @@ use App\Models\Department;
 use App\Models\Cadry;
 use App\Models\Region;
 use App\Models\DepartmentCadry;
+use App\Models\DeleteCadry;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
@@ -176,20 +177,6 @@ class ChatController extends Controller
         ]);
     }
 
-    public function deleteDepCadry(Request $request)
-    {
-        $x = DepartmentCadry::find($request->id);
-        if(count(DepartmentCadry::where('cadry_id',$x->cadry_id)->get()) > 1) {
-            DepartmentCadry::find($request->id)->delete();
-            return response()->json([
-                'message' => "Muvaffaqqiyatli o'chirildi!"
-            ], 200);
-        } else
-        return response()->json([
-            'message' => "Error!"
-        ], 500);
-    }
-
     public function deleteDepStaff(Request $request)
     {
         if (DepartmentCadry::where('department_staff_id', $request->id)->count()) {
@@ -223,6 +210,43 @@ class ChatController extends Controller
             'item' => $item,
             'staffs' => $staffs
         ]);
+    }
+
+    public function deleteStaffCadry($id)
+    {
+        $item =  DepartmentCadry::with('cadry')->find($id);
+
+        $careers = Career::where('cadry_id',$item->cadry_id)->orderBy('sort','desc')->get();
+
+        return view('cadry.deleteStaffCadry', [
+            'item' => $item,
+            'careers' => $careers
+        ]);
+    }
+
+    public function SuccessDeleteCadryStaff($id, Request $request)
+    {
+        $item =  DepartmentCadry::with('cadry')->find($id);
+
+        $newDelCadry = new DeleteCadry();
+        $newDelCadry->railway_id = $item->railway_id;
+        $newDelCadry->organization_id = $item->organization_id;
+        $newDelCadry->department_id = $item->department_id;
+        $newDelCadry->number = $request->number;
+        $newDelCadry->comment = $request->comment;
+        $newDelCadry->staff_full = $item->staff_full;
+        $newDelCadry->date = $item->del_date;
+        $newDelCadry->save();
+
+        $car = Career::find($request->career);
+        $car->date2 = date("Y", strtotime($request->del_date));
+        $car->save();
+
+        $item->delete();
+
+        return back()->with('msg' , 1);
+
+
     }
 
     public function loadVacan(Request $request)

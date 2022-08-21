@@ -131,6 +131,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/successEditStaffCadry/{id}', [App\Http\Controllers\ChatController::class, 'successEditStaffCadry'])->name('successEditStaffCadry');
     Route::post('/editDepStaff/{id}', [App\Http\Controllers\ChatController::class, 'editDepStaff'])->name('editDepStaff');
     Route::post('/editcadryStaffStatus/{id}', [App\Http\Controllers\ChatController::class, 'editcadryStaffStatus'])->name('editcadryStaffStatus');
+    Route::get('/deleteStaffCadry/{id}', [App\Http\Controllers\ChatController::class, 'deleteStaffCadry'])->name('deleteStaffCadry');
+    Route::post('/SuccessDeleteCadryStaff/{id}', [App\Http\Controllers\ChatController::class, 'SuccessDeleteCadryStaff'])->name('SuccessDeleteCadryStaff');
 
     
     Route::get('/control', [App\Http\Controllers\ChatController::class, 'control'])->name('control');

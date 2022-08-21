@@ -356,8 +356,11 @@
                                                             href="{{ route('StaffCadryEdit', ['id' => $staff->id]) }}"
                                                             class="btn btn-secondary btn-sm"> <i class="fa fa-edit"></i>
                                                             Lavozimni o'zgartirish</a>
-                                                        <button type="button" class="btn btn-danger btn-sm"> <i
-                                                                class="fa fa-trash"></i> Faoiliyatni yakunlash</button>
+                                                            @if (count($cadry->allStaffs ) > 1)
+                                                            <a href="{{ route('deleteStaffCadry', ['id' => $staff->id]) }}" type="button" class="btn btn-danger btn-sm"> <i
+                                                                class="fa fa-trash"></i> Faoiliyatni yakunlash</a> 
+                                                            @endif
+                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -677,26 +680,6 @@
             });
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('input[type="checkbox"]').click(function() {
-                if ($(this).prop("checked") == true) {
-                    var date2career = document.getElementById('date2_career');
-                    date2career.value = '';
-                    date2career.disabled = true;
-                } else if ($(this).prop("checked") == false) {
-                    date2career.value = '';
-                    date2career.disabled = false;
-                }
-            });
-        });
-    </script>
-    <style>
-        .select2-selection.required {
-            background-color: yellow !important;
-        }
-    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -704,15 +687,11 @@
         });
 
         $(document).ready(function() {
-            $('.infodate').inputmask('9999');
-        });
-
-        $(document).ready(function() {
-            $('.infodate2').inputmask('9999');
-        });
-
-        $(document).ready(function() {
             $('.passport').inputmask('AA 9999999');
+        });
+
+        $(document).ready(function() {
+            $('.jshshir').inputmask('99999999999999');
         });
 
         document.getElementById("sa-params").addEventListener("click", function() {
@@ -788,6 +767,16 @@
                     Swal.fire({
                         title: "Good!",
                         text: "Muvafaqqiyatli qo'shildi",
+                        icon: "success",
+                        confirmButtonColor: "#1c84ee",
+                    }).then(function() {
+                        location.reload();
+                    });
+                }
+                if (msg == 1) {
+                    Swal.fire({
+                        title: "Good!",
+                        text: "Muvafaqqiyatli o'chirildi",
                         icon: "success",
                         confirmButtonColor: "#1c84ee",
                     }).then(function() {
