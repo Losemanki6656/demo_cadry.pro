@@ -773,7 +773,7 @@
                         location.reload();
                     });
                 }
-                if (msg == 1) {
+                if (msg == 4) {
                     Swal.fire({
                         title: "Good!",
                         text: "Muvafaqqiyatli o'chirildi",

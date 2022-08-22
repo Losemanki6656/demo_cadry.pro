@@ -123,8 +123,6 @@
                                                     {{$b[$department->id] - $a[$department->id] }}
                                                 </button>
                                             @endif
-                                            
-
                                         </td>
                                         <td class="text-center fw-bold">
                                             {{ $department->cadries->where('status', true)->count() }}

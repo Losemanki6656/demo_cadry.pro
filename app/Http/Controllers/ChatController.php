@@ -245,7 +245,7 @@ class ChatController extends Controller
 
         $item->delete();
 
-        return redirect()->route('cadry_edit',['id' =>  $item->cadry_id])->with('msg' , 1);
+        return redirect()->route('cadry_edit',['id' =>  $item->cadry_id])->with('msg' , 4);
 
 
     }

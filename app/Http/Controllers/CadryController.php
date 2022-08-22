@@ -153,17 +153,14 @@ class CadryController extends Controller
             ->where('name','like','%'.$search.'%');
         })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
 
-        $a = []; $b = []; $c = []; $d = [];
+        $a = []; $b = [];
         foreach ($departments as $item)
         {
-            $x = $item->departmentstaff;
-            $a[$item->id] = $x->sum('stavka');
-            $y = $item->departmentcadry;
-            $b[$item->id] = $y->sum('stavka');
+            $a[$item->id] = $item->departmentstaff->sum('stavka');
+            $b[$item->id] = $item->departmentcadry->sum('stavka');
 
-            if($a[$item->id]>$b[$item->id]) $all = $all + $a[$item->id] - $b[$item->id];
+            if($a[$item->id] > $b[$item->id]) $all = $all + $a[$item->id] - $b[$item->id];
                 else if($a[$item->id]<$b[$item->id]) $allSv = $allSv + $b[$item->id] - $a[$item->id];
-
         }
         
 
