@@ -29,8 +29,8 @@
                                     <th class="text-center fw-bold" style="max-width: 300px">
                                         {{ $department->name }}ga tegishli ish o'rinlari
                                     </th>
-                                    <th class="text-center fw-bold">Stavka</th>
-                                    <th class="text-center fw-bold">Mavjud xodimlar</th>
+                                    <th class="text-center fw-bold">Plan</th>
+                                    <th class="text-center fw-bold">Fakt</th>
                                     <th class="text-center fw-bold" width="110px">Action</th>
                                 </tr>
                             </thead>
