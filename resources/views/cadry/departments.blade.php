@@ -114,16 +114,16 @@
                                             </a>
                                         </td>
                                         <td class="text-center fw-bold">
-                                            @if ($a[$department->id] > $c[$department->id])
+                                            @if ($a[$department->id] > $b[$department->id])
                                                 <button class="btn btn-success btn-sm">
-                                                    {{ $a[$department->id] - $c[$department->id] }}
+                                                    {{ $a[$department->id] - $b[$department->id] }}
                                                 </button>
-                                            @endif
-                                            @if ($b[$department->id])
+                                            @elseif ($a[$department->id] < $b[$department->id])
                                                 <button class="btn btn-danger btn-sm">
-                                                    {{ $b[$department->id] }}
+                                                    {{$b[$department->id] - $a[$department->id] }}
                                                 </button>
                                             @endif
+                                            
 
                                         </td>
                                         <td class="text-center fw-bold">

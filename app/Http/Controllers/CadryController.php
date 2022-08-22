@@ -142,6 +142,7 @@ class CadryController extends Controller
 
     public function departments()
     {
+        $all = 0; $allSv = 0;
         $page = request('page', session('department_page', 1));
         session(['department_page' => $page]);
 
@@ -157,22 +158,19 @@ class CadryController extends Controller
         {
             $x = $item->departmentstaff;
             $a[$item->id] = $x->sum('stavka');
-            $y = $item->departmentcadry->where('status_sv',true);
+            $y = $item->departmentcadry;
             $b[$item->id] = $y->sum('stavka');
 
-            $z = $item->departmentcadry->where('status_sv',false);
-            $c[$item->id] = $z->sum('stavka');
+            if($a[$item->id]>$b[$item->id]) $all = $all + $a[$item->id] - $b[$item->id];
+                else if($a[$item->id]<$b[$item->id]) $allSv = $allSv + $b[$item->id] - $a[$item->id];
 
         }
-
-        $all = array_sum($a) - array_sum($c);
-        $allSv = array_sum($b);
+        
 
         return view('cadry.departments',[
             'departments' => $departments,
             'a' => $a,
             'b' => $b,
-            'c' => $c,
             'all' => $all,
             'allSv' => $allSv
         ]);

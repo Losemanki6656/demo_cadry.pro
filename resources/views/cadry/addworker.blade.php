@@ -266,8 +266,8 @@ label.cabinet input.file{
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th width="200px">Lavozim sanasi</th>
-                                    <th width="120px">Stavkasi</th>
+                                    <th width="200px">Stavka</th>
+                                    <th width="120px">Lavozim sanasi</th>
                                     <th>Jinsi</th>
                                 </tr>
                             </thead>
