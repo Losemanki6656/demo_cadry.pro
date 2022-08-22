@@ -107,7 +107,7 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <h5 class="card-title me-2">Stavka</h5>
+                            <h5 class="card-title me-2">Plan</h5>
                             <input type="number" value="1" class="form-control" name="st_1" step="0.01">
                         </div>
                         <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>

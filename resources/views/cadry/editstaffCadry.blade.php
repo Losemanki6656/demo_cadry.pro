@@ -43,7 +43,7 @@
 
                         </div>
                         <div class="mb-3">
-                            <h5 class="fw-bold">Stavka:<h5>
+                            <h5 class="fw-bold">Plan:<h5>
                                     <input type="number" name="st_1" value="{{ $item->stavka }}" class="form-control"
                                         step="0.01">
                         </div>
