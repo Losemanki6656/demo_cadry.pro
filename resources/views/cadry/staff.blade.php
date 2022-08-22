@@ -46,27 +46,6 @@
 
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_filter">
-
-                                <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-filter font-size-16 align-middle me-2"></i>
-                                        Filter
-                                        <i class="mdi mdi-chevron-down"></i>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button type="button" onclick="sverx()"
-                                                class="dropdown-item">Sverxlar</button>
-                                        </li>
-                                        <li>
-                                            <button type="button" onclick="vakant()"
-                                                class="dropdown-item">Vakantlar</button>
-                                        </li>
-                                    </ul>
-                                </div>
-
                                 <label>
                                     <button type="button" class="btn btn-primary w-sm waves-effect waves-ligh"
                                         data-bs-toggle="modal" data-bs-target="#addstaff">

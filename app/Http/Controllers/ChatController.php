@@ -269,11 +269,7 @@ class ChatController extends Controller
             if($item->cadry_id != $newItem->cadry_id) $x ++;
         }
 
-        if( $x >= 1 && $request->staff_status == false)
-        {
-            return back()->with('msg',2);
-
-        } else  {
+  
                 $newItem->department_id = $request->department_id;
                 $newItem->department_staff_id = $request->staff_id;
                 $newItem->staff_id = $editstaff->staff_id;
@@ -315,7 +311,6 @@ class ChatController extends Controller
                 }
 
                 return back()->with('msg', 1);
-        }
 
     }
 
