@@ -171,15 +171,7 @@
                                                                 class="dropdown-item fw-bold text-success"><i
                                                                     class="fa fa-plus"></i> Mehnat
                                                                 ta'tili</a></li>
-                                                        <li>
-                                                            @if ($item->sex == 0)
-                                                                <a href="{{ route('decret_cadry', ['id' => $item->id]) }}"
-                                                                    type="button"
-                                                                    class="dropdown-item fw-bold text-primary"><i
-                                                                        class="fa fa-plus"></i> Bola
-                                                                    parvarish ta'tili</a>
-                                                            @endif
-                                                        </li>
+                                                      
                                                     </ul>
                                                 </div>
                                             </td>

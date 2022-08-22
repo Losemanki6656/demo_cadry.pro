@@ -55,7 +55,9 @@
                                         </td>
                                         <td class="text-center">{{ $item->cadry->last_name }} {{ $item->cadry->first_name }}
                                             {{ $item->cadry->middle_name }}
-                                            @if ($item->status == true)
+                                            @if ($item->status_decret == true)
+                                                (Bola parvarish ta'tilida)
+                                            @elseif ($item->status == true)
                                                  (Dekretdagi xodim o'rniga)
                                             @endif
                                          </td>
@@ -100,6 +102,7 @@
                                                                 Ortiqcha ish o'rni
                                                             </label>
                                                         </div>
+                                                        @if ($item->status_decret == false) 
                                                         <div class="mb-3">
                                                             <input class="form-check-input" type="checkbox"
                                                                 @if ($item->status == true) checked @endif
@@ -109,6 +112,8 @@
                                                                 Dekretdagi xodim o'rniga
                                                             </label>
                                                         </div>
+                                                        @endif
+                                                        
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-primary" type="submit"> <i

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">{{ __('messages.xodimlar') }}</h4>
+                <h4 class="mb-sm-0 font-size-18">Ta'tildagi xodimlar</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -21,15 +21,19 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
+                    <a type="button" href="{{ route('addVacation') }}" class="btn btn-primary btn-sm mb-2">
+                        <i class="fa fa-plus"></i> Ta'tilga yuborish</a>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped animate__animated animate__fadeIn table-sm">
                             <thead class="thead-dark ">
                                 <tr>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.no') }}</th>
+                                    <th class="text-center fw-bold" width="60px">Status</th>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.photo') }}</th>
                                     <th class="text-center fw-bold" width="350px">{{ __('messages.fio') }}</th>
-                                    <th class="text-center fw-bold">{{ __('messages.staff') }}</th>
-                                    <th width="130px" class="text-center fw-bold">{{ __('messages.action') }}</th>
+                                    <th class="text-center fw-bold">Qachondan</th>
+                                    <th class="text-center fw-bold">Qachongacha</th>
+                                    <th width="200px" class="text-center fw-bold">{{ __('messages.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,8 +43,16 @@
                                             <td class="text-center fw-bold align-middle">
                                                 {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
                                             </td>
+                                            <td class="text-center align-middle">
+                                                @if ($item->status_decret == true)
+                                                <div class="bg-primary p-2"></div>
+                                                @else
+                                                <div class="bg-warning p-2"></div>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
-                                                <a href="{{ asset('storage/' . $item->cadry->photo) }}" class="image-popup-desc"
+                                                <a href="{{ asset('storage/' . $item->cadry->photo) }}"
+                                                    class="image-popup-desc"
                                                     data-title="{{ $item->cadry->last_name }} {{ $item->cadry->first_name }} {{ $item->cadry->middle_name }}">
                                                     <img class="rounded avatar"
                                                         src="{{ asset('storage/' . $item->cadry->photo) }}" height="40"
@@ -48,86 +60,27 @@
                                                 </a>
 
                                             </td>
-                                            <td class="text-center align-middle fw-bold"><a
-                                                    href="{{ route('cadry_edit', ['id' => $item->id]) }}"
-                                                    class="text-dark"> {{ $item->last_name }} {{ $item->first_name }}
-                                                    {{ $item->middle_name }}</a></td>
-                                            <td class="text-center align-middle">{{ $item->post_name }}</td>
-                                            <td class="text-center">
-                                                <a type="button" href="{{ route('word_export', ['id' => $item->id]) }}"
-                                                    class="btn btn-soft-primary" data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom" title="Yuklab olish">
-                                                    <i class=" bx bxs-file-doc font-size-16 align-middle"></i></a>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button"
-                                                        class="btn btn-soft-dark dropdown-toggle"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-filter font-size-16 align-middle"></i>
-                                                    </button>
+                                            <td class="text-center align-middle fw-bold"><a 
+                                                    class="text-dark"> {{ $item->cadry->last_name }}
+                                                    {{ $item->cadry->first_name }}
+                                                    {{ $item->cadry->middle_name }}</a></td>
+                                            <td class="text-center align-middle">{{ $item->date1->format('Y-m-d') }} dan
+                                            </td>
+                                            <td class="text-center align-middle">
+                                               @if ($item->status_decret == true)
+                                                    Bola parvarish ta'tilida
+                                               @else
+                                                    {{ $item->date2->format('Y-m-d') }} gacha
+                                               @endif
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <a type="button" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-edit"></i> Taxrirlash</a>
+                                                <a type="button" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i> O'chirish</a>
 
-                                                    <ul class="dropdown-menu">
-                                                        <li><a data-bs-toggle="modal"
-                                                                data-bs-target="#vacation{{ $item->id }}"
-                                                                type="button"
-                                                                class="dropdown-item fw-bold text-success"><i
-                                                                    class="fa fa-plus"></i> Mehnat
-                                                                ta'tili</a></li>
-                                                        <li>
-                                                            @if ($item->sex == 0)
-                                                                <a href="{{ route('decret_cadry', ['id' => $item->id]) }}"
-                                                                    type="button"
-                                                                    class="dropdown-item fw-bold text-primary"><i
-                                                                        class="fa fa-plus"></i> Bola
-                                                                    parvarish ta'tili</a>
-                                                            @endif
-                                                        </li>
-                                                    </ul>
-                                                </div>
                                             </td>
                                         </tr>
-                                        <div class="modal fade" id="vacation{{ $item->id }}" tabindex="-1"
-                                            role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title text-success">Mehnat ta'tiliga chiqarish
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <form action="{{ route('vacation', ['id' => $item->id]) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label class="fw-bold text-center">FIO:
-                                                                    {{ $item->last_name }} {{ $item->first_name }}
-                                                                    {{ $item->middle_name }}</label>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <label>Qachondan:</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="datepicker-basic" name="date1">
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        <label>Qachongacha:</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="datepicker-basic" name="date2">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-success" type="submit"> <i
-                                                                    class="bx bx-save font-size-16 align-middle me-2"></i>
-                                                                Saqlash </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -138,15 +91,6 @@
             <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
-                        @if (count($cadries) > 9)
-                            <form action="{{ route('cadry') }}" method="get">
-                                <div class="dataTables_length" id="datatable_length">
-                                    <label><input type="number" class="form-control form-control"
-                                            placeholder="{{ __('messages.page') }} ..." name="page"
-                                            value="{{ request()->query('page') }}"></label>
-                                </div>
-                            </form>
-                        @endif
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <div id="datatable_filter" class="dataTables_filter">
@@ -159,34 +103,6 @@
             </div>
         </div>
     </div>
-    @push('scripts')
-        <script>
-            function myFilter() {
-                var form = document.getElementById("myfilter");
-                form.submit();
-            }
-            $('#name_se').keyup(function(e) {
-                if (e.keyCode == 13) {
-                    myFilter();
-                }
-            })
-            $('#staff_se').change(function(e) {
-                myFilter();
-            })
-            $('#education_se').change(function(e) {
-                myFilter();
-            })
-            $('#region_se').change(function(e) {
-                myFilter();
-            })
-            $('#department_se').change(function(e) {
-                myFilter();
-            })
-            $('#sex_se').change(function(e) {
-                myFilter();
-            })
-        </script>
-    @endpush
     <table>
         <tbody>
             <tr>
@@ -203,16 +119,38 @@
                 <td style="width: 50px;">
                     <div class="bg-primary p-2"></div>
                 </td>
-                <td style="width: 30px;"></td>
-                <td style="width: 130px;">
-                    <span>Kasanachi xodimlar</span>
-                </td>
-                <td style="width: 50px;">
-                    <div class="bg-info p-2"></div>
-                </td>
             </tr>
         </tbody>
     </table>
 
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        var msg = '{{ Session::get('msg') }}';
+        var exist = '{{ Session::has('msg') }}';
+        if (exist) {
+            if (msg == 2) {
+                Swal.fire({
+                    title: "Amalga oshirilmadi",
+                    text: "!",
+                    icon: "warning",
+                    confirmButtonColor: "#1c84ee"
+                });
+            } else if (msg == 1) {
+                Swal.fire({
+                    title: "Good!",
+                    text: "Muvaffaqqiyatli bajarildi!",
+                    icon: "success",
+                    confirmButtonColor: "#1c84ee",
+                }).then(function() {
+                    location.reload();
+                });
+            }
+        }
+
+    });
+</script>
 @endsection

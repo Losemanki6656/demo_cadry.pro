@@ -137,6 +137,8 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/control', [App\Http\Controllers\ChatController::class, 'control'])->name('control');
     Route::get('/cadry/vacations', [App\Http\Controllers\VacationController::class, 'vacations'])->name('vacations');
+    Route::get('/cadry/addVacation', [App\Http\Controllers\VacationController::class, 'addVacation'])->name('addVacation');
+    Route::post('/cadry/addVacation', [App\Http\Controllers\VacationController::class, 'addVacationsucc'])->name('addVacation');
 
     //AjaxLoading
     Route::get('/loadClassification', [App\Http\Controllers\ChatController::class, 'loadClassification'])->name('loadClassification');

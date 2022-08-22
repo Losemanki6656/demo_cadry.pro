@@ -119,8 +119,8 @@
                                     data-target="{{ $sverx }}">0</span>
                             </h5>
                             <div class="text-nowrap">
-                                <span class="ms-1 text-muted font-size-13">Umumiy xodimlar</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $all }}
+                                <span class="ms-1 text-muted font-size-13">Plan</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $plan }}
                                     ta</span>
                             </div>
                         </div>

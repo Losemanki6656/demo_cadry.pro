@@ -104,7 +104,7 @@
                                         <td class="text-center fw-bold" style="font-size: 14px">
                                             {{ $department->name }}</td>
                                         <td class="text-center fw-bold">
-                                            <span class="text-success">{{ $a[$department->id] }}</span>
+                                            <span class="text-success">{{ $plan[$department->id] }}</span>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('addstaffToDepartment', ['id' => $department->id]) }}"
@@ -114,13 +114,14 @@
                                             </a>
                                         </td>
                                         <td class="text-center fw-bold">
-                                            @if ($a[$department->id] > $b[$department->id])
+                                            @if ($a[$department->id] > 0)
                                                 <button class="btn btn-success btn-sm">
-                                                    {{ $a[$department->id] - $b[$department->id] }}
+                                                    {{ $a[$department->id] }}
                                                 </button>
-                                            @elseif ($a[$department->id] < $b[$department->id])
+                                            @endif 
+                                            @if ( $b[$department->id] > 0)
                                                 <button class="btn btn-danger btn-sm">
-                                                    {{$b[$department->id] - $a[$department->id] }}
+                                                    {{$b[$department->id] }}
                                                 </button>
                                             @endif
                                         </td>

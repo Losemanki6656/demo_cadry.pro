@@ -302,6 +302,7 @@
                                 <a href="{{ route('vacations') }}">
                                     <i data-feather="bar-chart-2"></i>
                                     <span data-key="t-dashboard">Ta'tillar</span>
+                                    <span class="badge bg-primary">New</span>
                                 </a>
                             </li>
                             <li>

@@ -153,14 +153,23 @@ class CadryController extends Controller
             ->where('name','like','%'.$search.'%');
         })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
         
-        $a = []; $b = [];
-        foreach ($departments as $item)
+        $alldepartments = Department::where('organization_id', Auth::user()->userorganization->organization_id)->with(['departmentstaff','departmentstaff.cadry'])->get();
+        $a = []; $b = []; $plan = []; 
+        foreach ($alldepartments as $item)
         {
-            $a[$item->id] = $item->departmentstaff->sum('stavka');
-            $b[$item->id] = $item->departmentcadry->sum('stavka');
-
-            if($a[$item->id] > $b[$item->id]) $all = $all + $a[$item->id] - $b[$item->id];
-                else if($a[$item->id]<$b[$item->id]) $allSv = $allSv + $b[$item->id] - $a[$item->id];
+            $z = 0; $q = 0; $x = 0; $y = 0;$p = 0;
+            foreach($item->departmentstaff as $staff) {
+                $x = $staff->stavka; $p = $p  + $x;
+                $y = $staff->cadry->where('status_decret',false)->sum('stavka');
+                if($x>$y) $z = $z + $x - $y;
+                if($x<$y) $q = $q + $y - $x;
+            }
+            
+            $a[$item->id] = $z;
+            $b[$item->id] = $q;
+            $all = $all + $z;
+            $allSv =  $allSv + $q;
+            $plan[$item->id] = $p;
         }
         
 
@@ -169,7 +178,8 @@ class CadryController extends Controller
             'a' => $a,
             'b' => $b,
             'all' => $all,
-            'allSv' => $allSv
+            'allSv' => $allSv,
+            'plan' => $plan
         ]);
     }
 
@@ -1033,18 +1043,25 @@ class CadryController extends Controller
             where('organization_id', Auth::user()->userorganization->organization_id)
             ->with(['cadries','departmentstaff','departmentcadry'])->get();
 
-            $a = []; $b = []; $vakant = 0; $sverx = 0;
+            $plan = []; $vakant=0; $sverx = 0; $plan = 0;
             foreach ($departments as $item)
             {
-                $a[$item->id] = $item->departmentstaff->sum('stavka');
-                $b[$item->id] = $item->departmentcadry->sum('stavka');
-    
-                if($a[$item->id] > $b[$item->id]) $vakant = $vakant + $a[$item->id] - $b[$item->id];
-                    else if($a[$item->id]<$b[$item->id]) $sverx = $sverx + $b[$item->id] - $a[$item->id];
+                $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
+                foreach($item->departmentstaff as $staff) {
+                    $x = $staff->stavka; $p = $p  + $x;
+                    $y = $staff->cadry->where('status_decret',false)->sum('stavka');
+                    if($x>$y) $z = $z + $x - $y;
+                    if($x<$y) $q = $q + $y - $x;
+                }
+                
+                $vakant = $vakant + $z;
+                $sverx =  $sverx + $q;
+                $plan = $plan + $p;
             }
 
         return view('cadry.statistics', [
             'decret' => $decret,
+            'plan' => $plan,
             'nafaqaMan' => $nafaqaMan,
             'nafaqaWoman' => $nafaqaWoman,
             'med' => $med,
