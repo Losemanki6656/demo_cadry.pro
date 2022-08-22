@@ -261,7 +261,7 @@
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Shtat lavozimlari</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $staffs->count() }}
+                                <span class="badge bg-soft-success text-success fw-bold">
                                     ta</span>
                             </div>
                         </div>
