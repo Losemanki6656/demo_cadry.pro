@@ -36,15 +36,16 @@
                             <select class="js-example-basic-single js-data-example-ajax" name="class_staff_id"
                                 id="classifications" style="width: 100%">
                                 @if ($item->classification)
-                                     <option value="{{ $item->classification->id }}">{{ $item->classification->code_staff }} -  {{ $item->classification->name_uz }} </option>
+                                    <option value="{{ $item->classification->id }}">{{ $item->classification->code_staff }}
+                                        - {{ $item->classification->name_uz }} </option>
                                 @endif
                             </select>
-                            
+
                         </div>
                         <div class="mb-3">
                             <h5 class="fw-bold">Stavka:<h5>
-                                <input type="number" name="st_1" value="{{ $item->stavka }}" class="form-control"
-                                step="0.01">
+                                    <input type="number" name="st_1" value="{{ $item->stavka }}" class="form-control"
+                                        step="0.01">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" type="submit"> <i
@@ -70,6 +71,8 @@
                         showCancelButton: !0,
                         confirmButtonColor: "#1c84ee",
                         cancelButtonColor: "#fd625e",
+                    }).then(function() {
+                        location.reload();
                     });
                 @endif
             @endif
