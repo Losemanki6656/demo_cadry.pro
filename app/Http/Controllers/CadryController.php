@@ -1227,7 +1227,7 @@ class CadryController extends Controller
         $data = [];
         if ($request->has('cadry_id')) {
             $id = $request->cadry_id;
-            $data = Career::where('cadry_id', $id )->orderBy('sort', 'desc')->get();
+            $data = Career::where('cadry_id', $id )->orderBy('id', 'desc')->get();
         }
         return response()->json($data);
     }

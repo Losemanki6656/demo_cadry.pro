@@ -216,7 +216,7 @@ class ChatController extends Controller
     {
         $item =  DepartmentCadry::with('cadry')->find($id);
 
-        $careers = Career::where('cadry_id',$item->cadry_id)->orderBy('sort','desc')->get();
+        $careers = Career::where('cadry_id',$item->cadry_id)->orderBy('id', 'desc')->get();
 
         return view('cadry.deleteStaffCadry', [
             'item' => $item,
@@ -232,6 +232,7 @@ class ChatController extends Controller
         $newDelCadry->railway_id = $item->railway_id;
         $newDelCadry->organization_id = $item->organization_id;
         $newDelCadry->department_id = $item->department_id;
+        $newDelCadry->cadry_id = $item->cadry_id;
         $newDelCadry->number = $request->number;
         $newDelCadry->comment = $request->comment;
         $newDelCadry->staff_full = $item->staff_full;
@@ -244,7 +245,7 @@ class ChatController extends Controller
 
         $item->delete();
 
-        return back()->with('msg' , 1);
+        return redirect()->route('cadry_edit',['id' =>  $item->cadry_id])->with('msg' , 1);
 
 
     }
