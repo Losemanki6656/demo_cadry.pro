@@ -11,7 +11,7 @@ class VacationController extends Controller
 
    public function vacations()
    {
-      $cadries = Vacation::Filter()->get();
+      $cadries = Vacation::Filter()->paginate(10);
 
       return view('vacations.vacations',[
          'cadries' => $cadries

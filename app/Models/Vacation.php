@@ -15,6 +15,12 @@ class Vacation extends Model
     {
         return self::query()
             ->where('organization_id',auth()->user()->userorganization->organization_id)
-            ->whereDate( 'date2' , '>=' ,now() );
+            ->whereDate( 'date2' , '>=' ,now() )
+            ->with('cadry');
+    }
+
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
     }
 }

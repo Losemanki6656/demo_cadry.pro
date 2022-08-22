@@ -37,22 +37,13 @@
                                     @foreach ($cadries as $key => $item)
                                         <tr>
                                             <td class="text-center fw-bold align-middle">
-                                                @if ($item->vacation->count())
-                                                    @if ($item->vacation[0]->date1 <= now() && now() <= $item->vacation[0]->date2)
-                                                        <div class="bg-warning bg-gradient p-2"></div>
-                                                    @else
-                                                        {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
-                                                    @endif
-                                                @else
-                                                    {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
-                                                @endif
+                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ asset('storage/' . $item->photo) }}" class="image-popup-desc"
-                                                    data-title="{{ $item->last_name }} {{ $item->first_name }} {{ $item->middle_name }}"
-                                                    data-description="{{ $item->post_name }}">
+                                                <a href="{{ asset('storage/' . $item->cadry->photo) }}" class="image-popup-desc"
+                                                    data-title="{{ $item->cadry->last_name }} {{ $item->cadry->first_name }} {{ $item->cadry->middle_name }}">
                                                     <img class="rounded avatar"
-                                                        src="{{ asset('storage/' . $item->photo) }}" height="40"
+                                                        src="{{ asset('storage/' . $item->cadry->photo) }}" height="40"
                                                         width="40">
                                                 </a>
 
