@@ -306,18 +306,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('regions') }}">
-                                    <i data-feather="bar-chart-2"></i>
-                                    <span data-key="t-dashboard">{{ __('messages.regions') }}</span>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="javascript: void(0);" class="has-arrow">
                                     <i data-feather="codesandbox"></i>
                                     <span data-key="t-contacts">{{ __('messages.boshqa') }}</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{ route('incentives') }}" data-key="t-user-list">Rag'batlanirishlar</a>
+                                    </li>
+                                    <li><a href="{{ route('regions') }}" data-key="t-user-list">{{ __('messages.regions') }}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -500,6 +496,8 @@
 
         <script src="{{ asset('assets/libs/alertifyjs/build/alertify.min.js') }}"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+        
         @yield('scripts')
         @stack('scripts')
 

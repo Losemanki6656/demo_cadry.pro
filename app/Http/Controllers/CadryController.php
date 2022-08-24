@@ -1094,7 +1094,7 @@ class CadryController extends Controller
                     });
                 });
              else
-            $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
+        $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
 
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
@@ -1106,43 +1106,58 @@ class CadryController extends Controller
 
     public function cadry_archive_load($id) 
     {
-        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
 
         $cadry = Cadry::find($id);
-        $staffs = Staff::where('organization_id',$org_id)->get();
-        $departments = Department::where('organization_id',$org_id)->get();
 
         return view('cadry.cadry_archive_load',[
-            'cadry' => $cadry,
-            'staffs' => $staffs,
-            'departments' => $departments
+            'cadry' => $cadry
         ]);
     }
 
     public function save_archive_cadry($id, Request $request)
     {
-        $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-        $rail_id = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
+        $org_id = auth()->user()->userorganization->organization_id;
+        $rail_id = auth()->user()->userorganization->railway_id;
 
-        $item = Cadry::find($id);
-        $item->railway_id = $rail_id;
-        $item->organization_id = $org_id;
-        $item->department_id = $request->department_id;
-        $item->staff_id = $request->staff_id;
-        $item->post_name = $request->full_post;
-        $item->post_date = $request->post_date;
-        $item->status = true;
-        $item->save();
-        
-        $newscareer = new Career();
-        $newscareer->cadry_id = $id;
-        $newscareer->sort = 0;
-        $newscareer->date1 = substr($request->post_date,0,4);
-        $newscareer->date2 = '';
-        $newscareer->staff = $request->full_post;
-        $newscareer->save();
+        $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
 
-       return redirect()->route('cadry');
+            $newItem = new DepartmentCadry();
+            $newItem->railway_id = $rail_id;
+            $newItem->organization_id = $org_id;
+            $newItem->department_id = $request->department_id;
+            $newItem->department_staff_id = $request->staff_id;
+            $newItem->staff_id = $dep->staff_id;
+            $newItem->staff_full = $dep->staff_full;
+            $newItem->staff_date = $request->staff_date;
+            $newItem->staff_status = $request->staff_status;
+
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->st_1) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
+
+                $newItem->cadry_id = $id;
+                $newItem->stavka = $request->st_1;
+                $newItem->save();
+                
+                $cadr = Cadry::find($id);
+                $cadr->railway_id = $rail_id;
+                $cadr->organization_id = $org_id;
+                $cadr->department_id = $request->department_id;
+                $cadr->post_name = $dep->staff_full;
+                $cadr->status = true;
+                $cadr->save();
+
+                $x = Career::where('cadry_id',$id)->count();
+                $y = new Career();
+                $y->sort = $x + 1;
+                $y->cadry_id = $id;
+                $y->date1 = date("Y", strtotime($request->staff_date));
+                $y->date2 = '';
+                $y->staff = $dep->staff_full;
+                $y->save();
+
+        return redirect()->route('cadry')->with('msg',5);
     }
 
     public function ssss(Request $request)

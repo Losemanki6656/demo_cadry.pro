@@ -32,33 +32,41 @@
                         </div>
                     </div>
                     <div class="col-8">
-                        <form action="{{ route('save_archive_cadry',['id' => $cadry->id]) }}" method="post">
+                        <form action="{{ route('save_archive_cadry', ['id' => $cadry->id]) }}" method="post">
                             @csrf
-                            <div class="mb-3">
-                                <label> Ishga qabul qilingan sanasi</label>
-                                <input type="date" name="post_date" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label> Qabul qilingan bo'limni tanlang</label>
-                                <select class="js-example-basic-single" name="department_id" required style="width: 100%">
-                                    <option value="">--Tanlash--</option>
-                                    @foreach ($departments as $dep)
-                                        <option value="{{ $dep->id }}">{{ $dep->name }}</option>
-                                    @endforeach
+                            <div class="d-flex flex-wrap align-items-center mb-4">
+                                <label class="fw-bold text-primary">Bo'linmani tanlang</label>
+                                <select class="js-example-basic-single department" name="department_id" id="department_id"
+                                    style="width: 100%" required>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label> Qabul qilingan lavozimni tanlang</label>
-                                <select class="js-example-basic-single" name="staff_id" required style="width: 100%">
-                                    <option value="">--Tanlash--</option>
-                                    @foreach ($staffs as $staff)
-                                        <option value="{{ $staff->id }}">{{ $staff->name }}</option>
-                                    @endforeach
+
+                            <div class="mb-4">
+                                <label class="fw-bold text-primary">Lavozimni tanlang</label>
+                                <select name="staff_id" id="staff_id" style="width: 100%"
+                                    class="js-example-basic-single staff" required>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label> Lavozimning to'liq nomi</label>
-                                <textarea name="full_post" class="form-control"></textarea>
+                            <div class="mb-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="fw-bold text-primary">Stavka</span>
+                                        <input type="number" name="st_1" value="1" class="form-control" step="0.01">
+                                    </div>
+                                    <div class="col">
+                                        <span class="fw-bold text-primary">Faoliyat turi</span>
+                                        <select name="staff_status" id="staff_status" class="form-select">
+                                            <option value="0">Asosiy
+                                            </option>
+                                            <option value="1">O'rindosh
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <span class="fw-bold text-primary">Lavozim sanasi</span>
+                                        <input type="date" name="staff_date" class="form-control" required>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <div class="row">
@@ -83,5 +91,74 @@
 @section('scripts')
     <script>
         $('.js-example-basic-single').select2();
+    </script>
+    <script>
+        $('.department').select2({
+            ajax: {
+                url: '{{ route('loadDepartment') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }),
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: "Bo'linmani tanlang",
+            minimumInputLength: 1,
+        });
+    </script>
+    <script>
+        $('#department_id').change(function(e) {
+            let department_id = $('#department_id').val();
+            $.ajax({
+                url: '{{ route('loadVacan') }}',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                data: {
+                    department_id: department_id
+                },
+                success: function(data) {
+                    var len = 0;
+                    if (data != null) {
+                        len = data.length;
+                    }
+
+                    if (len > 0) {
+                        $("#staff_id").empty();
+                        for (var i = 0; i < len; i++) {
+                            console.log(len);
+                            var id = data[i].id;
+                            var name = data[i].staff_full;
+                            var option = "<option value='" + id + "'>" + id + " - " + name +
+                                "</option>";
+                            $("#staff_id").append(option);
+                        }
+                    } else {
+                        $("#staff_id").empty();
+                        var option = "<option value=''>" + "Bo'sh ish o'rni mavjud emas!" + "</option>";
+                        $("#staff_id").append(option);
+                    }
+                }
+            });
+        })
     </script>
 @endsection

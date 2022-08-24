@@ -416,11 +416,31 @@
     </script>
     <script>
         $(document).ready(function() {
-            @if (\Session::has('msg'))
-                @if (Session::get('msg') == 1)
-                    alertify.success("Ta'tilga chiqarish muvaffaqqiyatli amalga oshirildi!");
-                @endif
-            @endif
+            var msg = '{{ Session::get('msg') }}';
+            var exist = '{{ Session::has('msg') }}';
+            if (exist) {
+                if (msg == 1) {
+                    Swal.fire({
+                        title: "Good!",
+                        text: "Ta'tilga chiqarish muvaffaqqiyatli amalga oshirildi!",
+                        icon: "success",
+                        confirmButtonColor: "#1c84ee",
+                    }).then(function() {
+                        location.reload();
+                    });
+                }
+                if (msg == 5) {
+                    Swal.fire({
+                        title: "Good!",
+                        text: "Xodim arxivdan muvafaqqiyatli ko'chirildi!",
+                        icon: "success",
+                        confirmButtonColor: "#1c84ee",
+                    }).then(function() {
+                        location.reload();
+                    });
+                }
+            }
+
         });
     </script>
 @endsection
