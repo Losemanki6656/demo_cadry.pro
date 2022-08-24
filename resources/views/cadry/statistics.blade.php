@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div class="row">
+    <div class="row animate__animated animate__fadeIn">
         <div class="col-xl-4 col-md-6">
             <div class="card card-h-100">
                 <div class="card-header align-items-center d-flex">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row animate__animated animate__fadeIn">
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
@@ -157,7 +157,7 @@
         </div><!-- end col -->
     </div>
 
-    <div class="row">
+    <div class="row animate__animated animate__fadeIn">
         <div class="col-xl-3 col-md-6">
             <div class="card card-h-100">
                 <div class="card-header align-items-center d-flex">

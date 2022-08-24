@@ -42,7 +42,6 @@ class Cadry extends Model
     {
         return $this->belongsTo(AcademicTitle::class,'academictitle_id');
     }
-
     public function nationality()
     {
         return $this->belongsTo(Nationality::class,'nationality_id');

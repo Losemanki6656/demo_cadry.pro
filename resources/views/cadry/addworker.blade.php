@@ -552,9 +552,19 @@ label.cabinet input.file{
         var exist = '{{ Session::has('msg') }}';
         if (exist) {
             if (msg == 4) {
+                var name = '{{ Session::get('name') }}';
                 Swal.fire({
-                    title: "Xatolik",
-                    text: "Ushbu xodim mavjud!",
+                    title: "Ruxsat etilmadi!",
+                    text: "Ushbu xodim " + name + " korxonasida mavjud!",
+                    icon: "warning",
+                    confirmButtonColor: "#1c84ee"
+                }).then(function() {
+                    location.reload();
+                });
+            } else if (msg == 5) {
+                Swal.fire({
+                    title: "Ruxsat etilmadi!",
+                    text: "Ushbu xodim arxivda mavjud!",
                     icon: "warning",
                     confirmButtonColor: "#1c84ee"
                 }).then(function() {

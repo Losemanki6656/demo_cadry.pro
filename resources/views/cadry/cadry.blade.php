@@ -33,7 +33,10 @@
                             <label class="mb-0"> Lavozimi</label>
                             <select class="js-example-basic-single staff" style="width: 100%" id="staff_se"
                                 name="staff_se">
-                                <option value=""> --Barchasi--</option>
+                                @if (request('staff_se'))
+                                    <option value="{{ request('staff_se') }}"> {{ $cadries[0]->staff->name }}
+                                    </option>
+                                @endif
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-2">
@@ -50,7 +53,10 @@
                             <label class="mb-0"> Viloyati</label>
                             <select class="js-example-basic-single region" style="width: 100%" id="region_se"
                                 name="region_se">
-                                <option value=""> --Barchasi-- </option>
+                                @if (request('region_se'))
+                                    <option value="{{ request('region_se') }}"> {{ $cadries[0]->birth_region->name }}
+                                    </option>
+                                @endif
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-2">
@@ -66,7 +72,10 @@
                             <label class="mb-0"> Bo'limlar</label>
                             <select class="js-example-basic-single department" style="width: 100%" id="department_se"
                                 name="department_se">
-                                <option value=""> --Barchasi-- </option>
+                                @if (request('department_se'))
+                                    <option value="{{ request('department_se') }}"> {{ $cadries[0]->department->name }}
+                                    </option>
+                                @endif
                             </select>
                         </div>
                     </div>
@@ -94,14 +103,14 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-2">
                             <label class="mb-0"> </label>
-                            <a href="{{ route('export_excel') }}" type="button"
-                                class="btn btn-success waves-effect btn-label waves-light" style="width: 100%"><i
-                                    class="bx bxs-file label-icon"></i> Export</a>
+                            <a onclick="exportToExcel()" type="button"
+                                class="btn btn-success waves-effect btn-label waves-light btn-sm" style="width: 100%"><i
+                                    class="bx bxs-file label-icon"></i> Excelga yuklab olish</a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-2">
                             <label class="mb-0"> </label>
                             <a href="{{ route('addworker') }}" type="button"
-                                class="btn btn-primary waves-effect btn-label waves-light" style="width: 100%"><i
+                                class="btn btn-primary waves-effect btn-label waves-light btn-sm" style="width: 100%"><i
                                     class="bx bx-plus label-icon"></i> Xodim qo'shish</a>
                         </div>
 
@@ -113,7 +122,7 @@
                 <div class="col-12">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped animate__animated animate__fadeIn table-sm">
-                            <thead class="thead-dark ">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.no') }}</th>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.photo') }}</th>
@@ -152,73 +161,12 @@
                                                     class="text-dark"> {{ $item->last_name }} {{ $item->first_name }}
                                                     {{ $item->middle_name }}</a></td>
                                             <td class="text-center align-middle">{{ $item->post_name }}</td>
-                                            <td class="text-center">
+                                            <td class="text-center align-middle">
                                                 <a type="button" href="{{ route('word_export', ['id' => $item->id]) }}"
-                                                    class="btn btn-soft-primary" data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom" title="Yuklab olish">
-                                                    <i class=" bx bxs-file-doc font-size-16 align-middle"></i></a>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button"
-                                                        class="btn btn-soft-dark dropdown-toggle"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-filter font-size-16 align-middle"></i>
-                                                    </button>
-
-                                                    <ul class="dropdown-menu">
-                                                        <li><a data-bs-toggle="modal"
-                                                                data-bs-target="#vacation{{ $item->id }}"
-                                                                type="button"
-                                                                class="dropdown-item fw-bold text-success"><i
-                                                                    class="fa fa-plus"></i> Mehnat
-                                                                ta'tili</a></li>
-                                                      
-                                                    </ul>
-                                                </div>
+                                                    class="btn btn-primary btn-sm">
+                                                    <i class="bx bxs-file-doc"></i> Yuklab olish</a>
                                             </td>
                                         </tr>
-                                        <div class="modal fade" id="vacation{{ $item->id }}" tabindex="-1"
-                                            role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title text-success">Mehnat ta'tiliga chiqarish
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <form action="{{ route('vacation', ['id' => $item->id]) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label class="fw-bold text-center">FIO:
-                                                                    {{ $item->last_name }} {{ $item->first_name }}
-                                                                    {{ $item->middle_name }}</label>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <label>Qachondan:</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="datepicker-basic" name="date1">
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        <label>Qachongacha:</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="datepicker-basic" name="date2">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-success" type="submit"> <i
-                                                                    class="bx bx-save font-size-16 align-middle me-2"></i>
-                                                                Saqlash </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -304,11 +252,34 @@
             </tr>
         </tbody>
     </table>
-
-
 @endsection
 
 @section('scripts')
+    <script>
+        function exportToExcel() {
+            let name_se = $('#name_se').val();
+            let staff_se = $('#staff_se').val();
+            let education_se = $('#education_se').val();
+            let region_se = $('#region_se').val();
+            let start_se = $('#start_se').val();
+            let end_se = $('#end_se').val();
+            let sex_se = $('#sex_se').val();
+            let vacation_se = $('#vacation_se').val();
+            let dep_id = $('#department_se').val();
+
+            let url = '{{ route('export_excel') }}';
+            window.location.href = `${url}?
+                                        name_se=${name_se}&
+                                        staff_se=${staff_se}&
+                                        education_se=${education_se}&
+                                        region_se=${region_se}&
+                                        start_se=${start_se}&
+                                        end_se=${end_se}&
+                                        sex_se=${sex_se}&
+                                        vacation_se=${vacation_se}&
+                                        dep_id=${dep_id}&`;
+        }
+    </script>
     <script>
         $('.region').select2({
             ajax: {

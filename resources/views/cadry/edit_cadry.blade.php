@@ -171,8 +171,10 @@
                                         <td>
                                             <select class="loadregion" name="birth_region_id"
                                                 style="max-width: 220px; width: 100%" required>
-                                                <option value="{{ $cadry->birth_region_id }}">
-                                                    {{ $cadry->birth_region->name }}</option>
+                                                @if ( $cadry->birth_region)
+                                                    <option value="{{ $cadry->birth_region_id }}">
+                                                            {{ $cadry->birth_region->name }}</option>
+                                                @endif
                                             </select>
                                             <div class="invalid-feedback">Tug'ilgan viloyatini tanlang</div>
                                         </td>
@@ -182,8 +184,11 @@
                                         <td>
                                             <select class="loadcity" name="birth_city_id"
                                                 style="max-width: 220px; width: 100%" required>
-                                                <option value="{{ $cadry->birth_city_id }}">
-                                                    {{ $cadry->birth_city->name }}</option>
+                                              
+                                                @if ( $cadry->birth_city)
+                                                    <option value="{{ $cadry->birth_city_id }}">
+                                                            {{ $cadry->birth_city->name }}</option>
+                                                @endif
                                             </select>
                                             <div class="invalid-feedback">Tug'ilgan tuman yoki shaharni tanlang</div>
                                         </td>
@@ -209,16 +214,21 @@
                                                 <td width="220px">
                                                     <select class="loadregion1" name="address_region_id"
                                                         style="max-width: 220px; width: 100%" required>
-                                                        <option value="{{ $cadry->address_region_id }}">
-                                                            {{ $cadry->address_region->name }}</option>
+                                                        @if ( $cadry->address_region)
+                                                            <option value="{{ $cadry->address_region_id }}">
+                                                                {{ $cadry->address_region->name }}</option>
+                                                        @endif
+                                                        
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
                                                 <td width="220px">
                                                     <select class="loadcity1" name="address_city_id"
                                                         style="max-width: 220px; width: 100%" required>
-                                                        <option value="{{ $cadry->address_city_id }}">
-                                                            {{ $cadry->address_city->name }}</option>
+                                                        @if ( $cadry->address_city)
+                                                            <option value="{{ $cadry->address_city_id }}">
+                                                                    {{ $cadry->address_city->name }}</option>
+                                                        @endif
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
@@ -229,16 +239,20 @@
                                                 <td width="220px">
                                                     <select class="loadregion2" name="pass_region_id"
                                                         style="max-width: 220px; width: 100%" required>
-                                                        <option value="{{ $cadry->pass_region_id }}">
-                                                            {{ $cadry->pass_region->name }}</option>
+                                                        @if ( $cadry->pass_region)
+                                                            <option value="{{ $cadry->pass_region_id }}">
+                                                                    {{ $cadry->pass_region->name }}</option>
+                                                        @endif
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>
                                                 <td width="220px">
                                                     <select class="loadcity2" name="pass_city_id"
                                                         style="max-width: 220px; width: 100%" required>
-                                                        <option value="{{ $cadry->pass_city_id }}">
-                                                            {{ $cadry->pass_city->name }}</option>
+                                                        @if ( $cadry->pass_city)
+                                                            <option value="{{ $cadry->pass_city_id }}">
+                                                                    {{ $cadry->pass_city->name }}</option>
+                                                        @endif
                                                     </select>
                                                     <div class="invalid-feedback">Обязательное поле</div>
                                                 </td>

@@ -56,7 +56,7 @@ class CadryController extends Controller
         session(['cadry_page' => $page]);
         $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
             $query->where('status', true);
-        },'allStaffs'])->paginate(10, ['*'], 'page', $page);
+        },'allStaffs','department','birth_region','staff'])->paginate(10, ['*'], 'page', $page);
     
         return view('cadry.cadry',[
             'cadries' => $cadries
@@ -547,12 +547,13 @@ class CadryController extends Controller
 
     public function addworkersuccess(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'jshshir' => 'required|unique:cadries',
-        ]);
+        $validator = Cadry::where('status',true)->where('jshshir',$request->jshshir)->with('organization')->get();
+        $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
 
-        if ($validator->fails()) {
-            return redirect()->back()->with('msg',4);
+        if ( count($validator) > 0 ) {
+            return redirect()->back()->with(['msg' => 4, 'name' => $validator[0]->organization->name]);
+        } else if(count($validator2) > 0) {
+            return redirect()->back()->with('msg',5);
         } else {
 
             $dep = DepartmentStaff::with('cadry')->find($request->staff_id);

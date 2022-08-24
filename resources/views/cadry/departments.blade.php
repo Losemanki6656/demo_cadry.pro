@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="table-responsive mt-1">
-                        <table class="table table-bordered table-striped table-centered align-middle table-sm">
+                        <table class="table table-bordered table-striped table-centered align-middle table-sm animate__animated animate__fadeIn">
                             <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center fw-bold">#</th>

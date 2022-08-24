@@ -166,9 +166,9 @@ class OrganizationController extends Controller
         return \Response::make($content, 200, $headers);
     }
 
-    public function export_excel()
+    public function export_excel(Request $request)
     {
-        return Excel::download(new UsersExport, 'cadry.xlsx');
+       return Excel::download(new UsersExport($request->all()), 'cadry.xlsx');
     }
 
     public function demo_to_cadry($id)
