@@ -68,7 +68,6 @@ class UsersExport implements FromView
 
         $arr = []; $x = 0;
 
-        dd($cadries);
        return view('export.export_cadry', [
             'cadries' => $cadries
         ]);

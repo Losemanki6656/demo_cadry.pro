@@ -54,7 +54,8 @@
                             <select class="js-example-basic-single region" style="width: 100%" id="region_se"
                                 name="region_se">
                                 @if (request('region_se'))
-                                    <option value="{{ request('region_se') }}"> {{ $cadries[0]->birth_region->name }}
+                                    <option value="{{ $cadries[0]->birth_region->name }}">
+                                        {{ $cadries[0]->birth_region->name }}
                                     </option>
                                 @endif
                             </select>
@@ -258,14 +259,15 @@
     <script>
         function exportToExcel() {
             let name_se = $('#name_se').val();
-            let staff_se = $('#staff_se').val();
+            let staff_se = document.getElementById("staff_se").value;
             let education_se = $('#education_se').val();
-            let region_se = $('#region_se').val();
+            let region_se = document.getElementById("region_se").value;
             let start_se = $('#start_se').val();
             let end_se = $('#end_se').val();
             let sex_se = $('#sex_se').val();
             let vacation_se = $('#vacation_se').val();
-            let dep_id = $('#department_se').val();
+
+            let dep_id = document.getElementById("department_se").value;
 
             let url = '{{ route('export_excel') }}';
             window.location.href = `${url}?
