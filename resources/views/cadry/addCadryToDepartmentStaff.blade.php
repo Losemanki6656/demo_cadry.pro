@@ -78,6 +78,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mb-4">
+                            <input class="form-check-input" type="checkbox" id="careerCheck" name="careerCheck">
+                            <label class="form-check-label" for="careerCheck">
+                                Xodim mehnat faoliyatiga yangi lavozim nomi qo'shilsinmi ?!
+                            </label>
+                        </div>
                         <button class="btn btn-outline-primary" style="width: 100%"> Saqlash </button>
 
                     </div>

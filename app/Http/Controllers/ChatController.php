@@ -137,7 +137,7 @@ class ChatController extends Controller
     {
         
         $all = DepartmentCadry::where('cadry_id',$request->cadry_id)->where('staff_status',false)->get();
-        if(count($all) && $request->staff_status == 0)  return redirect()->back()->with('msg', 1);
+            if(count($all) && $request->staff_status == 0)  return redirect()->back()->with('msg', 1);
 
         $dep = DepartmentStaff::with('cadry')->find($id);
 
@@ -162,6 +162,17 @@ class ChatController extends Controller
                 $cadr = Cadry::find($request->cadry_id);
                 $cadr->post_name = $dep->staff_full;
                 $cadr->save();
+            }
+
+            if($request->careerCheck) {
+               $x = Career::where('cadry_id',$request->cadry_id)->count();
+               $y = new Career();
+               $y->sort = $x + 1;
+               $y->cadry_id = $request->cadry_id;
+               $y->date1 = date("Y", strtotime($request->staff_date));
+               $y->date2 = '';
+               $y->staff = $dep->staff_full;
+               $y->save();
             }
            
 

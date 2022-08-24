@@ -89,7 +89,7 @@
                                 <tr>
                                     <th class="text-center fw-bold">#</th>
                                     <th class="text-center fw-bold">Bo'lim nomi</th>
-                                    <th class="text-center fw-bold">Ish o'rinlari</th>
+                                    <th class="text-center fw-bold">Ish o'rinlari(Plan)</th>
                                     <th class="text-center fw-bold" width="80">Action</th>
                                     <th class="text-center fw-bold">Bo'sh va ortiqcha ish o'rinlari</th>
                                     <th class="text-center fw-bold">Xodimlar soni</th>
