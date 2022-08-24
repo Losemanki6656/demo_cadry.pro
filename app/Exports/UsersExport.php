@@ -33,7 +33,7 @@ class UsersExport implements FromView
 
         $cadries = Cadry::query()
         ->where('status',true)
-        ->where('organization_id', auth()->user()->userorganization->organization_id )
+        ->where('organization_id', auth()->user()->userorganization->organization_id)
         ->when(\Request::input('name_se'),function($query, $name_se){
             $query->where(function ($query) use ($name_se) {
                 $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
@@ -68,52 +68,7 @@ class UsersExport implements FromView
 
         $arr = []; $x = 0;
 
-        foreach($cadries as $item)
-        {
-            $lang = Language::whereIn('id', explode(',', $item->language))->pluck('name')->toArray();
-            $x ++; 
-            $arr[$x]['familiya'] = $item->last_name;
-            $arr[$x]['ism'] = $item->first_name;
-            $arr[$x]['sharifi'] = $item->middle_name;
-
-            $arr[$x]['birth_region'] = $item->birth_region->name;
-            $arr[$x]['birth_city'] = $item->birth_city->name;
-            $arr[$x]['birht_date'] = $item->birht_date;
-            $arr[$x]['address_region'] = $item->address_region->name;
-            $arr[$x]['address_city'] = $item->address_city->name;
-            $arr[$x]['address'] = $item->address;
-
-            $arr[$x]['category'] = $item->allStaffs[0]->staff->category->name;
-
-            $arr[$x]['pass_region'] = $item->pass_region->name;
-            $arr[$x]['pass_city'] = $item->pass_city->name ?? '';
-            $arr[$x]['passport'] = $item->passport;
-            $arr[$x]['pass_date'] = $item->pass_date;
-            $arr[$x]['jshshir'] = $item->jshshir;
-
-            $arr[$x]['education'] = $item->education->name;
-            $arr[$x]['nationality'] = $item->nationality->name;
-            $arr[$x]['party'] = $item->party->name;
-            $arr[$x]['cadry_title'] = $item->cadry_title->name;
-            $arr[$x]['cadry_degree'] = $item->cadry_degree->name;
-            $arr[$x]['military_rank'] = $item->military_rank;
-            $arr[$x]['deputy'] = $item->deputy;
-            $arr[$x]['language'] =  implode(',',$lang);
-            $arr[$x]['phone'] = $item->phone;
-
-            if($item->sex == true) 
-                $arr[$x]['sex'] = "Erkak"; 
-            else 
-                $arr[$x]['sex'] = "Ayol";
-
-            $arr[$x]['job_date'] = $item->job_date;
-            
-            $arr[$x]['department'] = $item->allStaffs[0]->department->name;
-            $arr[$x]['staff_date'] = $item->allStaffs[0]->staff_date;
-            $arr[$x]['staff_name'] = $item->allStaffs[0]->staff_full;
-
-        }
-       // dd($arr);
+        dd($cadries);
        return view('export.export_cadry', [
             'cadries' => $cadries
         ]);
