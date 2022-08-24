@@ -86,7 +86,7 @@ class UsersExport implements FromView
             $arr[$x]['category'] = $item->allStaffs[0]->staff->category->name;
 
             $arr[$x]['pass_region'] = $item->pass_region->name;
-            $arr[$x]['pass_city'] = $item->pass_city->name;
+            $arr[$x]['pass_city'] = $item->pass_city->name ?? '';
             $arr[$x]['passport'] = $item->passport;
             $arr[$x]['pass_date'] = $item->pass_date;
             $arr[$x]['jshshir'] = $item->jshshir;
@@ -115,7 +115,7 @@ class UsersExport implements FromView
         }
        // dd($arr);
        return view('export.export_cadry', [
-        'cadries' => $cadries
-    ]);
+            'cadries' => $cadries
+        ]);
     }
 }

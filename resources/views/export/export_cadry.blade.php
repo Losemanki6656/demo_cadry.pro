@@ -20,10 +20,10 @@
                     <td class="text-center align-middle"> {{$item->address_city->name}} </td>
                     <td class="text-center align-middle"> {{$item->address}} </td>
 
-                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff->category->name}} </td>
+                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff->category->name ?? ''}} </td>
 
                     <td class="text-center align-middle"> {{$item->pass_region->name}} </td>
-                    <td class="text-center align-middle"> {{$item->pass_city->name}} </td>
+                    <td class="text-center align-middle"> {{$item->pass_city->name ?? ''}} </td>
                     <td class="text-center align-middle"> {{$item->passport}} </td>
                     <td class="text-center align-middle"> {{$item->pass_date}} </td>
                     <td class="text-center align-middle"> {{$item->jshshir}} </td>
@@ -42,9 +42,9 @@
 
                     <td class="text-center align-middle"> {{$item->job_date}} </td>
 
-                    <td class="text-center align-middle"> {{$item->allStaffs[0]->department->name}} </td>
-                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff_date}} </td>
-                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff_full}} </td>
+                    <td class="text-center align-middle"> {{$item->allStaffs[0]->department->name ?? ''}} </td>
+                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff_date ?? ''}} </td>
+                    <td class="text-center align-middle"> {{$item->allStaffs[0]->staff_full ?? ''}} </td>
                 </tr>
             @endforeach
         </tbody>

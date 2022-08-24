@@ -168,7 +168,14 @@ class OrganizationController extends Controller
 
     public function export_excel(Request $request)
     {
-       return Excel::download(new UsersExport($request->all()), 'cadry.xlsx');
+        $cadries = Cadry::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
+        ->with(['education','birth_city','birth_region','staff','pass_region','pass_city','address_region','address_city','nationality','education','party',
+        'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category'])->get();
+       // return view('export.export_cadry', [
+        //    'cadries' => $cadries
+        //]);
+      
+        return Excel::download(new UsersExport($request->all()), 'cadry.xlsx');
     }
 
     public function demo_to_cadry($id)
