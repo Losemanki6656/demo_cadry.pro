@@ -18,7 +18,7 @@
             <th width="150px" style="align-items: center; text-align: center;">Pasport berilgan jpyi</th>
             <th width="150px" style="align-items: center; text-align: center;">Seriya raqami</th>
             <th width="150px" style="align-items: center; text-align: center;">Pasport berilgan sanasi</th>
-            <th width="150px" style="align-items: center; text-align: center;">Action</th>
+            <th width="150px" style="align-items: center; text-align: center;">asd</th>
             <th width="150px" style="align-items: center; text-align: center;">Action</th>
             <th width="150px" style="align-items: center; text-align: center;">Action</th>
             <th width="150px" style="align-items: center; text-align: center;">Action</th>
