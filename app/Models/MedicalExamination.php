@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MedicalExamination extends Model
 {
     use HasFactory;
+
+    protected $dates = ['date1','date2'];
 }

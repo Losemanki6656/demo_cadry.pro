@@ -381,12 +381,6 @@
             minimumInputLength: 1,
         });
     </script>
-    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
-    <script>
-        flatpickr("#datepicker-basic", {
-            defaultDate: new Date()
-        });
-    </script>
     <script>
         $(document).ready(function() {
             var msg = '{{ Session::get('msg') }}';

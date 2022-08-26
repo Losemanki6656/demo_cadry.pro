@@ -306,6 +306,13 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('meds') }}">
+                                    <i data-feather="bar-chart-2"></i>
+                                    <span data-key="t-dashboard">Tibbiy ko'rik</span>
+                                    <span class="badge bg-success">New</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="javascript: void(0);" class="has-arrow">
                                     <i data-feather="codesandbox"></i>
                                     <span data-key="t-contacts">{{ __('messages.boshqa') }}</span>

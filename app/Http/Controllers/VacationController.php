@@ -66,4 +66,26 @@ class VacationController extends Controller
 
       return redirect()->route('vacations')->with('msg' , 1);
    }
+
+   
+   public function meds()
+   {
+      $cadries = Cadry::
+        where('organization_id',auth()->user()->userorganization->organization_id)
+      ->where('status',true)
+      ->when(\Request::input('name_se'),function($query,$name_se){
+          $query->where(function ($query) use ($name_se) {
+              foreach(explode(' ',$name_se) as $item)
+              $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
+                  ->orWhere('first_name', 'LIKE', '%'.$item.'%')
+                  ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
+             
+          });
+      })->with('med')->paginate(10);
+
+      
+      return view('vacations.meds',[
+         'cadries' => $cadries
+      ]);
+   }
 }

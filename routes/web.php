@@ -114,6 +114,9 @@ Route::group(['middleware' => ['auth']], function() {
     
     //boshqalar
     Route::get('/cadry/incentives', [App\Http\Controllers\OrganizationController::class, 'incentives'])->name('incentives');
+    Route::get('/cadry/meds', [App\Http\Controllers\VacationController::class, 'meds'])->name('meds');
+    Route::get('/cadry/editMed/{id}', [App\Http\Controllers\VacationController::class, 'editMed'])->name('editMed');
+
     Route::get('/cadry/cadry-staff-organ/{id}', [App\Http\Controllers\OrganizationController::class, 'cadry_staff_organ'])->name('cadry_staff_organ');
     Route::get('/organizations/user-edit', [App\Http\Controllers\OrganizationController::class, 'user_edit'])->name('user_edit');
     Route::post('/organizations/user-edit-success/{id}', [App\Http\Controllers\OrganizationController::class, 'user_edit_success'])->name('user_edit_success');

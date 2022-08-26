@@ -30,6 +30,12 @@ class Cadry extends Model
             }
         });
     }
+
+    public function med()
+    {
+        return $this->belongsTo(MedicalExamination::class,'id','cadry_id');
+    }
+
     public function vacation()
     {
         return $this->hasMany(Vacation::class);
@@ -193,7 +199,7 @@ class Cadry extends Model
     {
         return self::query()
         ->where('status',true)
-        ->where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
+        ->where('organization_id', auth()->user()->userorganization->organization_id)
         ->when(\Request::input('name_se'),function($query,$name_se){
             $query->where(function ($query) use ($name_se) {
                 foreach(explode(' ',$name_se) as $item)
@@ -229,7 +235,7 @@ class Cadry extends Model
 
     public function scopeOrgFilter()
     {
-        return self::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))->where('status',true);
+        return self::where('organization_id', auth()->user()->userorganization->organization_id)->where('status',true);
     }
 
     public function scopeDemoFilter()
