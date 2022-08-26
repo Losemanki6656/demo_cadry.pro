@@ -105,13 +105,13 @@
                         <div class="col-12 col-sm-6 col-lg-2">
                             <label class="mb-0"> </label>
                             <a onclick="exportToExcel()" type="button"
-                                class="btn btn-success waves-effect btn-label waves-light btn-sm" style="width: 100%"><i
+                                class="btn btn-success waves-effect btn-label waves-light" style="width: 100%"><i
                                     class="bx bxs-file label-icon"></i> Excelga yuklab olish</a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-2">
                             <label class="mb-0"> </label>
                             <a href="{{ route('addworker') }}" type="button"
-                                class="btn btn-primary waves-effect btn-label waves-light btn-sm" style="width: 100%"><i
+                                class="btn btn-primary waves-effect btn-label waves-light" style="width: 100%"><i
                                     class="bx bx-plus label-icon"></i> Xodim qo'shish</a>
                         </div>
 

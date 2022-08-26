@@ -176,7 +176,7 @@ class OrganizationController extends Controller
          //   'cadries' => $cadries
         //]);
       
-        return Excel::download(new UsersExport($request->all()), 'cadry.xlsx');
+        return Excel::download(new UsersExport($request->all()), 'exodim.xlsx');
     }
 
     public function demo_to_cadry($id)
