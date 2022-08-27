@@ -10,4 +10,13 @@ class MedicalExamination extends Model
     use HasFactory;
 
     protected $dates = ['date1','date2'];
+
+    
+    protected $fillable = [
+        'cadry_id',
+        'date1',
+        'date2',
+        'result',
+    ];
+
 }

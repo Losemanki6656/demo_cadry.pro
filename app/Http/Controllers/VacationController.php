@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Vacation;
 use App\Models\DepartmentCadry;
+use App\Models\MedicalExamination;
 use App\Models\Cadry;
 use Auth;
 
@@ -87,5 +88,42 @@ class VacationController extends Controller
       return view('vacations.meds',[
          'cadries' => $cadries
       ]);
+   }
+
+   public function editMed($id, Request $request)
+   {
+      $validated = $request->validate([
+            'date1' => ['required', 'date'],
+            'date2' => ['required', 'date'],
+      ]);
+
+      $med = MedicalExamination::where('cadry_id', $id)->first();
+
+      $med->update([
+         'date1' => $request->date1,
+         'date2' => $request->date2, 
+         'result' => $request->result
+      ]); 
+
+      return back()->with('msg' , 1);
+   }
+
+   public function AddMed($id, Request $request)
+   {
+      $meds = MedicalExamination::where('cadry_id', $id)->get();
+
+      foreach ($meds as $item) {
+         $item->status = false;
+      }
+ 
+         MedicalExamination::create([
+            'cadry_id' => $id,
+            'date1' => $request->date1,
+            'date2' => $request->date2, 
+            'result' => $request->result,
+            'status' => true
+         ]); 
+         
+         return back()->with('msg' , 1);
    }
 }
