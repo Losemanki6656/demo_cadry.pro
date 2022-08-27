@@ -33,7 +33,7 @@ class Cadry extends Model
 
     public function med()
     {
-        return $this->belongsTo(MedicalExamination::class,'id','cadry_id');
+        return $this->hasOne(MedicalExamination::class)->where(['status' => true]);
     }
 
     public function vacation()

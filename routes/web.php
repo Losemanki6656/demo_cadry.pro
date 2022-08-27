@@ -76,8 +76,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/cary/editAcademic/{id}', [App\Http\Controllers\CadryController::class, 'edit_academic_cadry'])->name('edit_academic_cadry');
     Route::post('/cary/deleteAcademic/{id}', [App\Http\Controllers\CadryController::class, 'delete_academic_cadry'])->name('delete_academic_cadry');
 
-    Route::post('/cadry/addmed/{id}', [App\Http\Controllers\CadryController::class, 'add_med_cadry'])->name('add_med_cadry');
-    Route::post('/cadry/editmed/{id}', [App\Http\Controllers\CadryController::class, 'edit_med_cadry'])->name('edit_med_cadry');
     Route::post('/cadry/deletemed/{id}', [App\Http\Controllers\CadryController::class, 'delete_med_cadry'])->name('delete_med_cadry');
 
     Route::post('/cadry/addincentive/{id}', [App\Http\Controllers\CadryController::class, 'add_incentive_cadry'])->name('add_incentive_cadry');

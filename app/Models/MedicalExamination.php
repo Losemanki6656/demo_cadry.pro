@@ -19,4 +19,8 @@ class MedicalExamination extends Model
         'result',
     ];
 
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
+    }
 }

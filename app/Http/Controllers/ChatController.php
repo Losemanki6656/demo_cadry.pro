@@ -9,6 +9,7 @@ use App\Models\Department;
 use App\Models\Cadry;
 use App\Models\Region;
 use App\Models\DepartmentCadry;
+use App\Models\MedicalExamination;
 use App\Models\DeleteCadry;
 use Auth;
 use Illuminate\Http\Request;
@@ -373,15 +374,14 @@ class ChatController extends Controller
 
     public function control()
     {
-       
-        set_time_limit(7000);
+        $rr = MedicalExamination::with('cadry')->get();
+        $x = 0; $a = [];
 
-        $cadries = DepartmentCadry::with('cadry')->get();
-        $x = 0;
-        foreach ( $cadries as $item) {
-            $x ++ ;
-            $item->staff_date = $item->cadry->post_date;
-            $item->save();
+        foreach ( $rr as $item) {
+            if(!$item->cadry) {
+                $x++;
+                $item->delete();
+            }
         }
         dd($x);
     }

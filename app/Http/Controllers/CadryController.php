@@ -630,29 +630,7 @@ class CadryController extends Controller
         return redirect()->back()->with('msg' ,1);
     }
 
-    public function add_med_cadry(Request $request, $id)
-    {
-        $med = new MedicalExamination();
-        $med->cadry_id = $id;
-        $med->date1 = $request->date1;
-        $med->result = $request->result ?? '';
-        $med->date2 = $request->date2;
-        $med->save();
-
-        return redirect()->back()->with('msg' ,1);
-    }
-
-    public function edit_med_cadry(Request $request, $id)
-    {
-        $med = MedicalExamination::find($id);
-        $med->date1 = $request->date1;
-        $med->result = $request->result ?? '';
-        $med->date2 = $request->date2;
-        $med->save();
-
-        return redirect()->back()->with('msg' ,1);
-    }
-
+  
     public function delete_med_cadry($id)
     {
         $med = MedicalExamination::find($id)->delete();

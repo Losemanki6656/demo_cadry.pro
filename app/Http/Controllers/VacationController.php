@@ -71,18 +71,19 @@ class VacationController extends Controller
    
    public function meds()
    {
-      $cadries = Cadry::
-        where('organization_id',auth()->user()->userorganization->organization_id)
-      ->where('status',true)
-      ->when(\Request::input('name_se'),function($query,$name_se){
-          $query->where(function ($query) use ($name_se) {
-              foreach(explode(' ',$name_se) as $item)
-              $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
-                  ->orWhere('first_name', 'LIKE', '%'.$item.'%')
-                  ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
-             
-          });
-      })->with('med')->paginate(10);
+      $cadries = Cadry::query()
+         ->where('organization_id',auth()->user()->userorganization->organization_id)
+         ->where('status', true)
+         ->when(\Request::input('name_se'),function($query,$name_se){
+            $query->where(function ($query) use ($name_se) {
+               $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                     ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                     ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
+               
+            });
+         })
+         ->with('med')
+         ->paginate(10);
 
       
       return view('vacations.meds',[
@@ -97,12 +98,12 @@ class VacationController extends Controller
             'date2' => ['required', 'date'],
       ]);
 
-      $med = MedicalExamination::where('cadry_id', $id)->first();
+      $med = MedicalExamination::where('status',true)->where('cadry_id', $id)->first();
 
       $med->update([
          'date1' => $request->date1,
          'date2' => $request->date2, 
-         'result' => $request->result
+         'result' => $request->result ?? ''
       ]); 
 
       return back()->with('msg' , 1);
@@ -114,13 +115,14 @@ class VacationController extends Controller
 
       foreach ($meds as $item) {
          $item->status = false;
+         $item->save();
       }
  
          MedicalExamination::create([
             'cadry_id' => $id,
             'date1' => $request->date1,
             'date2' => $request->date2, 
-            'result' => $request->result,
+            'result' => $request->result ?? '',
             'status' => true
          ]); 
          
