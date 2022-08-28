@@ -19,14 +19,16 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="row mb-2">
-                <form action="{{ route('meds') }}" method="get">
-                    <div class="col-12 col-sm-6 col-lg-2">
+            <form action="{{ route('meds') }}" method="get">
+                <div class="row mb-2">
+                    <div class="col-3 col-sm-6 col-lg-2">
                         <input type="search" id="name_se" class="form-control" placeholder="Qidirish ..."
                             value="{{ request('name_se') }}" name="name_se">
                     </div>
-                </form>
-            </div>
+                    <div class="col-3 col-sm-6 col-lg-2">
+                    </div>
+                </div>
+            </form>
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
@@ -102,7 +104,7 @@
                                                     data-bs-target="#edit{{ $item->id }}">
                                                     <i class="fa fa-edit"></i> Taxrirlash</a>
                                                 <a type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#addMed{{ $item->id }}">
+                                                    data-bs-target="#addMed{{ $item->id }}">
                                                     <i class="fa fa-check"></i> Tasdiqlash</a>
                                             </td>
                                             @if ($item->med)
@@ -135,7 +137,11 @@
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label>Izoh</label>
-                                                                        <textarea name="result" class="form-control">@if ($item->med){{ $item->med->result }}@endif</textarea>
+                                                                        <textarea name="result" class="form-control">
+@if ($item->med)
+{{ $item->med->result }}
+@endif
+</textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">

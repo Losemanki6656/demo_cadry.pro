@@ -71,7 +71,7 @@ class VacationController extends Controller
    
    public function meds()
    {
-      $cadries = Cadry::query()
+         $cadries = Cadry::query()
          ->where('organization_id',auth()->user()->userorganization->organization_id)
          ->where('status', true)
          ->when(\Request::input('name_se'),function($query,$name_se){
@@ -85,7 +85,7 @@ class VacationController extends Controller
          ->with('med')
          ->paginate(10);
 
-      
+
       return view('vacations.meds',[
          'cadries' => $cadries
       ]);
