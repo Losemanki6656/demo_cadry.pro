@@ -74,6 +74,7 @@ class VacationController extends Controller
          $cadries = Cadry::SeFilter()
          ->select('cadries.*')
          ->where('cadries.status',true)
+         ->where('medical_examinations.status',true)
          ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
          ->orderBy('medical_examinations.date2')
          ->paginate(10);
