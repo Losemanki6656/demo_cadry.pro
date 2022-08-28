@@ -71,21 +71,13 @@ class VacationController extends Controller
    
    public function meds()
    {
-         $cadries = Cadry::query()
-         ->where('organization_id',auth()->user()->userorganization->organization_id)
-         ->where('status', true)
-         ->when(\Request::input('name_se'),function($query,$name_se){
-            $query->where(function ($query) use ($name_se) {
-               $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
-                     ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
-                     ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-               
-            });
-         })
-         ->with('med')
+         $cadries = Cadry::SeFilter()
+         ->select('cadries.*')
+         ->where('cadries.status',true)
+         ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+         ->orderBy('medical_examinations.date2')
          ->paginate(10);
-
-
+         
       return view('vacations.meds',[
          'cadries' => $cadries
       ]);

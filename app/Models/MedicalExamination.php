@@ -21,6 +21,6 @@ class MedicalExamination extends Model
 
     public function cadry()
     {
-        return $this->belongsTo(Cadry::class)->where(['organization_id' => auth()->user()->userorganization->organization_id]);
+        return $this->belongsTo(Cadry::class);
     }
 }

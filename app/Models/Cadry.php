@@ -248,4 +248,19 @@ class Cadry extends Model
             });
         });
     }
+
+    public function scopeSeFilter()
+    {
+        return self::query()
+        ->where('organization_id',auth()->user()->userorganization->organization_id)
+        ->when(\Request::input('name_se'),function($query,$name_se){
+           $query->where(function ($query) use ($name_se) {
+              $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
+              
+           });
+        });
+    }
+
 }
