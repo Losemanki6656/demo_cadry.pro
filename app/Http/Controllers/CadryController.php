@@ -551,7 +551,11 @@ class CadryController extends Controller
         $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
 
         if ( count($validator) > 0 ) {
-            return redirect()->back()->with(['msg' => 4, 'name' => $validator[0]->organization->name]);
+            return redirect()->back()->with([
+                'msg' => 4, 
+                'name' => $validator[0]->organization->name , 
+                'cadry_name' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name
+            ]);
         } else if(count($validator2) > 0) {
             return redirect()->back()->with('msg',5);
         } else {

@@ -553,9 +553,10 @@ label.cabinet input.file{
         if (exist) {
             if (msg == 4) {
                 var name = '{{ Session::get('name') }}';
+                var cadry_name = '{{ Session::get('cadry_name') }}';
                 Swal.fire({
                     title: "Ruxsat etilmadi!",
-                    text: "Ushbu xodim " + name + " korxonasida mavjud!",
+                    text: "Ushbu xodim (" + cadry_name + ") " + name + " korxonasida mavjud!",
                     icon: "warning",
                     confirmButtonColor: "#1c84ee"
                 }).then(function() {
