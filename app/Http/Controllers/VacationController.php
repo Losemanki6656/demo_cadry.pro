@@ -23,7 +23,6 @@ class VacationController extends Controller
 
    public function addVacation()
    {
-
       return view('vacations.addVacation');
    }
     
@@ -84,6 +83,11 @@ class VacationController extends Controller
       ]);
    }
 
+   public function AddInfoMed()
+   {
+      return view('vacations.AddInfoMed');
+   }
+
    public function editMed($id, Request $request)
    {
       $validated = $request->validate([
@@ -120,5 +124,25 @@ class VacationController extends Controller
          ]); 
          
          return back()->with('msg' , 1);
+   }
+
+   public function addInfoMedSuccess(Request $request)
+   {
+      $meds = MedicalExamination::where('cadry_id', $request->cadry_id)->get();
+
+      foreach ($meds as $item) {
+         $item->status = false;
+         $item->save();
+      }
+ 
+         MedicalExamination::create([
+            'cadry_id' => $request->cadry_id,
+            'date1' => $request->date1,
+            'date2' => $request->date2, 
+            'result' => $request->result ?? '',
+            'status' => true
+         ]); 
+         
+         return redirect()->route('meds')->with('msg' , 1);
    }
 }

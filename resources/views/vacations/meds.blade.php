@@ -26,6 +26,7 @@
                             value="{{ request('name_se') }}" name="name_se">
                     </div>
                     <div class="col-3 col-sm-6 col-lg-2">
+                        <a href="{{ route('AddInfoMed') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ma'lumot qo'shish</a>
                     </div>
                 </div>
             </form>
