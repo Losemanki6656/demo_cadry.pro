@@ -26,7 +26,8 @@
                             value="{{ request('name_se') }}" name="name_se">
                     </div>
                     <div class="col-3 col-sm-6 col-lg-2">
-                        <a href="{{ route('AddInfoMed') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ma'lumot qo'shish</a>
+                        <a href="{{ route('AddInfoMed') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ma'lumot
+                            qo'shish</a>
                     </div>
                 </div>
             </form>
@@ -66,40 +67,29 @@
                                                     {{ $item->last_name }}
                                                     {{ $item->first_name }}
                                                     {{ $item->middle_name }}</a></td>
-                                            @if ($item->med)
-                                                <td class="text-center align-middle">
-                                                    {{ $item->med->date1->format('Y-m-d') }}
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    {{ $item->med->result }}
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    {{ $item->med->date2->format('Y-m-d') }}
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    @if ($item->med->date2 > now())
-                                                        @if ($item->med->date2->diffInDays() + 1 > 12)
-                                                            <span class="text-primary" style="font-weight: bold">
-                                                                {{ $item->med->date2->diffInDays() + 1 }} </span>kun qoldi
-                                                        @else
-                                                            <span class="text-warning" style="font-weight: bold">
-                                                                {{ $item->med->date2->diffInDays() + 1 }} </span>kun qoldi
-                                                        @endif
+                                            <td class="text-center align-middle">
+                                                {{ $item->date1->format('Y-m-d') }}
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                {{ $item->result }}
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                {{ $item->date2->format('Y-m-d') }}
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                @if ($item->date2 > now())
+                                                    @if ($item->date2->diffInDays() + 1 > 12)
+                                                        <span class="text-primary" style="font-weight: bold">
+                                                            {{ $item->date2->diffInDays() + 1 }} </span>kun qoldi
                                                     @else
-                                                        <span class="text-danger" style="font-weight: bold"> Muddat tugagan
-                                                        </span>
+                                                        <span class="text-warning" style="font-weight: bold">
+                                                            {{ $item->date2->diffInDays() + 1 }} </span>kun qoldi
                                                     @endif
-                                                </td>
-                                            @else
-                                                <td class="text-center align-middle"><span class="text-primary"> - </span>
-                                                </td>
-                                                <td class="text-center align-middle"><span class="text-primary"> - </span>
-                                                </td>
-                                                <td class="text-center align-middle"><span class="text-primary"> - </span>
-                                                </td>
-                                                <td></td>
-                                            @endif
-
+                                                @else
+                                                    <span class="text-danger" style="font-weight: bold"> Muddat tugagan
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td class="text-center align-middle">
                                                 <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#edit{{ $item->id }}">
@@ -108,53 +98,47 @@
                                                     data-bs-target="#addMed{{ $item->id }}">
                                                     <i class="fa fa-check"></i> Tasdiqlash</a>
                                             </td>
-                                            @if ($item->med)
-                                                <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1"
-                                                    role="dialog" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title text-primary">Taxrirlash</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form action="{{ route('editMed', ['id' => $item->id]) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    <div class="row mb-3">
-                                                                        <div class="col">
-                                                                            <label>Oxirgi o'tgan sanasi</label>
-                                                                            <input type="date" class="form-control"
-                                                                                name="date1"
-                                                                                @if ($item->med) value = "{{ $item->med->date1->format('Y-m-d') }}" @endif>
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            <label>Keyingi o'tish sanasi</label>
-                                                                            <input type="date" class="form-control"
-                                                                                name="date2"
-                                                                                @if ($item->med) value = "{{ $item->med->date2->format('Y-m-d') }}" @endif>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label>Izoh</label>
-                                                                        <textarea name="result" class="form-control">
-@if ($item->med)
-{{ $item->med->result }}
-@endif
-</textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-primary" type="submit"> <i
-                                                                            class="bx bx-edit font-size-16 align-middle me-2"></i>
-                                                                        Taxrirlash </button>
-                                                                </div>
-                                                            </form>
+                                            <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1"
+                                                role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-primary">Taxrirlash</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                         </div>
+                                                        <form action="{{ route('editMed', ['id' => $item->cadry_id]) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <div class="modal-body">
+                                                                <div class="row mb-3">
+                                                                    <div class="col">
+                                                                        <label>Oxirgi o'tgan sanasi</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="date1"
+                                                                            value="{{ $item->date1->format('Y-m-d') }}">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label>Keyingi o'tish sanasi</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="date2"
+                                                                            value="{{ $item->date2->format('Y-m-d') }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label>Izoh</label>
+                                                                    <textarea name="result" class="form-control">{{ $item->result }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-primary" type="submit"> <i
+                                                                        class="bx bx-edit font-size-16 align-middle me-2"></i>
+                                                                    Taxrirlash </button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            </div>
                                             <div class="modal fade" id="addMed{{ $item->id }}" tabindex="-1"
                                                 role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -164,7 +148,7 @@
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form action="{{ route('addMed', ['id' => $item->id]) }}"
+                                                        <form action="{{ route('addMed', ['id' => $item->cadry_id]) }}"
                                                             method="post">
                                                             @csrf
                                                             <div class="modal-body">

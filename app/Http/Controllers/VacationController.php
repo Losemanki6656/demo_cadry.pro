@@ -71,12 +71,14 @@ class VacationController extends Controller
    public function meds()
    {
          $cadries = Cadry::SeFilter()
-         ->select('cadries.*')
-         ->where('cadries.status',true)
-         ->where('medical_examinations.status',true)
-         ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
-         ->orderBy('medical_examinations.date2')
-         ->paginate(10);
+            ->select(['cadries.*', 'medical_examinations.*'])
+            ->where('cadries.status',true)
+            ->where('medical_examinations.status',true)
+            ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+            ->orderBy('medical_examinations.date2')
+            ->paginate(10);
+
+         //dd($cadries);
          
       return view('vacations.meds',[
          'cadries' => $cadries
