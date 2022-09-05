@@ -229,12 +229,10 @@
                                 <td>{{ $med->result }}</td>
                                 <td>{{ $med->date2->format('Y-m-d') }}</td>
                                 <td width="180">
-                                    @if ($med->status == false)
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#deletemed{{ $med->id }}">
-                                            <i class="bx bx-trash"></i> O'chirish
-                                        </button>
-                                    @endif
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#deletemed{{ $med->id }}">
+                                        <i class="bx bx-trash"></i> O'chirish
+                                    </button>
                                 </td>
                             </tr>
                             @if ($med->status == false)

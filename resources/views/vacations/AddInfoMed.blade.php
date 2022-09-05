@@ -3,12 +3,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Lavozimlar</h4>
+                <h4 class="mb-sm-0 font-size-18">Tibbiy ko'rik</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Bo'limlar</a></li>
-                        <li class="breadcrumb-item active">Lavozimlar</li>
+                        <li class="breadcrumb-item active">Tibbiy ko'rik</li>
                     </ol>
                 </div>
 
@@ -33,11 +33,11 @@
                         <div class="mb-4">
                             <div class="row">
                                 <div class="col">
-                                    <span class="fw-bold text-primary">Qachondan</span>
+                                    <span class="fw-bold text-primary">Oxirgi o'tgan sanasi</span>
                                     <input type="date" name="date1" id="date1" class="form-control" required>
                                 </div>
                                 <div class="col">
-                                    <span class="fw-bold text-primary">Qachongacha</span>
+                                    <span class="fw-bold text-primary">Keyingi o'tish sanase</span>
                                     <input type="date" name="date2" id="date2" class="form-control" required>
                                 </div>
                             </div>
