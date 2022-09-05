@@ -235,33 +235,31 @@
                                     </button>
                                 </td>
                             </tr>
-                            @if ($med->status == false)
-                                <div class="modal fade" id="deletemed{{ $med->id }}" tabindex="-1" role="dialog"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Ma'lumotni O'chirish</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <form action="{{ route('delete_med_cadry', ['id' => $med->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label>Malumotni o'chirishni xoxlaysizmi ?</label>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-danger" type="submit"> <i
-                                                            class="fas fa-trash"></i> Xa, O'chirish </button>
-                                                </div>
-                                            </form>
+                            <div class="modal fade" id="deletemed{{ $med->id }}" tabindex="-1" role="dialog"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Ma'lumotni O'chirish</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
+                                        <form action="{{ route('delete_med_cadry', ['id' => $med->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label>Malumotni o'chirishni xoxlaysizmi ?</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger" type="submit"> <i
+                                                        class="fas fa-trash"></i> Xa, O'chirish </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                         @endforeach
 
                     </tbody>
