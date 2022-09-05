@@ -74,9 +74,9 @@
                                                @endif
                                             </td>
                                             <td class="text-center align-middle">
-                                                <a type="button" class="btn btn-primary btn-sm">
+                                                <a href="{{ route('editVacation',['id' => $item->id]) }}" type="button" class="btn btn-primary btn-sm">
                                                     <i class="fa fa-edit"></i> Taxrirlash</a>
-                                                <a type="button" class="btn btn-danger btn-sm">
+                                                <a onclick="delFunc({{ $item->id }})" type="button" class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"></i> O'chirish</a>
 
                                             </td>
@@ -152,5 +152,52 @@
         }
 
     });
+</script>
+<script>
+      function delFunc(id){
+        Swal.fire({
+                text: "Xodimga tegishli ta'tilni o'chirishni xoxlaysizmi ?!",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Xa, bajarish!",
+                cancelButtonText: "Yo'q, qaytish!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ms-2 mt-2",
+                buttonsStyling: !1,
+            }).then(function(e) {
+                if (e.value) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('deleteVacationPost') }}",
+                        data: {
+                            "id": id,
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: "Ta'til o'chirildi!",
+                                icon: "success",
+                                confirmButtonColor: "#1c84ee",
+                            }).then(function() {
+                                location.reload();
+                            });
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                title: "Error",
+                                text: "Your imaginary file is safe :)",
+                                icon: "error",
+                                confirmButtonColor: "#1c84ee",
+                            });
+                        }
+                    });
+
+                } else {
+                    e.dismiss;
+                }
+            });
+      }
 </script>
 @endsection

@@ -102,10 +102,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/word-export-demo/{id}', [App\Http\Controllers\OrganizationController::class, 'word_export_demo'])->name('word_export_demo');
 
-   // Route::get('/send-archive-cadry', [App\Http\Controllers\OrganizationController::class, 'send_archive_cadry'])->name('send_archive_cadry');
     Route::get('/cadry/cadry-export-all', [App\Http\Controllers\OrganizationController::class, 'export_excel'])->name('export_excel');
-    //Route::get('/cadry/cadry-export-archive-all', [App\Http\Controllers\OrganizationController::class, 'export_excel_arhive'])->name('export_excel_arhive');
-    //democadry
+
     Route::get('/cadry/demo-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_cadry'])->name('demo_to_cadry');
     Route::get('/cadry/delete-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_delete'])->name('demo_to_delete');
     
@@ -116,6 +114,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/cadry/AddInfoMed', [App\Http\Controllers\VacationController::class, 'AddInfoMed'])->name('AddInfoMed');
     Route::post('/cadry/editMed/{id}', [App\Http\Controllers\VacationController::class, 'editMed'])->name('editMed');
     Route::post('/cadry/addMed/{id}', [App\Http\Controllers\VacationController::class, 'addMed'])->name('addMed');
+    Route::get('/cadry/editVacation/{id}', [App\Http\Controllers\VacationController::class, 'editVacation'])->name('editVacation');
+    Route::post('/cadry/editVacation/{id}', [App\Http\Controllers\VacationController::class, 'editVacationPost'])->name('editVacationPost');
+    Route::post('/cadry/deleteVacation', [App\Http\Controllers\VacationController::class, 'deleteVacationPost'])->name('deleteVacationPost');
     Route::post('/cadry/addInfoMedSuccess', [App\Http\Controllers\VacationController::class, 'addInfoMedSuccess'])->name('addInfoMedSuccess');
 
     Route::get('/cadry/cadry-staff-organ/{id}', [App\Http\Controllers\OrganizationController::class, 'cadry_staff_organ'])->name('cadry_staff_organ');

@@ -21,6 +21,76 @@ class VacationController extends Controller
       ]);
    }
 
+   
+   public function editVacation($id)
+   {
+      $item = Vacation::find($id);
+
+      return view('vacations.editVacation',[
+         'item' => $item
+      ]);
+   }
+
+   public function editVacationPost($id, Request $request)
+   {
+      $sex = Cadry::find($request->cadry_id)->sex;
+
+      if($sex == true && $request->status_vacation == 1)
+         return redirect()->back()->with('msg' , 2);
+
+
+      $item = Vacation::find($id);
+
+      if($item->status_decret == 1 && $item->cadry_id != $request->cadry_id) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = false;
+            $cadry->save();
+         }
+      }
+
+      $item->cadry_id = $request->cadry_id;
+      $item->date1 = $request->date1;
+      if($request->status_vacation == 1)
+         $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+      else
+         $item->date2 = $request->date2 ?? now();
+      $item->status = true;
+      $item->status_decret = $request->status_vacation;
+      $item->save();
+      
+      if($request->status_vacation == 1) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $request->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = true;
+            $cadry->save();
+         }
+      }
+
+      return redirect()->route('vacations')->with('msg' , 1);
+
+
+   }
+
+   public function deleteVacationPost(Request $request)
+   {
+      $item = Vacation::find($request->id);
+
+      if($item->status_decret == 1) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = false;
+            $cadry->save();
+         }
+      }
+
+      $item->delete();
+
+      return response()->json(['status' => "Success"],200);
+   }
    public function addVacation()
    {
       return view('vacations.addVacation');
