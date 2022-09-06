@@ -414,7 +414,7 @@
                             <textarea class="form-control" type="text" name="comment"></textarea>
                         </div>
                         <div class="mb-3">
-                            <input class="form-check-input" type="checkbox" id="formCheck1">
+                            <input class="form-check-input" type="checkbox" name="blackStatus" id="formCheck1">
                             <label class="form-check-label" for="formCheck1">
                                 Mehnat faoliyati davrida yo'l qo'ygan qo'pol xatolari munosabati bilan
                             </label>

@@ -571,6 +571,15 @@ label.cabinet input.file{
                 }).then(function() {
                     location.reload();
                 });
+            } else if (msg == 6) {
+                Swal.fire({
+                    title: "Ruxsat etilmadi!",
+                    text: "Ushbu xodim qora ro'yxatga kiritilgan!",
+                    icon: "warning",
+                    confirmButtonColor: "#1c84ee"
+                }).then(function() {
+                    location.reload();
+                });
             }
         }
 
