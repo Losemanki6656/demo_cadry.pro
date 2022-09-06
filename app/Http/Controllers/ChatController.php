@@ -374,16 +374,7 @@ class ChatController extends Controller
 
     public function control()
     {
-        $rr = MedicalExamination::with('cadry')->get();
-        $x = 0; $a = [];
-
-        foreach ( $rr as $item) {
-            if(!$item->cadry) {
-                $x++;
-                $item->delete();
-            }
-        }
-        dd($x);
+        Cadry::query()->update(['status_med' => false]);
     }
 
     public function xx()
