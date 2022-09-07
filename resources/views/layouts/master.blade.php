@@ -226,7 +226,7 @@
                 <div id="sidebar-menu">
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
-                        @can('product-list')
+                        @can('management_statistics')
                             <li class="menu-title" data-key="t-menu">{{ __('messages.menu') }}</li>
                             <li>
                                 <a href="{{ route('statistics') }}">

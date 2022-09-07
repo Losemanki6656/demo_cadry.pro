@@ -40,6 +40,8 @@ class HomeController extends Controller
         //$all = User::find(1)->lastLoginIp();
         //dd($all);
         $quotrand = Quote::find(rand(1,8));
+        //$u = \Auth::user();
+       // dd(User::with('roles.permissions')->with('permissions')->find($u->id));
 
         return view('home',[
             'quotrand' => $quotrand

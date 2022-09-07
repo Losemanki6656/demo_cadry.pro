@@ -21,6 +21,7 @@ use App\Models\CadryRelative;
 use App\Models\AuthenticationLog;
 use App\Models\InfoEducation;
 use App\Models\Revision;
+use App\Models\Education;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,12 +30,20 @@ use Illuminate\Support\Facades\Storage;
 use Auth;
 use File;
 use DB;
+use App\Http\Resources\RailwayResource;
+use App\Http\Resources\OrganizationResource;
+use App\Http\Resources\CadryResource;
+use App\Http\Resources\CadryCollection;
+use App\Http\Resources\OrgResource;
+use App\Http\Resources\DepResource;
+use App\Http\Resources\EducationResource;
+use App\Http\Resources\RegionResource;
+
 
 class OrganizationController extends Controller
 {
     public function index(Request $request)
     {
-       // dd($request->all());
         $railways = Railway::all();
         $regions = Region::all();
         $organizations = Organization::query()->where('railway_id', request('railway_id', 0))->get();
@@ -58,6 +67,43 @@ class OrganizationController extends Controller
             'staffs' => $staffs,
             'countcadries' => $countcadries,
             'regions' => $regions
+        ]);
+    }
+
+    public function api_organizations(Request $request)
+    {
+        $regions = Region::all();
+        $organizations = Organization::query()->where('railway_id', request('railway_id', 0))->get();
+        $departments = Department::query()->where('organization_id', request('org_id', 0))->get();
+        
+        $cadries = Cadry::filter()
+            ->orderBy('org_order','asc')
+            ->orderBy('dep_order','asc')
+            ->with(['address_region', 'address_city','organization','railway','organization','allStaffs']);
+        $educations = Education::all();
+        $countcadries = $cadries->count();
+        $sex = [
+            ['id' => 1,
+             'name' => "Erkak"],
+            ['id' => 2,
+             'name' => "Ayol"],
+        ];
+        $vacations = [
+            ['id' => 1,
+             'name' => "Mehnat ta'tili"],
+            ['id' => 2,
+             'name' => "Bola parvarish ta'tili"],
+        ];
+
+        return response()->json([
+            'cadries' =>  new CadryCollection($cadries->paginate(10)),
+            'organizations' => OrgResource::collection($organizations),
+            'departments' =>  DepResource::collection($departments),
+            'countcadries' => $countcadries,
+            'educations' => EducationResource::collection($educations),
+            'regions' => RegionResource::collection($regions),
+            'sex' => $sex,
+            'vacations' => $vacations
         ]);
     }
 

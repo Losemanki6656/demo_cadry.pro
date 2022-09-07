@@ -9,8 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use \Venturecraft\Revisionable\RevisionableTrait;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles, RevisionableTrait, AuthenticationLoggable;
 
@@ -24,7 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    protected $guard_name = 'web';
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -56,6 +57,22 @@ class User extends Authenticatable
             'user_organization',
             'user_id',
             'organization_id');
+    }
+
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
     public function organization()

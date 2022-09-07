@@ -105,6 +105,7 @@ class Cadry extends Model
     {
         return $this->hasMany(DepartmentCadry::class);
     }
+    
     public function careers()
     {
         return $this->hasMany(Career::class);
@@ -125,6 +126,10 @@ class Cadry extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class,'organization_id');
+    }
+    public function railway()
+    {
+        return $this->belongsTo(Railway::class,'railway_id');
     }
        
     public function setLanguageAttribute($value)

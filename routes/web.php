@@ -156,7 +156,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/loadCareer', [App\Http\Controllers\CadryController::class, 'loadCareer'])->name('loadCareer');
 
 
-    Route::group(['middleware' => ['can:product-list']], function () {
+    Route::group(['middleware' => ['permission:management_statistics']], function () {
         Route::get('/cadry/administration/turnicet', [App\Http\Controllers\OrganizationController::class, 'turnicet'])->name('turnicet');
         Route::get('/organizations/cadry-search', [App\Http\Controllers\CadryController::class, 'cadry_search'])->name('cadry_search');
         Route::get('/statistics', [App\Http\Controllers\CadryController::class, 'statistics'])->name('statistics');
