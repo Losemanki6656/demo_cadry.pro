@@ -157,6 +157,13 @@ class OrganizationController extends Controller
         return response()->json($data);
     }
 
+    public function filter_api_regions_a()
+    {   
+        $data = RegionResource::collection(Region::get());
+
+        return response()->json($data);
+    }
+
     public function cadry_leader()
     {
         $railway_id = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
