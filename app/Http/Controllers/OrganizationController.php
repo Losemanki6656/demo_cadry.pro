@@ -38,6 +38,7 @@ use App\Http\Resources\OrgResource;
 use App\Http\Resources\DepResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\RegionResource;
+use App\Http\Resources\StaffResource;
 
 
 class OrganizationController extends Controller
@@ -72,14 +73,15 @@ class OrganizationController extends Controller
 
     public function api_organizations(Request $request)
     {
-        
-        $cadries = Cadry::filter()
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;   
+
+        $cadries = Cadry::ApiFilter()
             ->orderBy('org_order','asc')
             ->orderBy('dep_order','asc')
             ->with(['address_region', 'address_city','organization','railway','organization','allStaffs']);
     
         return response()->json([
-            'cadries' =>  new CadryCollection($cadries->paginate(10)),
+            'cadries' =>  new CadryCollection($cadries->paginate($per_page)),
         ]);
     }
     public function filter_api_organizations(Request $request)
@@ -100,6 +102,58 @@ class OrganizationController extends Controller
                     $query->where('name', 'like', '%' . $search . '%');
                 })->get());
         }
+        return response()->json($data);
+    }
+
+    public function filter_api_staffs(Request $request)
+    {
+        $data = [];
+
+        if ($request->has('organization_id')) {
+            $data = StaffResource::collection(Staff::where('organization_id',$request->organization_id)->get());
+        }
+
+        return response()->json($data);
+    }
+
+    public function filter_api_departments(Request $request)
+    {
+        $data = [];
+
+        if ($request->has('organization_id')) {
+            $data = DepResource::collection(Department::where('organization_id',$request->organization_id)->get());
+        }
+
+        return response()->json($data);
+    }
+
+    public function filter_api_regions()
+    {   
+        $data = RegionResource::collection(Region::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_educations()
+    {
+        $data = EducationResource::collection(Education::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_vacations()
+    {
+        $data = [
+            [
+                'id' => 1,
+                'name' => "Mehnat ta'tili"
+            ],
+            [
+                'id' => 2,
+                'name' => "Bola parvarish ta'tili"
+            ]
+        ];
+
         return response()->json($data);
     }
 

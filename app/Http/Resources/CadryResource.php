@@ -21,10 +21,10 @@ class CadryResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
-            'post_date' => $this->post_date,
             'organization' => new OrganizationResource($this->organization),
-            'post' => new DepartmentCadryResource($post_name),
+            'staff' => new DepartmentCadryResource($post_name),
         ];
     }
 }
