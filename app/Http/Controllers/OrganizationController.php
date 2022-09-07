@@ -72,39 +72,35 @@ class OrganizationController extends Controller
 
     public function api_organizations(Request $request)
     {
-        $regions = Region::all();
-        $organizations = Organization::query()->where('railway_id', request('railway_id', 0))->get();
-        $departments = Department::query()->where('organization_id', request('org_id', 0))->get();
         
         $cadries = Cadry::filter()
             ->orderBy('org_order','asc')
             ->orderBy('dep_order','asc')
             ->with(['address_region', 'address_city','organization','railway','organization','allStaffs']);
-        $educations = Education::all();
-        $countcadries = $cadries->count();
-        $sex = [
-            ['id' => 1,
-             'name' => "Erkak"],
-            ['id' => 2,
-             'name' => "Ayol"],
-        ];
-        $vacations = [
-            ['id' => 1,
-             'name' => "Mehnat ta'tili"],
-            ['id' => 2,
-             'name' => "Bola parvarish ta'tili"],
-        ];
-
+    
         return response()->json([
             'cadries' =>  new CadryCollection($cadries->paginate(10)),
-            'organizations' => OrgResource::collection($organizations),
-            'departments' =>  DepResource::collection($departments),
-            'countcadries' => $countcadries,
-            'educations' => EducationResource::collection($educations),
-            'regions' => RegionResource::collection($regions),
-            'sex' => $sex,
-            'vacations' => $vacations
         ]);
+    }
+    public function filter_api_organizations(Request $request)
+    {
+        $data = [];
+        if ($request->has('railway_id')) {
+            $data = OrgResource::collection(Organization::where('railway_id',$request->railway_id)->get());
+        }
+        return response()->json($data);
+    }
+
+    public function filter_api_railways(Request $request)
+    {
+        $data = [];
+        if ($request->has('name')) {
+            $search = $request->name;
+            $data = RailwayResource::collection(Railway::where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->get());
+        }
+        return response()->json($data);
     }
 
     public function cadry_leader()

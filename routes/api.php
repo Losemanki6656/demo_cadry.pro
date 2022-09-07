@@ -28,6 +28,10 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
+    
+    
+    Route::get('/filter/railways', [OrganizationController::class, 'filter_api_railways']);
+    Route::get('/filter/organizations', [OrganizationController::class, 'filter_api_organizations']);
 
     Route::group([
         'middleware' => [
