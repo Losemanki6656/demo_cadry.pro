@@ -93,7 +93,7 @@ class OrganizationController extends Controller
 
     public function filter_api_railways(Request $request)
     {
-        $data = [];
+        $data = RailwayResource::all();
         if ($request->has('name')) {
             $search = $request->name;
             $data = RailwayResource::collection(Railway::where(function ($query) use ($search) {
