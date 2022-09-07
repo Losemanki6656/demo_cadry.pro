@@ -29,10 +29,10 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json($validator->errors(), 404);
         }
         if (! $token = auth('api')->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 404);
         }
         return $this->createNewToken($token);
     }
