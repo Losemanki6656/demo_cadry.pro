@@ -73,9 +73,7 @@ class OrganizationController extends Controller
 
     public function api_organizations(Request $request)
     {
-        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;   
-        
-        if($request->railway_id) return response()->json($request->all());
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
         $cadries = Cadry::ApiFilter()
             ->orderBy('org_order','asc')
