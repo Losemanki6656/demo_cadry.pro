@@ -956,14 +956,27 @@ class CadryController extends Controller
             $democadries = DemoCadry::filter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::filter()->where('status',1);
             
+            $vacations = Vacation::query()
+                ->where('status',true)
+                ->whereDate( 'date2' , '>=' ,now() )
+                ->when(request('railway_id'), function ($query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);     
+                })->when(request('org_id'), function ($query, $org_id) {
+                    return $query->where('organization_id', $org_id);     
+                })->when(request('dep_id'), function ($query, $dep_id) {
+                    return $query->where('id', $dep_id);     
+                });
+            $vacDec = $vacations->where('status_decret',true)->count();
+            $vac = $vacations->count();
+
             $alldepartments = Department::query()
-            ->when(request('railway_id'), function ($query, $railway_id) {
-                return $query->where('railway_id', $railway_id);     
-            })->when(request('org_id'), function ($query, $org_id) {
-                return $query->where('organization_id', $org_id);     
-            })->when(request('dep_id'), function ($query, $dep_id) {
-                return $query->where('id', $dep_id);     
-            })->with(['departmentstaff','departmentstaff.cadry'])->get();
+                ->when(request('railway_id'), function ($query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);     
+                })->when(request('org_id'), function ($query, $org_id) {
+                    return $query->where('organization_id', $org_id);     
+                })->when(request('dep_id'), function ($query, $dep_id) {
+                    return $query->where('id', $dep_id);     
+                })->with(['departmentstaff','departmentstaff.cadry'])->get();
 
             $vakant=0; $sverx = 0; $plan = 0;
 
@@ -1007,6 +1020,8 @@ class CadryController extends Controller
             'edumaxsus' => $edumaxsus,
             'cadry45' => $cadry45,
             'plan' => $plan,
+            'vac' => $vac,
+            'vacDec' => $vacDec,
             'democadriesback' => $democadriesback->count()
         ]);
     }
