@@ -108,6 +108,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/cadry/delete-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_delete'])->name('demo_to_delete');
     
     
+    Route::get('/cadryvs', [App\Http\Controllers\OrganizationController::class, 'CadryVS'])->name('CadryVS');
+
     //boshqalar
     Route::get('/cadry/incentives', [App\Http\Controllers\OrganizationController::class, 'incentives'])->name('incentives');
     Route::get('/cadry/meds', [App\Http\Controllers\VacationController::class, 'meds'])->name('meds');

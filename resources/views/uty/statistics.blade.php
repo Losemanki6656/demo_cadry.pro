@@ -79,6 +79,14 @@
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         })
 
+                        function CadryVS() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('CadryVS') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+
                         function newcadries() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -193,11 +201,15 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Erkak va ayol</h4>
+                    <div class="flex-shrink-0">
+                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Erkak va ayol</span>
                             <h5 class="mb-3">
                                 Erkaklar-<span class="counter-value text-primary fw-bold"
                                     data-target="{{ $man }}">0</span>;
@@ -221,11 +233,15 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Kasanachi xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Kasanachi xodimlar</span>
                             <h5 class="mb-3">
                                 Kasanachi - <span class="counter-value text-primary fw-bold"
                                     data-target="{{ $dog }}">0</span>
@@ -248,11 +264,15 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Bo'sh ish o'rinlari</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryVS()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Bo'sh ish o'rinlari</span>
                             <h5 class="mb-3">
                                 Vakant-<span class="counter-value text-primary fw-bold"
                                     data-target="{{ $vakant }}">0</span>;
@@ -276,11 +296,15 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Temir daftardagi xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Temir daftardagi xodimlar</span>
                             <h5 class="mb-3">
                                 Soni - <span class="counter-value text-primary fw-bold" data-target="0">0</span>
                             </h5>

@@ -22,6 +22,8 @@ use App\Models\AuthenticationLog;
 use App\Models\InfoEducation;
 use App\Models\Revision;
 use App\Models\Education;
+use App\Models\DepartmentCadry;
+use App\Models\DepartmentStaff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -45,16 +47,16 @@ class OrganizationController extends Controller
 {
     public function index(Request $request)
     {
+       // dd($request->all());
         $railways = Railway::all();
         $regions = Region::all();
         $organizations = Organization::query()->where('railway_id', request('railway_id', 0))->get();
         $departments = Department::query()->where('organization_id', request('org_id', 0))->get();
         
         $cadries = Cadry::filter()
-        ->orderBy('org_order','asc')
-        ->orderBy('dep_order','asc')
-        ->with(['address_region', 'address_city']);
-        
+            ->orderBy('org_order','asc')
+            ->orderBy('dep_order','asc')
+            ->with(['address_region', 'address_city']);     
    
         $countcadries = $cadries->count();
 
@@ -667,6 +669,59 @@ class OrganizationController extends Controller
         $sessions = Revision::with(['user','cadry','cadry.organization'])->orderBy('created_at','desc')->paginate(10);
         return view('admin.sessions',[
             'sessions'=> $sessions,
-    ]);
+        ]);
+    }
+
+    public function CadryVS(Request $request) 
+    {
+        $cadryGroupByQuery = DepartmentCadry::query()
+                ->select([
+                    'department_staff_id',
+                    DB::raw('sum(stavka) as summ_stavka')
+                ])
+                ->groupBy('department_staff_id');
+
+        $staffQuery = DepartmentStaff::query()
+                ->where('organization_id',152)
+                ->select([
+                    'department_staff.*',
+                    'summ_stavka'
+                ])
+                ->joinSub($cadryGroupByQuery, 't1', function ($join) {
+                    $join->on('t1.department_staff_id', '=', 'department_staff.id');
+                }); 
+        //$deps = $staffQuery->where()
+
+        $alldepartments = DepartmentStaff::query()
+            ->when(request('railway_id'), function ($query, $railway_id) {
+                return $query->where('railway_id', $railway_id);     
+            })->when(request('org_id'), function ($query, $org_id) {
+                return $query->where('organization_id', $org_id);     
+            })->when(request('dep_id'), function ($query, $dep_id) {
+                return $query->where('id', $dep_id);     
+            })->with('cadry')->get();
+
+        $vakant=0; $sverx = 0; $plan = 0;
+        $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
+
+            foreach ($alldepartments as $staff)
+            {
+                $x = $staff->stavka; $p = $p  + $x;
+                $y = $staff->cadry->where('status_decret',false)->sum('stavka');
+
+                if($x>$y) {
+                    $z = $z + $x - $y; 
+                }  else if($x<$y) {
+                    $q = $q + $y - $x;
+                }
+                
+                $vakant = $vakant + $z;
+                $sverx =  $sverx + $q;
+                $plan = $plan + $p;
+            }
+        dd(1);
+        return view('uty.CadryVS',[
+
+        ]);
     }
 }

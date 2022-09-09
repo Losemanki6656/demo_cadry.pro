@@ -29,6 +29,8 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    Route::get('/profile', [AuthController::class, 'userProfile']);
+
     Route::get('/filter/railways', [OrganizationController::class, 'filter_api_railways']);
     Route::get('/filter/organizations', [OrganizationController::class, 'filter_api_organizations']);
     Route::get('/filter/staffs', [OrganizationController::class, 'filter_api_staffs']);
@@ -44,6 +46,16 @@ Route::group([
         ], function () {
         
         Route::get('/management/organizations', [OrganizationController::class, 'api_organizations']);
+
+    }); 
+
+    Route::group([
+        'middleware' => [
+            'permission:management_statistics'
+            ]
+        ], function () {
+        
+        Route::get('/management/statistics', [CadryController::class, 'api_statistics']);
 
     }); 
     

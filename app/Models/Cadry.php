@@ -164,10 +164,9 @@ class Cadry extends Model
         ->where('status',true)
         ->when(\Request::input('name_se'),function($query,$name_se){
             $query->where(function ($query) use ($name_se) {
-                foreach(explode(' ',$name_se) as $item)
-                $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$item.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
+                $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
                
             });
         })->when(request('railway_id'), function ( $query, $railway_id) {
@@ -245,6 +244,50 @@ class Cadry extends Model
         });
     }
 
+    public function scopeApiMedFilter()
+    {
+        return self::query()
+        ->when(request('last_name'), function ( $query, $last_name) {
+            return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
+            
+        })->when(request('middle_name'), function ( $query, $middle_name) {
+            return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
+            
+        })->when(request('first_name'), function ( $query, $first_name) {
+            return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
+            
+        })->when(request('railway_id'), function ( $query, $railway_id) {
+            return $query->where('railway_id', $railway_id);
+                
+        })->when(request('organization_id'), function ( $query, $organization_id) {
+            return $query->where('organization_id', $organization_id);
+
+        })->when(request('department_id'), function ( $query, $department_id) {
+                return $query->where('department_id', $department_id);
+
+        })->when(request('staff_id'), function ($query, $staff_id) {
+            return $query->where('staff_id', $staff_id);
+
+        })->when(request('education_id'), function ($query, $education_id) {
+            return $query->where('education_id', $education_id);
+
+        })->when(request('birth_region_id'), function ($query, $birth_region_id) {
+            return $query->where('birth_region_id', $birth_region_id);
+
+        })->when(request('sex'), function ($query, $sex) {
+            if($sex == "true") $z = true; else $z = false;
+            return $query->where('sex', $z);
+
+        })->when(request('age_start'), function ($query, $age_start) {
+            return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
+
+        })->when(request('age_end'), function ($query, $age_end) {
+            return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
+
+        });
+    }
+
+
     public function scopeFullFilter()
     {
         return self::query()
@@ -252,10 +295,9 @@ class Cadry extends Model
         ->where('organization_id', auth()->user()->userorganization->organization_id)
         ->when(\Request::input('name_se'),function($query,$name_se){
             $query->where(function ($query) use ($name_se) {
-                foreach(explode(' ',$name_se) as $item)
-                $query->orWhere('last_name', 'LIKE', '%'. $item .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$item.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$item.'%');
+                $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
                
             });
         })->when(request('staff_se'), function ($query, $staff_se) {

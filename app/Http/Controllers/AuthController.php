@@ -38,6 +38,14 @@ class AuthController extends Controller
         return $this->createNewToken($token);
     }
 
+    public function userProfile(){
+
+        $user = new UserResource(User::find(auth()->user()->id));
+
+        return response()->json($user);
+
+    }
+
 
     /**
      * Register a User.

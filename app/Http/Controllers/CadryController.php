@@ -43,6 +43,16 @@ use App\Models\StavkaDou;
 use App\Models\Classification;
 use App\Models\DepartmentCadry;
 use App\Models\DepartmentStaff;
+
+use App\Http\Resources\RailwayResource;
+use App\Http\Resources\OrganizationResource;
+use App\Http\Resources\CadryResource;
+use App\Http\Resources\CadryCollection;
+use App\Http\Resources\OrgResource;
+use App\Http\Resources\DepResource;
+use App\Http\Resources\EducationResource;
+use App\Http\Resources\RegionResource;
+use App\Http\Resources\StaffResource;
 use Validator;
 
 use Auth;
@@ -52,6 +62,7 @@ class CadryController extends Controller
 
     public function index(Request $request)
     {
+        //dd($request->all());
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
         $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
@@ -1023,6 +1034,104 @@ class CadryController extends Controller
             'vac' => $vac,
             'vacDec' => $vacDec,
             'democadriesback' => $democadriesback->count()
+        ]);
+    }
+
+    public function api_statistics(Request $request)
+    {
+            $all = Cadry::ApiFilter()->count();
+            $man = Cadry::ApiFilter()->where('sex',1)->count();
+            $woman = $all - $man;
+            $dog =  Cadry::ApiFilter()->where('worklevel_id',5)->count();
+
+            $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1992-01-01')->count();
+            $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1977-01-01')->count();
+            
+            $medical_examinations = Cadry::ApiMedFilter()
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status', true)
+                ->where('medical_examinations.status', true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->whereDate('medical_examinations.date2','<=', now())
+                ->count();
+
+            $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
+            $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
+
+            $eduoliy = Cadry::ApiFilter()->where('education_id',1)->count();
+            $edumaxsus = Cadry::ApiFilter()->where('education_id',3)->count();
+
+            $birthdays = Cadry::ApiFilter()
+                ->whereMonth('birht_date', '=', now()->format('m'))
+                ->whereDay('birht_date', '=', now()->format('d'));
+
+            $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
+       
+            $democadries = DemoCadry::ApiFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
+            $democadriesback = DemoCadry::ApiFilter()->where('status',1);
+            
+            $vacations = Vacation::query()
+                ->where('status',true)
+                ->whereDate( 'date2' , '>=' ,now() )
+                ->when(request('railway_id'), function ($query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);     
+                })->when(request('org_id'), function ($query, $org_id) {
+                    return $query->where('organization_id', $org_id);     
+                })->when(request('dep_id'), function ($query, $dep_id) {
+                    return $query->where('id', $dep_id);     
+                });
+            $vacDec = $vacations->where('status_decret',true)->count();
+            $vac = $vacations->count();
+            
+            $alldepartments = Department::query()
+                ->when(request('railway_id'), function ($query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);     
+                })->when(request('org_id'), function ($query, $org_id) {
+                    return $query->where('organization_id', $org_id);     
+                })->when(request('dep_id'), function ($query, $dep_id) {
+                    return $query->where('id', $dep_id);     
+                })->with(['departmentstaff','departmentstaff.cadry'])->get();
+
+            $vakant=0; $sverx = 0; $plan = 0;
+
+            foreach ($alldepartments as $item)
+            {
+                $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
+
+                foreach($item->departmentstaff as $staff) {
+                    $x = $staff->stavka; $p = $p  + (double)$x;
+                    $y = $staff->cadry->where('status_decret',false)->sum('stavka');
+
+                    if($x>$y) $z = $z + $x - $y;
+                    if($x<$y) $q = $q + $y - $x;
+                }
+                
+                $vakant = $vakant + $z;
+                $sverx =  $sverx + $q;
+                $plan = $plan + $p;
+            }
+
+        return response()->json([
+            'all_cadries_count' => $all,
+            'pension_Man' => $nafaqaMan,
+            'pension_Woman' => $nafaqaWoman,
+            'cadries_man_count' => $man,
+            'cadries_woman_count' => $woman,
+            'vakant' => $vakant,
+            'sverx' => $sverx,
+            'contracts' => $dog,
+            'birthdays' => $birthdays->count(),
+            'new_cadries' => $newcadries->count(),
+            'delete_cadries' => $democadries->count(),
+            'BlackList' => $democadriesback->count(),
+            'education_oliy' => $eduoliy,
+            'education_maxsus' => $edumaxsus,
+            'plan' => $plan,
+            'cadry30' => $cadry30,
+            'cadry45' => $cadry45,
+            'vacations' => $vac,
+            'vacations_Dec' => $vacDec,
+            'medical_examinations' => $medical_examinations
         ]);
     }
 
