@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use DB;
+
 class DepartmentStaff extends Model
 {
     use HasFactory;
@@ -12,6 +14,10 @@ class DepartmentStaff extends Model
     public function staff()
     {
         return $this->belongsTo(Staff::class);
+    }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
     }
 
     public function department()
@@ -29,5 +35,28 @@ class DepartmentStaff extends Model
         return $this->belongsTo(Classification::class);
     }
 
+    public function scopeFilter()
+    {
+        $cadryGroupByQuery = DepartmentCadry::query()
+                ->select([
+                    'department_staff_id',
+                    DB::raw('sum(stavka) as summ_stavka')
+                ])->where('status_decret',false)
+                ->groupBy('department_staff_id');
 
+        return self::query()
+            ->when(request('railway_id'), function ($query, $railway_id) {
+                return $query->where('railway_id', $railway_id);     
+            })->when(request('org_id'), function ($query, $org_id) {
+                return $query->where('organization_id', $org_id);     
+            })->when(request('dep_id'), function ($query, $dep_id) {
+                return $query->where('id', $dep_id);     
+            })->select([
+                'department_staff.*',
+                'summ_stavka'
+            ])
+            ->leftjoinSub($cadryGroupByQuery, 't1', function ($join) {
+                $join->on('t1.department_staff_id', '=', 'department_staff.id');
+            });
+    }
 }

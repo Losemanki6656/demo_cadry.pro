@@ -30,6 +30,8 @@ Route::group([
 ], function ($router) {
     
     Route::get('/profile', [AuthController::class, 'userProfile']);
+    
+    Route::get('/cadry/ExportToWord/{id}', [OrganizationController::class, 'word_export_api']);
 
     Route::get('/filter/railways', [OrganizationController::class, 'filter_api_railways']);
     Route::get('/filter/organizations', [OrganizationController::class, 'filter_api_organizations']);

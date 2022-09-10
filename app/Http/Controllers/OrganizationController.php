@@ -41,6 +41,10 @@ use App\Http\Resources\DepResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\StaffResource;
+use App\Http\Resources\WordExportCadryResource;
+use App\Http\Resources\InfoEducationResource;
+use App\Http\Resources\CareerResource;
+use App\Http\Resources\RelativesResource;
 
 
 class OrganizationController extends Controller
@@ -166,6 +170,31 @@ class OrganizationController extends Controller
         return response()->json($data);
     }
 
+    public function word_export_api($id){
+
+        $languages = Language::all();
+        $cadry = new WordExportCadryResource(Cadry::with(['birth_city','birth_region','instituts'])->find($id));
+        $lan = "";
+        foreach ($languages as $language) {
+           if (in_array($language->id, explode(',',$cadry->language) )) 
+                $lan = $lan.$language->name.',';
+        }
+        $lan = substr_replace($lan ,"", -1);
+        $carers = Career::where('cadry_id',$id)->orderBy('sort','asc')->get();
+        $cadry_relatives = CadryRelative::where('cadry_id',$id)->orderBy('sort','asc')->get();
+        $incentives = Incentive::where('cadry_id',$id)->get();
+
+        return response()->json([
+            'cadry' => $cadry,
+            'lan' => $lan,
+            'educations' =>  InfoEducationResource::collection($cadry->instituts),
+            'carers' => CareerResource::collection($carers),
+            'relatives' =>  RelativesResource::collection($cadry_relatives),
+            'incentives' => $incentives
+        ]);
+
+    }
+
     public function cadry_leader()
     {
         $railway_id = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
@@ -273,13 +302,6 @@ class OrganizationController extends Controller
 
     public function export_excel(Request $request)
     {
-       // $cadries = Cadry::where('organization_id', UserOrganization::where('user_id',Auth::user()->id)->value('organization_id'))
-        //->with(['education','birth_city','birth_region','staff','pass_region','pass_city','address_region','address_city','nationality','education','party',
-        //'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category'])->get();
-
-        //return view('export.export_cadry', [
-         //   'cadries' => $cadries
-        //]);
       
         return Excel::download(new UsersExport($request->all()), 'exodim.xlsx');
     }
@@ -674,54 +696,30 @@ class OrganizationController extends Controller
 
     public function CadryVS(Request $request) 
     {
-        $cadryGroupByQuery = DepartmentCadry::query()
-                ->select([
-                    'department_staff_id',
-                    DB::raw('sum(stavka) as summ_stavka')
-                ])
-                ->groupBy('department_staff_id');
+        $x = 0; $y = 0; $sverxCount = 0; $vacanCount = 0;
+        if(!request('vacan') && !request('sverx')) {
 
-        $staffQuery = DepartmentStaff::query()
-                ->where('organization_id',152)
-                ->select([
-                    'department_staff.*',
-                    'summ_stavka'
-                ])
-                ->joinSub($cadryGroupByQuery, 't1', function ($join) {
-                    $join->on('t1.department_staff_id', '=', 'department_staff.id');
-                }); 
-        //$deps = $staffQuery->where()
-
-        $alldepartments = DepartmentStaff::query()
-            ->when(request('railway_id'), function ($query, $railway_id) {
-                return $query->where('railway_id', $railway_id);     
-            })->when(request('org_id'), function ($query, $org_id) {
-                return $query->where('organization_id', $org_id);     
-            })->when(request('dep_id'), function ($query, $dep_id) {
-                return $query->where('id', $dep_id);     
-            })->with('cadry')->get();
-
-        $vakant=0; $sverx = 0; $plan = 0;
-        $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
-
-            foreach ($alldepartments as $staff)
-            {
-                $x = $staff->stavka; $p = $p  + $x;
-                $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-
-                if($x>$y) {
-                    $z = $z + $x - $y; 
-                }  else if($x<$y) {
-                    $q = $q + $y - $x;
-                }
+            $allStaffs = DepartmentStaff::Filter()
+                ->whereRaw('stavka <> summ_stavka')
+                ->orwhere('summ_stavka',null)
+                ->with('organization');
+           
+            $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
+            $x = $sverx->sum('stavka');
+            $y = $sverx->sum('summ_stavka');
+            $sverxCount = $y - $x;
+            $vacant = DepartmentStaff::Filter()->whereRaw('stavka > summ_stavka')->orwhere('summ_stavka',null);
+            $x = $vacant->sum('stavka');
+            $y = $vacant->sum('summ_stavka');
+            $vacanCount = $x - $y;
                 
-                $vakant = $vakant + $z;
-                $sverx =  $sverx + $q;
-                $plan = $plan + $p;
-            }
-        dd(1);
+            
+        }
+        
         return view('uty.CadryVS',[
-
+            'allStaffs' => $allStaffs->paginate(10),
+            'sverxCount' => $sverxCount,
+            'vacanCount' => $vacanCount
         ]);
     }
 }

@@ -980,34 +980,17 @@ class CadryController extends Controller
             $vacDec = $vacations->where('status_decret',true)->count();
             $vac = $vacations->count();
 
-            $alldepartments = Department::query()
-                ->when(request('railway_id'), function ($query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);     
-                })->when(request('org_id'), function ($query, $org_id) {
-                    return $query->where('organization_id', $org_id);     
-                })->when(request('dep_id'), function ($query, $dep_id) {
-                    return $query->where('id', $dep_id);     
-                })->with(['departmentstaff','departmentstaff.cadry'])->get();
-
-            $vakant=0; $sverx = 0; $plan = 0;
-
-            foreach ($alldepartments as $item)
-            {
-                $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
-
-                foreach($item->departmentstaff as $staff) {
-                    $x = $staff->stavka; $p = $p  + (double)$x;
-                    $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-
-                    if($x>$y) $z = $z + $x - $y;
-                    if($x<$y) $q = $q + $y - $x;
-                }
-                
-                $vakant = $vakant + $z;
-                $sverx =  $sverx + $q;
-                $plan = $plan + $p;
-            }
-
+            $allStaffs = DepartmentStaff::Filter();
+            $plan = $allStaffs->sum('stavka');
+            $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
+            $x = $sverx->sum('stavka');
+            $y = $sverx->sum('summ_stavka');
+            $sverxCount = $y - $x;
+            $vacant = DepartmentStaff::Filter()->whereRaw('stavka > summ_stavka')->orwhere('summ_stavka',null);
+            $x = $vacant->sum('stavka');
+            $y = $vacant->sum('summ_stavka');
+            $vacanCount = $x - $y;
+         
         return view('uty.statistics', [
             'departments' => $departments,
             'decret' => $decret,
@@ -1021,8 +1004,8 @@ class CadryController extends Controller
             'man' => $man,
             'woman' => $woman,
             'cadry30' => $cadry30,
-            'vakant' => $vakant,
-            'sverx' => $sverx,
+            'vakant' => $vacanCount,
+            'sverx' => $sverxCount,
             'dog' => $dog,
             'birthdays' => $birthdays->count(),
             'newcadries' => $newcadries->count(),
