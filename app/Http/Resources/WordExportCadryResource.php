@@ -30,6 +30,9 @@ class WordExportCadryResource extends JsonResource
             'deputy' => $this->deputy,
             'academec_degree' => $this->cadry_degree->name ?? '',
             'academec_title' => $this->cadry_title->name ?? '',
+            'nationality' => $this->nationality->name,
+            'party' => $this->party->name,
+            'education' => $this->education->name,
         ];
     }
 }
