@@ -86,7 +86,20 @@
                             let url = '{{ route('CadryVS') }}';
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         }
-
+                        function CadryMeds() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('CadryMeds') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+                        function CadryVacations() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('CadryVacations') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
                         function newcadries() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -326,11 +339,15 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Ta'tildagi xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Ta'tildagi xodimlar</span>
                             <h5 class="mb-3">
                                 Mehnat ta'tili-<span class="counter-value text-primary fw-bold"
                                     data-target="{{ $vac }}">0</span>;
@@ -354,17 +371,21 @@
         <div class="col-xl-3 col-md-6">
             <!-- card -->
             <div class="card card-h-100">
-                <!-- card body -->
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Tibbiy ko'rik ma'lumotlari</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Tibbiy ko'rik ma'lumotlari</span>
                             <h5 class="mb-3">
-                                Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold" data-target="{{ $vac }}">0</span>
+                                Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold" data-target="{{ $meds }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac + $vacDec }}</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $meds }}</span>
                             </div>
                         </div>
 

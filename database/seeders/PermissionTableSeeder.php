@@ -22,7 +22,7 @@ class PermissionTableSeeder extends Seeder
            'management_statistics',
            'management_organizations',
            'management_turnicet',
-           'product-delete'
+           'organization_cadries'
         ];
      
         foreach ($permissions as $permission) {

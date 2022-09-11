@@ -716,7 +716,8 @@ class OrganizationController extends Controller
 
             $allStaffs = DepartmentStaff::Filter()
                 ->where(function ($query) {
-                    $query->whereRaw('stavka <> summ_stavka');
+                    $query->whereRaw('stavka <> summ_stavka')
+                    ->orWhere('summ_stavka',null);
                 })->with('organization');
            
             $sverx = DepartmentStaff::Filter()
@@ -733,7 +734,7 @@ class OrganizationController extends Controller
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
-                
+            
             
         }
         
@@ -741,6 +742,32 @@ class OrganizationController extends Controller
             'allStaffs' => $allStaffs->paginate(10),
             'sverxCount' => $sverxCount,
             'vacanCount' => $vacanCount
+        ]);
+    }
+
+    public function CadryMeds(Request $request) 
+    {
+       
+            $meds = Cadry::FilterJoin()
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now());
+       
+        return view('uty.CadryMeds',[
+            'meds' => $meds->paginate(15),
+        ]);
+    }
+
+    public function CadryVacations(Request $request) 
+    {
+       
+        $cadries = Vacation::OrgFilter();
+       
+        return view('uty.CadryVacations',[
+            'cadries' => $cadries->paginate(15),
         ]);
     }
 }

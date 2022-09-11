@@ -147,8 +147,6 @@ class VacationController extends Controller
             ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
             ->orderBy('medical_examinations.date2')
             ->paginate(10);
-
-         //dd($cadries);
          
       return view('vacations.meds',[
          'cadries' => $cadries

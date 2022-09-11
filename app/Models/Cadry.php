@@ -200,6 +200,21 @@ class Cadry extends Model
         });
     }
 
+    public function scopeFilterJoin()
+    {
+        return self::query()
+        ->when(request('railway_id'), function ( $query, $railway_id) {
+                return $query->where('railway_id', $railway_id);
+                
+        })->when(request('org_id'), function ( $query, $org_id) {
+                return $query->where('organization_id', $org_id);
+
+        })->when(request('dep_id'), function ( $query, $dep_id) {
+                return $query->where('department_id', $dep_id);
+
+        });
+    }
+
     public function scopeApiFilter()
     {
         return self::query()

@@ -109,6 +109,8 @@ Route::group(['middleware' => ['auth']], function() {
     
     
     Route::get('/cadryvs', [App\Http\Controllers\OrganizationController::class, 'CadryVS'])->name('CadryVS');
+    Route::get('/cadrymeds', [App\Http\Controllers\OrganizationController::class, 'CadryMeds'])->name('CadryMeds');
+    Route::get('/CadryVacations', [App\Http\Controllers\OrganizationController::class, 'CadryVacations'])->name('CadryVacations');
 
     //boshqalar
     Route::get('/cadry/incentives', [App\Http\Controllers\OrganizationController::class, 'incentives'])->name('incentives');

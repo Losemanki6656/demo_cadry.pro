@@ -68,8 +68,18 @@ Route::group([
         ], function () {
         
         Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
-        
+       
     }); 
+
+    Route::group([
+        'middleware' => [
+            'permission:administration:administration_permissions'
+            ]
+        ], function () {
+        
+        Route::get('/administration/permissions', [OrganizationController::class, 'api_permissions']);
+       
+    });
     
 });
 

@@ -985,18 +985,9 @@ class CadryController extends Controller
             $democadries = DemoCadry::filter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::filter()->where('status',1);
             
-            $vacations = Vacation::query()
-                ->where('status',true)
-                ->whereDate( 'date2' , '>=' ,now() )
-                ->when(request('railway_id'), function ($query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);     
-                })->when(request('org_id'), function ($query, $org_id) {
-                    return $query->where('organization_id', $org_id);     
-                })->when(request('dep_id'), function ($query, $dep_id) {
-                    return $query->where('id', $dep_id);     
-                });
-            $vacDec = $vacations->where('status_decret',true)->count();
+            $vacations = Vacation::OrgFilter();
             $vac = $vacations->count();
+            $vacDec = $vacations->where('status_decret',true)->count();
 
             $allStaffs = DepartmentStaff::Filter();
             $plan = $allStaffs->sum('stavka');
@@ -1015,7 +1006,14 @@ class CadryController extends Controller
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
-            //dd($vacanCount);
+
+            $meds = Cadry::FilterJoin()
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now())->count();
          
         return view('uty.statistics', [
             'departments' => $departments,
@@ -1042,7 +1040,8 @@ class CadryController extends Controller
             'plan' => $plan,
             'vac' => $vac,
             'vacDec' => $vacDec,
-            'democadriesback' => $democadriesback->count()
+            'democadriesback' => $democadriesback->count(),
+            'meds' => $meds
         ]);
     }
 
