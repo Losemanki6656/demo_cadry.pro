@@ -39,7 +39,7 @@ class Cadry extends Model
 
     public function vacation()
     {
-        return $this->hasMany(Vacation::class);
+        return $this->hasOne(Vacation::class)->where('status',true);
     }
     public function cadry_degree()
     {

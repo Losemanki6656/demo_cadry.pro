@@ -45,6 +45,9 @@ use App\Http\Resources\WordExportCadryResource;
 use App\Http\Resources\InfoEducationResource;
 use App\Http\Resources\CareerResource;
 use App\Http\Resources\RelativesResource;
+use App\Http\Resources\OrganizationCadryResource;
+use App\Http\Resources\VacationResource;
+use App\Http\Resources\OrganizationCadryCollection;
 
 
 class OrganizationController extends Controller
@@ -74,6 +77,18 @@ class OrganizationController extends Controller
             'staffs' => $staffs,
             'countcadries' => $countcadries,
             'regions' => $regions
+        ]);
+    }
+
+    public function api_cadries(Request $request)
+    {
+        $page = request('page', session('cadry_page', 1));
+        session(['cadry_page' => $page]);
+        $cadries = Cadry::FullFilter()
+        ->with(['vacation','allStaffs'])->paginate(10, ['*'], 'page', $page);
+    
+        return response()->json([
+            'cadries' => new OrganizationCadryCollection($cadries)
         ]);
     }
 

@@ -73,6 +73,8 @@ class CadryController extends Controller
             'cadries' => $cadries
         ]);
     }
+
+
     
     public function decret_cadry($id)
     {

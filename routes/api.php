@@ -58,7 +58,17 @@ Route::group([
         ], function () {
         
         Route::get('/management/statistics', [CadryController::class, 'api_statistics']);
+        
+    }); 
 
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+        
+        Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
+        
     }); 
     
 });
