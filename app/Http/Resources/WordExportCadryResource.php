@@ -26,6 +26,10 @@ class WordExportCadryResource extends JsonResource
             'birth_date' => $this->birht_date,
             'birth_place' => $this->birth_region->name . ' ' . $this->birth_city->name,
             'staff' => new DepartmentCadryResource($post_name),
+            'military_rank' => $this->military_rank,
+            'deputy' => $this->deputy,
+            'academec_degree' => $this->cadry_degree->name ?? '',
+            'academec_title' => $this->cadry_title->name ?? '',
         ];
     }
 }

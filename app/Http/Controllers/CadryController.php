@@ -1013,7 +1013,7 @@ class CadryController extends Controller
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
-
+            //dd($vacanCount);
          
         return view('uty.statistics', [
             'departments' => $departments,
@@ -1097,7 +1097,7 @@ class CadryController extends Controller
             $x = $sverx->sum('stavka');
             $y = $sverx->sum('summ_stavka');
             $sverxCount = $y - $x;
-
+            
             $vacant = DepartmentStaff::ApiFilter()
                 ->where(function ($query) {
                     $query->whereRaw('stavka > summ_stavka')
@@ -1113,8 +1113,8 @@ class CadryController extends Controller
             'pension_Woman' => $nafaqaWoman,
             'cadries_man_count' => $man,
             'cadries_woman_count' => $woman,
-            'vakant' => $vacanCount,
-            'sverx' => $sverxCount,
+            'vakant' => number_format($vacanCount, 2, ',', ' '),
+            'sverx' => number_format($sverxCount, 2, ',', ' '),
             'contracts' => $dog,
             'birthdays' => $birthdays->count(),
             'new_cadries' => $newcadries->count(),
@@ -1122,7 +1122,7 @@ class CadryController extends Controller
             'BlackList' => $democadriesback->count(),
             'education_oliy' => $eduoliy,
             'education_maxsus' => $edumaxsus,
-            'plan' => $plan,
+            'plan' => number_format($plan, 2, ',', ' '),
             'cadry30' => $cadry30,
             'cadry45' => $cadry45,
             'vacations' => $vac,
