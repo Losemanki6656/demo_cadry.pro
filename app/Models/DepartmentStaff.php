@@ -38,7 +38,13 @@ class DepartmentStaff extends Model
     public function scopeFilter()
     {
         $cadryGroupByQuery = DepartmentCadry::query()
-                ->select([
+        ->when(request('railway_id'), function ($query, $railway_id) {
+            return $query->where('railway_id', $railway_id);     
+        })->when(request('org_id'), function ($query, $org_id) {
+            return $query->where('organization_id', $org_id);     
+        })->when(request('dep_id'), function ($query, $dep_id) {
+            return $query->where('id', $dep_id);     
+        })->select([
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
                 ])->where('status_decret',false)

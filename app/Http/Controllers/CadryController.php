@@ -986,7 +986,13 @@ class CadryController extends Controller
             $x = $sverx->sum('stavka');
             $y = $sverx->sum('summ_stavka');
             $sverxCount = $y - $x;
-            $vacant = DepartmentStaff::Filter()->whereRaw('stavka > summ_stavka')->orwhere('summ_stavka',null);
+
+            $vacant = DepartmentStaff::Filter()
+                ->where(function ($query) {
+                    $query->whereRaw('stavka > summ_stavka')
+                            ->orWhere('summ_stavka',null);
+                });
+            
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
