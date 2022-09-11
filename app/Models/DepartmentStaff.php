@@ -65,4 +65,53 @@ class DepartmentStaff extends Model
                 $join->on('t1.department_staff_id', '=', 'department_staff.id');
             });
     }
+    
+    public function scopeApiFilter()
+    {
+        $cadryGroupByQuery = DepartmentCadry::query()
+        ->when(request('railway_id'), function ($query, $railway_id) {
+            return $query->where('railway_id', $railway_id);     
+        })->when(request('organization_id'), function ($query, $organization_id) {
+            return $query->where('organization_id', $organization_id);     
+        })->when(request('department_id'), function ($query, $department_id) {
+            return $query->where('id', $department_id);     
+        })->select([
+                    'department_staff_id',
+                    DB::raw('sum(stavka) as summ_stavka')
+                ])->where('status_decret',false)
+                ->groupBy('department_staff_id');
+
+        return self::query()
+            ->when(request('railway_id'), function ($query, $railway_id) {
+                return $query->where('railway_id', $railway_id);     
+            })->when(request('organization_id'), function ($query, $organization_id) {
+                return $query->where('organization_id', $organization_id);     
+            })->when(request('department_id'), function ($query, $department_id) {
+                return $query->where('id', $department_id);     
+            })->select([
+                'department_staff.*',
+                'summ_stavka'
+            ])
+            ->leftjoinSub($cadryGroupByQuery, 't1', function ($join) {
+                $join->on('t1.department_staff_id', '=', 'department_staff.id');
+            });
+    }
+    public function scopeCadryFilter()
+    {
+        $cadryGroupByQuery = DepartmentCadry::where('organization_id', auth()->user()->userorganization->organization_id)
+            ->select([
+                    'department_staff_id',
+                    DB::raw('sum(stavka) as summ_stavka')
+                ])->where('status_decret',false)
+                ->groupBy('department_staff_id');
+
+        return self::where('organization_id', auth()->user()->userorganization->organization_id)
+        ->select([
+                'department_staff.*',
+                'summ_stavka'
+            ])
+            ->leftjoinSub($cadryGroupByQuery, 't1', function ($join) {
+                $join->on('t1.department_staff_id', '=', 'department_staff.id');
+            });
+    }
 }

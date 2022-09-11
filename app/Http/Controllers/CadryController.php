@@ -154,17 +154,33 @@ class CadryController extends Controller
     public function departments()
     {
         $all = 0; $allSv = 0;
+        $org_id = Auth::user()->userorganization->organization_id;
+
         $page = request('page', session('department_page', 1));
         session(['department_page' => $page]);
 
-        $departments = Department::query()
-        ->where('organization_id', Auth::user()->userorganization->organization_id)
-        ->when(\Request::input('search'),function($query,$search){
-            $query
-            ->where('name','like','%'.$search.'%');
-        })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+        if($org_id == 152) {
+            $departments = Department::query()->where('id','!=',4304)
+            ->where('organization_id', $org_id)
+            ->when(\Request::input('search'),function($query,$search){
+                $query
+                ->where('name','like','%'.$search.'%');
+            })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+            
+            $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
+            ->with(['departmentstaff','departmentstaff.cadry'])->get();
+        } else {
+            $departments = Department::query()
+            ->where('organization_id', $org_id)
+            ->when(\Request::input('search'),function($query,$search){
+                $query
+                ->where('name','like','%'.$search.'%');
+            })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+            
+            $alldepartments = Department::where('organization_id', $org_id)
+            ->with(['departmentstaff','departmentstaff.cadry'])->get();
+        }
         
-        $alldepartments = Department::where('organization_id', Auth::user()->userorganization->organization_id)->with(['departmentstaff','departmentstaff.cadry'])->get();
         $a = []; $b = []; $plan = []; 
         foreach ($alldepartments as $item)
         {
@@ -990,12 +1006,14 @@ class CadryController extends Controller
             $vacant = DepartmentStaff::Filter()
                 ->where(function ($query) {
                     $query->whereRaw('stavka > summ_stavka')
-                            ->orWhere('summ_stavka',null);
+                            ->orWhere('summ_stavka', null);
                 });
+
             
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
+
          
         return view('uty.statistics', [
             'departments' => $departments,
@@ -1072,33 +1090,22 @@ class CadryController extends Controller
             $vacDec = $vacations->where('status_decret',true)->count();
             $vac = $vacations->count();
             
-            $alldepartments = Department::query()
-                ->when(request('railway_id'), function ($query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);     
-                })->when(request('org_id'), function ($query, $org_id) {
-                    return $query->where('organization_id', $org_id);     
-                })->when(request('dep_id'), function ($query, $dep_id) {
-                    return $query->where('id', $dep_id);     
-                })->with(['departmentstaff','departmentstaff.cadry'])->get();
+            $allStaffs = DepartmentStaff::ApiFilter();
+            $plan = $allStaffs->sum('stavka');
+           
+            $sverx = DepartmentStaff::ApiFilter()->whereRaw('stavka < summ_stavka');
+            $x = $sverx->sum('stavka');
+            $y = $sverx->sum('summ_stavka');
+            $sverxCount = $y - $x;
 
-            $vakant=0; $sverx = 0; $plan = 0;
-
-            foreach ($alldepartments as $item)
-            {
-                $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
-
-                foreach($item->departmentstaff as $staff) {
-                    $x = $staff->stavka; $p = $p  + (double)$x;
-                    $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-
-                    if($x>$y) $z = $z + $x - $y;
-                    if($x<$y) $q = $q + $y - $x;
-                }
-                
-                $vakant = $vakant + $z;
-                $sverx =  $sverx + $q;
-                $plan = $plan + $p;
-            }
+            $vacant = DepartmentStaff::ApiFilter()
+                ->where(function ($query) {
+                    $query->whereRaw('stavka > summ_stavka')
+                            ->orWhere('summ_stavka', null);
+                });
+            $x = $vacant->sum('stavka');
+            $y = $vacant->sum('summ_stavka');
+            $vacanCount = $x - $y;
 
         return response()->json([
             'all_cadries_count' => $all,
@@ -1106,8 +1113,8 @@ class CadryController extends Controller
             'pension_Woman' => $nafaqaWoman,
             'cadries_man_count' => $man,
             'cadries_woman_count' => $woman,
-            'vakant' => $vakant,
-            'sverx' => $sverx,
+            'vakant' => $vacanCount,
+            'sverx' => $sverxCount,
             'contracts' => $dog,
             'birthdays' => $birthdays->count(),
             'new_cadries' => $newcadries->count(),
@@ -1153,25 +1160,25 @@ class CadryController extends Controller
             $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
 
-            $departments = Department::where('organization_id', auth()->user()->userorganization->organization_id)
-            ->with(['departmentstaff','departmentstaff.cadry'])
-            ->get();
+            $allStaffs = DepartmentStaff::CadryFilter();
+            $plan = $allStaffs->sum('stavka');
+           
+            $sverx = DepartmentStaff::CadryFilter()
+                ->whereRaw('stavka < summ_stavka');
 
-            $plan = []; $vakant=0; $sverx = 0; $plan = 0;
-            foreach ($departments as $item)
-            {
-                $z = 0; $q = 0; $x = 0; $y = 0; $p = 0;
-                foreach($item->departmentstaff as $staff) {
-                    $x = $staff->stavka; $p = $p  + $x;
-                    $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-                    if($x>$y) $z = $z + $x - $y;
-                    if($x<$y) $q = $q + $y - $x;
-                }
-                
-                $vakant = $vakant + $z;
-                $sverx =  $sverx + $q;
-                $plan = $plan + $p;
-            }
+            $x = $sverx->sum('stavka');
+            $y = $sverx->sum('summ_stavka');
+            $sverxCount = $y - $x;
+
+            $vacant = DepartmentStaff::CadryFilter()
+                ->where(function ($query) {
+                    $query->whereRaw('stavka > summ_stavka')
+                            ->orWhere('summ_stavka', null);
+                });
+            $x = $vacant->sum('stavka');
+            $y = $vacant->sum('summ_stavka');
+            $vacanCount = $x - $y;
+            //dd($vacant->get());
 
         return view('cadry.statistics', [
             'decret' => $decret,
@@ -1184,8 +1191,8 @@ class CadryController extends Controller
             'man' => $man,
             'woman' => $woman,
             'cadry30' => $cadry30,
-            'vakant' => $vakant,
-            'sverx' => $sverx,
+            'vakant' => $vacanCount,
+            'sverx' => $sverxCount,
             'dog' => $dog,
             'birthdays' => $birthdays->count(),
             'newcadries' => $newcadries->count(),
