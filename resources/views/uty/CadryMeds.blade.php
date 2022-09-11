@@ -29,6 +29,7 @@
                                     <th class="text-center fw-bold" width="350px">FIO</th>
                                     <th class="text-center fw-bold" width="120px">Oxirgi o'tgan sanasi</th>
                                     <th width="130px" class="text-center fw-bold">Keyingi o'tish sanasi</th>
+                                    <th width="130px" class="text-center fw-bold">Izoh</th>
                                     <th width="130px" class="text-center fw-bold">Keyingi o'tish sanasi</th>
                                 </tr>
                             </thead>
@@ -46,6 +47,9 @@
                                         <td class="text-center fw-bold align-middle">
                                           {{ $item->date2->format('Y-m-d')}}
                                         </td>
+                                        <td class="text-center fw-bold align-middle">
+                                            {{ $item->result}}
+                                          </td>
                                         <td class="align-middle text-center"><span class="text-danger fw-bold">Muddat tugagan</span></td>
                                     </tr>
                                 @endforeach
