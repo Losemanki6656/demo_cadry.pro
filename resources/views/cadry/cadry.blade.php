@@ -137,15 +137,7 @@
                                     @foreach ($cadries as $key => $item)
                                         <tr>
                                             <td class="text-center fw-bold align-middle">
-                                                @if ($item->vacation->count())
-                                                    @if ($item->vacation[0]->date1 <= now() && now() <= $item->vacation[0]->date2)
-                                                        <div class="bg-warning bg-gradient p-2"></div>
-                                                    @else
-                                                        {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
-                                                    @endif
-                                                @else
                                                     {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
-                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ asset('storage/' . $item->photo) }}" class="image-popup-desc"
