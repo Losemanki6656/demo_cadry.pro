@@ -991,7 +991,8 @@ class CadryController extends Controller
 
             $allStaffs = DepartmentStaff::Filter();
 
-            dd($allStaffs->get());
+            //dd($allStaffs->get());
+
             $plan = $allStaffs->sum('stavka');
             $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
             $x = $sverx->sum('stavka');

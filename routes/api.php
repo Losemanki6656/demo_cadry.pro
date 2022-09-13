@@ -6,6 +6,7 @@ use App\Models\Turnicet;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadryController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\BackApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +44,7 @@ Route::group([
 
     
     Route::get('/organization/filter/departments', [OrganizationController::class, 'filter_api_org_departments']);
-    Route::get('/organization/filter/staffs', [OrganizationController::class, 'filter_api_org_staffs']);
+    Route::get('/organization/filter/staffs', [OrganizationController::class, 'filter_api_org_staffs`']);
 
     Route::group([
         'middleware' => [
@@ -72,6 +73,7 @@ Route::group([
         ], function () {
         
         Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
+        Route::get('/organization/cadries/{id}', [BackApiController::class, 'api_cadry_edit']);
        
     }); 
 
