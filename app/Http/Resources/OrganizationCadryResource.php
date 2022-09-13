@@ -26,8 +26,16 @@ class OrganizationCadryResource extends JsonResource
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
+            'birth_date' => $this->birht_date,
             'staff' => new DepartmentCadryResource($post_name),
             'vacation' => $vacation,
+            'phone' => $this->phone,
+            'department' => $this->department->name,
+            'passport' => $this->passport,
+            'passport_date' => $this->pass_date,
+            'sex' => $this->sex,
+            'full_birth_address' => $this->birth_region->name . ', ' . $this->birth_city->name,
+            'full_live_address' => $this->address_region->name . ', ' . $this->address_city->name
         ];
     }
 }

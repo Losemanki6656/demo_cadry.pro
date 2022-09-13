@@ -84,8 +84,8 @@ class OrganizationController extends Controller
     {
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
-        $cadries = Cadry::FullFilter()
-        ->with(['vacation','allStaffs'])->paginate(10, ['*'], 'page', $page);
+        $cadries = Cadry::ApiOrgFilter()
+        ->with(['vacation','allStaffs','department'])->paginate(10, ['*'], 'page', $page);
     
         return response()->json([
             'cadries' => new OrganizationCadryCollection($cadries)
@@ -144,6 +144,20 @@ class OrganizationController extends Controller
         if ($request->has('organization_id')) {
             $data = DepResource::collection(Department::where('organization_id',$request->organization_id)->get());
         }
+
+        return response()->json($data);
+    }
+
+    public function filter_api_org_departments()
+    {
+        $data = DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_org_staffs()
+    {
+        $data = StaffResource::collection(Staff::where('organization_id',auth()->user()->userorganization->organization_id)->get());
 
         return response()->json($data);
     }

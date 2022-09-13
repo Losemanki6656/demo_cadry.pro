@@ -41,6 +41,10 @@ Route::group([
     Route::get('/filter/educations', [OrganizationController::class, 'filter_api_educations']);
     Route::get('/filter/vacations', [OrganizationController::class, 'filter_api_vacations']);
 
+    
+    Route::get('/organization/filter/departments', [OrganizationController::class, 'filter_api_org_departments']);
+    Route::get('/organization/filter/staffs', [OrganizationController::class, 'filter_api_org_staffs']);
+
     Route::group([
         'middleware' => [
             'permission:management_organizations'

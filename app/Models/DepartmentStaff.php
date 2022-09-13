@@ -43,7 +43,7 @@ class DepartmentStaff extends Model
         })->when(request('org_id'), function ($query, $org_id) {
             return $query->where('organization_id', $org_id);     
         })->when(request('dep_id'), function ($query, $dep_id) {
-            return $query->where('id', $dep_id);     
+            return $query->where('department_id', $dep_id);     
         })->select([
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
@@ -56,7 +56,7 @@ class DepartmentStaff extends Model
             })->when(request('org_id'), function ($query, $org_id) {
                 return $query->where('organization_id', $org_id);     
             })->when(request('dep_id'), function ($query, $dep_id) {
-                return $query->where('id', $dep_id);     
+                return $query->where('department_id', $dep_id);     
             })->select([
                 'department_staff.*',
                 'summ_stavka'

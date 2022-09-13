@@ -29,11 +29,7 @@ class Vacation extends Model
             })->when(request('org_id'), function ( $query, $org_id) {
                     return $query->where('organization_id', $org_id);
 
-            })->when(request('dep_id'), function ( $query, $dep_id) {
-                    return $query->where('department_id', $dep_id);
-
-            })
-            ->where('status',true)
+            })->where('status',true)
             ->whereDate( 'date2' , '>=' ,now() )
             ->with('cadry');
     }

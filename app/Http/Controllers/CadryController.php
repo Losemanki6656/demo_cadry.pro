@@ -990,6 +990,8 @@ class CadryController extends Controller
             $vacDec = $vacations->where('status_decret',true)->count();
 
             $allStaffs = DepartmentStaff::Filter();
+
+            dd($allStaffs->get());
             $plan = $allStaffs->sum('stavka');
             $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
             $x = $sverx->sum('stavka');
