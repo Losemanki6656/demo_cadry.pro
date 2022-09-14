@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DepartmentCadryResource extends JsonResource
+class AcademicStudyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +14,12 @@ class DepartmentCadryResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->staff_status == 0) $status = "Asosiy"; else $status = "O'rindosh";
         return [
             'id' => $this->id,
-            'staff_full' => $this->staff_full,
-            'staff_date' => $this->staff_date,
-            'staff_status' => $status,
-            'stavka' => $this->stavka,
+            'cadry_id' => $this->cadry_id,
+            'date1' => $this->date1,
+            'date2' => $this->date2,
+            'institute' => new AcademicResource($this->academicname),
         ];
     }
 }

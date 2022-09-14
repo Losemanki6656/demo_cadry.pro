@@ -47,6 +47,9 @@ use App\Http\Resources\RelativesResource;
 use App\Http\Resources\OrganizationCadryResource;
 use App\Http\Resources\VacationResource;
 use App\Http\Resources\OrganizationCadryCollection;
+use App\Http\Resources\CadryEditResource;
+use App\Http\Resources\AcademicTitleResource;
+use App\Http\Resources\AcademiceDegreeResource;
 
 class BackApiController extends Controller
 {
@@ -58,7 +61,8 @@ class BackApiController extends Controller
 
     public function api_cadry_edit($id)
     {
-        $cadry = Cadry::with(['allStaffs','allStaffs.depstaff'])->find($id);
+        $cadry = Cadry::with(['allStaffs.department','work_level'])->find($id);
+
         $info = Education::all();
         $academictitle = AcademicTitle::all();
         $academicdegree = AcademicDegree::all();
@@ -69,14 +73,29 @@ class BackApiController extends Controller
         $relatives = Relative::all();
 
         return response()->json([
-            'cadry' => $cadry,
-            'info' => $info,
-            'academictitle' => $academictitle,
-            'academicdegree' => $academicdegree,
-            'naties' => $naties,
-            'langues' => $langues,
-            'parties' => $parties,
-            'worklevel' => $worklevel,
+            'cadry' => new CadryEditResource($cadry),
         ]);
     }
+
+    public function api_cadry_edit_post(Request $request, Cadry $cadry)
+    {
+        
+        $cadry->update($request->all());
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+        return response()->json([
+            'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
+        ]);
+    }
+
+    public function api_cadry_update_photo_post(Request $request, Cadry $cadry)
+    {
+        $cadry->update($request->all());
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+        return response()->json([
+            'message' => $fullname . " rasmi muvaffaqqiyatli taxrirlandi !"
+        ]);
+    }
+
+
+
 }

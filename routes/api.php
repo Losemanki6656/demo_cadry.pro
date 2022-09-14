@@ -39,8 +39,18 @@ Route::group([
     Route::get('/filter/staffs', [OrganizationController::class, 'filter_api_staffs']);
     Route::get('/filter/departments', [OrganizationController::class, 'filter_api_departments']);
     Route::get('/filter/regions', [OrganizationController::class, 'filter_api_regions']);
+    Route::get('/filter/cities', [OrganizationController::class, 'filter_api_cities']);
     Route::get('/filter/educations', [OrganizationController::class, 'filter_api_educations']);
     Route::get('/filter/vacations', [OrganizationController::class, 'filter_api_vacations']);
+    Route::get('/filter/worklevels', [OrganizationController::class, 'filter_api_worklevels']);
+    Route::get('/filter/academicTitlies', [OrganizationController::class, 'filter_api_academicTitlies']);
+    Route::get('/filter/academicDegree', [OrganizationController::class, 'filter_api_academicDegree']);
+    Route::get('/filter/nationalities', [OrganizationController::class, 'filter_api_nationalities']);
+    Route::get('/filter/parties', [OrganizationController::class, 'filter_api_parties']);
+    Route::get('/filter/languages', [OrganizationController::class, 'filter_api_languages']);
+    Route::get('/filter/instituts', [OrganizationController::class, 'filter_api_instituts']);
+    Route::get('/filter/abroads', [OrganizationController::class, 'filter_api_abroads']);
+    Route::get('/filter/academics', [OrganizationController::class, 'filter_api_academics']);
 
     
     Route::get('/organization/filter/departments', [OrganizationController::class, 'filter_api_org_departments']);
@@ -74,6 +84,11 @@ Route::group([
         
         Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
         Route::get('/organization/cadries/{id}', [BackApiController::class, 'api_cadry_edit']);
+        Route::post('/organization/cadries/{cadry}', [BackApiController::class, 'api_cadry_edit_post']);
+        Route::post('/organization/cadries/{cadry}/update/photo', [BackApiController::class, 'api_cadry_update_photo_post']);
+
+        Route::get('/organization/cadry/abroadStudies', [OrganizationController::class, 'cadry_api_abroadStudies']);
+        Route::get('/organization/cadry/academicStudies', [OrganizationController::class, 'cadry_api_academicStudies']);
        
     }); 
 

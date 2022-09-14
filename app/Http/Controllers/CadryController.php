@@ -396,7 +396,6 @@ class CadryController extends Controller
     public function cadry_information($id)
     {
         $cadry = Cadry::find($id);
-        $railways = Railway::all();
         $info = Education::all();
         $academictitle = AcademicTitle::all();
         $academicdegree = AcademicDegree::all();
@@ -427,6 +426,22 @@ class CadryController extends Controller
             'abroadnames' => $abroadnames,
             'academicnames' => $academicnames
         ]);
+    }
+
+    public function cadry_information_api($id)
+    {
+
+        $academics = AcademiStudy::where('cadry_id', $id)->with('academicname')->get();
+        $abroads = AbroadStudy::where('cadry_id',$id)->with('typeabroad')->get();
+        $infoeducations = InfoEducation::where('cadry_id',$id)->get();
+        
+        $abroadnames = Abroad::all();
+        $academicnames = AcademicName::all();
+
+        return response()->json([
+
+        ]);
+       
     }
 
     public function add_abroad_cadry($id,Request $request)
@@ -634,8 +649,6 @@ class CadryController extends Controller
         $cadry->update($request->all());
 
         return redirect()->back()->with('msg' ,1);
-     
-
     }
 
     public function add_discip_cadry(Request $request, $id)

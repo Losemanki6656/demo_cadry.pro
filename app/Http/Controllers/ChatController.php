@@ -162,6 +162,7 @@ class ChatController extends Controller
             if($request->staff_status == 0) {
                 $cadr = Cadry::find($request->cadry_id);
                 $cadr->post_name = $dep->staff_full;
+                $cadr->department_id = $dep->department_id;
                 $cadr->save();
             }
 

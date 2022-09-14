@@ -24,14 +24,22 @@ use App\Models\Revision;
 use App\Models\Education;
 use App\Models\DepartmentCadry;
 use App\Models\DepartmentStaff;
+use App\Models\AcademicTitle;
+use App\Models\AcademicDegree;
+use App\Models\Institut;
+use App\Models\Nationality;
+use App\Models\AbroadStudy;
+use App\Models\AcademiStudy;
+use App\Models\Abroad;
+use App\Models\AcademicName;
+use App\Models\Party;
+use App\Models\City;
+use App\Models\WorkLevel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 use Illuminate\Support\Facades\Storage;
-use Auth;
-use File;
-use DB;
 use App\Http\Resources\RailwayResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\CadryResource;
@@ -48,6 +56,21 @@ use App\Http\Resources\RelativesResource;
 use App\Http\Resources\OrganizationCadryResource;
 use App\Http\Resources\VacationResource;
 use App\Http\Resources\OrganizationCadryCollection;
+use App\Http\Resources\CityResource;
+use App\Http\Resources\WorkLevelResource;
+use App\Http\Resources\AcademicTitleResource;
+use App\Http\Resources\AcademicDegreeResource;
+use App\Http\Resources\NationalityResource;
+use App\Http\Resources\PartyResource;
+use App\Http\Resources\LanguageResource;
+use App\Http\Resources\InstitutResource;
+use App\Http\Resources\AbroadStudyResource;
+use App\Http\Resources\AcademicStudyResource;
+use App\Http\Resources\AbroadResource;
+use App\Http\Resources\AcademicResource;
+use Auth;
+use File;
+use DB;
 
 
 class OrganizationController extends Controller
@@ -165,6 +188,91 @@ class OrganizationController extends Controller
     public function filter_api_regions()
     {   
         $data = RegionResource::collection(Region::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_worklevels()
+    {   
+        $data = WorkLevelResource::collection(WorkLevel::get());
+
+        return response()->json($data);
+    }
+    
+    public function filter_api_cities()
+    {   
+        $data = CityResource::collection(City::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_academicTitlies()
+    {   
+        $data = AcademicTitleResource::collection(AcademicTitle::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_academicDegree()
+    {   
+        $data = AcademicDegreeResource::collection(AcademicDegree::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_nationalities()
+    {   
+        $data = NationalityResource::collection(Nationality::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_parties()
+    {   
+        $data = PartyResource::collection(Party::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_languages()
+    {   
+        $data = LanguageResource::collection(Language::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_instituts()
+    {   
+        $data = InstitutResource::collection(Institut::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_abroads()
+    {   
+        $data = AbroadResource::collection(Abroad::get());
+
+        return response()->json($data);
+    }
+
+    public function filter_api_academics()
+    {   
+        $data = AcademicResource::collection(AcademicName::get());
+
+        return response()->json($data);
+    }
+
+
+    public function cadry_api_abroadStudies(Request $request)
+    {   
+        $data = AbroadStudyResource::collection(AbroadStudy::where('cadry_id',$request->cadry_id)->get());
+
+        return response()->json($data);
+    }
+
+    public function cadry_api_academicStudies(Request $request)
+    {   
+        $data = AcademicStudyResource::collection(AcademiStudy::where('cadry_id',$request->cadry_id)->get());
 
         return response()->json($data);
     }

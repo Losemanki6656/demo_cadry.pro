@@ -93,6 +93,10 @@ class Cadry extends Model
     {
         return $this->hasMany(InfoEducation::class);
     }
+    public function work_level()
+    {
+        return $this->belongsTo(WorkLevel::class,'worklevel_id');
+    }
     public function incentives()
     {
         return $this->hasMany(Incentive::class);
