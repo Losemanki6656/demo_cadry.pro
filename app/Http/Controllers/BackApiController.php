@@ -86,26 +86,27 @@ class BackApiController extends Controller
         ]);
     }
 
-    public function api_cadry_update_photo_post(Request $request, Cadry $cadry)
+    public function api_cadry_update_photo_post(Request $request, $cadry)
     {
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
         $imageName = time().'.'.$request->photo->extension();  
-     
-        $request->photo->move(public_path('assets'), $imageName);
-  
-    
+
+        $path = $request->photo->storeAs('cadry-photos', $fileName);
+
+        //$request->photo->move(storage_path('cadry-photos'), $imageName);
+        
+        $cadry = Cadry::find($cadry);
+        $cadry->photo = 'cadry-photos/' . $imageName;
+        $cadry->save();
+        
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
+            'photo' => url(asset('storage/' . $cadry->photo))
         ]);
 
-        $cadry->update($request->all());
-        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
-        return response()->json([
-            'message' => $fullname . " rasmi muvaffaqqiyatli taxrirlandi !"
-        ]);
     }
 
 }
