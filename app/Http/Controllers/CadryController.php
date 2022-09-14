@@ -189,11 +189,10 @@ class CadryController extends Controller
             $z = 0; $q = 0; $x = 0; $y = 0;$p = 0; $q = 0;
             foreach($item->departmentstaff as $staff) {
                 $x = $staff->stavka; $p = $p  + $x;
+                $l = $staff->cadry->sum('stavka');
                 $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-                $q = $staff->cadry->sum('stavka');
-
-                if($x > $q) $z = $z + $x - $y;
-                if($x < $y) $q = $q + $y - $x;
+                if($x>$l) $z = $z + $x - $l;
+                if($x<$y) $q = $q + $y - $x;
             }
             
             $a[$item->id] = $z;
