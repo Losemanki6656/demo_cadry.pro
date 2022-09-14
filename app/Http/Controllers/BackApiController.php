@@ -94,7 +94,7 @@ class BackApiController extends Controller
     
         $imageName = time().'.'.$request->photo->extension();  
 
-        $path = $request->photo->storeAs('cadry-photos', $fileName);
+        $path = $request->photo->storeAs('cadry-photos', $imageName);
 
         //$request->photo->move(storage_path('cadry-photos'), $imageName);
         
