@@ -173,11 +173,11 @@ class CadryController extends Controller
             ->with(['departmentstaff','departmentstaff.cadry'])->get();
         } else {
             $departments = Department::query()
-            ->where('organization_id', $org_id)
-            ->when(\Request::input('search'),function($query,$search){
-                $query
-                ->where('name','like','%'.$search.'%');
-            })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+                ->where('organization_id', $org_id)
+                ->when(\Request::input('search'),function($query,$search){
+                    $query
+                    ->where('name','like','%'.$search.'%');
+                })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
             
             $alldepartments = Department::where('organization_id', $org_id)
             ->with(['departmentstaff','departmentstaff.cadry'])->get();
@@ -186,12 +186,14 @@ class CadryController extends Controller
         $a = []; $b = []; $plan = []; 
         foreach ($alldepartments as $item)
         {
-            $z = 0; $q = 0; $x = 0; $y = 0;$p = 0;
+            $z = 0; $q = 0; $x = 0; $y = 0;$p = 0; $q = 0;
             foreach($item->departmentstaff as $staff) {
                 $x = $staff->stavka; $p = $p  + $x;
                 $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-                if($x>$y) $z = $z + $x - $y;
-                if($x<$y) $q = $q + $y - $x;
+                $q = $staff->cadry->sum('stavka');
+
+                if($x > $q) $z = $z + $x - $y;
+                if($x < $y) $q = $q + $y - $x;
             }
             
             $a[$item->id] = $z;

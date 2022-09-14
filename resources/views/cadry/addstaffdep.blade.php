@@ -87,7 +87,7 @@
                         <input type="hidden" name="department_id" value="{{ request('id') }}">
                         <div class="d-flex flex-wrap align-items-center mb-4">
                             <h5 class="card-title me-2">Lavozimni biriktirish</h5>
-                            <select class="staff_id js-example-basic-single" name="staff_id" required>
+                            <select class="staff_id js-example-basic-single" style="width: 100%" name="staff_id" required>
                                 <option value="">-- Lavozimni tanlang --</option>
                                 @foreach ($staffs as $staff)
                                     <option value="{{ $staff->id }}">{{ $staff->name }}</option>
