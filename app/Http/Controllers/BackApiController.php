@@ -78,8 +78,7 @@ class BackApiController extends Controller
     }
 
     public function api_cadry_edit_post(Request $request, Cadry $cadry)
-    {
-        
+    {       
         $cadry->update($request->all());
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
@@ -89,7 +88,19 @@ class BackApiController extends Controller
 
     public function api_cadry_update_photo_post(Request $request, Cadry $cadry)
     {
-        return response()->json($request->all());
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        $imageName = time().'.'.$request->photo->extension();  
+     
+        $request->photo->move(public_path('assets'), $imageName);
+  
+    
+        return response()->json([
+            'message' => 'success'
+        ]);
+
         $cadry->update($request->all());
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
