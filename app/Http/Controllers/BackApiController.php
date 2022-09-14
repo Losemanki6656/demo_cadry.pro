@@ -89,13 +89,12 @@ class BackApiController extends Controller
 
     public function api_cadry_update_photo_post(Request $request, Cadry $cadry)
     {
+        return response()->json($request->all());
         $cadry->update($request->all());
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
             'message' => $fullname . " rasmi muvaffaqqiyatli taxrirlandi !"
         ]);
     }
-
-
 
 }
