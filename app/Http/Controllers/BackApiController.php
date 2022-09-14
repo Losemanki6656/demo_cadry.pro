@@ -86,26 +86,13 @@ class BackApiController extends Controller
         ]);
     }
 
-    public function api_cadry_update_photo_post(Request $request, $cadry)
+    public function api_cadry_update_photo_post(Request $request, Cadry $cadry)
     {
-        $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-    
-        $imageName = time().'.'.$request->photo->extension();  
-        
-       // $path = $request->photo->storeAs('cadry-photos', $imageName);
+        $cadry->update($request->all());
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
 
-        $request->photo->move(storeAs('cadry-photos'), $imageName);
-        //$request->photo->move(storage_path('cadry-photos'), $imageName);
-        
-        $cadry = Cadry::find($cadry);
-        $cadry->photo = 'cadry-photos/' . $imageName;
-        $cadry->save();
-        
         return response()->json([
-            'message' => 'success',
-            'photo' => url(asset('storage/' . $cadry->photo))
+            'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
         ]);
 
     }
