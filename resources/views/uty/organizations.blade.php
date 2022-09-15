@@ -156,18 +156,7 @@
                                 let org_id = $('#org_select').val();
 
                                 let url = '{{ route('uty_organ') }}';
-                                window.location.href = `${url}?
-                                        name_se=${name_se}&
-                                        staff_se=${staff_se}&
-                                        education_se=${education_se}&
-                                        region_se=${region_se}&
-                                        start_se=${start_se}&
-                                        end_se=${end_se}&
-                                        sex_se=${sex_se}&
-                                        vacation_se=${vacation_se}&
-                                        railway_id=${railway_id}&
-                                        dep_id=${dep_id}&
-                                        org_id=${org_id}&`;
+                                window.location.href = `${url}?name_se=${name_se}&staff_se=${staff_se}&education_se=${education_se}&region_se=${region_se}&start_se=${start_se}&end_se=${end_se}&sex_se=${sex_se}&vacation_se=${vacation_se}&railway_id=${railway_id}&dep_id=${dep_id}&org_id=${org_id}&`;
                             }
                             $('#name_se').keyup(function(e) {
                                 if (e.keyCode == 13) {

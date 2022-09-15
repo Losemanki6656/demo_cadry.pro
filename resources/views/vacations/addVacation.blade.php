@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+    <link href="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet" />
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -38,8 +39,6 @@
                             </select>
                         </div>
 
-                        
-
                         <div class="mb-4">
                             <div class="row">
                                 <div class="col">
@@ -64,6 +63,10 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+    <script>
+        $(".demo_vertical").TouchSpin({verticalbuttons:!0});
+    </script>
     <script>
         $(document).ready(function() {
             var msg = '{{ Session::get('msg') }}';
@@ -78,12 +81,12 @@
                     }).then(function() {
                         location.reload();
                     });
-                } 
+                }
             }
 
         });
     </script>
-     <script>
+    <script>
         $('.cadry').select2({
             ajax: {
                 url: '{{ route('loadCadry') }}',
