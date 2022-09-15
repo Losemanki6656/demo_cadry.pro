@@ -87,6 +87,10 @@ Route::group([
         Route::post('/organization/cadries/{cadry}', [BackApiController::class, 'api_cadry_edit_post']);
         Route::post('/organization/cadries/{cadry}/update/photo', [BackApiController::class, 'api_cadry_update_photo_post']);
 
+        
+        Route::get('/organization/cadries/information/{cadry}', [BackApiController::class, 'api_cadry_information']);
+        Route::post('/organization/cadries/information/{cadry}', [BackApiController::class, 'api_cadry_information_post']);
+
         Route::get('/organization/cadry/abroadStudies', [OrganizationController::class, 'cadry_api_abroadStudies']);
         Route::get('/organization/cadry/academicStudies', [OrganizationController::class, 'cadry_api_academicStudies']);
        

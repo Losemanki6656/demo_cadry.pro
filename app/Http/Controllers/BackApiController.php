@@ -50,6 +50,7 @@ use App\Http\Resources\OrganizationCadryCollection;
 use App\Http\Resources\CadryEditResource;
 use App\Http\Resources\AcademicTitleResource;
 use App\Http\Resources\AcademiceDegreeResource;
+use App\Http\Resources\CadryInfoResource;
 
 class BackApiController extends Controller
 {
@@ -63,17 +64,26 @@ class BackApiController extends Controller
     {
         $cadry = Cadry::with(['allStaffs.department','work_level'])->find($id);
 
-        $info = Education::all();
-        $academictitle = AcademicTitle::all();
-        $academicdegree = AcademicDegree::all();
-        $naties = Nationality::all();
-        $langues = Language::all();
-        $parties = Party::all();
-        $worklevel = WorkLevel::all();
-        $relatives = Relative::all();
-
         return response()->json([
             'cadry' => new CadryEditResource($cadry),
+        ]);
+    }
+
+    public function api_cadry_information($id)
+    {
+        $cadry = Cadry::with(['work_level'])->find($id);
+
+        return response()->json([
+            'cadry' => new CadryInfoResource($cadry),
+        ]);
+    }
+
+    public function api_cadry_information_post(Request $request, Cadry $cadry)
+    {       
+        $cadry->update($request->all());
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+        return response()->json([
+            'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
         ]);
     }
 
