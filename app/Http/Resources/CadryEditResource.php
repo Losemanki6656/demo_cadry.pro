@@ -42,15 +42,7 @@ class CadryEditResource extends JsonResource
             'phone' =>  $this->phone,
             'worklevel_id' => new WorklevelResource($this->work_level),
             'job_date' =>  $this->job_date,
-            'allStaffs' =>  DepartmentCadryResource::collection($this->allstaffs),
-            'academictitle_id' => new AcademicTitleResource($this->cadry_title),
-            'academicdegree_id' => new AcademicDegreeResource($this->cadry_degree),
-            'nationality_id' => new NationalityResource($this->nationality),
-            'education_id' => new EducationResource($this->education),
-            'party_id' => new PartyResource($this->party),
-            'languages' => LanguageResource::collection($languages),
-            'military_rank' => $this->military_rank,
-            'deputy' => $this->deputy
+            'allStaffs' =>  DepartmentCadryResource::collection($this->allstaffs)
         ];
     }
 }

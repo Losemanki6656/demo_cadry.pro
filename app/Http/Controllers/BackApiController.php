@@ -107,4 +107,13 @@ class BackApiController extends Controller
 
     }
 
+    public function api_cadry_institut(Request $request)
+    {
+        $infoeducations = InfoEducation::where('cadry_id',$request->cadry_id)->get();
+
+        return response()->json([
+            'infoeducations' =>  InfoEducationResource::collection($infoeducations),
+        ]);
+    }
+
 }
