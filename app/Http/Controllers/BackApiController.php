@@ -116,5 +116,43 @@ class BackApiController extends Controller
         ]);
     }
 
+    public function api_cadry_institut_add($cadry, Request $request)
+    {
+        if(Cadry::find($cadry)->organization_id != auth()->user()->userorganization->organization_id)
+        return response()->json([
+            'error' => "Xodim topilmadi!"
+        ],404);
+
+        $neweducation = new InfoEducation();
+        $neweducation->cadry_id = $cadry;
+        $neweducation->sort = 0;
+        $neweducation->date1 = $request->date1;
+        $neweducation->date2 = $request->date2;
+        $neweducation->institut = $request->institut;
+        $neweducation->speciality = $request->speciality;
+        $neweducation->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function api_cadry_institut_update(InfoEducation $infoeducation_id , Request $request)
+    {
+        $infoeducation_id->update($request->all());
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function api_cadry_institut_delete(InfoEducation $infoeducation_id)
+    {
+        $infoeducation_id->delete();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
    
 }
