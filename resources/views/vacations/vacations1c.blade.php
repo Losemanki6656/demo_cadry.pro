@@ -21,21 +21,21 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <a type="button" href="{{ route('addVacation') }}" class="btn btn-primary btn-sm mb-2">
-                        <i class="fa fa-plus"></i> Ta'tilga yuborish</a>
-                    <a type="button" href="{{ route('vacations_1c') }}" class="btn btn-success btn-sm mb-2">
-                        <i class="fa fa-info-circle"></i> 1C ga yuborilgan ta'tillar</a>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped animate__animated animate__fadeIn table-sm">
                             <thead class="thead-dark ">
                                 <tr>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.no') }}</th>
-                                    <th class="text-center fw-bold" width="60px">Status</th>
                                     <th class="text-center fw-bold" width="60px">{{ __('messages.photo') }}</th>
                                     <th class="text-center fw-bold" width="350px">{{ __('messages.fio') }}</th>
+                                    <th class="text-center fw-bold">Pikaz raqami</th>
+                                    <th class="text-center fw-bold">Period1</th>
+                                    <th class="text-center fw-bold">Period2</th>
+                                    <th class="text-center fw-bold">Umumiy kun</th>
                                     <th class="text-center fw-bold">Qachondan</th>
                                     <th class="text-center fw-bold">Qachongacha</th>
-                                    <th width="200px" class="text-center fw-bold">{{ __('messages.action') }}</th>
+                                    <th class="text-center fw-bold">Status</th>
+                                    <th width="100px" class="text-center fw-bold">{{ __('messages.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,13 +44,6 @@
                                         <tr>
                                             <td class="text-center fw-bold align-middle">
                                                 {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                @if ($item->status_decret == true)
-                                                    <div class="bg-primary p-2"></div>
-                                                @else
-                                                    <div class="bg-warning p-2"></div>
-                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ asset('storage/' . $item->cadry->photo) }}"
@@ -66,6 +59,18 @@
                                                     {{ $item->cadry->last_name }}
                                                     {{ $item->cadry->first_name }}
                                                     {{ $item->cadry->middle_name }}</a></td>
+                                            <td class="text-center align-middle fw-bold">
+                                                {{$item->number_order}}
+                                            </td>
+                                            <td class="text-center align-middle fw-bold">
+                                                {{$item->period1->format('Y-m-d')}}
+                                            </td>
+                                            <td class="text-center align-middle fw-bold"> 
+                                                {{$item->period2->format('Y-m-d')}}
+                                            </td>
+                                            <td class="text-center align-middle fw-bold"> 
+                                                {{$item->alldays}}
+                                            </td>
                                             <td class="text-center align-middle">{{ $item->date1->format('Y-m-d') }} dan
                                             </td>
                                             <td class="text-center align-middle">
@@ -75,11 +80,15 @@
                                                     {{ $item->date2->format('Y-m-d') }} gacha
                                                 @endif
                                             </td>
+                                            <td class="text-center align-middle fw-bold"> 
+                                                @if ($item->status == true)
+                                                    <span class="text-primary"> Kutilmoqda </span>
+                                                @else
+                                                    <span class="text-danger"> Xato </span>
+                                                @endif
+                                            </td>
                                             <td class="text-center align-middle">
-                                                <a href="{{ route('editVacation', ['id' => $item->id]) }}" type="button"
-                                                    class="btn btn-primary btn-sm">
-                                                    <i class="fa fa-edit"></i> Taxrirlash</a>
-                                                <a onclick="delFunc({{ $item->id }})" type="button"
+                                                <a href="{{ route('deleteVacIntro',['id' => $item->id])}}" type="button"
                                                     class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"></i> O'chirish</a>
 
@@ -107,25 +116,6 @@
             </div>
         </div>
     </div>
-    <table>
-        <tbody>
-            <tr>
-                <td style="width: 90px;">
-                    <span>Mehnat ta'tili</span>
-                </td>
-                <td style="width: 50px;">
-                    <div class="bg-warning bg-gradient p-2"></div>
-                </td>
-                <td style="width: 30px;"></td>
-                <td style="width: 135px;">
-                    <span>Bola parvarish ta'tili</span>
-                </td>
-                <td style="width: 50px;">
-                    <div class="bg-primary p-2"></div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 
 
 @endsection
@@ -136,17 +126,10 @@
             var msg = '{{ Session::get('msg') }}';
             var exist = '{{ Session::has('msg') }}';
             if (exist) {
-                if (msg == 2) {
-                    Swal.fire({
-                        title: "Amalga oshirilmadi",
-                        text: "!",
-                        icon: "warning",
-                        confirmButtonColor: "#1c84ee"
-                    });
-                } else if (msg == 1) {
+                 if (msg == 4) {
                     Swal.fire({
                         title: "Good!",
-                        text: "Muvaffaqqiyatli bajarildi!",
+                        text: "Muvaffaqqiyatli o'chirildi!",
                         icon: "success",
                         confirmButtonColor: "#1c84ee",
                     }).then(function() {
@@ -156,52 +139,5 @@
             }
 
         });
-    </script>
-    <script>
-        function delFunc(id) {
-            Swal.fire({
-                text: "Xodimga tegishli ta'tilni o'chirishni xoxlaysizmi ?!",
-                icon: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Xa, bajarish!",
-                cancelButtonText: "Yo'q, qaytish!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ms-2 mt-2",
-                buttonsStyling: !1,
-            }).then(function(e) {
-                if (e.value) {
-
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('deleteVacationPost') }}",
-                        data: {
-                            "id": id,
-                            "_token": "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Success!",
-                                text: "Ta'til o'chirildi!",
-                                icon: "success",
-                                confirmButtonColor: "#1c84ee",
-                            }).then(function() {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Your imaginary file is safe :)",
-                                icon: "error",
-                                confirmButtonColor: "#1c84ee",
-                            });
-                        }
-                    });
-
-                } else {
-                    e.dismiss;
-                }
-            });
-        }
     </script>
 @endsection

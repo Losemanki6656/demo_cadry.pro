@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadryController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\BackApiController;
+use App\Http\Controllers\VacationIntegrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    Route::get('/1c/vacations', [VacationIntegrationController::class, 'vacations_1c_api']);
+    Route::post('/1c/vacations/{vacation_id}/accept', [VacationIntegrationController::class, 'vacations_1c_api_success']);
+    Route::post('/1c/vacations/{vacation_id}/refuse', [VacationIntegrationController::class, 'vacations_1c_api_refuse']);
+
     Route::get('/profile', [AuthController::class, 'userProfile']);
     
     Route::get('/cadry/ExportToWord/{id}', [OrganizationController::class, 'word_export_api']);
@@ -81,7 +86,7 @@ Route::group([
             'permission:organization_cadries'
             ]
         ], function () {
-        
+
         Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
         Route::get('/organization/cadries/{id}', [BackApiController::class, 'api_cadry_edit']);
         Route::post('/organization/cadries/{cadry}', [BackApiController::class, 'api_cadry_edit_post']);

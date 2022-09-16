@@ -7,6 +7,8 @@ use App\Models\Vacation;
 use App\Models\DepartmentCadry;
 use App\Models\MedicalExamination;
 use App\Models\Cadry;
+use App\Models\Holiday;
+use App\Models\Organization;
 use Auth;
 
 class VacationController extends Controller
@@ -93,7 +95,14 @@ class VacationController extends Controller
    }
    public function addVacation()
    {
-      return view('vacations.addVacation');
+      $status = Organization::find(auth()->user()->userorganization->organization_id)->status_vac;
+
+      $holidays = Holiday::whereYear('holiday_date', '=', now()->format('Y'))->get();
+
+      return view('vacations.addVacation',[
+         'holidays' => $holidays,
+         'status' => $status
+      ]);
    }
     
    public function addVacationsucc(Request $request)
