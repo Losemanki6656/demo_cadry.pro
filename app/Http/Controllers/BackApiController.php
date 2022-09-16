@@ -126,10 +126,10 @@ class BackApiController extends Controller
         $neweducation = new InfoEducation();
         $neweducation->cadry_id = $cadry;
         $neweducation->sort = 0;
-        $neweducation->date1 = $request->date1;
-        $neweducation->date2 = $request->date2;
-        $neweducation->institut = $request->institut;
-        $neweducation->speciality = $request->speciality;
+        $neweducation->date1 = $request->date1 ?? '';
+        $neweducation->date2 = $request->date2 ?? '';
+        $neweducation->institut = $request->institut ?? '';
+        $neweducation->speciality = $request->speciality ?? '';
         $neweducation->save();
 
         return response()->json([
@@ -139,8 +139,12 @@ class BackApiController extends Controller
 
     public function api_cadry_institut_update(InfoEducation $infoeducation_id , Request $request)
     {
-        $infoeducation_id->update($request->all());
-
+        $infoeducation_id->date1 = $request->date1 ?? '';
+        $infoeducation_id->date2 = $request->date2 ?? '';
+        $infoeducation_id->institut = $request->institut ?? '';
+        $infoeducation_id->speciality = $request->speciality ?? '';
+        $infoeducation_id->save();
+        
         return response()->json([
             'message' => "Muvaffaqqiyatli taxrirlandi!"
         ]);

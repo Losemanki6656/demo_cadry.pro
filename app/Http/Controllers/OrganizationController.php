@@ -307,6 +307,23 @@ class OrganizationController extends Controller
         return response()->json($data);
     }
 
+    public function filter_api_cadry_informations()
+    {
+        $data1 = AcademicTitleResource::collection(AcademicTitle::get());
+        $data2 = AcademicDegreeResource::collection(AcademicDegree::get());
+        $data3 = NationalityResource::collection(Nationality::get());
+        $data4 = LanguageResource::collection(Language::get());
+        $data5 = PartyResource::collection(Party::get());
+
+        return response()->json([
+            'academicTitlies' => $data1,
+            'academicDegree' => $data2,
+            'nationalities' => $data3,
+            'languages' => $data4,
+            'parties' => $data5
+        ]);
+    }
+
     public function word_export_api($id){
 
         $languages = Language::all();
