@@ -818,8 +818,7 @@ class CadryController extends Controller
                 }
             }
         }
-        
-        return response('Update Successfully.', 200);   
+        return response()->json(['Update Successfully.', 200]);   
     }
     
     public function cadry_career_delete($id)

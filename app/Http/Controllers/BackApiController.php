@@ -81,6 +81,7 @@ class BackApiController extends Controller
     public function api_cadry_information_post(Request $request, Cadry $cadry)
     {       
         $cadry->update($request->all());
+
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
             'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
@@ -157,6 +158,71 @@ class BackApiController extends Controller
         return response()->json([
             'message' => "Muvaffaqqiyatli o'chirildi!"
         ]);
+    }
+
+    public function cadry_api_careers($id)
+    {
+        $careers = Career::where('cadry_id', $id)
+            ->orderBy('sort','asc')->get();
+
+        return response()->json([
+            'careers' => CareerResource::collection($careers)
+        ]);
+    }
+
+    
+    public function cadry_api_career_add($cadry_id, Request $request)
+    {
+        $count = Career::where('cadry_id', $cadry_id)->count();
+
+        $newscareer = new Career();
+        $newscareer->cadry_id = $cadry_id;
+        $newscareer->sort = $count + 1;
+        $newscareer->date1 = $request->date1 ?? '';
+        $newscareer->date2 = $request->date2 ?? '';
+        $newscareer->staff = $request->staff ?? '';
+        $newscareer->save();
+
+        return response()->json([
+            'message' => "Mehnat faoliyati malumotlari muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function cadry_api_career_update($career_id, Request $request)
+    {
+        $newscareer = Career::find($career_id);
+        $newscareer->date1 = $request->date1 ?? '';
+        $newscareer->date2 = $request->date2 ?? '';
+        $newscareer->staff = $request->staff ?? '';
+        $newscareer->save();
+
+        return response()->json([
+            'message' => "Mehnat faoliyati malumotlari muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function cadry_api_career_delete(Career $career_id)
+    {
+        $career_id->delete();
+
+        return response()->json([
+            'message' => "Mehnat faoliyati malumotlari muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
+    public function api_career_sortable(Request $request)
+    {
+        if(!$request->orders) return response()->json([
+            'error' => 'orders empty elements'
+        ]); else
+
+        foreach ($request->orders as $item) {
+            Career::find($item['career_id'])->update(['sort' => $item['position']]);      
+        }
+
+        return response()->json([
+            'message' => 'Tartiblash muvaffaqqiyatli amalga oshirildi!'
+        ]);   
     }
    
 }

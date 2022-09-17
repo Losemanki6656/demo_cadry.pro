@@ -120,8 +120,8 @@
                             <tbody>
                                 @foreach ($careers as $career)
                                 <tr class="row1" data-id="{{ $career->id }}">
-                                    <th class="text-center"><i class="fas fa-stream" style="color: blue; cursor: pointer"></i></th>
-                                    <th class="text-center fw-bold">{{$career->date1}}</th>
+                                    <td class="text-center"><i class="fas fa-stream" style="color: blue; cursor: pointer"></i></td>
+                                    <td class="text-center fw-bold">{{$career->date1}}</td>
                                     <td class="text-center fw-bold">{{$career->date2}}</td>
                                     <td class="text-center">{{$career->staff}}</td>
                                     <td class="text-center">
@@ -268,7 +268,7 @@
             position: index+1
           });
         });
-  
+        console.log(order);
         $.ajax({
           type: "POST", 
           dataType: "json", 

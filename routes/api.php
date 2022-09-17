@@ -107,6 +107,14 @@ Route::group([
 
         Route::get('/organization/cadry/abroadStudies', [OrganizationController::class, 'cadry_api_abroadStudies']);
         Route::get('/organization/cadry/academicStudies', [OrganizationController::class, 'cadry_api_academicStudies']);
+
+        
+        Route::get('/organization/cadry/{id}/careers', [BackApiController::class, 'cadry_api_careers']);
+        Route::post('/organization/cadry/career/{cadry_id}/add', [BackApiController::class, 'cadry_api_career_add']);
+        Route::put('/organization/cadry/career/{career_id}/update', [BackApiController::class, 'cadry_api_career_update']);
+        Route::delete('/organization/cadry/career/{career_id}/delete', [BackApiController::class, 'cadry_api_career_delete']);
+
+        Route::put('/organization/cadry/career/sortable', [BackApiController::class, 'api_career_sortable']);
        
     }); 
 
