@@ -18,6 +18,7 @@ use App\Models\UserOrganization;
 use App\Models\Railway;
 use App\Models\Vacation;
 use App\Models\Staff;
+use App\Models\StaffFile;
 use App\Models\User;
 use App\Models\Career;
 use App\Models\Turnicet;
@@ -25,6 +26,7 @@ use App\Models\Region;
 use App\Models\Reception;
 use App\Models\Language;
 use App\Models\CadryRelative;
+use App\Models\DisciplinaryAction;
 use App\Models\AuthenticationLog;
 use App\Models\InfoEducation;
 use App\Models\Revision;
@@ -51,6 +53,10 @@ use App\Http\Resources\CadryEditResource;
 use App\Http\Resources\AcademicTitleResource;
 use App\Http\Resources\AcademiceDegreeResource;
 use App\Http\Resources\CadryInfoResource;
+use App\Http\Resources\CadryRelativeResource;
+use App\Http\Resources\DisciplinaryActionResource;
+use App\Http\Resources\IncentiveResource;
+use App\Http\Resources\StaffFileResource;
 
 class BackApiController extends Controller
 {
@@ -224,5 +230,261 @@ class BackApiController extends Controller
             'message' => 'Tartiblash muvaffaqqiyatli amalga oshirildi!'
         ]);   
     }
+
+    public function cadry_api_relatives($cadry_id)
+    {
+        if(Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
+        return response()->json([
+            'error' => "Xodim topilmadi!"
+        ],404);
+
+        $relatives = Relative::all();
+        $cadryrelatives = CadryRelative::where('cadry_id',$cadry_id)
+            ->orderBy('sort','asc')
+            ->with('relative')->get();
+
+        return response()->json([
+            'relatives' => CadryRelativeResource::collection($relatives),
+            'cadryRelatives' => RelativesResource::collection($cadryrelatives)
+        ]);
+    }
+
+    public function api_add_relative_cadry($cadry_id, Request $request)
+    {
+        $count = CadryRelative::where('cadry_id', $cadry_id)->count();
+
+        $newerelative = new CadryRelative();
+        $newerelative->cadry_id = $cadry_id;
+        $newerelative->relative_id = $request->relative_id;
+        $newerelative->sort = $count + 1;
+        $newerelative->fullname = $request->fullname ?? '';
+        $newerelative->birth_place = $request->birth_place ?? '';
+        $newerelative->post = $request->post ?? '';
+        $newerelative->address = $request->address ?? '';
+        $newerelative->save();
+
+        return response()->json([
+            'message' => "Yaqin qarindosh malumotlari muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function api_update_relative_cadry($cadry_relative_id, Request $request)
+    {
+
+        $newerelative = CadryRelative::find($cadry_relative_id);
+        $newerelative->relative_id = $request->relative_id;
+        $newerelative->fullname = $request->fullname ?? '';
+        $newerelative->birth_place = $request->birth_place ?? '';
+        $newerelative->post = $request->post ?? '';
+        $newerelative->address = $request->address ?? '';
+        $newerelative->save();
+
+        return response()->json([
+            'message' => "Yaqin qarindosh malumotlari muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
+    public function api_delete_relative_cadry(CadryRelative $cadry_relative_id)
+    {
+       $cadry_relative_id->delete();
+
+        return response()->json([
+            'message' => "Yaqin qarindosh malumotlari muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
+    public function api_relatives_sortable(Request $request)
+    {
+        if(!$request->orders) return response()->json([
+            'error' => 'orders empty elements'
+        ]); else
+
+        foreach ($request->orders as $item) {
+            CadryRelative::find($item['cadry_relative_id'])->update(['sort' => $item['position']]);      
+        }
+
+        return response()->json([
+            'message' => 'Tartiblash muvaffaqqiyatli amalga oshirildi!'
+        ]);   
+    }
+
+    public function api_add_discip_cadry($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date_punishment' => ['required', 'date']
+         ]);
+      
+        $dis = new DisciplinaryAction();
+        $dis->cadry_id = $cadry_id;
+        $dis->number = $request->command_number ?? '';
+        $dis->date_action = $request->date_punishment;
+        $dis->type_action = $request->type_punishment ?? '';
+        $dis->reason_action = $request->reason_punishmend ?? '';
+        $dis->save();
+
+        return response()->json([
+            'message' => "Intizomiy jazo qo'shish muvaffaqqiyatli amalga oshirildi!"
+        ]);   
+    }
+
+    public function cadry_api_punishments($cadry_id)
+    {
+        if(Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
+        return response()->json([
+            'error' => "Xodim topilmadi!"
+        ],404);
+
+        $punishments = DisciplinaryAction::where('cadry_id',$cadry_id)->get();
+
+        return response()->json([
+            'punishments' => DisciplinaryActionResource::collection($punishments)
+        ]);
+    }
+
+    public function api_update_discip_cadry($punishment_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date_punishment' => ['required', 'date']
+         ]);
+      
+        $dis = DisciplinaryAction::find($punishment_id);
+        $dis->number = $request->command_number ?? '';
+        $dis->date_action = $request->date_punishment;
+        $dis->type_action = $request->type_punishment ?? '';
+        $dis->reason_action = $request->reason_punishmend ?? '';
+        $dis->save();
+
+        return response()->json([
+            'message' => "Intizomiy jazo muvaffaqqiyatli taxrirlandi!"
+        ]);   
+    }
+
+    public function api_delete_discip_cadry(DisciplinaryAction $punishment_id)
+    {
+        $punishment_id->delete();
+
+        return response()->json([
+            'message' => "Intizomiy jazo muvaffaqqiyatli o'chirildi!"
+        ]);   
+    }
+
+     
+    public function api_add_incentive_cadry($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'incentive_date' => ['required', 'date']
+         ]);
+
+        $incentive = new Incentive();
+        $incentive->cadry_id = $cadry_id;
+        $incentive->by_whom = $request->by_whom ?? '';
+        $incentive->number = $request->command_number ?? '';
+        $incentive->incentive_date = $request->incentive_date;
+        $incentive->type_action = $request->type_incentive ?? '';
+        $incentive->type_reason = $request->reason_incentive ?? '';
+        $incentive->status = $request->status;
+        $incentive->save();
+
+        return response()->json([
+            'message' => "Rag'batlantirish muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function api_update_incentive_cadry($incentive_id, Request $request)
+    {
+        $validated = $request->validate([
+            'incentive_date' => ['required', 'date']
+         ]);
+
+        $incentive = Incentive::find($incentive_id);
+        $incentive->by_whom = $request->by_whom ?? '';
+        $incentive->number = $request->command_number ?? '';
+        $incentive->incentive_date = $request->incentive_date;
+        $incentive->type_action = $request->type_incentive ?? '';
+        $incentive->type_reason = $request->reason_incentive ?? '';
+        $incentive->status = $request->status;
+        $incentive->save();
+
+        return response()->json([
+            'message' => "Rag'batlantirish muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function api_delete_incentive_cadry(Incentive $incentive_id)
+    {
+        $incentive_id->delete();
+
+        return response()->json([
+            'message' => "Rag'batlantirish muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
    
+    public function api_cadry_incentives($cadry_id)
+    {
+        $incentives = Incentive::where('cadry_id',$cadry_id)->get();
+
+        return response()->json([
+            'incentives' => IncentiveResource::collection($incentives)
+        ]);
+    }
+
+    public function api_cadry_stafffiles($cadry_id)
+    {
+        $incentives = StaffFile::where('cadry_id',$cadry_id)->get();
+
+        return response()->json([
+            'staff_files' => StaffFileResource::collection($incentives)
+        ]);
+    }
+
+    public function api_add_stafffiles_cadry($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'file_staff' => ['required', 'file']
+         ]);
+
+        $fileName = time().'.'.$request->file_staff->extension();
+
+        $path = $request->file_staff->storeAs('stafffiles', $fileName);
+
+        $newfile = new StaffFile();
+        $newfile->cadry_id = $cadry_id;
+        $newfile->comment = $request->comment ?? '';
+        $newfile->file_path = 'storage/' . $path;
+        $newfile->save();
+
+        return response()->json([
+            'message' => "Lavozim yo'riqnomasi muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function api_update_stafffiles_cadry($staff_file_id, Request $request)
+    {
+        //return response()->json($request->all());
+        $validated = $request->validate([
+            'file_staff' => ['required', 'file']
+         ]);
+
+        $fileName = time().'.'.$request->file_staff->extension();
+
+        $path = $request->file_staff->storeAs('stafffiles', $fileName);
+
+        $newfile = StaffFile::find($staff_file_id);
+        $newfile->comment = 'asd';
+        $newfile->file_path = 'storage/' . $path;
+        $newfile->save();
+
+        return response()->json([
+            'message' => "Lavozim yo'riqnomasi muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function api_delete_stafffiles_cadry(StaffFile $staff_file_id, Request $request)
+    {
+        $staff_file_id->delete();
+
+        return response()->json([
+            'message' => "Lavozim yo'riqnomasi muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
 }

@@ -529,9 +529,7 @@ class CadryController extends Controller
         $relatives = Relative::all();
         $cadryrelatives = CadryRelative::where('cadry_id',$id)
             ->orderBy('sort','asc')
-            ->with('relative')
-            ->with('birth_city')
-            ->with('address_city')->get();
+            ->with('relative')->get();
 
         return view('cadry.cadry_realy',[
             'cadry' => $cadry,
@@ -1300,12 +1298,17 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-       for($i = 0; $i <= 99; $i ++)
-       {
-         $item = new StavkaDou();
-         $item->val_dou = $i;
-         $item->save();
+       $items = Incentive::with('cadry')->get();
+       $x = 0;
+       foreach ($items as $item){
+        if(!Cadry::find($item->cadry_id)) {
+            $item->delete();
+            $x ++;
+        }
+        dd($x);
        }
+
+
     }
 
     public function userPhone()
