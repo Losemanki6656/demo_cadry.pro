@@ -314,13 +314,15 @@ class OrganizationController extends Controller
         $data3 = NationalityResource::collection(Nationality::get());
         $data4 = LanguageResource::collection(Language::get());
         $data5 = PartyResource::collection(Party::get());
+        $data6 = EducationResource::collection(Education::get());
 
         return response()->json([
             'academicTitlies' => $data1,
             'academicDegree' => $data2,
             'nationalities' => $data3,
             'languages' => $data4,
-            'parties' => $data5
+            'parties' => $data5,
+            'educations' => $data6
         ]);
     }
 
