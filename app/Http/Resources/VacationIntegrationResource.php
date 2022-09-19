@@ -16,6 +16,7 @@ class VacationIntegrationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'command_number' => $this->number_order,
             'date1' => $this->date1->format('Y-m-d'),
             'date2' => $this->date2->format('Y-m-d'),
             'period1' => $this->date1->format('Y-m-d'),

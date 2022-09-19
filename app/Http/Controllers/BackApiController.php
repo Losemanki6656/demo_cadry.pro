@@ -470,16 +470,19 @@ class BackApiController extends Controller
 
     public function api_update_stafffiles_cadry($staff_file_id, Request $request)
     {
-        $validated = $request->validate([
-            'file_staff' => ['required', 'file']
-         ]);
+       if($request->file_staff) {
+            $validated = $request->validate([
+                'file_staff' => ['required', 'file']
+            ]);
 
-        $fileName = time().'.'.$request->file_staff->extension();
+            $fileName = time().'.'.$request->file_staff->extension();
 
-        $path = $request->file_staff->storeAs('stafffiles', $fileName);
+            $path = $request->file_staff->storeAs('stafffiles', $fileName);
+       }
 
         $newfile = StaffFile::find($staff_file_id);
         $newfile->comment = 'asd';
+        if($request->file_staff) 
         $newfile->file_path = 'storage/' . $path;
         $newfile->save();
 
