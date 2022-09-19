@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AbroadStudyResource extends JsonResource
+class MedicalResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +18,8 @@ class AbroadStudyResource extends JsonResource
             'id' => $this->id,
             'cadry_id' => $this->cadry_id,
             'date1' => $this->date1,
+            'result' => $this->result,
             'date2' => $this->date2,
-            'institute' => $this->institute,
-            'direction' => $this->direction,
-            'abroad_id' => new AbroadResource($this->typeabroad),
         ];
     }
 }

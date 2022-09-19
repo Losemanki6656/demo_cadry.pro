@@ -19,7 +19,7 @@ class AcademicStudyResource extends JsonResource
             'cadry_id' => $this->cadry_id,
             'date1' => $this->date1,
             'date2' => $this->date2,
-            'institute' => new AcademicResource($this->academicname),
+            'academic_id' => new AcademicResource($this->academicname),
         ];
     }
 }

@@ -105,8 +105,15 @@ Route::group([
         Route::put('/organization/cadry/instituts/{infoeducation_id}/update', [BackApiController::class, 'api_cadry_institut_update']);
         Route::delete('/organization/cadry/instituts/{infoeducation_id}/delete', [BackApiController::class, 'api_cadry_institut_delete']);
 
-        Route::get('/organization/cadry/abroadStudies', [OrganizationController::class, 'cadry_api_abroadStudies']);
-        Route::get('/organization/cadry/academicStudies', [OrganizationController::class, 'cadry_api_academicStudies']);
+        Route::get('/organization/cadry/{cadry_id}/abroadStudies', [BackApiController::class, 'cadry_api_abroadStudies']);
+        Route::post('/organization/cadry/abroadStudies/{cadry_id}/add', [BackApiController::class, 'cadry_api_abroadStudies_add']);
+        Route::put('/organization/cadry/abroadStudies/{abroad_study_id}/update', [BackApiController::class, 'cadry_api_abroadStudies_update']);
+        Route::delete('/organization/cadry/abroadStudies/{abroad_study_id}/delete', [BackApiController::class, 'cadry_api_abroadStudies_delete']);
+
+        Route::get('/organization/cadry/{cadry_id}/academicStudies', [BackApiController::class, 'cadry_api_academicStudies']);
+        Route::post('/organization/cadry/academicStudies/{cadry_id}/add', [BackApiController::class, 'cadry_api_academicStudies_add']);
+        Route::put('/organization/cadry/academicStudies/{academic_study_id}/update', [BackApiController::class, 'cadry_api_academicStudies_update']);
+        Route::delete('/organization/cadry/academicStudies/{academic_study_id}/delete', [BackApiController::class, 'cadry_api_academicStudies_delete']);
 
         
         Route::get('/organization/cadry/{id}/careers', [BackApiController::class, 'cadry_api_careers']);
@@ -137,6 +144,10 @@ Route::group([
         Route::post('/organization/cadry/stafffiles/{cadry_id}/add', [BackApiController::class, 'api_add_stafffiles_cadry']);
         Route::post('/organization/cadry/stafffiles/{staff_file_id}/update', [BackApiController::class, 'api_update_stafffiles_cadry']);
         Route::delete('/organization/cadry/stafffiles/{staff_file_id}/delete', [BackApiController::class, 'api_delete_stafffiles_cadry']);
+
+        
+        Route::get('/organization/cadry/{cadry_id}/meds', [BackApiController::class, 'api_cadry_meds']);
+        Route::delete('/organization/cadry/meds/{med_id}/delete', [BackApiController::class, 'api_cadry_meds_delete']);
     }); 
 
     Route::group([

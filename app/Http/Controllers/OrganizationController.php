@@ -262,21 +262,6 @@ class OrganizationController extends Controller
         return response()->json($data);
     }
 
-
-    public function cadry_api_abroadStudies(Request $request)
-    {   
-        $data = AbroadStudyResource::collection(AbroadStudy::where('cadry_id',$request->cadry_id)->get());
-
-        return response()->json($data);
-    }
-
-    public function cadry_api_academicStudies(Request $request)
-    {   
-        $data = AcademicStudyResource::collection(AcademiStudy::where('cadry_id',$request->cadry_id)->get());
-
-        return response()->json($data);
-    }
-
     public function filter_api_educations()
     {
         $data = EducationResource::collection(Education::get());

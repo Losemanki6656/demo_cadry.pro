@@ -28,10 +28,15 @@ use App\Models\Language;
 use App\Models\CadryRelative;
 use App\Models\DisciplinaryAction;
 use App\Models\AuthenticationLog;
+use App\Models\MedicalExamination;
 use App\Models\InfoEducation;
 use App\Models\Revision;
 use App\Models\Education;
 use App\Models\DepartmentCadry;
+use App\Models\AbroadStudy;
+use App\Models\AcademiStudy;
+use App\Models\Abroad;
+use App\Models\AcademicName;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
 use App\Http\Resources\OrganizationResource;
@@ -57,6 +62,11 @@ use App\Http\Resources\CadryRelativeResource;
 use App\Http\Resources\DisciplinaryActionResource;
 use App\Http\Resources\IncentiveResource;
 use App\Http\Resources\StaffFileResource;
+use App\Http\Resources\AbroadStudyResource;
+use App\Http\Resources\AcademicStudyResource;
+use App\Http\Resources\AbroadResource;
+use App\Http\Resources\AcademicResource;
+use App\Http\Resources\MedicalResource;
 
 class BackApiController extends Controller
 {
@@ -460,7 +470,6 @@ class BackApiController extends Controller
 
     public function api_update_stafffiles_cadry($staff_file_id, Request $request)
     {
-        //return response()->json($request->all());
         $validated = $request->validate([
             'file_staff' => ['required', 'file']
          ]);
@@ -487,4 +496,139 @@ class BackApiController extends Controller
             'message' => "Lavozim yo'riqnomasi muvaffaqqiyatli o'chirildi!"
         ]);
     }
+
+    public function cadry_api_abroadStudies($cadry_id)
+    {   
+        $data = AbroadStudyResource::collection(AbroadStudy::where('cadry_id',$cadry_id)->get());
+
+        return response()->json($data);
+    }
+
+    public function cadry_api_academicStudies($cadry_id)
+    {   
+        $data = AcademicStudyResource::collection(AcademiStudy::where('cadry_id',$cadry_id)->get());
+
+        return response()->json($data);
+    }
+
+    public function cadry_api_abroadStudies_add($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date1' => ['required'],
+            'date2' => ['required'],
+            'abroad_id' => ['required']
+         ]);
+
+        $new = new AbroadStudy();
+        $new->cadry_id = $cadry_id;
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute ?? '';
+        $new->direction = $request->direction ?? '';
+        $new->type_abroad = $request->abroad_id;
+        $new->save();
+
+        return response()->json([
+            'message' => "Ta'lim muassasasi muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function cadry_api_abroadStudies_update($abroad_study_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date1' => ['required'],
+            'date2' => ['required'],
+            'abroad_id' => ['required']
+         ]);
+
+        $new = AbroadStudy::find($abroad_study_id);
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->institute ?? '';
+        $new->direction = $request->direction ?? '';
+        $new->type_abroad = $request->abroad_id;
+        $new->save();
+
+        return response()->json([
+            'message' => "Ta'lim muassasasi muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
+    public function cadry_api_abroadStudies_delete(AbroadStudy $abroad_study_id)
+    {
+        $abroad_study_id->delete();
+
+        return response()->json([
+            'message' => "Ta'lim muassasasi muvaffaqqiyatli o'chrildi!"
+        ]);
+    }
+
+    public function cadry_api_academicStudies_add($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date1' => ['required'],
+            'date2' => ['required'],
+            'academic_id' => ['required']
+         ]);
+
+         $new = new AcademiStudy();
+         $new->cadry_id = $cadry_id;
+         $new->date1 = $request->date1;
+         $new->date2 = $request->date2;
+         $new->institute = $request->academic_id;
+         $new->save();
+ 
+
+        return response()->json([
+            'message' => "Akademiya muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function cadry_api_academicStudies_update($academic_study_id, Request $request)
+    {
+        $validated = $request->validate([
+            'date1' => ['required'],
+            'date2' => ['required'],
+            'academic_id' => ['required']
+         ]);
+
+         $new = AcademiStudy::find($academic_study_id);
+         $new->date1 = $request->date1;
+         $new->date2 = $request->date2;
+         $new->institute = $request->academic_id;
+         $new->save();
+ 
+
+        return response()->json([
+            'message' => "Akademiya muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
+    public function cadry_api_academicStudies_delete(AcademiStudy $academic_study_id)
+    {
+        $academic_study_id->delete();
+
+        return response()->json([
+            'message' => "Akademiya muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
+    public function api_cadry_meds($cadry_id)
+    {
+        $meds = MedicalExamination::where('cadry_id', $cadry_id)->get();
+
+        return response()->json([
+            'meds' => MedicalResource::collection($meds)
+        ]);
+    }
+
+    public function api_cadry_meds_delete(MedicalExamination $med_id)
+    {
+        $med_id->delete();
+
+        return response()->json([
+            'message' => "Tibbiy ko'rik ma'lumotlari muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
 }
