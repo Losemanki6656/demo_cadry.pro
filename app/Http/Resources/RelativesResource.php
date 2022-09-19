@@ -16,7 +16,7 @@ class RelativesResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'relative' => $this->relative->name,
+            'relative' => $this->relative_id,
             'fullname' => $this->fullname,
             'birth_place' => $this->birth_place,
             'post' => $this->post,

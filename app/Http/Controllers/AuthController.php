@@ -104,13 +104,13 @@ class AuthController extends Controller
      */
     protected function createNewToken($token){
 
-        $user = new UserResource(User::with('roles.permissions','userorganization.organization.railway')->find(auth('api')->user()->id));
+       // $user = new UserResource(User::with('roles.permissions','userorganization.organization.railway')->find(auth('api')->user()->id));
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' =>$user,
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+           // 'user' => $user,
         ]);
     }
 }

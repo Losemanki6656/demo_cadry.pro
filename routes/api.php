@@ -93,7 +93,7 @@ Route::group([
         Route::get('/organization/cadries', [OrganizationController::class, 'api_cadries']);
         Route::get('/organization/cadries/{id}', [BackApiController::class, 'api_cadry_edit']);
         Route::put('/organization/cadries/{cadry}', [BackApiController::class, 'api_cadry_edit_post']);
-        Route::put('/organization/cadries/{cadry}/update/photo', [BackApiController::class, 'api_cadry_update_photo_post']);
+        Route::post('/organization/cadries/{cadry}/update/photo', [BackApiController::class, 'api_cadry_update_photo_post']);
 
         
         Route::get('/organization/cadries/information/{cadry}', [BackApiController::class, 'api_cadry_information']);
