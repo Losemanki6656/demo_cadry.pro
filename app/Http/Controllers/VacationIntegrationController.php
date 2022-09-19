@@ -49,7 +49,7 @@ class VacationIntegrationController extends Controller
         $item->save();
         
         return response()->json([
-            'message' => 'successfully added!'
+            'message' => 'successfully accepted!'
         ]);
     }
 
@@ -64,7 +64,7 @@ class VacationIntegrationController extends Controller
         $vacation->save();
 
         return response()->json([
-            'message' => 'successfully added!'
+            'message' => 'successfully refused!'
         ]);
     }
 
