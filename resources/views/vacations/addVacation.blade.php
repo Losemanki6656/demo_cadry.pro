@@ -271,12 +271,12 @@
             const date = new Date(date1_1c);
 
             if (underage == true || invalid == true) {
-                allday = for_staff + for_experience + for_hardwork + for_other + more_day + donor_day + childrens_day +
+                allday = for_staff + for_climate + for_experience + for_hardwork + for_other + more_day + donor_day + childrens_day +
                     invalid_child_day;
                 date.setDate(date.getDate() + 30);
                 c = allday + 30;
             } else {
-                allday = mainday + for_staff + for_experience + for_hardwork + for_other + more_day + donor_day +
+                allday = mainday + for_climate + for_staff + for_experience + for_hardwork + for_other + more_day + donor_day +
                     childrens_day + invalid_child_day;
                 c = allday;
             }
