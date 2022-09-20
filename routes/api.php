@@ -57,7 +57,6 @@ Route::group([
     Route::get('/filter/instituts', [OrganizationController::class, 'filter_api_instituts']);
     Route::get('/filter/abroads', [OrganizationController::class, 'filter_api_abroads']);
     Route::get('/filter/academics', [OrganizationController::class, 'filter_api_academics']);
-
     
     Route::get('/filter/cadry-informations', [OrganizationController::class, 'filter_api_cadry_informations']);
 
@@ -150,9 +149,12 @@ Route::group([
             
             Route::get('/organization/cadry/{cadry_id}/meds', [BackApiController::class, 'api_cadry_meds']);
             Route::delete('/organization/cadry/meds/{med_id}/delete', [BackApiController::class, 'api_cadry_meds_delete']);
+
+            
+        Route::get('/organization/cadries/info', [OrganizationController::class, 'cadries_info']);
    
         //organization-Staff-positions
-        Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
+       // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });
 
     Route::group([
