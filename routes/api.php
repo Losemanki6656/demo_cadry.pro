@@ -151,7 +151,8 @@ Route::group([
             Route::delete('/organization/cadry/meds/{med_id}/delete', [BackApiController::class, 'api_cadry_meds_delete']);
 
             
-        Route::get('/organization/cadries/info', [OrganizationController::class, 'cadries_info']);
+        Route::get('/organization/info/cadries', [OrganizationController::class, 'cadries_info']);
+        Route::get('/organization/info/department/staffs', [OrganizationController::class, 'loadvacan']);
    
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);

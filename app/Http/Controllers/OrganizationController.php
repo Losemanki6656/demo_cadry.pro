@@ -68,6 +68,7 @@ use App\Http\Resources\AbroadStudyResource;
 use App\Http\Resources\AcademicStudyResource;
 use App\Http\Resources\AbroadResource;
 use App\Http\Resources\AcademicResource;
+use App\Http\Resources\DepartmentStaffResource;
 use Auth;
 use File;
 use DB;
@@ -290,6 +291,40 @@ class OrganizationController extends Controller
         $data = RegionResource::collection(Region::get());
 
         return response()->json($data);
+    }
+    
+    public function loadvacan(Request $request)
+    {
+        
+        $data = DepartmentStaffResource::collection(DepartmentStaff::where('department_id', $request->department_id)->get());
+
+        return response()->json($data, 200);
+    }
+
+    public function cadries_info()
+    {
+        $data1 = RegionResource::collection(Region::get());
+        $data2 = CityResource::collection(City::get());
+        $data3 = DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get());
+       // $data = StaffResource::collection(Staff::where('organization_id',auth()->user()->userorganization->organization_id)->get());
+        $data4 = NationalityResource::collection(Nationality::get());
+        $data5 = LanguageResource::collection(Language::get());
+        $data6 = AcademicTitleResource::collection(AcademicTitle::get());
+        $data7 = AcademicDegreeResource::collection(AcademicDegree::get());
+        $data8 = PartyResource::collection(Party::get());
+        $data9 = WorkLevelResource::collection(WorkLevel::get());
+
+        return response()->json([
+            'regions' => $data1,
+            'cities' => $data2,
+            'departments' => $data3,
+            'nationalities' => $data4,
+            'languages' => $data5,
+            'academictitlies' => $data6,
+            'academicdegree' => $data7,
+            'parties' => $data6,
+            'worklevels' => $data7,
+        ]);
     }
 
     public function filter_api_cadry_informations()
