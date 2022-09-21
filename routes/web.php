@@ -109,6 +109,8 @@ Route::group(['middleware' => ['auth']], function() {
     
     
     Route::get('/cadryvs', [App\Http\Controllers\OrganizationController::class, 'CadryVS'])->name('CadryVS');
+    Route::get('/CadryCareers', [App\Http\Controllers\OrganizationController::class, 'CadryCareers'])->name('CadryCareers');
+    Route::get('/CadryRelatives', [App\Http\Controllers\OrganizationController::class, 'CadryRelatives'])->name('CadryRelatives');
     Route::get('/cadrymeds', [App\Http\Controllers\OrganizationController::class, 'CadryMeds'])->name('CadryMeds');
     Route::get('/CadryVacations', [App\Http\Controllers\OrganizationController::class, 'CadryVacations'])->name('CadryVacations');
 

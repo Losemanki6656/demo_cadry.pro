@@ -79,6 +79,22 @@
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         })
 
+                        function CadryCareers() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('CadryCareers') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+
+                        function CadryRelatives() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('CadryRelatives') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+
                         function CadryVS() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -432,7 +448,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Qarindoshligi kiritilmagan xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                        <button onclick="CadryRelatives()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">

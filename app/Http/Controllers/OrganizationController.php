@@ -908,7 +908,6 @@ class OrganizationController extends Controller
 
     public function CadryMeds(Request $request) 
     {
-       
             $meds = Cadry::FilterJoin()
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
@@ -928,6 +927,25 @@ class OrganizationController extends Controller
         $cadries = Vacation::OrgFilter();
        
         return view('uty.CadryVacations',[
+            'cadries' => $cadries->paginate(15),
+        ]);
+    }
+
+    public function CadryCareers(Request $request) 
+    {
+        $cadries = Cadry::filter()->where('railway_id','!=',3)->has('careers', '=', 0)->with('organization');
+
+        return view('uty.CadryCareers',[
+            'cadries' => $cadries->paginate(15),
+        ]);
+    }
+
+    public function CadryRelatives(Request $request) 
+    {
+     
+        $cadries = Cadry::filter()->where('railway_id','!=',3)->has('relatives', '=', 0)->with('organization');
+       
+        return view('uty.CadryRelatives',[
             'cadries' => $cadries->paginate(15),
         ]);
     }
