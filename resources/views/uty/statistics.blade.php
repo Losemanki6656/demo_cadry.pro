@@ -152,7 +152,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1"> Nafaqa yoshidagi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button type="submit" class="btn btn-warning btn-sm"> Barchasini ko'rish</button>
+                        <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -178,7 +178,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1"> Xodimlarning yoshi bo'yicha</h4>
                     <div class="flex-shrink-0">
-                        <button type="submit" class="btn btn-success btn-sm"> Barchasini ko'rish</button>
+                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -204,7 +204,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1"> Xodimlarning ma'lumoti bo'yicha</h4>
                     <div class="flex-shrink-0">
-                        <button type="submit" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -233,7 +233,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Erkak va ayol</h4>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -265,7 +265,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Kasanachi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -296,7 +296,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Bo'sh ish o'rinlari</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryVS()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="CadryVS()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -328,7 +328,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Temir daftardagi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -478,7 +478,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Bugungi tu'gilgan kunlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="birthcadries()" class="btn btn-danger btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="birthcadries()" class="btn btn-danger btn-sm"> <i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -497,7 +497,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Yangi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="newcadries()" class="btn btn-warning btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="newcadries()" class="btn btn-warning btn-sm"> <i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -516,7 +516,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h6 class="card-title mb-0 flex-grow-1">Faoliyati yakunlangan xodimlar</h6>
                     <div class="flex-shrink-0">
-                        <button onclick="delcadries()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="delcadries()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -535,7 +535,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h6 class="card-title mb-0 flex-grow-1">Qora ro'yxatdagi xodimlar</h6>
                     <div class="flex-shrink-0">
-                        <a href="{{ route('black_del') }}" class="btn btn-dark btn-sm"> Barchasini ko'rish</a>
+                        <a href="{{ route('black_del') }}" class="btn btn-dark btn-sm"><i class="fas fa-eye"></i></a>
                     </div>
                 </div>
                 <div class="card-body">

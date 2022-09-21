@@ -158,6 +158,9 @@ Route::group([
         Route::get('/organization/cadry-staff/{cadry_staff_id}', [BackApiController::class, 'apiStaffCadryEdit']);
         Route::get('/organization/careerCheck', [BackApiController::class, 'careerCheck']);
 
+        
+        Route::get('/organization/check-pinfl', [BackApiController::class, 'api_check_pinfl']);
+
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });

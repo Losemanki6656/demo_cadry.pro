@@ -767,4 +767,41 @@ class BackApiController extends Controller
         return response()->json($data);
     }
 
+    public function api_check_pinfl(Request $request)
+    {
+        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->jshshir)->get();
+        $validator = Cadry::where('status',true)->where('jshshir',$request->jshshir)->with('organization')->get();
+        $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
+
+        if(count($validator3) > 0)
+        {
+            return response()->json([
+                'status' => false, 
+                'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
+            ], 422);
+
+        } else
+        if ( count($validator) > 0 ) {
+
+            return response()->json([
+                'status' => false, 
+                'message' => "Xodim ". $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name . $validator[0]->organization->name . " korxonasida ishlaydi"
+            ], 422);
+
+        } else if(count($validator2) > 0) {
+            
+            return response()->json([
+                'status' => false, 
+                'message' => "Ushbu xodim qora arxivda mavjud"
+            ], 422);
+
+        } else 
+
+        return response()->json([
+            'status' => true, 
+            'message' => "Xodim topilmadi"
+        ]);
+
+    }
+
 }
