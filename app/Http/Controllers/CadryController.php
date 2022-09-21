@@ -1026,10 +1026,13 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-
-            $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
-            $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
-
+            if($request->railway_id == 3) {
+                $careersCount = 0;
+                $relativesCount = 0;
+            } else {
+                $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
+            } 
          
         return view('uty.statistics', [
             'careersCount' => $careersCount,
