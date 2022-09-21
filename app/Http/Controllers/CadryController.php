@@ -1002,8 +1002,6 @@ class CadryController extends Controller
 
             $allStaffs = DepartmentStaff::Filter();
 
-            //dd($allStaffs->get());
-
             $plan = $allStaffs->sum('stavka');
             $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
             $x = $sverx->sum('stavka');
@@ -1028,8 +1026,14 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
+
+            $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
+            $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
+
          
         return view('uty.statistics', [
+            'careersCount' => $careersCount,
+            'relativesCount' => $relativesCount,
             'departments' => $departments,
             'decret' => $decret,
             'nafaqaMan' => $nafaqaMan,

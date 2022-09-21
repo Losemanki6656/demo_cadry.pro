@@ -269,7 +269,6 @@
             else more_day = 0;
 
             const date = new Date(date1_1c);
-
             if (underage == true || invalid == true) {
                 allday = for_staff + for_climate + for_experience + for_hardwork + for_other + more_day + donor_day + childrens_day +
                     invalid_child_day;
@@ -280,16 +279,32 @@
                     childrens_day + invalid_child_day;
                 c = allday;
             }
-
-            for (let i = 1; i <= allday - 1; i++) {
-
-                for (let j = 0; j <= holidays.length; j++) {
-                    if (date_format(date) == holidays[j]) date.setDate(date.getDate() + 1);
-                }
-
-                if (date.getDay() == 0) date.setDate(date.getDate() + 1);
+            
+            for (let i = 1; i <= allday; i++) {
 
                 date.setDate(date.getDate() + 1);
+                var t = true;
+
+                while (t == true) {
+
+                    t = false;
+                    for (let j = 0; j <= holidays.length; j++) {
+
+                        if (date_format(date) == holidays[j]) {
+                            date.setDate(date.getDate() + 1);
+                            t = true;
+                            console.log('a-' + holidays[j]);   
+                        }
+                        if (date.getDay() == 0) {
+                            date.setDate(date.getDate() + 1);
+                            console.log('a-' + date_format(date));
+                            t = true;
+                        }
+                    }
+
+                } 
+                if(t == false) console.log(date_format(date));
+
             }
 
             $('#date2_1c').val(date_format(date));

@@ -342,7 +342,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Ta'tildagi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -374,7 +374,7 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Tibbiy ko'rik ma'lumotlari</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"> Barchasini ko'rish</button>
+                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -385,7 +385,65 @@
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $meds }}</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($meds / $all) * 100, 1) }} %</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Mehnat faoliyati kiritilmagan xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryCareers()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold" data-target="{{ $careersCount }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($careersCount / $all) * 100, 1) }} %</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Qarindoshligi kiritilmagan xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold" data-target="{{ $relativesCount }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($relativesCount / $all) * 100, 1) }} %</span>
                             </div>
                         </div>
 
