@@ -18,7 +18,8 @@ class StaffOrgResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'category_id' => $this->category_id,
-            'cadries_count' => $this->cadries->count()
+            'cadries_count' => $this->cadries->count(),
+            'departments' => $this->departments->groupBy('department_id')->count()
         ];
     }
 }

@@ -21,7 +21,7 @@ class StaffController extends Controller
             $query
             ->where('name','like','%'.$search.'%');
         })
-        ->with('cadries')->paginate(10);
+        ->with(['cadries','departments'])->paginate(10);
 
         return response()->json([
             'staffs' => new StaffOrgCollection($staffs)
@@ -83,4 +83,6 @@ class StaffController extends Controller
         }
        
     }
+
+    
 }

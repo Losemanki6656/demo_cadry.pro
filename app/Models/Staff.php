@@ -32,6 +32,11 @@ class Staff extends Model
         return  $this->hasMany(Cadry::class);
     }
 
+    public function departments()
+    {
+        return  $this->hasMany(DepartmentStaff::class);
+    }
+
     public function scopeFilter()
     {
         return self::query()

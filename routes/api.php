@@ -8,6 +8,7 @@ use App\Http\Controllers\CadryController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\BackApiController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\VacationIntegrationController;
 
 /*
@@ -157,6 +158,8 @@ Route::group([
    
         Route::get('/organization/cadry-staff/{cadry_staff_id}', [BackApiController::class, 'apiStaffCadryEdit']);
         Route::get('/organization/careerCheck', [BackApiController::class, 'careerCheck']);
+        Route::put('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'api_department_cadry_update']);
+        Route::delete('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'SuccessDeleteCadryStaff']);
 
         
         Route::get('/organization/check-pinfl', [BackApiController::class, 'api_check_pinfl']);
@@ -181,6 +184,18 @@ Route::group([
         
     }); 
 
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+
+        //organization-Departments
+        Route::get('/organization/departments', [DepartmentController::class, 'departments']);
+        
+    }); 
+
+    
     Route::group([
         'middleware' => [
             'permission:administration:administration_permissions'
