@@ -266,16 +266,13 @@ label.cabinet input.file{
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th width="200px">Stavka</th>
                                     <th width="120px">Lavozim sanasi</th>
                                     <th>Jinsi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <input type="number" class="form-control" value="1" name="stavka" step="0.01" required>
-                                    </td>
+                                    <input type="hidden" class="form-control" value="1" name="stavka" step="0.01" required>
                                     <td>
                                         <input type="date" class="form-control" name="post_date" required>
                                     </td>

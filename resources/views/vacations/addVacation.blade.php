@@ -281,7 +281,7 @@
                 c = allday;
             }
 
-            for (let i = 1; i <= allday; i++) {
+            for (let i = 1; i <= allday - 1; i++) {
 
                 for (let j = 0; j <= holidays.length; j++) {
                     if (date_format(date) == holidays[j]) date.setDate(date.getDate() + 1);

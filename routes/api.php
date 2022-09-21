@@ -153,7 +153,11 @@ Route::group([
             
         Route::get('/organization/info/cadries', [OrganizationController::class, 'cadries_info']);
         Route::get('/organization/info/department/staffs', [OrganizationController::class, 'loadvacan']);
+        Route::post('/organization/addworker', [BackApiController::class, 'api_add_worker']);
    
+        Route::get('/organization/cadry-staff/{cadry_staff_id}', [BackApiController::class, 'apiStaffCadryEdit']);
+        Route::get('/organization/careerCheck', [BackApiController::class, 'careerCheck']);
+
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });

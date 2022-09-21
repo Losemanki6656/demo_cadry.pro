@@ -37,6 +37,7 @@ use App\Models\AbroadStudy;
 use App\Models\AcademiStudy;
 use App\Models\Abroad;
 use App\Models\AcademicName;
+use App\Models\DepartmentStaff;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
 use App\Http\Resources\OrganizationResource;
@@ -67,6 +68,7 @@ use App\Http\Resources\AcademicStudyResource;
 use App\Http\Resources\AbroadResource;
 use App\Http\Resources\AcademicResource;
 use App\Http\Resources\MedicalResource;
+use App\Http\Resources\DepartmentStaffResource;
 
 class BackApiController extends Controller
 {
@@ -632,6 +634,137 @@ class BackApiController extends Controller
         return response()->json([
             'message' => "Tibbiy ko'rik ma'lumotlari muvaffaqqiyatli o'chirildi!"
         ]);
+    }
+
+    public function api_add_worker(Request $request)
+    {
+        $validated = $request->validate([
+            'last_name' => ['required'],
+            'first_name' => ['required'],
+            'middle_name' => ['required'],
+            'birth_region_id' => ['required'],
+            'birth_city_id' => ['required'],
+            'address_region_id' => ['required'],
+            'address_city_id' => ['required'],
+            'address' => ['required'],
+            'pass_region_id' => ['required'],
+            'pass_city_id' => ['required'],
+            'jshshir' => ['required','min:14','unique'],
+            'job_date' => ['required','date'],
+            'department_id' => ['required'],
+            'staff_id' => ['required'],
+            'post_date' => ['required','date'],
+            'education_id' => ['required'],
+            'academictitle_id' => ['required'],
+            'academicdegree_id' => ['required'],
+            'nationality_id' => ['required'],
+            'language' => ['required'],
+            'worklevel_id' => ['required'],
+            'party_id' => ['required'],
+            'military_rank' => ['required'],
+            'deputy' => ['required'],
+            'phone' => ['required'],
+         ]);
+
+        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->jshshir)->get();
+        $validator = Cadry::where('status',true)->where('jshshir',$request->jshshir)->with('organization')->get();
+        $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
+
+        if(count($validator3) > 0)
+        {
+            return response()->json([
+                'status' => false, 
+                'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
+            ], 422);
+
+        } else
+        if ( count($validator) > 0 ) {
+
+            return response()->json([
+                'status' => false, 
+                'message' => "Xodim ". $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name . $validator[0]->organization->name . " korxonasida ishlaydi"
+            ], 422);
+
+        } else if(count($validator2) > 0) {
+            
+            return response()->json([
+                'status' => false, 
+                'message' => "Ushbu xodim qora arxivda mavjud"
+            ], 422);
+
+        } else {
+
+            $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
+            $organ = auth()->user()->userorganization;
+
+            $array = $request->all();
+            $array['railway_id'] = $organ->railway_id;
+            $array['organization_id'] = $organ->organization_id;
+            $array['post_name'] = $dep->staff_full;
+            $array['staff_id'] = $dep->staff_id;
+
+            $cadry = Cadry::create($array);
+
+            $newItem = new DepartmentCadry();
+            $newItem->railway_id = $array['railway_id'];
+            $newItem->organization_id = $array['organization_id'];
+            $newItem->department_id = $request->department_id;
+            $newItem->department_staff_id = $request->staff_id;
+            $newItem->staff_id = $dep->staff_id;
+            $newItem->staff_full = $dep->staff_full;
+            $newItem->staff_date = $request->post_date;
+
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
+                $newItem->cadry_id = $cadry->id;
+                $newItem->stavka = $request->stavka;
+                $newItem->save();
+        
+            return response()->json([
+                'status' => true,
+                'message' => "Xodim muvaffaqqiyatli qo'shildi!"
+            ]);;
+        }
+
+       
+    }
+
+    public function apiStaffCadryEdit($id)
+    {
+        $item =  DepartmentCadry::find($id);
+
+        $staffs = DepartmentStaff::where('department_id', $item->department_id)->get();
+
+        return response()->json([
+            'department_id' => $item->department_id,
+            'rate' => $item->stavka,
+            'staff_status' => $item->staff_status,
+            'staff_statuts' => [
+                [
+                    'id' => 0,
+                    'name' => "Asosiy"
+                ],
+                [
+                    'id' => 1,
+                    'name' => "O'rindosh"
+                ]
+                ],
+            'staff_date' => $item->staff_date,
+            'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
+            'department_staffs' => DepartmentStaffResource::collection(DepartmentStaff::where('department_id', $item->department_id)->get())
+        ]);
+    }
+
+    public function careerCheck(Request $request)
+    {
+        $data = [];
+        if ($request->has('cadry_id')) {
+            $id = $request->cadry_id;
+            $data = Career::where('cadry_id', $id )->orderBy('id', 'desc')->get();
+        }
+        return response()->json($data);
     }
 
 }
