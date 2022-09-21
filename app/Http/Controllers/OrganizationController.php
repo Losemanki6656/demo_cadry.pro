@@ -313,6 +313,7 @@ class OrganizationController extends Controller
         $data7 = AcademicDegreeResource::collection(AcademicDegree::get());
         $data8 = PartyResource::collection(Party::get());
         $data9 = WorkLevelResource::collection(WorkLevel::get());
+        $data10 = EducationResource::collection(Education::get());
 
         return response()->json([
             'regions' => $data1,
@@ -322,8 +323,9 @@ class OrganizationController extends Controller
             'languages' => $data5,
             'academictitlies' => $data6,
             'academicdegree' => $data7,
-            'parties' => $data6,
-            'worklevels' => $data7,
+            'parties' => $data8,
+            'worklevels' => $data9,
+            'educations' => $data10
         ]);
     }
 
