@@ -102,6 +102,7 @@
                             let url = '{{ route('CadryVS') }}';
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         }
+
                         function CadryMeds() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -109,6 +110,7 @@
                             let url = '{{ route('CadryMeds') }}';
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         }
+
                         function CadryVacations() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -116,6 +118,7 @@
                             let url = '{{ route('CadryVacations') }}';
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         }
+
                         function newcadries() {
                             let dep_id = $('#dep_select').val();
                             let railway_id = $('#railway_select').val();
@@ -224,6 +227,68 @@
             </div>
             <!-- end card -->
         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Davlat akademiyasida ta'lim olganlar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div id="chart_academic" class="e-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Xorijda ta'lim olganlar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div id="chart_x" class="e-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Mehnat faoliyati yakunlanish</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div id="chart_ish" class="e-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Ishga qabul qilinganlar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div id="chart_ish_qabul" class="e-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row">
@@ -358,7 +423,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Ta'tildagi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i></button>
+                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> <i
+                                class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -397,11 +463,14 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
-                                Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold" data-target="{{ $meds }}">0</span>
+                                Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $meds }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($meds / $all) * 100, 1) }} %</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($meds / $all) * 100, 1) }}
+                                    %</span>
                             </div>
                         </div>
 
@@ -419,18 +488,22 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Mehnat faoliyati kiritilmagan xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryCareers()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                        <button onclick="CadryCareers()" class="btn btn-primary btn-sm"><i
+                                class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
-                                Xodimlar soni -<span class="counter-value text-primary fw-bold" data-target="{{ $careersCount }}">0</span>
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $careersCount }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($careersCount / $all) * 100, 1) }} %</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($careersCount / $all) * 100, 1) }}
+                                    %</span>
                             </div>
                         </div>
 
@@ -448,18 +521,22 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Qarindoshligi kiritilmagan xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryRelatives()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                        <button onclick="CadryRelatives()" class="btn btn-primary btn-sm"><i
+                                class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
-                                Xodimlar soni -<span class="counter-value text-primary fw-bold" data-target="{{ $relativesCount }}">0</span>
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $relativesCount }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ number_format(($relativesCount / $all) * 100, 1) }} %</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($relativesCount / $all) * 100, 1) }}
+                                    %</span>
                             </div>
                         </div>
 
@@ -478,7 +555,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Bugungi tu'gilgan kunlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="birthcadries()" class="btn btn-danger btn-sm"> <i class="fas fa-eye"></i></button>
+                        <button onclick="birthcadries()" class="btn btn-danger btn-sm"> <i
+                                class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -497,7 +575,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Yangi xodimlar</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="newcadries()" class="btn btn-warning btn-sm"> <i class="fas fa-eye"></i></button>
+                        <button onclick="newcadries()" class="btn btn-warning btn-sm"> <i
+                                class="fas fa-eye"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -556,6 +635,190 @@
     <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
     <script src="assets/libs/echarts/echarts.min.js"></script>
     <script src="assets/libs/jquery-knob/jquery.knob.min.js"></script>
+    <script>
+        var options = {
+         series: [{
+           name: "Desktops",
+           data: [ {{ implode(',', $news) }} ]
+       }],
+         chart: {
+         type: 'line',
+         zoom: {
+           enabled: false
+         }
+       },
+       dataLabels: {
+         enabled: false
+       },
+       stroke: {
+         curve: 'straight'
+       },
+       title: {
+         text: "2022 yil oylar ko'rinishida",
+         align: 'left'
+       },
+       grid: {
+         row: {
+           colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+           opacity: 0.5
+         },
+       },
+       xaxis: {
+         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+       }
+       };
+
+       var chart = new ApexCharts(document.querySelector("#chart_ish_qabul"), options);
+       chart.render();
+     
+   </script>
+    <script>
+         var options = {
+          series: [{
+            name: "Desktops",
+            data: [ {{ implode(',', $demo) }} ]
+        }],
+          chart: {
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: "2022 yil oylar ko'rinishida",
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_ish"), options);
+        chart.render();
+      
+    </script>
+    <script>
+        var colors = [
+            '#566DF2',
+            '#FE593E',
+            '#FE9C78',
+            '#9BCB7C'
+        ]
+
+        var options = {
+            series: [{
+                data: [{{ $abroad1 }}, {{ $abroad2 }} ,
+                    {{ $abroad3 }}, {{ $abroad4 }}
+                ],
+            }],
+            chart: {
+                type: 'bar',
+                events: {
+                    click: function(chart, w, e) {
+                        // console.log(chart, w, e)
+                    }
+                }
+            },
+            colors: colors,
+            plotOptions: {
+                bar: {
+                    columnWidth: '45%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            legend: {
+                show: true
+            },
+            xaxis: {
+                categories: [
+                    ["Xorijda grant asosida - ", {{ $abroad1 }} + " ta"],
+                    ["Jamiyat mablag’i hisobidan o’qiganlar - ", {{ $abroad2 }} + " ta"],
+                    ["El-yurt  umid fondi stipendiyasi - ", {{ $abroad3 }} + " ta"],
+                    ["O’z hisobidan - ", {{ $abroad4 }} + " ta"],
+                ],
+                labels: {
+                    style: {
+                        colors: colors,
+                        fontSize: '0'
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_x"), options);
+        chart.render();
+    </script>
+    <script>
+        var colors = [
+            '#FE007B',
+            '#FE8300',
+            '#1CD8F9',
+            '#003AFE',
+            '#CC00FE'
+        ]
+
+        var options = {
+            series: [{
+                data: [{{ $academic1 }}, {{ $academic2 }} ,
+                    {{ $academic3 }}, {{ $academicBosh }}, {{ $academicBiznes }}
+                ],
+            }],
+            chart: {
+                type: 'bar',
+                events: {
+                    click: function(chart, w, e) {
+                        // console.log(chart, w, e)
+                    }
+                }
+            },
+            colors: colors,
+            plotOptions: {
+                bar: {
+                    columnWidth: '45%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            legend: {
+                show: true
+            },
+            xaxis: {
+                categories: [
+                    ["Davlat akademiyasi(1 yillik)", {{ $academic1 }} + " ta"],
+                    ["Davlat akademiyasi(2 yillik)", {{ $academic2 }} + " ta"],
+                    ["Davlat akademiyasi(3 yillik)", {{ $academic3 }} + " ta"],
+                    ["Boshqarma akademiyasi", {{ $academicBosh }} + " ta"],
+                    ["Biznes va tadbirkorlik akademiyasi", {{ $academicBiznes }} + " ta"],
+                ],
+                labels: {
+                    style: {
+                        colors: colors,
+                        fontSize: '0'
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_academic"), options);
+        chart.render();
+    </script>
     <script>
         var colors = [
             '#008FFB',

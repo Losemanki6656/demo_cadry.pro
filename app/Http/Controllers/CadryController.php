@@ -1033,8 +1033,38 @@ class CadryController extends Controller
                 $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
                 $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
             } 
+        
+            $academic1 = AcademiStudy::where('institute',1)->count();
+            $academic2 = AcademiStudy::where('institute',2)->count();
+            $academic3 = AcademiStudy::where('institute',3)->count();
+            $academicBosh = AcademiStudy::where('institute',4)->count();
+            $academicBiznes = AcademiStudy::where('institute',5)->count();
+
+            $abroad1 = AbroadStudy::where('type_abroad',1)->count();
+            $abroad2 = AbroadStudy::where('type_abroad',2)->count();
+            $abroad3 = AbroadStudy::where('type_abroad',3)->count();
+            $abroad4 = AbroadStudy::where('type_abroad',4)->count();
+
+            for($i = 1; $i <=12; $i ++)
+            {
+                $demo[$i] = DemoCadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
+
+                $news[$i] = Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
+            }
+                
          
         return view('uty.statistics', [
+            'news' => $news,
+            'demo' => $demo,
+            'abroad1' => $abroad1,
+            'abroad2' => $abroad2,
+            'abroad3' => $abroad3,
+            'abroad4' => $abroad4,
+            'academic1' => $academic1,
+            'academic2' => $academic2,
+            'academic3' => $academic3,
+            'academicBosh' => $academicBosh,
+            'academicBiznes' => $academicBiznes,
             'careersCount' => $careersCount,
             'relativesCount' => $relativesCount,
             'departments' => $departments,
@@ -1128,7 +1158,6 @@ class CadryController extends Controller
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
-
         return response()->json([
             'all_cadries_count' => $all,
             'pension_Man' => $nafaqaMan,
@@ -1305,16 +1334,17 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-       $items = Incentive::with('cadry')->get();
-       $x = 0;
-       foreach ($items as $item){
-        if(!Cadry::find($item->cadry_id)) {
-            $item->delete();
-            $x ++;
-        }
-        dd($x);
-       }
+        set_time_limit(600);
+       
+        $cadries = Cadry::where('status',true)->where('railway_id','!=',3)->has('careers', '=', 0)->with('organization')->get();
 
+        $x = []; $y = 0;
+        foreach($cadries as $item){
+            $y ++;
+            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
+        }
+
+        dd($x);
 
     }
 
