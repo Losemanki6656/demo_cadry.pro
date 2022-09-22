@@ -12,7 +12,7 @@ class Organization extends Model
     public function users()
     {
         return $this->belongsToMany(
-            USer::class,
+            User::class,
             'user_organization',
             'organization_id',
             'user_id');
@@ -25,7 +25,7 @@ class Organization extends Model
 
     public function cadries()
     {
-        return $this->hasMany(Cadry::class);
+        return $this->hasMany(Cadry::class)->where(['status' => true]);
     }
 
     public function scopeFilter()

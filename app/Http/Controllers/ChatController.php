@@ -375,10 +375,22 @@ class ChatController extends Controller
 
     public function control()
     {
-        DepartmentStaff::where('organization_id',165)->update(['railway_id' => 1]);
-        DepartmentCadry::where('organization_id',165)->update(['railway_id' => 1]);
+    
+        $orgs = \App\Models\Organization::query()
+            ->where('railway_id',3)
+            ->withCount(['cadries' => function ($query) {
+                $query->has('med', '=', 0);
+            }])
+            ->get();
 
-        return back();
+            $a = []; $i = 0;
+        foreach ($orgs as $item){
+            $i ++;
+            $a[$i] = $item->name . '#' . $item->cadries_count;
+        }
+
+        dd($a);
+        
     }
 
     public function xx()
