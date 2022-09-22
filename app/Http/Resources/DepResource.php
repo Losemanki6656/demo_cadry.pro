@@ -16,7 +16,8 @@ class DepResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'a' => $request->a
         ];
     }
 }

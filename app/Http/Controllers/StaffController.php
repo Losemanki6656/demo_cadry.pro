@@ -15,13 +15,15 @@ class StaffController extends Controller
 {
     public function api_staff_positions(Request $request)
     {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
         $staffs = Staff::query()
         ->where('organization_id', Auth::user()->userorganization->organization_id)
         ->when(\Request::input('name'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
         })
-        ->with(['cadries','departments'])->paginate(10);
+        ->with(['cadries','departments'])->paginate($per_page);
 
         return response()->json([
             'staffs' => new StaffOrgCollection($staffs)

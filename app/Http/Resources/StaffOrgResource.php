@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\DepartmentStaff;
+use App\Models\Department;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StaffOrgResource extends JsonResource
@@ -14,12 +16,15 @@ class StaffOrgResource extends JsonResource
      */
     public function toArray($request)
     {
+        $ids = DepartmentStaff::where('staff_id', $this->id)->groupBy('department_id')->pluck('department_id')->toArray();
+        $deps = Department::whereIn('id',$ids)->get();
         return [
             'id' => $this->id,
             'name' => $this->name,
             'category_id' => $this->category_id,
             'cadries_count' => $this->cadries->count(),
-            'departments' => $this->departments->groupBy('department_id')->count()
+            'departments_count' => $deps->count(),
+            'departments' => DepResource::collection($deps)
         ];
     }
 }

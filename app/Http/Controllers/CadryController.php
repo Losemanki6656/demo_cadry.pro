@@ -1025,6 +1025,7 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
+                
             if($request->railway_id == 3) {
                 $careersCount = 0;
                 $relativesCount = 0;

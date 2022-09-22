@@ -11,6 +11,7 @@ use App\Http\Resources\DepResource;
 
 class DepartmentController extends Controller
 {
+
     public function departments()
     {
         $all = 0; $allSv = 0;
@@ -38,7 +39,7 @@ class DepartmentController extends Controller
                 })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
             
             $alldepartments = Department::where('organization_id', $org_id)
-            ->with(['departmentstaff','departmentstaff.cadry'])->get();
+                ->with(['departmentstaff','departmentstaff.cadry'])->get();
         }
         
         $a = []; $b = []; $plan = []; 
@@ -62,11 +63,11 @@ class DepartmentController extends Controller
         
         return response()->json([
             'departments' => DepResource::collection($departments),
-            'a' => $a,
-            'b' => $b,
-            'all' => $all,
-            'allSv' => $allSv,
-            'plan' => $plan
+            'allVacant' => $all,
+            'allSvrex' => $allSv,
+            'allPlan' => $plan,
+            'plan' => $a,
+            'fakt' => $b
         ]);
     }
 }
