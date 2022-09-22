@@ -283,7 +283,6 @@ class ChatController extends Controller
             if($item->cadry_id != $newItem->cadry_id) $x ++;
         }
 
-  
                 $newItem->department_id = $request->department_id;
                 $newItem->department_staff_id = $request->staff_id;
                 $newItem->staff_id = $editstaff->staff_id;
@@ -376,7 +375,10 @@ class ChatController extends Controller
 
     public function control()
     {
-        Cadry::query()->update(['status_med' => false]);
+        DepartmentStaff::where('organization_id',165)->update(['railway_id' => 1]);
+        DepartmentCadry::where('organization_id',165)->update(['railway_id' => 1]);
+
+        return back();
     }
 
     public function xx()
