@@ -55,7 +55,10 @@ class VacationController extends Controller
       $item->cadry_id = $request->cadry_id;
       $item->date1 = $request->date1;
       if($request->status_vacation == 1)
-         $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         if(!$request->date2)
+            $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         else
+            $item->date2 = $request->date2;
       else
          $item->date2 = $request->date2 ?? now();
       $item->status = true;
@@ -127,7 +130,10 @@ class VacationController extends Controller
       $item->cadry_id = $request->cadry_id;
       $item->date1 = $request->date1;
       if($request->status_vacation == 1)
-         $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         if(!$request->date2)
+            $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         else
+            $item->date2 = $request->date2;
       else
          $item->date2 = $request->date2 ?? now();
       $item->status = true;
