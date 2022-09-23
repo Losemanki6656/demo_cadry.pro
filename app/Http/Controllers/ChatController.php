@@ -376,11 +376,12 @@ class ChatController extends Controller
     public function control()
     {
     
-        $orgs = \App\Models\Railway::query()
-        ->withCount(['cadries' => function ($query) {
-            $query->has('careers', '=', 0);
-        }])
-        ->get();
+        $orgs = \App\Models\Organization::query()
+            ->where('railway_id', '=',3)
+            ->withCount(['cadries' => function ($query) {
+                $query->has('med', '=', 0);
+            }])
+            ->get();
 
         $a = []; $i = 0;
         foreach ($orgs as $item){

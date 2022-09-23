@@ -68,22 +68,22 @@
                                                     {{ $item->first_name }}
                                                     {{ $item->middle_name }}</a></td>
                                             <td class="text-center align-middle">
-                                                {{ $item->date1->format('Y-m-d') }}
+                                                {{ $item->med->date1->format('Y-m-d') }}
                                             </td>
                                             <td class="text-center align-middle">
-                                                {{ $item->result }}
+                                                {{ $item->med->result }}
                                             </td>
                                             <td class="text-center align-middle">
-                                                {{ $item->date2->format('Y-m-d') }}
+                                                {{ $item->med->date2->format('Y-m-d') }}
                                             </td>
                                             <td class="text-center align-middle">
-                                                @if ($item->date2 > now())
-                                                    @if ($item->date2->diffInDays() + 1 > 12)
+                                                @if ($item->med->date2 > now())
+                                                    @if ($item->med->date2->diffInDays() + 1 > 12)
                                                         <span class="text-primary" style="font-weight: bold">
-                                                            {{ $item->date2->diffInDays() + 1 }} </span>kun qoldi
+                                                            {{ $item->med->date2->diffInDays() + 1 }} </span>kun qoldi
                                                     @else
                                                         <span class="text-warning" style="font-weight: bold">
-                                                            {{ $item->date2->diffInDays() + 1 }} </span>kun qoldi
+                                                            {{ $item->med->date2->diffInDays() + 1 }} </span>kun qoldi
                                                     @endif
                                                 @else
                                                     <span class="text-danger" style="font-weight: bold"> Muddat tugagan
@@ -107,7 +107,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
-                                                        <form action="{{ route('editMed', ['id' => $item->cadry_id]) }}"
+                                                        <form action="{{ route('editMed', ['id' => $item->med->id]) }}"
                                                             method="post">
                                                             @csrf
                                                             <div class="modal-body">
@@ -116,18 +116,18 @@
                                                                         <label>Oxirgi o'tgan sanasi</label>
                                                                         <input type="date" class="form-control"
                                                                             name="date1"
-                                                                            value="{{ $item->date1->format('Y-m-d') }}">
+                                                                            value="{{ $item->med->date1->format('Y-m-d') }}">
                                                                     </div>
                                                                     <div class="col">
                                                                         <label>Keyingi o'tish sanasi</label>
                                                                         <input type="date" class="form-control"
                                                                             name="date2"
-                                                                            value="{{ $item->date2->format('Y-m-d') }}">
+                                                                            value="{{ $item->med->date2->format('Y-m-d') }}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label>Izoh</label>
-                                                                    <textarea name="result" class="form-control">{{ $item->result }}</textarea>
+                                                                    <textarea name="result" class="form-control">{{ $item->med->result }}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -148,7 +148,7 @@
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form action="{{ route('addMed', ['id' => $item->cadry_id]) }}"
+                                                        <form action="{{ route('addMed', ['id' => $item->id]) }}"
                                                             method="post">
                                                             @csrf
                                                             <div class="modal-body">

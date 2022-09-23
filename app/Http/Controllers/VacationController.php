@@ -155,14 +155,16 @@ class VacationController extends Controller
    
    public function meds()
    {
-         $cadries = Cadry::SeFilter()
-            ->select(['cadries.*', 'medical_examinations.*'])
-            ->where('cadries.status',true)
-            ->where('medical_examinations.status',true)
-            ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
-            ->orderBy('medical_examinations.date2')
-            ->paginate(10);
-         
+         // $cadries = Cadry::SeFilter()
+         //    ->select(['cadries.*', 'medical_examinations.*'])
+         //    ->where('cadries.status',true)
+         //    ->where('medical_examinations.status',true)
+         //    ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+         //    ->orderBy('medical_examinations.date2')
+         //    ->paginate(10);
+
+      $cadries = Cadry::SeFilter()->where('cadries.status',true)->has('med')->with('med')->paginate(10);
+      
       return view('vacations.meds',[
          'cadries' => $cadries
       ]);
@@ -180,7 +182,7 @@ class VacationController extends Controller
             'date2' => ['required', 'date'],
       ]);
 
-      $med = MedicalExamination::where('status',true)->where('cadry_id', $id)->first();
+      $med = MedicalExamination::find($id);
 
       $med->update([
          'date1' => $request->date1,
