@@ -157,6 +157,146 @@
         </div><!-- end col -->
     </div>
 
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Ta'tildagi xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryVacations()" class="btn btn-primary btn-sm"> <i
+                                class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                Mehnat ta'tili-<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $vac }}">0</span>;
+                                Bola parvarish ta'tili-<span class="counter-value text-success fw-bold"
+                                    data-target="{{ $vacDec }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac + $vacDec }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Tibbiy ko'rik ma'lumotlari</h4>
+                    <div class="flex-shrink-0">
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                <button onclick="CadryMeds()" class="btn btn-primary btn-sm mb-2"><i
+                                        class="fas fa-eye"></i></button>
+                                Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $meds }}">0</span>
+                                <button onclick="CadryNotMeds()" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-eye"></i></button>
+                                Kiritilmagan xodimlar -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $mednotCount }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($meds / $all) * 100, 1) }}
+                                    %</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Mehnat faoliyati kiritilmagan xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryCareers()" class="btn btn-primary btn-sm"><i
+                                class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $careersCount }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($careersCount / $all) * 100, 1) }}
+                                    %</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <!-- card -->
+            <div class="card card-h-100">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Qarindoshligi kiritilmagan xodimlar</h4>
+                    <div class="flex-shrink-0">
+                        <button onclick="CadryRelatives()" class="btn btn-primary btn-sm"><i
+                                class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-3">
+                                Xodimlar soni -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $relativesCount }}">0</span>
+                            </h5>
+                            <div class="text-nowrap">
+                                <span class="ms-1 text-muted font-size-13">Umumiy</span>
+                                <span
+                                    class="badge bg-soft-success text-success fw-bold">{{ number_format(($relativesCount / $all) * 100, 1) }}
+                                    %</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 text-end dash-widget">
+                            <div id="mini-chart1" data-colors='["#1c84ee", "#33c38e"]' class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div>
+    </div>
+
+
     <div class="row animate__animated animate__fadeIn">
         <div class="col-xl-3 col-md-6">
             <div class="card card-h-100">
@@ -237,6 +377,32 @@
     </div>
 
     @push('scripts')
+        <script>
+            function CadryCareers() {
+                let url = '{{ route('CadryCareers_org') }}';
+                window.location.href = `${url}`;
+            }
+
+            function CadryRelatives() {
+                let url = '{{ route('CadryRelatives_org') }}';
+                window.location.href = `${url}`;
+            }
+
+            function CadryMeds() {
+                let url = '{{ route('CadryMeds_org') }}';
+                window.location.href = `${url}`;
+            }
+
+            function CadryNotMeds() {
+                let url = '{{ route('CadryNotMeds_org') }}';
+                window.location.href = `${url}`;
+            }
+
+            function CadryVacations() {
+                let url = '{{ route('CadryVacations_org') }}';
+                window.location.href = `${url}`;
+            }
+        </script>
     @endpush
 @endsection
 

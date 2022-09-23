@@ -1230,9 +1230,35 @@ class CadryController extends Controller
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
-            //dd($vacant->get());
+
+            
+            $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now())->count();
+                
+            $mednotCount = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->has('med','=',0)->with('organization')->count();
+
+                $careersCount = Cadry::OrgFilter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::OrgFilter()->has('relatives', '=', 0)->count();
+
+            $vacations = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)
+                ->where('status', true)
+                ->whereDate( 'date2' , '>=' ,now());
+            
+            $vac = $vacations->count();
+            $vacDec = $vacations->where('status_decret', true)->count();
 
         return view('cadry.statistics', [
+            'mednotCount' => $mednotCount,
+            'vacDec' => $vacDec,
+            'vac' => $vac,
+            'meds' => $meds,
+            'careersCount' => $careersCount,
+            'relativesCount' => $relativesCount,
             'decret' => $decret,
             'plan' => $plan,
             'nafaqaMan' => $nafaqaMan,

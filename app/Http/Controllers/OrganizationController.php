@@ -951,4 +951,60 @@ class OrganizationController extends Controller
             'cadries' => $cadries->paginate(15),
         ]);
     }
+
+
+    public function CadryMeds_org(Request $request) 
+    {
+            $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now());
+       
+        return view('uty.CadryMeds',[
+            'meds' => $meds->paginate(15),
+        ]);
+    }
+
+    public function CadryNotMeds_org(Request $request) 
+    {
+        $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->has('med','=',0)->with('organization');
+       
+        return view('uty.CadryNotMeds',[
+            'meds' => $meds->paginate(15),
+        ]);
+    }
+
+    public function CadryVacations_org(Request $request) 
+    {
+       
+        $cadries = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)->where('status',true)
+        ->whereDate( 'date2' , '>=' ,now() )
+        ->with('cadry');
+       
+        return view('uty.CadryVacations',[
+            'cadries' => $cadries->paginate(15),
+        ]);
+    }
+
+    public function CadryCareers_org(Request $request) 
+    {
+        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->has('careers', '=', 0)->with('organization');
+
+        return view('uty.CadryCareers',[
+            'cadries' => $cadries->paginate(15),
+        ]);
+    }
+
+    public function CadryRelatives_org(Request $request) 
+    {
+     
+        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->has('relatives', '=', 0)->with('organization');
+       
+        return view('uty.CadryRelatives',[
+            'cadries' => $cadries->paginate(15),
+        ]);
+    }
 }

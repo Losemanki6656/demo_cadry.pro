@@ -114,6 +114,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/cadrymeds', [App\Http\Controllers\OrganizationController::class, 'CadryMeds'])->name('CadryMeds');
     Route::get('/CadryVacations', [App\Http\Controllers\OrganizationController::class, 'CadryVacations'])->name('CadryVacations');
 
+    
+    Route::get('/CadryCareers/org', [App\Http\Controllers\OrganizationController::class, 'CadryCareers_org'])->name('CadryCareers_org');
+    Route::get('/CadryRelatives/org', [App\Http\Controllers\OrganizationController::class, 'CadryRelatives_org'])->name('CadryRelatives_org');
+    Route::get('/cadrymeds/org', [App\Http\Controllers\OrganizationController::class, 'CadryMeds_org'])->name('CadryMeds_org');
+    Route::get('/cadrynotmeds/org', [App\Http\Controllers\OrganizationController::class, 'CadryNotMeds_org'])->name('CadryNotMeds_org');
+    Route::get('/CadryVacations/org', [App\Http\Controllers\OrganizationController::class, 'CadryVacations_org'])->name('CadryVacations_org');
+
     //boshqalar
     Route::get('/cadry/incentives', [App\Http\Controllers\OrganizationController::class, 'incentives'])->name('incentives');
     Route::get('/cadry/meds', [App\Http\Controllers\VacationController::class, 'meds'])->name('meds');
