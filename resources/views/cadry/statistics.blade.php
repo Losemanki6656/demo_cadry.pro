@@ -207,7 +207,7 @@
                                 <button onclick="CadryMeds()" class="btn btn-primary btn-sm mb-2"><i
                                         class="fas fa-eye"></i></button>
                                 Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold"
-                                    data-target="{{ $meds }}">0</span>
+                                    data-target="{{ $meds }}">0</span> <br>
                                 <button onclick="CadryNotMeds()" class="btn btn-primary btn-sm"><i
                                         class="fas fa-eye"></i></button>
                                 Kiritilmagan xodimlar -<span class="counter-value text-primary fw-bold"
