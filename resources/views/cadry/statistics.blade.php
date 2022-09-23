@@ -173,7 +173,7 @@
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
                                 Mehnat ta'tili-<span class="counter-value text-primary fw-bold"
-                                    data-target="{{ $vac }}">0</span>;
+                                    data-target="{{ $vac }}">0</span> <br>
                                 Bola parvarish ta'tili-<span class="counter-value text-success fw-bold"
                                     data-target="{{ $vacDec }}">0</span>
                             </h5>
