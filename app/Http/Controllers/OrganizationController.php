@@ -970,7 +970,10 @@ class OrganizationController extends Controller
 
     public function CadryNotMeds_org(Request $request) 
     {
-        $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->where('status', true)->has('med','=',0)->with('organization');
+        $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+            ->where('status', true)
+            ->has('med','=',0)
+            ->with('organization');
        
         return view('uty.CadryNotMeds',[
             'meds' => $meds->paginate(15),
@@ -981,8 +984,8 @@ class OrganizationController extends Controller
     {
        
         $cadries = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)->where('status',true)
-        ->whereDate( 'date2' , '>=' ,now() )
-        ->with('cadry');
+            ->whereDate( 'date2' , '>=' ,now() )
+            ->with('cadry');
        
         return view('uty.CadryVacations',[
             'cadries' => $cadries->paginate(15),
@@ -991,7 +994,10 @@ class OrganizationController extends Controller
 
     public function CadryCareers_org(Request $request) 
     {
-        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->where('status', true)->has('careers', '=', 0)->with('organization');
+        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+            ->where('status', true)
+            ->has('careers', '=', 0)
+            ->with('organization');
 
         return view('uty.CadryCareers',[
             'cadries' => $cadries->paginate(15),
@@ -1001,8 +1007,11 @@ class OrganizationController extends Controller
     public function CadryRelatives_org(Request $request) 
     {
      
-        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->where('status', true)->has('relatives', '=', 0)->with('organization');
-       
+        $cadries = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+            ->where('status', true)
+            ->has('relatives', '=', 0)
+            ->with('organization');
+        
         return view('uty.CadryRelatives',[
             'cadries' => $cadries->paginate(15),
         ]);

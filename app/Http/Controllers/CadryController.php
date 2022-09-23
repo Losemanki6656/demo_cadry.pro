@@ -1240,7 +1240,7 @@ class CadryController extends Controller
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
                 
-            $mednotCount = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)->has('med','=',0)->with('organization')->count();
+            $mednotCount = Cadry::where('status',true)->where('organization_id',auth()->user()->userorganization->organization_id)->has('med','=',0)->with('organization')->count();
 
                 $careersCount = Cadry::OrgFilter()->has('careers', '=', 0)->count();
                 $relativesCount = Cadry::OrgFilter()->has('relatives', '=', 0)->count();
