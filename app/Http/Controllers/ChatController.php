@@ -376,8 +376,7 @@ class ChatController extends Controller
     public function control()
     {
     
-        $orgs = \App\Models\Organization::query()
-        ->where('railway_id', '!=',3)
+        $orgs = \App\Models\Railway::query()
         ->withCount(['cadries' => function ($query) {
             $query->has('med', '=', 0);
         }])
