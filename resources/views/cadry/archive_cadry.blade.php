@@ -62,7 +62,7 @@
                                 <div class="form-group row mb-4">
                                     <label for="jshshir" class="col-form-label col-lg-2">JSHSHIR</label>
                                     <div class="col-7">
-                                        <input id="jshshir" name="jshshir" type="text" class="form-control jshshir"
+                                        <input id="jshshir" name="jshshir" type="number" class="form-control jshshir"
                                             placeholder="JSHSHIR ni kiriting..." value="{{ request('jshshir') }}">
                                     </div>
                                     <div class="col-3">
@@ -99,7 +99,7 @@
                                     @foreach ($cadries as $item)
                                         <tr>
                                             <td>
-                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
+                                                {{ $loop->index + 1 }}
                                             </td>
                                             <td><a href="{{ asset('storage/' . $item->photo) }}" class="image-popup-desc"
                                                     data-title="{{ $item->last_name }} {{ $item->first_name }} {{ $item->middle_name }}"
@@ -131,28 +131,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                        </div>
-                        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    @if (count($cadries) > 9)
-                                        <form action="{{ route('cadry') }}" method="get">
-                                            <div class="dataTables_length" id="datatable_length">
-                                                <label><input type="number" class="form-control form-control"
-                                                        placeholder="{{ __('messages.page') }} ..." name="page"
-                                                        value="{{ request()->query('page') }}"></label>
-                                            </div>
-                                        </form>
-                                    @endif
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div id="datatable_filter" class="dataTables_filter">
-                                        <label>
-                                            {{ $cadries->withQueryString()->links() }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

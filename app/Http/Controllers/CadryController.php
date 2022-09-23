@@ -1285,21 +1285,24 @@ class CadryController extends Controller
     public function archive_cadry(Request $request) 
     {
         if($request->jshshir) 
+           {
             $cadries = Cadry::query()
-                ->where('status', false)
-                ->when(\Request::input('jshshir'),function($query, $jshshir){
-                    $query->where(function ($query) use ($jshshir) {
-                        $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
-                    });
+            ->where('status', false)
+            ->when(\Request::input('jshshir'),function($query, $jshshir){
+                $query->where(function ($query) use ($jshshir) {
+                    $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
                 });
-             else
-        $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
-
+            });
+           }
+             else {
+                $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
+             }
+        
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
 
         return view('cadry.archive_cadry',[
-            'cadries' => $cadries->paginate(10, ['*'], 'page', $page),
+            'cadries' => $cadries->get(),
         ]);
     }
 
