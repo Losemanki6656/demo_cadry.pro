@@ -115,6 +115,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/CadryVacations', [App\Http\Controllers\OrganizationController::class, 'CadryVacations'])->name('CadryVacations');
 
     
+    Route::get('/ExcelCareers', [App\Http\Controllers\OrganizationController::class, 'ExcelCareers'])->name('ExcelCareers');
+    Route::get('/ExcelRelatives', [App\Http\Controllers\OrganizationController::class, 'ExcelRelatives'])->name('ExcelRelatives');
+    Route::get('/ExcelMeds', [App\Http\Controllers\OrganizationController::class, 'ExcelMeds'])->name('ExcelMeds');
+    Route::get('/ExcelNotMeds', [App\Http\Controllers\OrganizationController::class, 'ExcelNotMeds'])->name('ExcelNotMeds');
+
+    
     Route::get('/CadryCareers/org', [App\Http\Controllers\OrganizationController::class, 'CadryCareers_org'])->name('CadryCareers_org');
     Route::get('/CadryRelatives/org', [App\Http\Controllers\OrganizationController::class, 'CadryRelatives_org'])->name('CadryRelatives_org');
     Route::get('/cadrymeds/org', [App\Http\Controllers\OrganizationController::class, 'CadryMeds_org'])->name('CadryMeds_org');

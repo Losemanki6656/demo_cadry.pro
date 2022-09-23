@@ -142,6 +142,37 @@
                             let url = '{{ route('birthcadries') }}';
                             window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
                         }
+
+                        function ExcelCareers() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('ExcelCareers') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+
+                        function ExcelRelatives() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('ExcelRelatives') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+
+                        function ExcelMeds() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('ExcelMeds') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
+                        function ExcelNotMeds() {
+                            let dep_id = $('#dep_select').val();
+                            let railway_id = $('#railway_select').val();
+                            let org_id = $('#org_select').val();
+                            let url = '{{ route('ExcelNotMeds') }}';
+                            window.location.href = `${url}?railway_id=${railway_id}&org_id=${org_id}&dep_id=${dep_id}`;
+                        }
                     </script>
                 @endpush
             </div>
@@ -456,15 +487,24 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Tibbiy ko'rik ma'lumotlari</h4>
                     <div class="flex-shrink-0">
-                        <button onclick="CadryMeds()" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                        <button onclick="ExcelMeds()" class="btn btn-success btn-sm"><i
+                                class="fas fa-file-excel"></i></button>
+                        <button onclick="ExcelNotMeds()" class="btn btn-success btn-sm"><i
+                                class="fas fa-file-excel"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
+                                <button onclick="CadryMeds()" class="btn btn-primary btn-sm mb-2"><i
+                                        class="fas fa-eye"></i></button>
                                 Muddati tugagan xodimlar -<span class="counter-value text-primary fw-bold"
-                                    data-target="{{ $meds }}">0</span>
+                                    data-target="{{ $meds }}">0</span> <br>
+                                <button onclick="CadryNotMeds()" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-eye"></i></button>
+                                Kiritilmagan xodimlar -<span class="counter-value text-primary fw-bold"
+                                    data-target="{{ $mednotCount }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
@@ -488,6 +528,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Mehnat faoliyati kiritilmagan xodimlar</h4>
                     <div class="flex-shrink-0">
+                        <button onclick="ExcelCareers()" class="btn btn-success btn-sm"><i
+                                class="fas fa-file-excel"></i></button>
                         <button onclick="CadryCareers()" class="btn btn-primary btn-sm"><i
                                 class="fas fa-eye"></i></button>
                     </div>
@@ -521,6 +563,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Qarindoshligi kiritilmagan xodimlar</h4>
                     <div class="flex-shrink-0">
+                        <button onclick="ExcelRelatives()" class="btn btn-success btn-sm"><i
+                                class="fas fa-file-excel"></i></button>
                         <button onclick="CadryRelatives()" class="btn btn-primary btn-sm"><i
                                 class="fas fa-eye"></i></button>
                     </div>
@@ -637,77 +681,75 @@
     <script src="assets/libs/jquery-knob/jquery.knob.min.js"></script>
     <script>
         var options = {
-         series: [{
-           name: "Desktops",
-           data: [ {{ implode(',', $news) }} ]
-       }],
-         chart: {
-         type: 'line',
-         zoom: {
-           enabled: false
-         }
-       },
-       dataLabels: {
-         enabled: false
-       },
-       stroke: {
-         curve: 'straight'
-       },
-       title: {
-         text: "2022 yil oylar ko'rinishida",
-         align: 'left'
-       },
-       grid: {
-         row: {
-           colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-           opacity: 0.5
-         },
-       },
-       xaxis: {
-         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-       }
-       };
+            series: [{
+                name: "Desktops",
+                data: [{{ implode(',', $news) }}]
+            }],
+            chart: {
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: "2022 yil oylar ko'rinishida",
+                align: 'left'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            }
+        };
 
-       var chart = new ApexCharts(document.querySelector("#chart_ish_qabul"), options);
-       chart.render();
-     
-   </script>
+        var chart = new ApexCharts(document.querySelector("#chart_ish_qabul"), options);
+        chart.render();
+    </script>
     <script>
-         var options = {
-          series: [{
-            name: "Desktops",
-            data: [ {{ implode(',', $demo) }} ]
-        }],
-          chart: {
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        title: {
-          text: "2022 yil oylar ko'rinishida",
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-        }
+        var options = {
+            series: [{
+                name: "Desktops",
+                data: [{{ implode(',', $demo) }}]
+            }],
+            chart: {
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: "2022 yil oylar ko'rinishida",
+                align: 'left'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            }
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_ish"), options);
         chart.render();
-      
     </script>
     <script>
         var colors = [
@@ -719,7 +761,7 @@
 
         var options = {
             series: [{
-                data: [{{ $abroad1 }}, {{ $abroad2 }} ,
+                data: [{{ $abroad1 }}, {{ $abroad2 }},
                     {{ $abroad3 }}, {{ $abroad4 }}
                 ],
             }],
@@ -774,7 +816,7 @@
 
         var options = {
             series: [{
-                data: [{{ $academic1 }}, {{ $academic2 }} ,
+                data: [{{ $academic1 }}, {{ $academic2 }},
                     {{ $academic3 }}, {{ $academicBosh }}, {{ $academicBiznes }}
                 ],
             }],

@@ -1030,8 +1030,8 @@ class CadryController extends Controller
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
-                $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
+                $careersCount = Cadry::filter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::filter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
             } 
         
             $academic1 = AcademiStudy::where('institute',1)->count();
@@ -1052,8 +1052,10 @@ class CadryController extends Controller
                 $news[$i] = Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
             }
                 
-         
+            $mednotCount = Cadry::filter()->where('railway_id','!=',3)->has('med','=',0)->with('organization')->count();
+
         return view('uty.statistics', [
+            'mednotCount' => $mednotCount,
             'news' => $news,
             'demo' => $demo,
             'abroad1' => $abroad1,

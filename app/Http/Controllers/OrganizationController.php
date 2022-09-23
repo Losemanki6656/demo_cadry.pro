@@ -39,6 +39,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Exports\CareerExport;
+use App\Exports\RelativeExport;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
 use App\Http\Resources\OrganizationResource;
@@ -1015,5 +1017,42 @@ class OrganizationController extends Controller
         return view('uty.CadryRelatives',[
             'cadries' => $cadries->paginate(15),
         ]);
+    }
+
+
+    public function ExcelMeds(Request $request) 
+    {
+            $meds = Cadry::FilterJoin()
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now())->get();
+       
+            return Excel::download(new CareerExport($meds), 'exodim.xlsx');
+    }
+    public function ExcelNotMeds(Request $request) 
+    {
+        $meds = Cadry::filter()->where('railway_id','!=',3)
+        ->has('med','=',0)
+        ->with('organization')->get();
+       
+         return Excel::download(new CareerExport($meds), 'exodim.xlsx');
+    }
+
+    public function ExcelCareers(Request $request) 
+    {
+        $cadries = Cadry::filter()->where('railway_id','!=',3)->has('careers', '=', 0)->with('organization')->get();
+
+        return Excel::download(new CareerExport($cadries), 'exodim.xlsx');
+    }
+
+    public function ExcelRelatives(Request $request) 
+    {
+     
+        $cadries = Cadry::filter()->where('railway_id','!=',3)->has('relatives', '=', 0)->with('organization')->get();
+       
+        return Excel::download(new RelativeExport($cadries), 'exodim.xlsx');
     }
 }
