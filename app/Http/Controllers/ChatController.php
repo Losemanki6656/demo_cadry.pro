@@ -378,7 +378,7 @@ class ChatController extends Controller
     
         $orgs = \App\Models\Railway::query()
         ->withCount(['cadries' => function ($query) {
-            $query->has('med', '=', 0);
+            $query->has('careers', '=', 0);
         }])
         ->get();
 

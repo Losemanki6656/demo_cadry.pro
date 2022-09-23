@@ -1052,7 +1052,7 @@ class CadryController extends Controller
                 $news[$i] = Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
             }
                 
-            $mednotCount = Cadry::filter()->where('railway_id','!=',3)->has('med','=',0)->with('organization')->count();
+            $mednotCount = Cadry::filter()->where('railway_id','!=',3)->has('med','=',0)->count();
 
         return view('uty.statistics', [
             'mednotCount' => $mednotCount,
@@ -1242,7 +1242,10 @@ class CadryController extends Controller
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
                 
-            $mednotCount = Cadry::where('status',true)->where('organization_id',auth()->user()->userorganization->organization_id)->has('med','=',0)->with('organization')->count();
+            $mednotCount = Cadry::where('status',true)
+                ->where('organization_id',auth()->user()->userorganization->organization_id)
+                ->has('med','=', 0)
+                ->count();
 
                 $careersCount = Cadry::OrgFilter()->has('careers', '=', 0)->count();
                 $relativesCount = Cadry::OrgFilter()->has('relatives', '=', 0)->count();

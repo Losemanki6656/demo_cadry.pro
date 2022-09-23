@@ -770,9 +770,9 @@ class BackApiController extends Controller
 
     public function api_check_pinfl(Request $request)
     {
-        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->jshshir)->get();
-        $validator = Cadry::where('status',true)->where('jshshir',$request->jshshir)->with('organization')->get();
-        $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
+        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->pinfl)->get();
+        $validator = Cadry::where('status',true)->where('jshshir',$request->pinfl)->with('organization')->get();
+        $validator2 = Cadry::where('status',false)->where('jshshir',$request->pinfl)->with('organization')->get();
 
         if(count($validator3) > 0)
         {
