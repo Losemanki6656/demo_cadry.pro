@@ -320,7 +320,8 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{ route('incentives') }}" data-key="t-user-list">Rag'batlanirishlar</a>
                                     </li>
-                                    <li><a href="{{ route('regions') }}" data-key="t-user-list">{{ __('messages.regions') }}</a>
+                                    <li><a href="{{ route('regions') }}"
+                                            data-key="t-user-list">{{ __('messages.regions') }}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -504,7 +505,7 @@
         <script src="{{ asset('assets/libs/alertifyjs/build/alertify.min.js') }}"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-        
+
         @yield('scripts')
         @stack('scripts')
 

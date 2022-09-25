@@ -242,6 +242,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/success-received-files',[App\Http\Controllers\HomeController::class, 'rec_suc_file'])->name('rec_suc_file');
         Route::get('/archive-tasks-files',[App\Http\Controllers\HomeController::class, 'archive_task'])->name('archive_task');
         Route::get('/message/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat');
+
+        
+        Route::get('/biocontrol', [App\Http\Controllers\ZktecoController::class, 'connect'])->name('connect');
     });
 
 

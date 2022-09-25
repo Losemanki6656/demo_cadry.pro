@@ -973,11 +973,6 @@ class CadryController extends Controller
             $woman = $all - $man;
             $dog =  Cadry::filter()->where('worklevel_id',5)->count();
 
-            $decret =  Cadry::filter()->where('status_dec',1)->count();
-            $med =  Cadry::filter()->where('status_med',1)->count();
-            $bs =  Cadry::filter()->where('status_bs',1)->count();
-
-
             $cadry30 = Cadry::filter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::filter()->where('birht_date','>=','1977-01-01')->count();
             
@@ -1070,11 +1065,8 @@ class CadryController extends Controller
             'careersCount' => $careersCount,
             'relativesCount' => $relativesCount,
             'departments' => $departments,
-            'decret' => $decret,
             'nafaqaMan' => $nafaqaMan,
             'nafaqaWoman' => $nafaqaWoman,
-            'med' => $med,
-            'bs' => $bs,
             'organizations' => $organizations,
             'all' => $all,
             'railways' => $railways,
@@ -1191,10 +1183,6 @@ class CadryController extends Controller
             $woman = $all - $man;
             $dog =  Cadry::OrgFilter()->where('worklevel_id',5)->count();
 
-            $decret =  Cadry::OrgFilter()->where('status_dec',1)->count();
-            $med =  Cadry::OrgFilter()->where('status_med',1)->count();
-            $bs =  Cadry::OrgFilter()->where('status_bs',1)->count();
-
             $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1977-01-01')->count();
             
@@ -1264,12 +1252,9 @@ class CadryController extends Controller
             'meds' => $meds,
             'careersCount' => $careersCount,
             'relativesCount' => $relativesCount,
-            'decret' => $decret,
             'plan' => $plan,
             'nafaqaMan' => $nafaqaMan,
             'nafaqaWoman' => $nafaqaWoman,
-            'med' => $med,
-            'bs' => $bs,
             'all' => $all,
             'man' => $man,
             'woman' => $woman,
