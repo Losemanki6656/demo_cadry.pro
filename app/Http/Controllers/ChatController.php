@@ -208,9 +208,10 @@ class ChatController extends Controller
     public function editCadryStaff($id)
     {
         $item = DepartmentStaff::find($id);
-
+        $staffs = Staff::where('organization_id',auth()->user()->userorganization->organization_id)->get();
         return view('cadry.editstaffCadry', [
-            'item' => $item
+            'item' => $item,
+            'staffs' => $staffs
         ]);
     }
 
@@ -331,6 +332,7 @@ class ChatController extends Controller
     {
         $newItem = DepartmentStaff::find($id);
         $newItem->staff_full = $request->staff_full;
+        $newItem->staff_id = $request->staff_id;
         $newItem->stavka = $request->st_1;
         if($request->class_staff_id) {
             $newItem->classification_id  = $request->class_staff_id;
@@ -340,6 +342,7 @@ class ChatController extends Controller
         $cadries = DepartmentCadry::where('department_staff_id',$id)->get();
         foreach($cadries as $item) {
             $item->staff_full = $request->staff_full;
+            $item->staff_id = $request->staff_id;
             $item->save();
 
             if($item->staff_status == 0) {

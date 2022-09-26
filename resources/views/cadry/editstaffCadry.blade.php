@@ -24,8 +24,15 @@
                     <form action="{{ route('editDepStaff', ['id' => $item->id]) }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <h5 class="fw-bold">Lavozim nomi </h5>
-                            {{ $item->staff->name }}
+                            <h5 class="fw-bold">Lavozimni tanlang </h5>
+                            <select class="staff_id js-example-basic-single" style="width: 100%" name="staff_id" required>
+                                @foreach ($staffs as $staff)
+                                    <option value="{{ $staff->id }}" 
+                                        @if ($item->staff_id == $staff->id)
+                                            selected
+                                        @endif>{{ $staff->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <h5 class="fw-bold">Lavozim to'liq nomi </h5>
@@ -78,6 +85,9 @@
             @endif
         });
     </script>
+        <script>
+            $('.staff_id').select2();
+        </script>
     <script>
         $('.js-data-example-ajax').select2({
             ajax: {
