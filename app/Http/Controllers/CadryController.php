@@ -1008,7 +1008,6 @@ class CadryController extends Controller
                     $query->whereRaw('stavka > summ_stavka')
                             ->orWhere('summ_stavka', null);
                 });
-           // dd($vacant->get());
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
