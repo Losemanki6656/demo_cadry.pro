@@ -1014,6 +1014,7 @@ class CadryController extends Controller
             $vacanCount = $x - $y;
 
             $meds = Cadry::FilterJoin()
+                ->where('railway_id','!=',3)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
                 ->where('medical_examinations.status',true)
