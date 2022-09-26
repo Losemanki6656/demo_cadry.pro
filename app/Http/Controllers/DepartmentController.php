@@ -14,7 +14,8 @@ class DepartmentController extends Controller
 
     public function departments()
     {
-        $all = 0; $allSv = 0;
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
         $org_id = Auth::user()->userorganization->organization_id;
 
         $page = request('page', session('department_page', 1));
@@ -26,7 +27,7 @@ class DepartmentController extends Controller
             ->when(\Request::input('search'),function($query,$search){
                 $query
                 ->where('name','like','%'.$search.'%');
-            })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+            })->with(['cadries','departmentstaff','departmentcadry'])->paginate($per_page, ['*'], 'page', $page);
             
             $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
             ->with(['departmentstaff','departmentstaff.cadry'])->get();
@@ -36,38 +37,14 @@ class DepartmentController extends Controller
                 ->when(\Request::input('search'),function($query,$search){
                     $query
                     ->where('name','like','%'.$search.'%');
-                })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
+                })->with(['cadries','departmentstaff','departmentcadry'])->paginate($per_page, ['*'], 'page', $page);
             
             $alldepartments = Department::where('organization_id', $org_id)
                 ->with(['departmentstaff','departmentstaff.cadry'])->get();
         }
         
-        $a = []; $b = []; $plan = []; 
-        foreach ($alldepartments as $item)
-        {
-            $z = 0; $q = 0; $x = 0; $y = 0;$p = 0; $q = 0;
-            foreach($item->departmentstaff as $staff) {
-                $x = $staff->stavka; $p = $p  + $x;
-                $l = $staff->cadry->sum('stavka');
-                $y = $staff->cadry->where('status_decret',false)->sum('stavka');
-                if($x>$l) $z = $z + $x - $l;
-                if($x<$y) $q = $q + $y - $x;
-            }
-            
-            $a[$item->id] = $z;
-            $b[$item->id] = $q;
-            $all = $all + $z;
-            $allSv =  $allSv + $q;
-            $plan[$item->id] = $p;
-        }
-        
         return response()->json([
-            'departments' => DepResource::collection($departments),
-            'allVacant' => $all,
-            'allSvrex' => $allSv,
-            'allPlan' => $plan,
-            'plan' => $a,
-            'fakt' => $b
+            'departments' => DepResource::collection($departments)
         ]);
     }
 }
