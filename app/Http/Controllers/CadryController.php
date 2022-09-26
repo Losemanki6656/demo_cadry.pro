@@ -190,7 +190,7 @@ class CadryController extends Controller
             foreach($item->departmentstaff as $staff) {
                 $x = $staff->stavka; $p = $p  + $x;
                 $l = $staff->cadry->sum('stavka');
-                $y = $staff->cadry->where('status_decret', false)->sum('stavka');
+                $y = $staff->cadry->where('status', false)->sum('stavka');
                 if($x>$l) $z = $z + $x - $l;
                 if($x<$y) $q = $q + $y - $x;
             }
