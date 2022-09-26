@@ -27,6 +27,7 @@
                         <table class="table table-centered align-middle mb-0 table-sm">
                             <thead>
                                 <tr>
+                                    <th class="text-center fw-bold" width="50px">No</th>
                                     <th class="text-center fw-bold" width="50px">Status</th>
                                     <th class="text-center fw-bold" width="100px">Photo</th>
                                     <th class="text-center fw-bold">
@@ -39,6 +40,9 @@
                             <tbody>
                                 @foreach ($cadries as $item)
                                     <tr>
+                                        <td>
+                                            {{$loop->index+1}}
+                                        </td>
                                         <td>
                                             @if ($item->status_sv == false)
                                                 <div class="bg-success bg-gradient p-2"></div>
