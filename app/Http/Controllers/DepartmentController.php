@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use Auth;
 
-
-use App\Http\Resources\DepartmentResource;
+use App\Http\Resources\DepartmentCollection;
 
 class DepartmentController extends Controller
 {
@@ -44,7 +43,7 @@ class DepartmentController extends Controller
         }
         
         return response()->json([
-            'departments' => DepartmentResource::collection($departments)
+            'departments' => new DepartmentCollection($departments)
         ]);
     }
 }
