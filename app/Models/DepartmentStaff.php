@@ -47,7 +47,7 @@ class DepartmentStaff extends Model
         })->select([
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
-                ])->where('status_decret',false)
+                ])->where('status', false)
                 ->groupBy('department_staff_id');
 
         return self::query()
@@ -102,7 +102,7 @@ class DepartmentStaff extends Model
             ->select([
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
-                ])->where('status_decret',false)
+                ])->where('status', false)
                 ->groupBy('department_staff_id');
 
         return self::where('organization_id', auth()->user()->userorganization->organization_id)

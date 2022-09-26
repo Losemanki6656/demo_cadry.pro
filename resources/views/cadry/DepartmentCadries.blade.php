@@ -103,15 +103,24 @@
                                                             </label>
                                                         </div>
                                                         @if ($item->status_decret == false) 
-                                                        <div class="mb-3">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                @if ($item->status == true) checked @endif
-                                                                id="formCh{{ $item->id }}" name="status_decret">
-                                                            <label class="form-check-label"
-                                                                for="formCh{{ $item->id }}">
-                                                                Dekretdagi xodim o'rniga
-                                                            </label>
-                                                        </div>
+                                                            <div class="mb-3">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    @if ($item->status == true) checked @endif
+                                                                    id="formCh{{ $item->id }}" name="status_decret">
+                                                                <label class="form-check-label"
+                                                                    for="formCh{{ $item->id }}">
+                                                                    Dekretdagi xodim o'rniga
+                                                                </label>
+                                                            </div>
+                                                        @else
+                                                            <div class="mb-3">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    id="forc{{ $item->id }}" name="sdec">
+                                                                <label class="form-check-label"
+                                                                    for="forc{{ $item->id }}">
+                                                                    Bola parvarish ta'tilida
+                                                                </label>
+                                                            </div>
                                                         @endif
                                                         
                                                     </div>

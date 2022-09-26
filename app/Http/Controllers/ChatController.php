@@ -363,6 +363,9 @@ class ChatController extends Controller
         if($request->status_decret == 'on') {
             $item->status = true;
         } else $item->status = false;
+        if($request->sdec == 'on') {
+            $item->status_decret = true;
+        } else $item->status_decret = false;
         $item->save();
 
         $cadry = Cadry::find($item->cadry_id);
