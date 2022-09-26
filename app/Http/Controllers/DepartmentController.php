@@ -7,7 +7,7 @@ use App\Models\Department;
 use Auth;
 
 
-use App\Http\Resources\DepResource;
+use App\Http\Resources\DepartmentResource;
 
 class DepartmentController extends Controller
 {
@@ -44,7 +44,7 @@ class DepartmentController extends Controller
         }
         
         return response()->json([
-            'departments' => DepResource::collection($departments)
+            'departments' => DepartmentResource::collection($departments)
         ]);
     }
 }
