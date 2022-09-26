@@ -164,7 +164,7 @@ class VacationController extends Controller
          //    ->paginate(10);
 
       $cadries = Cadry::SeFilter()->where('cadries.status',true)->has('med')->with('med')->paginate(10);
-      
+     // dd($cadries);
       return view('vacations.meds',[
          'cadries' => $cadries
       ]);
