@@ -57,160 +57,164 @@
                 </form>
             </div>
         </div>
-        <div class="col-xl-8">
-            <div class="card" id="dis">
-                @if ($status == false)
-                    <div class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show mb-0"
-                        role="alert">
-                        <i class="mdi mdi-alert-circle-outline label-icon"></i><strong>Info</strong> - Ushbuu bo'lim Exodim dasturi
-                        1C dasturi bilan bo'glangan korxonalarda ishlaydi!
-                    </div>
-                @endif
-                <form action="{{ route('addVacation1C') }}" method="post">
-                    @csrf
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <div class="d-flex flex-wrap align-items-center mb-4">
-                                    <label class="fw-bold text-primary">Xodimni kiriting</label>
-                                    <select class="kadr" name="cadrySeach" id="cadrySeach" style="width: 100%" required>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label class="fw-bold text-primary">Prikaz raqamini kiriting</label>
-                                <input type="text" class="form-control" name="pr_number">
-                            </div>
+        @if ($status == true)
+            <div class="col-xl-8">
+                <div class="card" id="dis">
+                    @if ($status == false)
+                        <div class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show mb-0"
+                            role="alert">
+                            <i class="mdi mdi-alert-circle-outline label-icon"></i><strong>Info</strong> - Ushbuu bo'lim
+                            Exodim dasturi
+                            1C dasturi bilan bo'glangan korxonalarda ishlaydi!
                         </div>
-                        <div class="row mb-4">
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Asosiy kun</label>
-                                    <input type="number" value="15" name="main_day" id="main_day"
-                                        class="demo_vertical">
+                    @endif
+                    <form action="{{ route('addVacation1C') }}" method="post">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex flex-wrap align-items-center mb-4">
+                                        <label class="fw-bold text-primary">Xodimni kiriting</label>
+                                        <select class="kadr" name="cadrySeach" id="cadrySeach" style="width: 100%"
+                                            required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label class="fw-bold text-primary">Prikaz raqamini kiriting</label>
+                                    <input type="text" class="form-control" name="pr_number">
                                 </div>
                             </div>
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Lavozim uchun</label>
-                                    <input type="number" value="0" name="for_staff" id="for_staff"
-                                        class="demo_vertical">
+                            <div class="row mb-4">
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Asosiy kun</label>
+                                        <input type="number" value="15" name="main_day" id="main_day"
+                                            class="demo_vertical">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Lavozim uchun</label>
+                                        <input type="number" value="0" name="for_staff" id="for_staff"
+                                            class="demo_vertical">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Staj uchun</label>
+                                        <input type="number" value="0" name="for_experience" id="for_experience"
+                                            class="demo_vertical">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Iqlim uchun</label>
+                                        <input type="number" value="0" name="for_climate" id="for_climate"
+                                            class="demo_vertical">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Qolgan kunlari</label>
+                                        <input type="number" value="0" name="for_other" id="for_other"
+                                            class="demo_vertical">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
+                                    <div class="me-3">
+                                        <label class="fw-bold"> Og'ir mehnat sh.</label>
+                                        <input type="number" value="0" name="for_hardwork" id="for_hardwork"
+                                            class="demo_vertical">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Staj uchun</label>
-                                    <input type="number" value="0" name="for_experience" id="for_experience"
-                                        class="demo_vertical">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="underage" id="underage">
+                                        <label class="form-check-label" for="cust1">Yoshga
+                                            to'lmaganlik</label>
+                                    </div>
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="invalid" id="invalid">
+                                        <label class="form-check-label" for="cust2"> 2 - guruh nogironimi
+                                            ?</label>
+                                    </div>
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="invalid_child"
+                                            id="invalid_child">
+                                        <label class="form-check-label" for="cust7"> Nogiron
+                                            farzandlari bormi
+                                            ?</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="childrens" id="childrens">
+                                        <label class="form-check-label" for="cust4"> 12 yoshga
+                                            to'lmagan
+                                            farzandlari bormi ?</label>
+                                    </div>
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="donor" id="donor">
+                                        <label class="form-check-label" for="cust5"> Donorlar
+                                            ro'yxatiga a'zomi
+                                            ?</label>
+                                    </div>
+                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="more" id="more">
+                                        <label class="form-check-label" for="cust5"> Marosimlar uchun </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Iqlim uchun</label>
-                                    <input type="number" value="0" name="for_climate" id="for_climate"
-                                        class="demo_vertical">
+                            <div class="row mb-4">
+                                <div class="col"></div>
+                                <div class="col-4">
+                                    <label class="fw-bold"> Ta'til periodi</label>
+                                    <input type="date" name="period1" value="{{ now()->format('Y-m-d') }}"
+                                        class="form-control" id="period1">
                                 </div>
-                            </div>
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Qolgan kunlari</label>
-                                    <input type="number" value="0" name="for_other" id="for_other"
-                                        class="demo_vertical">
+                                <div class="col-4">
+                                    <label class="fw-bold"> Ta'tilga chiqish sanasi</label>
+                                    <input type="date" name="date1_1c" value="{{ now()->format('Y-m-d') }}"
+                                        class="form-control" id="date1_1c">
                                 </div>
+                                <div class="col"></div>
                             </div>
-                            <div class="col-12 col-xl-4 col-xxl-2 col-lg-4 col-md-4 col-sm-6">
-                                <div class="me-3">
-                                    <label class="fw-bold"> Og'ir mehnat sh.</label>
-                                    <input type="number" value="0" name="for_hardwork" id="for_hardwork"
-                                        class="demo_vertical">
+                            <button type="button" onclick="resultVacation()" class="btn btn-outline-primary mb-4"
+                                style="width: 100%"> Xisoblash</button>
+                            <div class="row mb-4">
+                                <div class="col">
                                 </div>
+                                <div class="col">
+                                    <label class="fw-bold"> Qachongacha</label>
+                                    <input type="date" class="form-control" value="" id="date2_1c"
+                                        name="date2_1c" required>
+                                </div>
+                                <div class="col">
+                                    <label class="fw-bold"> Umumiy ta'til kuni</label>
+                                    <input type="text" value="15" name="all_day" id="all_day"
+                                        class="demo_vertical" required>
+                                </div>
+                                <div class="col"></div>
                             </div>
+                            <input type="hidden" name="period2" id="period2">
+                            <button type="submit" class="btn btn-outline-success" style="width: 100%"> Yuborish</button>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="underage" id="underage">
-                                    <label class="form-check-label" for="cust1">Yoshga
-                                        to'lmaganlik</label>
-                                </div>
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="invalid" id="invalid">
-                                    <label class="form-check-label" for="cust2"> 2 - guruh nogironimi
-                                        ?</label>
-                                </div>
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="invalid_child"
-                                        id="invalid_child">
-                                    <label class="form-check-label" for="cust7"> Nogiron
-                                        farzandlari bormi
-                                        ?</label>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="childrens" id="childrens">
-                                    <label class="form-check-label" for="cust4"> 12 yoshga
-                                        to'lmagan
-                                        farzandlari bormi ?</label>
-                                </div>
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="donor" id="donor">
-                                    <label class="form-check-label" for="cust5"> Donorlar
-                                        ro'yxatiga a'zomi
-                                        ?</label>
-                                </div>
-                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                    <input type="checkbox" class="form-check-input" name="more" id="more">
-                                    <label class="form-check-label" for="cust5"> Marosimlar uchun </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col"></div>
-                            <div class="col-4">
-                                <label class="fw-bold"> Ta'til periodi</label>
-                                <input type="date" name="period1" value="{{ now()->format('Y-m-d') }}"
-                                    class="form-control" id="period1">
-                            </div>
-                            <div class="col-4">
-                                <label class="fw-bold"> Ta'tilga chiqish sanasi</label>
-                                <input type="date" name="date1_1c" value="{{ now()->format('Y-m-d') }}"
-                                    class="form-control" id="date1_1c">
-                            </div>
-                            <div class="col"></div>
-                        </div>
-                        <button type="button" onclick="resultVacation()" class="btn btn-outline-primary mb-4"
-                            style="width: 100%"> Xisoblash</button>
-                        <div class="row mb-4">
-                            <div class="col">
-                            </div>
-                            <div class="col">
-                                <label class="fw-bold"> Qachongacha</label>
-                                <input type="date" class="form-control" value="" id="date2_1c"
-                                    name="date2_1c" required>
-                            </div>
-                            <div class="col">
-                                <label class="fw-bold"> Umumiy ta'til kuni</label>
-                                <input type="text" value="15" name="all_day" id="all_day"
-                                    class="demo_vertical" required>
-                            </div>
-                            <div class="col"></div>
-                        </div>
-                        <input type="hidden" name="period2" id="period2">
-                        <button type="submit" class="btn btn-outline-success" style="width: 100%"> Yuborish</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
 
 @section('scripts')
-<script>
-    var status = {!! $status !!};
-    if(status == false)
-    $("#dis").find("*").prop('disabled', true);
-</script>
+    <script>
+        var status = {!! $status !!};
+        if (status == false)
+            $("#dis").find("*").prop('disabled', true);
+    </script>
     <script>
         function resultVacation() {
             var holidays_back = {!! $holidays !!};
@@ -270,16 +274,18 @@
 
             const date = new Date(date1_1c);
             if (underage == true || invalid == true) {
-                allday = for_staff + for_climate + for_experience + for_hardwork + for_other + more_day + donor_day + childrens_day +
+                allday = for_staff + for_climate + for_experience + for_hardwork + for_other + more_day + donor_day +
+                    childrens_day +
                     invalid_child_day;
                 date.setDate(date.getDate() + 30);
                 c = allday + 30;
             } else {
-                allday = mainday + for_climate + for_staff + for_experience + for_hardwork + for_other + more_day + donor_day +
+                allday = mainday + for_climate + for_staff + for_experience + for_hardwork + for_other + more_day +
+                    donor_day +
                     childrens_day + invalid_child_day;
                 c = allday;
             }
-            
+
             for (let i = 1; i <= allday; i++) {
 
                 date.setDate(date.getDate() + 1);
@@ -293,7 +299,7 @@
                         if (date_format(date) == holidays[j]) {
                             date.setDate(date.getDate() + 1);
                             t = true;
-                            console.log('a-' + holidays[j]);   
+                            console.log('a-' + holidays[j]);
                         }
                         if (date.getDay() == 0) {
                             date.setDate(date.getDate() + 1);
@@ -302,8 +308,8 @@
                         }
                     }
 
-                } 
-                if(t == false) console.log(date_format(date));
+                }
+                if (t == false) console.log(date_format(date));
 
             }
 
