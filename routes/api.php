@@ -63,7 +63,8 @@ Route::group([
 
     
     Route::get('/organization/filter/departments', [OrganizationController::class, 'filter_api_org_departments']);
-    Route::get('/organization/filter/staffs', [OrganizationController::class, 'filter_api_org_staffs`']);
+    Route::get('/organization/filter/staffs', [OrganizationController::class, 'filter_api_org_staffs']);
+    Route::get('/organization/classifications', [DepartmentController::class, 'load_classifications']);
 
     Route::group([
         'middleware' => [
@@ -192,6 +193,10 @@ Route::group([
 
         //organization-Departments
         Route::get('/organization/departments', [DepartmentController::class, 'departments']);
+        Route::get('/organization/department/{department_id}/staffs', [DepartmentController::class, 'department_staffs']);
+        Route::post('/organization/departmentStaff/{department_id}/create', [DepartmentController::class, 'departmentStaffCreate']);
+        Route::put('/organization/departmentStaff/{department_staff_id}/update', [DepartmentController::class, 'departmentStaffUpdate']);
+        Route::delete('/organization/departmentStaff/{department_staff_id}/delete', [DepartmentController::class, 'departmentStaffDelete']);
         
     }); 
 

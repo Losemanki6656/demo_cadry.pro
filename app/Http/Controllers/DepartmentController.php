@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Department;
+use App\Models\DepartmentStaff;
+use App\Models\DepartmentCadry;
+use App\Models\Cadry;
+use App\Models\Classification;
 use Auth;
+use App\Http\Resources\DepartmentStaffResource;
 
 use App\Http\Resources\DepartmentCollection;
 
@@ -45,5 +50,106 @@ class DepartmentController extends Controller
         return response()->json([
             'departments' => new DepartmentCollection($departments)
         ]);
+    }
+
+    public function department_staffs($department_id)
+    {
+        $department = DepartmentStaff::where('department_id', $department_id)->with(['cadry'])->get();
+
+        return response()->json([
+            'department' => DepartmentStaffResource::collection($department)
+        ]);
+    }
+
+    public function load_classifications(Request $request)
+    {
+        $data = [];
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $data = Classification::where('name_uz', 'LIKE', "%$search%")
+                ->OrWhere('code_staff', 'LIKE', "%$search%")
+                ->take(50)->get();
+        }
+        return response()->json($data);
+    }
+
+    public function departmentStaffCreate($department_id, Request $request)
+    {
+        $org = auth()->user()->userorganization;
+
+        $newItem = new DepartmentStaff();
+        $newItem->railway_id = $org->railway_id;
+        $newItem->organization_id = $org->organization_id;
+        $newItem->department_id = $department_id;
+        $newItem->staff_id = $request->staff_id;
+
+        if ($request->class_staff_id)
+            $newItem->classification_id = $request->class_staff_id;
+        $newItem->staff_full = $request->staff_full;
+        $newItem->stavka = $request->rate;
+        if ($request->status_sv == 'on') {
+            $newItem->status = true;
+        }
+        $newItem->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Lavozim Muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function departmentStaffUpdate($department_staff_id, Request $request)
+    {
+
+        $newItem = DepartmentStaff::find($department_staff_id);
+        $newItem->staff_full = $request->staff_full;
+        $newItem->staff_id = $request->staff_id;
+        $newItem->stavka = $request->rate;
+        if($request->class_staff_id) {
+            $newItem->classification_id  = $request->class_staff_id;
+        }
+        $newItem->save();
+
+        $cadries = DepartmentCadry::where('department_staff_id',$department_staff_id)->get();
+
+        foreach($cadries as $item) {
+            $item->staff_full = $request->staff_full;
+            $item->staff_id = $request->staff_id;
+            $item->save();
+
+            if($item->staff_status == 0) {
+                $cadry = Cadry::find($item->cadry_id);
+                $cadry->post_name = $request->staff_full;
+                $cadry->save();
+            }
+            
+        }
+        return response()->json([
+            'status' => true,
+            'message' => "Lavozim Muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
+    public function departmentStaffDelete(DepartmentStaff $department_staff_id)
+    {
+        try {
+
+            $department_staff_id->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Lavozim Muvaffaqqiyatli yangilandi!"
+            ]);
+            
+        } catch (\Exception $e) {
+           
+            report($e);
+     
+            return response()->json([
+                'status' => false,
+                'message' => "O'chirish imkoniyati mavjud emas . Lavozimga tegishli xodimlar mavjud!"
+            ]);
+        }
     }
 }
