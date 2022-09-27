@@ -545,13 +545,15 @@ class CadryController extends Controller
         $discips = DisciplinaryAction::where('cadry_id',$id)->get();
         $incentives = Incentive::where('cadry_id',$id)->get();
         $stafffiles = StaffFile::where('cadry_id',$id)->get();
+        $vacations = Vacation::where('cadry_id',$id)->get();
 
         return view('cadry.cadry-other',[
             'cadry' => $cadry,
             'meds' => $meds,
             'discips' => $discips,
             'incentives' => $incentives,
-            'stafffiles' => $stafffiles
+            'stafffiles' => $stafffiles,
+            'vacations' => $vacations
         ]);
     }
 

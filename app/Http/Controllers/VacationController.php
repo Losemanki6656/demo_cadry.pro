@@ -108,6 +108,12 @@ class VacationController extends Controller
       ]);
    }
     
+   public function delete_vacation_cadry(Vacation $id) {
+     
+      $id->delete();
+
+      return back();
+   }
    public function addVacationsucc(Request $request)
    {
       $sex = Cadry::find($request->cadry_id)->sex;

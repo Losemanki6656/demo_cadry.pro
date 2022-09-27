@@ -269,6 +269,79 @@
         </div>
     </div>
 
+    
+    <div class="card">
+        <div class="card-body">
+            <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length" id="datatable_length">
+                            <h5>Ta'tillar</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped mb-0 table-sm">
+                    <thead>
+                        <tr>
+                            <th>Qachondan</th>
+                            <th>Qachongacha</th>
+                            <th>Ta'til turi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($vacations as $vac)
+                            <tr>
+                                <th>{{ $vac->date1->format('Y-m-d') }}</th>
+                                <td>{{ $vac->date2->format('Y-m-d') }}</td>
+                                <td>
+                                    @if ($vac->status_decret == 1)
+                                        Bola parvarish ta'tili
+                                    @else
+                                        Mehnat ta'tili
+                                    @endif
+                                </td>
+                                <td width="180">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#deletevac{{ $vac->id }}">
+                                        <i class="bx bx-trash"></i> O'chirish
+                                    </button>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="deletevac{{ $vac->id }}" tabindex="-1" role="dialog"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Ma'lumotni O'chirish</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('delete_vacation_cadry', ['id' => $vac->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label>Malumotni o'chirishni xoxlaysizmi ?</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger" type="submit"> <i
+                                                        class="fas fa-trash"></i> Xa, O'chirish </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
