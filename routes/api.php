@@ -193,10 +193,16 @@ Route::group([
 
         //organization-Departments
         Route::get('/organization/departments', [DepartmentController::class, 'departments']);
+        Route::post('/organization/add/department', [DepartmentController::class, 'add_department']);
+        Route::put('/organization/department/{department_id}/update', [DepartmentController::class, 'update_department']);
+        Route::delete('/organization/department/{department_id}/delete', [DepartmentController::class, 'delete_department']);
         Route::get('/organization/department/{department_id}/staffs', [DepartmentController::class, 'department_staffs']);
         Route::post('/organization/departmentStaff/{department_id}/create', [DepartmentController::class, 'departmentStaffCreate']);
         Route::put('/organization/departmentStaff/{department_staff_id}/update', [DepartmentController::class, 'departmentStaffUpdate']);
         Route::delete('/organization/departmentStaff/{department_staff_id}/delete', [DepartmentController::class, 'departmentStaffDelete']);
+        
+
+        Route::get('/organization/departmentStaffCadries/{department_staff_id}', [DepartmentController::class, 'department_staff_caddries']);
         
     }); 
 

@@ -283,8 +283,6 @@ class CadryController extends Controller
                 'message' => "Muvaffaqqiyatli o'chirildi!"
             ], 200);
         }
-
-        return redirect()->back()->with('msg' ,1);
     }
 
     public function regions()

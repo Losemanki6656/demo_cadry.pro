@@ -21,6 +21,14 @@ class Department extends Model
         return $this->hasMany(Cadry::class);
     }
 
+    public function railways()
+    {
+        return $this->belongsTo(Railway::class);
+    }
+    public function organizations()
+    {
+        return $this->belongsTo(Organization::class);
+    }
     public function departmentcadry()
     {
         return $this->hasMany(DepartmentCadry::class);

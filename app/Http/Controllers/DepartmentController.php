@@ -10,11 +10,57 @@ use App\Models\Cadry;
 use App\Models\Classification;
 use Auth;
 use App\Http\Resources\DepartmentStaffResource;
+use App\Http\Resources\DepartmentCadryResource;
 
 use App\Http\Resources\DepartmentCollection;
 
 class DepartmentController extends Controller
 {
+
+    public function add_department(Request $request)
+    {
+        $organ = auth()->user()->userorganization;
+
+        $addDepartment = new Department();
+        $addDepartment->railway_id = $organ->railway_id;
+        $addDepartment->organization_id = $organ->organization_id;
+        $addDepartment->name = $request->name ?? '';
+        $addDepartment->save();
+
+        return response()->json([
+            'message' => "Bo'lim muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+    public function update_department(Request $request, $department_id)
+    {
+        $editDepartment =  Department::find($department_id);
+        $editDepartment->name = $request->name;
+        $editDepartment->save();
+
+        return response()->json([
+            'message' => "Bo'lim muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
+    public function delete_department($department_id)
+    {
+        if (DepartmentCadry::where('department_id', $department_id)->count()) {
+        
+            return response()->json([
+                'message' => "Ushbu bo'limga tegishli xodimlar mavjud!"
+            ], 422);
+    
+        } else {
+            
+            Department::find($id)->delete();
+            return response()->json([
+                'message' => "Muvaffaqqiyatli o'chirildi!"
+            ], 200);
+    
+        }
+    }
+
+    
 
     public function departments()
     {
@@ -151,5 +197,14 @@ class DepartmentController extends Controller
                 'message' => "O'chirish imkoniyati mavjud emas . Lavozimga tegishli xodimlar mavjud!"
             ]);
         }
+    }
+
+    public function department_staff_caddries($department_staff_id)
+    {
+        $cadries = DepartmentCadry::where('department_staff_id', $department_staff_id)->with('cadry')->get();
+
+        return response()->json([
+            'department_cadries' => DepartmentCadryResource::collection($cadries)
+        ]);
     }
 }
