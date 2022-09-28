@@ -52,7 +52,7 @@ class DepartmentController extends Controller
     
         } else {
             
-            Department::find($id)->delete();
+            Department::find($department_id)->delete();
             return response()->json([
                 'message' => "Muvaffaqqiyatli o'chirildi!"
             ], 200);
