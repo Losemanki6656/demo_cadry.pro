@@ -179,7 +179,7 @@
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac + $vacDec }}</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac }}</span>
                             </div>
                         </div>
 

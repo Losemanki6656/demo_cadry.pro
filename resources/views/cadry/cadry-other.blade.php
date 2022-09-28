@@ -269,7 +269,7 @@
         </div>
     </div>
 
-    
+
     <div class="card">
         <div class="card-body">
             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -567,12 +567,14 @@
                     @foreach ($stafffiles as $stafffile)
                         <tr>
                             <th>{{ $stafffile->comment }}</th>
-                            <td width="180">
-                                <button type="button" class="btn btn-soft-secondary waves-effect" data-bs-toggle="modal"
+                            <td width="250">
+                                <a type="button" href="{{asset($stafffile->file_path)}}" class="btn btn-primary"><i class="fas fa-download"></i> Yuklab olish</a>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                     data-bs-target="#stafffileedit{{ $stafffile->id }}">
                                     <i class="bx bx-edit font-size-16 align-middle"></i>
                                 </button>
-                                <button type="button" class="btn btn-soft-danger waves-effect" data-bs-toggle="modal"
+
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#stafffiledelete{{ $stafffile->id }}">
                                     <i class="bx bx-trash font-size-16 align-middle"></i>
                                 </button>

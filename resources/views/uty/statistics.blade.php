@@ -463,13 +463,13 @@
                         <div class="flex-grow-1">
                             <h5 class="mb-3">
                                 Mehnat ta'tili-<span class="counter-value text-primary fw-bold"
-                                    data-target="{{ $vac }}">0</span>;
+                                    data-target="{{ $vac - $vacDec }}">0</span>;
                                 Bola parvarish ta'tili-<span class="counter-value text-success fw-bold"
                                     data-target="{{ $vacDec }}">0</span>
                             </h5>
                             <div class="text-nowrap">
                                 <span class="ms-1 text-muted font-size-13">Umumiy</span>
-                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac + $vacDec }}</span>
+                                <span class="badge bg-soft-success text-success fw-bold">{{ $vac }}</span>
                             </div>
                         </div>
 
