@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VacationResource extends JsonResource
+class VacationCadryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,8 @@ class VacationResource extends JsonResource
             'id' => $this->id,
             'date1' => $this->date1,
             'date2' => $this->date2,
-            'status_decret' => $this->status_decret
+            'status_decret' => $this->status_decret,
+            'cadry' => new CadryVacationResource($this->cadry)
         ];
     }
 }

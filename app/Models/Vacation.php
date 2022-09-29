@@ -16,7 +16,7 @@ class Vacation extends Model
         return self::query()
             ->where('organization_id',auth()->user()->userorganization->organization_id)
             ->where('status',true)
-            ->whereDate( 'date2' , '>=' ,now() )
+            ->whereDate( 'date2' , '>=' , now() )
             ->with('cadry');
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\BackApiController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\VacationIntegrationController;
+use App\Http\Controllers\VacationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -200,9 +201,23 @@ Route::group([
         Route::post('/organization/departmentStaff/{department_id}/create', [DepartmentController::class, 'departmentStaffCreate']);
         Route::put('/organization/departmentStaff/{department_staff_id}/update', [DepartmentController::class, 'departmentStaffUpdate']);
         Route::delete('/organization/departmentStaff/{department_staff_id}/delete', [DepartmentController::class, 'departmentStaffDelete']);
+        Route::get('/organization/departmentStaff/{department_staff_id}/addCadry', [DepartmentController::class, 'addCadryToDepartmentStaff']);
+        Route::post('/organization/departmentStaff/{department_staff_id}/addCadry', [DepartmentController::class, 'ApiaddCadryToDepartmentStaff']);
         
 
         Route::get('/organization/departmentStaffCadries/{department_staff_id}', [DepartmentController::class, 'department_staff_caddries']);
+        
+    });
+    
+    
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+
+        //organization-vacations
+        Route::get('/organization/vacations', [VacationController::class, 'api_vacations']);
         
     }); 
 

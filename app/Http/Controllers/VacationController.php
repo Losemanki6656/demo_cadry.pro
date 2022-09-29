@@ -10,6 +10,8 @@ use App\Models\Cadry;
 use App\Models\Holiday;
 use App\Models\Organization;
 use Auth;
+use App\Http\Resources\VacationCadryResource;
+use App\Http\Resources\VacationCadryCollection;
 
 class VacationController extends Controller
 {
@@ -23,6 +25,19 @@ class VacationController extends Controller
       ]);
    }
 
+   public function api_vacations()
+   {
+      if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+      $page = request('page', session('cadry_page', 1));
+      session(['cadry_page' => $page]);
+
+      $cadries = Vacation::Filter()->paginate($per_page, ['*'], 'page', $page);
+
+      return response()->json([
+         'cadries' => new VacationCadryCollection($cadries)
+      ]);
+   }
    
    public function editVacation($id)
    {

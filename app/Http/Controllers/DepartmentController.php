@@ -11,6 +11,8 @@ use App\Models\Classification;
 use Auth;
 use App\Http\Resources\DepartmentStaffResource;
 use App\Http\Resources\DepartmentCadryResource;
+use App\Http\Resources\DepartmentCadryCollection;
+
 
 use App\Http\Resources\DepartmentCollection;
 
@@ -201,10 +203,93 @@ class DepartmentController extends Controller
 
     public function department_staff_caddries($department_staff_id)
     {
-        $cadries = DepartmentCadry::where('department_staff_id', $department_staff_id)->with('cadry')->get();
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $page = request('page', session('cadry_page', 1));
+        session(['cadry_page' => $page]);
+
+        $cadries = DepartmentCadry::where('department_staff_id', $department_staff_id)->with('cadry')->paginate($per_page, ['*'], 'page', $page);
 
         return response()->json([
-            'department_cadries' => DepartmentCadryResource::collection($cadries)
+            'department_cadries' => new DepartmentCadryCollection($cadries)
         ]);
     }
+
+    public function addCadryToDepartmentStaff($department_staff_id)
+    {
+        $depstaff = DepartmentStaff::with(['staff', 'department', 'classification', 'cadry'])->find($department_staff_id);
+
+        return response()->json([
+            'staff_name' => $depstaff->staff->name,
+            'staff_fullname' => $depstaff->staff_full,
+            'classification_name' => $depstaff->classification->name_uz ?? '',
+            'plan_rate' => $depstaff->stavka,
+            'fakt_rate' => $depstaff->cadry->sum('stavka'),
+            'staff_statuts' => [
+                [
+                    'id' => 0,
+                    'name' => "Asosiy"
+                ],
+                [
+                    'id' => 1,
+                    'name' => "O'rindosh"
+                ]
+                ],
+        ]);
+    }
+
+    public function ApiaddCadryToDepartmentStaff($department_staff_id, Request $request)
+    {
+        $all = DepartmentCadry::where('cadry_id',$request->cadry_id)->where('staff_status',false)->get();
+            if(count($all) && $request->staff_status == 0)  
+                return response()->json([
+                    'status' => false,
+                    'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
+                ]);
+
+            $dep = DepartmentStaff::with('cadry')->find($department_staff_id);
+
+            $newItem = new DepartmentCadry();
+            $newItem->railway_id = $dep->railway_id;
+            $newItem->organization_id = $dep->organization_id;
+            $newItem->department_id = $dep->department_id;
+            $newItem->department_staff_id = $department_staff_id;
+            $newItem->staff_id = $dep->staff_id;
+            $newItem->staff_full = $dep->staff_full;
+            $newItem->staff_date = $request->staff_date;
+            $newItem->staff_status = $request->staff_status;
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->rate) 
+                $newItem->status_sv = true; 
+            else
+                $newItem->status_sv = false;
+                $newItem->cadry_id = $request->cadry_id;
+                $newItem->stavka = $request->rate;
+                $newItem->save();
+                
+            if($request->staff_status == 0) {
+                $cadr = Cadry::find($request->cadry_id);
+                $cadr->post_name = $dep->staff_full;
+                $cadr->department_id = $dep->department_id;
+                $cadr->staff_id = $dep->staff_id;
+                $cadr->save();
+            }
+
+            if($request->career_status) {
+               $x = Career::where('cadry_id',$request->cadry_id)->count();
+               $y = new Career();
+               $y->sort = $x + 1;
+               $y->cadry_id = $request->cadry_id;
+               $y->date1 = date("Y", strtotime($request->staff_date));
+               $y->date2 = '';
+               $y->staff = $dep->staff_full;
+               $y->save();
+            }
+           
+
+            return response()->json([
+                'status' => true,
+                'message' => "Xodim muvaffaqqiyatli qo'shildi!"
+            ]);
+    }
+    
 }
