@@ -381,11 +381,6 @@ class ChatController extends Controller
 
     public function control()
     {
-        $cadries = Department::with(['railways','organizations'])->get();
-        $x = 0;
-        foreach ($cadries as $item) {
-            if(! $item->railways) dd($item);
-        }
     }
 
     public function xx()

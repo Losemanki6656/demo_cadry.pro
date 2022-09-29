@@ -109,6 +109,12 @@ class Cadry extends Model
     {
         return $this->hasMany(DepartmentCadry::class);
     }
+
+    public function cadry_staff()
+    {
+        return $this->hasOne(DepartmentCadry::class);
+    }
+    
     
     public function careers()
     {
