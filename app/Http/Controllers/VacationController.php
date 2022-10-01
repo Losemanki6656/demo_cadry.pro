@@ -38,6 +38,194 @@ class VacationController extends Controller
          'cadries' => new VacationCadryCollection($cadries)
       ]);
    }
+
+   public function api_vacations_add()
+   {
+
+      return response()->json([
+         'status_decret' => [
+            [
+                'id' => 0,
+                'name' => "Mehnat ta'tili"
+            ],
+            [
+                'id' => 1,
+                'name' => "Bola parvarishlash ta'tili"
+            ]
+            ],
+      ]);
+   }
+
+   public function api_vacations_add_post(Request $request)
+   {
+
+      $sex = Cadry::find($request->cadry_id)->sex;
+
+      if($sex == true && $request->status_decret == 1)
+         return response()->json([
+            'status' => false,
+            'message' => "Xodimning jinsi ta'til turiga to'g'ri kelmaydi!"
+         ]);
+
+      $org_id = auth()->user()->userorganization->organization_id;
+      $railway_id = auth()->user()->userorganization->railway_id;
+
+      $vacations = Vacation::where('cadry_id',$request->cadry_id)->where('status',true)->get();
+      foreach($vacations as $vac){
+          $vac->status = false;
+          $vac->save();
+      }
+
+      $item = new Vacation();
+      $item->railway_id = $railway_id;
+      $item->organization_id = $org_id;
+      $item->cadry_id = $request->cadry_id;
+      $item->date1 = $request->date1;
+      if($request->status_decret == 1)
+         if(!$request->date2)
+            $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         else
+            $item->date2 = $request->date2;
+      else
+         $item->date2 = $request->date2 ?? now();
+      $item->command_number = $request->command_number;
+      $item->period1 = $request->period1;
+      $item->period2 = $request->period2;
+      $item->alldays = $request->alldays;
+      $item->status = true;
+      $item->status_decret = $request->status_decret;
+      $item->save();
+      
+      if($request->status_decret == 1) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $request->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = true;
+            $cadry->save();
+         }
+      }
+
+      return response()->json([
+         'status' => true,
+         'message' => "Ta'tilga yuborish muvaffaqqiyatli bajarildi!"
+      ]);
+   }
+
+   public function api_vacations_edit($vacation_id, Request $request)
+   {
+      $con = Vacation::where('id',$vacation_id)->where('status',true)->count();
+      if($con < 1)
+      return response()->json([
+         'status' => false,
+         'message' => "Ta'til mavjud emas!"
+      ]);
+
+      $sex = Cadry::find($request->cadry_id)->sex;
+
+      if($sex == true && $request->status_decret == 1)
+      return response()->json([
+         'status' => false,
+         'message' => "Xodimning jinsi ta'til turiga to'g'ri kelmaydi!"
+      ]);
+
+
+      $item = Vacation::find($vacation_id);
+
+      if($item->status_decret == 1 && $item->cadry_id != $request->cadry_id) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = false;
+            $cadry->save();
+         }
+      }
+
+      $item->cadry_id = $request->cadry_id;
+      $item->date1 = $request->date1;
+      $item->command_number = $request->command_number;
+      $item->period1 = $request->period1;
+      $item->period2 = $request->period2;
+      $item->alldays = $request->alldays;
+      if($request->status_decret == 1)
+         if(!$request->date2)
+            $item->date2 = date('Y-m-d', strtotime(now()->addYear(2))); 
+         else
+            $item->date2 = $request->date2;
+      else
+         $item->date2 = $request->date2 ?? now();
+      $item->status = true;
+      $item->status_decret = $request->status_decret;
+      $item->save();
+      
+      if($request->status_decret == 1) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $request->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = true;
+            $cadry->save();
+         }
+      }
+
+      return response()->json([
+         'status' => true,
+         'message' => "Ta'tilga yuborish muvaffaqqiyatli yangilandi!"
+      ]);
+
+   }
+
+   public function api_vacations_delete($vacation_id)
+   {
+      $con = Vacation::where('id', $vacation_id)->where('status',true)->count();
+      if($con < 1)
+      return response()->json([
+         'status' => false,
+         'message' => "Ta'til mavjud emas!"
+      ]);
+
+      $item = Vacation::find($vacation_id);
+
+      if($item->status_decret == 1) 
+      {
+         $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = false;
+            $cadry->save();
+         }
+      }
+
+      $item->delete();
+
+      return response()->json([
+         'status' => true,
+         'message' => "Ta'til muvaffaqqiyatli o'chirildi!"
+      ]);
+   }
+
+   public function api_vacations_decret_success($vacation_id, Request $request)
+   {
+      $con = Vacation::where('id',$vacation_id)->where('status',true)->count();
+      if($con < 1)
+      return response()->json([
+         'status' => false,
+         'message' => "Ta'til mavjud emas!"
+      ]);
+
+      $item = Vacation::find($vacation_id);
+      $item->date2 = $request->date2;
+      $item->status = false;
+      $item->save();
+
+      $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+         foreach($cadries as $cadry){
+            $cadry->status_decret = false;
+            $cadry->save();
+         }
+
+      return response()->json([
+         'status' => true,
+         'message' => "Ta'til muvaffaqqiyatli yakunlandi!"
+      ]);
+   }
    
    public function editVacation($id)
    {

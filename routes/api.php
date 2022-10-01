@@ -218,6 +218,11 @@ Route::group([
 
         //organization-vacations
         Route::get('/organization/vacations', [VacationController::class, 'api_vacations']);
+        Route::get('/organization/vacations/add', [VacationController::class, 'api_vacations_add']);
+        Route::post('/organization/vacations/add', [VacationController::class, 'api_vacations_add_post']);
+        Route::put('/organization/vacations/{vacation_id}/update', [VacationController::class, 'api_vacations_edit']);
+        Route::delete('/organization/vacations/{vacation_id}/delete', [VacationController::class, 'api_vacations_delete']);
+        Route::put('/organization/vacations/{vacation_id}/decret/update', [VacationController::class, 'api_vacations_decret_success']);
         
     }); 
 
