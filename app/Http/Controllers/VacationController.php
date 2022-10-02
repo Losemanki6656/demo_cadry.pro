@@ -12,6 +12,7 @@ use App\Models\Organization;
 use Auth;
 use App\Http\Resources\VacationCadryResource;
 use App\Http\Resources\VacationCadryCollection;
+use App\Http\Resources\CadrySearchCollection;
 
 class VacationController extends Controller
 {
@@ -23,6 +24,25 @@ class VacationController extends Controller
       return view('vacations.vacations',[
          'cadries' => $cadries
       ]);
+   }
+
+   public function loadCadryApi(Request $request)
+   {
+      if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+      
+       $data = [];
+
+       if ($request->has('search')) {
+           $search = $request->search;
+           $data = Cadry::OrgFilter()
+               ->where(function ($query) use ($search) {
+                   $query->Orwhere('last_name', 'like', '%' . $search . '%')
+                       ->orWhere('first_name', 'like', '%' . $search . '%')
+                       ->orWhere('middle_name', 'like', '%' . $search . '%');
+               })
+               ->paginate($per_page);
+       }
+       return response()->json(new CadrySearchCollection($data));
    }
 
    public function api_vacations()

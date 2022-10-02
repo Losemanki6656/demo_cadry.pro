@@ -217,6 +217,7 @@ Route::group([
         ], function () {
 
         //organization-vacations
+        Route::get('/organization/search/cadries', [VacationController::class, 'loadCadryApi']);
         Route::get('/organization/vacations', [VacationController::class, 'api_vacations']);
         Route::get('/organization/vacations/add', [VacationController::class, 'api_vacations_add']);
         Route::post('/organization/vacations/add', [VacationController::class, 'api_vacations_add_post']);

@@ -54,6 +54,8 @@ class ChatController extends Controller
         return response()->json($data);
     }
 
+
+
     public function loadDepartment(Request $request)
     {
         $data = [];
