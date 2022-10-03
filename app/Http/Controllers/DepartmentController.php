@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\DepartmentStaff;
 use App\Models\DepartmentCadry;
+use App\Models\Staff;
 use App\Models\Cadry;
 use App\Models\Classification;
 use Auth;
 use App\Http\Resources\DepartmentStaffResource;
 use App\Http\Resources\DepartmentCadryResource;
 use App\Http\Resources\DepartmentCadryCollection;
+use App\Http\Resources\OrganizationCadryCollection;
+use App\Http\Resources\OrgStaffResource;
 
 
 use App\Http\Resources\DepartmentCollection;
@@ -98,6 +101,24 @@ class DepartmentController extends Controller
         return response()->json([
             'departments' => new DepartmentCollection($departments)
         ]);
+    }
+
+    public function departments_cadries($department_id)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $cadries = DepartmentCadry::where('department_id',$department_id)->select('cadry_id')->groupBy('cadry_id')->pluck('cadry_id')->toArray();
+        $items = Cadry::where('id',$cadries)->paginate($per_page);
+
+        return response()->json([
+            'cadries' => new OrganizationCadryCollection($items)
+        ]);
+    }
+
+    public function load_staffs()
+    {
+        $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)->get();
+        return response()->json(OrgStaffResource::collection($data));
     }
 
     public function department_staffs($department_id)

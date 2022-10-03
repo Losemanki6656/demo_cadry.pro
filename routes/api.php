@@ -11,6 +11,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\VacationIntegrationController;
 use App\Http\Controllers\VacationController;
+use App\Http\Controllers\MedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -194,6 +195,8 @@ Route::group([
 
         //organization-Departments
         Route::get('/organization/departments', [DepartmentController::class, 'departments']);
+        Route::get('/organization/staffs', [DepartmentController::class, 'load_staffs']);
+        Route::get('/organization/department/{department_id}/cadries', [DepartmentController::class, 'departments_cadries']);
         Route::post('/organization/add/department', [DepartmentController::class, 'add_department']);
         Route::put('/organization/department/{department_id}/update', [DepartmentController::class, 'update_department']);
         Route::delete('/organization/department/{department_id}/delete', [DepartmentController::class, 'delete_department']);
@@ -227,6 +230,16 @@ Route::group([
         
     }); 
 
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+
+        //organization-vacations
+        Route::get('/organization/meds', [MedController::class, 'meds']);
+        
+    }); 
     
     Route::group([
         'middleware' => [

@@ -1277,15 +1277,15 @@ class CadryController extends Controller
         if($request->jshshir) 
            {
             $cadries = Cadry::query()
-            ->where('status', false)
-            ->when(\Request::input('jshshir'),function($query, $jshshir){
-                $query->where(function ($query) use ($jshshir) {
-                    $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+                ->where('status', false)
+                ->when(\Request::input('jshshir'),function($query, $jshshir){
+                    $query->where(function ($query) use ($jshshir) {
+                        $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+                    });
                 });
-            });
            }
              else {
-                $cadries = Cadry::where('jshshir',777777777777)->where('status',false);
+                $cadries = Cadry::where('jshshir', 777777777777)->where('status',false);
              }
         
         $page = request('page', session('cadry_page', 1));
