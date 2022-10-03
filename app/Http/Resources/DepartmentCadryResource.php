@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Vacation;
 
 class DepartmentCadryResource extends JsonResource
 {
@@ -15,6 +16,17 @@ class DepartmentCadryResource extends JsonResource
     public function toArray($request)
     {
         if($this->staff_status == 0) $status = "Asosiy"; else $status = "O'rindosh";
+        
+        $status_vacation = Vacation::where('cadry_id',$this->cadry->id)
+            ->where('status', true)
+            ->whereDate( 'date2' , '>=' , now() )->first();
+        
+        if($status_vacation) {
+            if($status_vacation->status_decret == true) $st = 2;
+             else
+             $st = 1;
+        } else $st = 3;
+
         return [
             'id' => $this->id,
             'cadry' => [
@@ -28,7 +40,8 @@ class DepartmentCadryResource extends JsonResource
             'staff_status' => $status,
             'status_sv' => $this->status_sv,
             'status_decret' => $this->status_decret,
-            'status_fdecret' => $this->status
+            'status_fdecret' => $this->status,
+            'status_vacation' => $st
         ];
     }
 }

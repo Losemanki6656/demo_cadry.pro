@@ -243,7 +243,21 @@ class DepartmentController extends Controller
         $cadries = DepartmentCadry::where('department_staff_id', $department_staff_id)->with('cadry')->paginate($per_page, ['*'], 'page', $page);
 
         return response()->json([
-            'department_cadries' => new DepartmentCadryCollection($cadries)
+            'department_cadries' => new DepartmentCadryCollection($cadries),
+            'status_vacation' => [
+                [
+                    'id' => 1,
+                    'name' => "Mehnat ta'tili"
+                ],
+                [
+                    'id' => 2,
+                    'name' => "Bola parvarishlash ta'tili"
+                ],
+                [
+                    'id' => 3,
+                    'name' => "Ta'tilda emas"
+                ]
+            ],
         ]);
     }
 
