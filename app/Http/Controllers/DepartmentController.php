@@ -15,6 +15,7 @@ use App\Http\Resources\DepartmentCadryResource;
 use App\Http\Resources\DepartmentCadryCollection;
 use App\Http\Resources\OrganizationCadryCollection;
 use App\Http\Resources\OrgStaffResource;
+use App\Http\Resources\OrgStaffCollection;
 
 
 use App\Http\Resources\DepartmentCollection;
@@ -115,10 +116,20 @@ class DepartmentController extends Controller
         ]);
     }
 
-    public function load_staffs()
+    public function load_staffs(Request $request)
     {
         $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)->get();
-        return response()->json(OrgStaffResource::collection($data));
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->paginate(10);
+        }
+
+        return response()->json(new OrgStaffCollection($data));
     }
 
     public function department_staffs($department_id)
