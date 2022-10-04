@@ -109,7 +109,7 @@ class DepartmentController extends Controller
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
         $cadries = DepartmentCadry::where('department_id',$department_id)->select('cadry_id')->groupBy('cadry_id')->pluck('cadry_id')->toArray();
-        $items = Cadry::where('id',$cadries)->paginate($per_page);
+        $items = Cadry::whereIn('id',$cadries)->paginate($per_page);
 
         return response()->json([
             'cadries' => new OrganizationCadryCollection($items)
