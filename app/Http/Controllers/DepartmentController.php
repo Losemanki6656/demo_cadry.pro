@@ -112,7 +112,21 @@ class DepartmentController extends Controller
         $items = Cadry::whereIn('id',$cadries)->paginate($per_page);
 
         return response()->json([
-            'cadries' => new OrganizationCadryCollection($items)
+            'cadries' => new OrganizationCadryCollection($items),
+            'status_vacation' => [
+                [
+                    'id' => 1,
+                    'name' => "Mehnat ta'tili"
+                ],
+                [
+                    'id' => 2,
+                    'name' => "Bola parvarishlash ta'tili"
+                ],
+                [
+                    'id' => 3,
+                    'name' => "Ta'tilda emas"
+                ]
+            ],
         ]);
     }
 
