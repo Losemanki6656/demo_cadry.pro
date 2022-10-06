@@ -16,6 +16,7 @@ class DepartmentStaffResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'staff_id' => new StaffResource($this->staff),
             'staff_fullname' => $this->staff_full,
             'rate' => $this->stavka,
             'rate_sum' => $this->cadry->sum('stavka')
