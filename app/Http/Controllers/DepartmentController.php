@@ -132,14 +132,16 @@ class DepartmentController extends Controller
 
     public function load_staffs(Request $request)
     {
-        $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)->paginate(10);
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)->paginate($per_page);
 
         if ($request->has('search')) {
             $search = $request->search;
             $data = Staff::where('organization_id', Auth::user()->userorganization->organization_id)
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
-                })->paginate(10);
+                })->paginate($per_page);
         }
 
         return response()->json(new OrgStaffCollection($data));
