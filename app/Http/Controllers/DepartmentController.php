@@ -50,18 +50,27 @@ class DepartmentController extends Controller
 
     public function delete_department($department_id)
     {
-        if (DepartmentCadry::where('department_id', $department_id)->count()) {
+        if (DepartmentCadry::where('department_id', $department_id)->count() ) {
         
             return response()->json([
+                'status' => false,
                 'message' => "Ushbu bo'limga tegishli xodimlar mavjud!"
-            ], 422);
+            ], 403);
     
         } else {
-            
-            Department::find($department_id)->delete();
-            return response()->json([
-                'message' => "Muvaffaqqiyatli o'chirildi!"
-            ], 200);
+            if(Cadry::where('department_id', $department_id)->count()) {
+                $cadry = Cadry::where('department_id', $department_id)->first();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Ushbu bo'limga tegishli " . $cadry . " xodim mavjud. Xodim ma'lumotlarini taxrirlab chiqishingiz zarur!",
+                ], 403);
+            } else {
+                Department::find($department_id)->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => "Muvaffaqqiyatli o'chirildi!"
+                ], 200);
+            }
     
         }
     }
