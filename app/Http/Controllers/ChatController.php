@@ -383,6 +383,7 @@ class ChatController extends Controller
 
     public function control()
     {
+        
     }
 
     public function xx()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Cadry;
+use App\Models\MedicalExamination;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\MedCollection;
@@ -24,4 +25,53 @@ class MedController extends Controller
          'cadries' => new MedCollection($cadries)
       ]);
    }
+
+   public function med_accepted($cadry_id, Request $request)
+   {
+      $meds = MedicalExamination::where('cadry_id', $cadry_id)->get();
+
+      foreach ($meds as $item) {
+         $item->status = false;
+         $item->save();
+      }
+ 
+         MedicalExamination::create([
+            'cadry_id' => $cadry_id,
+            'date1' => $request->date1,
+            'date2' => $request->date2, 
+            'result' => $request->result ?? '',
+            'status' => true
+         ]); 
+         
+         return response()->json([
+            'status' => true,
+            'message' => "Tibbiy ko'rik ma'lumotlari tasdiqlandi!" 
+         ]);
+   }
+
+   public function create_med_info(Request $request)
+   {
+      $meds = MedicalExamination::where('cadry_id', $request->cadry_id)->get();
+
+      foreach ($meds as $item) {
+         $item->status = false;
+         $item->save();
+      }
+ 
+         MedicalExamination::create([
+            'cadry_id' => $request->cadry_id,
+            'date1' => $request->date1,
+            'date2' => $request->date2, 
+            'result' => $request->result ?? '',
+            'status' => true
+         ]); 
+         
+         return response()->json([
+            'status' => true,
+            'message' => "Tibbiy ko'rik ma'lumotlari muvaffaqqiyatli qo'shildi!" 
+         ]);
+   }
+
+
+
 }
