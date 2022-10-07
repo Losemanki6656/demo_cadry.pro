@@ -252,7 +252,19 @@ Route::group([
 
         //organization-vacations
         Route::get('/organization/incentives', [IncentiveController::class, 'incentives']);
+        
+    }); 
+
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+
+        //organization-vacations
+        Route::get('/organization/incentivesa', [IncentiveController::class, 'incentivesa']);
         Route::get('/organization/control', [IncentiveController::class, 'control']);
+        Route::get('/organization/disciplinary-acttions', [IncentiveController::class, 'disciplinary_actions']);
         
     }); 
     

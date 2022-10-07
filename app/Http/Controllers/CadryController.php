@@ -652,7 +652,11 @@ class CadryController extends Controller
 
     public function add_discip_cadry(Request $request, $id)
     {
+        $org = auth()->user()->userorganization;
+
         $dis = new DisciplinaryAction();
+        $dis->railway_id = $org->railway_id;
+        $dis->organization_id = $org->organization_id;
         $dis->cadry_id = $id;
         $dis->number = $request->number;
         $dis->date_action = $request->date_action;
@@ -691,7 +695,11 @@ class CadryController extends Controller
     
     public function add_incentive_cadry(Request $request, $id)
     {
+        $org = auth()->user()->userorganization;
+
         $incentive = new Incentive();
+        $incentive->railway_id = $org->railway_id;
+        $incentive->organization_id = $org->organization_id;
         $incentive->cadry_id = $id;
         $incentive->by_whom = $request->by_whom;
         $incentive->number = $request->number;
