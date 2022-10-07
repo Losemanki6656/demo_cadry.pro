@@ -41,57 +41,11 @@ class IncentiveController extends Controller
 
         $cadries = Cadry::ApicadryFilter()->has('discips')->paginate($per_page);
 
-
         return response()->json([
             'cadries' => new DiscipCadryCollection($cadries),
         ]);
 
     }
 
-    public function incentivesa()
-    {
-        
-        $items = DisciplinaryAction::with('cadry')->get();
-
-        $x = 0; $a = [];
-        foreach ($items as $item) 
-        { 
-            if(!$item->cadry)  {
-                $x ++;
-                $item->delete();
-            }
-        }
-
-
-        return response()->json([
-            'cadries' => $x
-        ]);
-
-    }
-
-    public function control()
-    {
-        
-        $items = DisciplinaryAction::with('cadry')->get();
-
-        $x = 0; $a = [];
-        foreach ($items as $item) 
-        { 
-            $b = $item->cadry;
-            $item->railway_id = $b->railway_id;
-            $item->organization_id = $b->organization_id;
-            $item->save();
-
-            $x ++;
-        }
-
-
-        return response()->json([
-            'cadries' => $x
-        ]);
-
-    }
-
-    
 
 }

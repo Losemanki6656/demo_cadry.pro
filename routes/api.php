@@ -13,6 +13,8 @@ use App\Http\Controllers\VacationIntegrationController;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\MedController;
 use App\Http\Controllers\IncentiveController;
+use App\Http\Controllers\ArchiveController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -262,9 +264,20 @@ Route::group([
         ], function () {
 
         //organization-vacations
-        Route::get('/organization/incentivesa', [IncentiveController::class, 'incentivesa']);
-        Route::get('/organization/control', [IncentiveController::class, 'control']);
         Route::get('/organization/disciplinary-acttions', [IncentiveController::class, 'disciplinary_actions']);
+        
+    }); 
+
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+
+        //organization-vacations
+        Route::get('/organization/archive/pinfl', [ArchiveController::class, 'archive_cadry']);
+        Route::get('/organization/archive/accepted-cadry/{archive_cadry_id}', [ArchiveController::class, 'accept_get_cadry']);
+        Route::post('/organization/archive/accepted-cadry/{archive_cadry_id}', [ArchiveController::class, 'save_archive_cadry']);
         
     }); 
     
