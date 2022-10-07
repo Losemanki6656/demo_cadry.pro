@@ -188,8 +188,8 @@ class DepartmentController extends Controller
         $newItem->department_id = $department_id;
         $newItem->staff_id = $request->staff_id;
 
-        if ($request->class_staff_id)
-            $newItem->classification_id = $request->class_staff_id;
+        if ($request->classification_id)
+            $newItem->classification_id = $request->classification_id;
         $newItem->staff_full = $request->staff_full;
         $newItem->stavka = $request->rate;
         if ($request->status_sv == 'on') {
@@ -210,8 +210,8 @@ class DepartmentController extends Controller
         $newItem->staff_full = $request->staff_full;
         $newItem->staff_id = $request->staff_id;
         $newItem->stavka = $request->rate;
-        if($request->class_staff_id) {
-            $newItem->classification_id  = $request->class_staff_id;
+        if($request->classification_id) {
+            $newItem->classification_id  = $request->classification_id;
         }
         $newItem->save();
 
