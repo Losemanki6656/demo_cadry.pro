@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
+        Laradevsbd\Zkteco\ZktecoServiceProvider::class,
 
     ],
 

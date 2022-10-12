@@ -363,7 +363,7 @@ class OrganizationController extends Controller
         }
         $lan = substr_replace($lan ,"", -1);
         $carers = Career::where('cadry_id',$id)->orderBy('sort','asc')->get();
-        $cadry_relatives = CadryRelative::where('cadry_id',$id)->orderBy('sort','asc')->get();
+        $cadry_relatives = CadryRelative::where('cadry_id',$id)->with('relative')->orderBy('sort','asc')->get();
         $incentives = Incentive::where('cadry_id',$id)->get();
 
         return response()->json([

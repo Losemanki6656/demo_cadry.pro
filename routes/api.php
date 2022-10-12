@@ -156,6 +156,11 @@ Route::group([
             
             Route::get('/organization/cadry/{cadry_id}/meds', [BackApiController::class, 'api_cadry_meds']);
             Route::delete('/organization/cadry/meds/{med_id}/delete', [BackApiController::class, 'api_cadry_meds_delete']);
+            Route::put('/organization/cadry/meds/{med_id}/update', [MedController::class, 'api_cadry_meds_update']);
+
+            
+            Route::get('/organization/cadry/{cadry_id}/vacations', [VacationController::class, 'api_cadry_vacations']);
+            Route::delete('/organization/cadry/vacations/{vacation_id}/delete', [VacationController::class, 'api_cadry_vacations_delete']);
 
             
         Route::get('/organization/info/cadries', [OrganizationController::class, 'cadries_info']);

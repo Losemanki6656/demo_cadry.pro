@@ -26,6 +26,24 @@ class VacationController extends Controller
       ]);
    }
 
+   public function api_cadry_vacations($cadry_id)
+   {
+      $vacations = Vacation::where('cadry_id',$cadry_id)->get();
+
+      return response()->json([
+         'vacations' => $vacations
+      ]);
+   }
+
+   public function api_cadry_vacations_delete(Vacation $vacation_id)
+   {
+      $vacation_id->delete();
+
+      return response()->json([
+         'message' => "Muvaffaqqiyatli o'chirildi!"
+      ]);
+   }
+
    public function loadCadryApi(Request $request)
    {
       if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;

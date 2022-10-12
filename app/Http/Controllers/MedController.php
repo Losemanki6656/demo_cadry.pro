@@ -72,6 +72,18 @@ class MedController extends Controller
          ]);
    }
 
+   public function api_cadry_meds_update($med_id, Request $request)
+   {
+      $med = MedicalExamination::find($med_id);
+      $med->date1 = $request->date1;
+      $med->date2 = $request->date2;
+      $med->result = $request->result ?? '';
+      
+      return response()->json([
+         'status' => true,
+         'message' => "Tibbiy ko'rik ma'lumotlari muvaffaqqiyatli taxrirlandi!" 
+      ]);
+   }
 
 
 }
