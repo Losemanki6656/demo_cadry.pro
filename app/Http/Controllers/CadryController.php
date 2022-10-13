@@ -764,7 +764,7 @@ class CadryController extends Controller
         return redirect()->back()->with('msg' ,1);
     }
 
-    public function delete_cadry(Request $request,$id)
+    public function delete_cadry(Request $request, $id)
     {
         $cadry = Cadry::find($id);
         $cadry->status = false;
@@ -1224,7 +1224,7 @@ class CadryController extends Controller
                     $query->whereRaw('stavka > summ_stavka')
                             ->orWhere('summ_stavka', null);
                 });
-
+           // dd($vacant->get());
             $x = $vacant->sum('stavka');
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
@@ -1277,6 +1277,103 @@ class CadryController extends Controller
             'edumaxsus' => $edumaxsus,
             'cadry45' => $cadry45,
             'democadriesback' => $democadriesback->count()
+        ]);
+    }
+
+    public function api_cadry_statistics()
+    {
+            $all = Cadry::OrgFilter()->count();
+            $man = Cadry::OrgFilter()->where('sex',1)->count();
+            $woman = $all - $man;
+            $dog =  Cadry::OrgFilter()->where('worklevel_id',5)->count();
+
+            $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1992-01-01')->count();
+            $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1977-01-01')->count();
+            
+            $nafaqaMan = Cadry::OrgFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
+            $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
+
+            $eduoliy = Cadry::OrgFilter()->where('education_id',1)->count();
+            $edumaxsus = Cadry::OrgFilter()->where('education_id',3)->count();
+
+            $birthdays = Cadry::OrgFilter()
+                ->whereMonth('birht_date', '=', now()->format('m'))
+                ->whereDay('birht_date', '=', now()->format('d'));
+
+            $newcadries = Cadry::OrgFilter()->whereDate('created_at',now()->format('Y-m-d'));
+       
+            $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
+            $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
+
+            $allStaffs = DepartmentStaff::CadryFilter();
+            $plan = $allStaffs->sum('stavka');
+           
+            $sverx = DepartmentStaff::CadryFilter()
+                ->whereRaw('stavka < summ_stavka');
+
+            $x = $sverx->sum('stavka');
+            $y = $sverx->sum('summ_stavka');
+            $sverxCount = $y - $x;
+
+            $vacant = DepartmentStaff::CadryFilter()
+                ->where(function ($query) {
+                    $query->whereRaw('stavka > summ_stavka')
+                            ->orWhere('summ_stavka', null);
+                });
+           // dd($vacant->get());
+            $x = $vacant->sum('stavka');
+            $y = $vacant->sum('summ_stavka');
+            $vacanCount = $x - $y;
+
+            
+            $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
+                ->select(['cadries.*', 'medical_examinations.*'])
+                ->where('cadries.status',true)
+                ->where('medical_examinations.status',true)
+                ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+                ->orderBy('medical_examinations.date2')
+                ->whereDate('medical_examinations.date2','<=', now())->count();
+                
+            $mednotCount = Cadry::where('status',true)
+                ->where('organization_id',auth()->user()->userorganization->organization_id)
+                ->has('med','=', 0)
+                ->count();
+
+                $careersCount = Cadry::OrgFilter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::OrgFilter()->has('relatives', '=', 0)->count();
+
+            $vacations = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)
+                ->where('status', true)
+                ->whereDate( 'date2' , '>=' ,now());
+            
+            $vac = $vacations->count();
+            $vacDec = $vacations->where('status_decret', true)->count();
+
+        return response()->json([
+            'mednotCount' => $mednotCount,
+            'vacations_decret' => $vacDec,
+            'vacations' => $vac,
+            'meds' => $meds,
+            'careersCount' => $careersCount,
+            'relativesCount' => $relativesCount,
+            'plan' => $plan,
+            'retired_Man' => $nafaqaMan,
+            'retired_Woman' => $nafaqaWoman,
+            'all_cadries_count' => $all,
+            'all_man_cadries' => $man,
+            'all_woman_cadries' => $woman,
+            'cadry30' => $cadry30,
+            'vakant' => $vacanCount,
+            'sverx' => $sverxCount,
+            'contract_cadries' => $dog,
+            'birthdays' => $birthdays->count(),
+            'newcadries' => $newcadries->count(),
+            'delete_cadries' => $democadries->count(),
+            'highly_special_educations' => $eduoliy,
+            'medium_special_cadries' => $edumaxsus,
+            'secondary_special_cadries' => $all - $edumaxsus,
+            'cadry45' => $cadry45-$cadry30,
+            'black_list_cadries' => $democadriesback->count()
         ]);
     }
 

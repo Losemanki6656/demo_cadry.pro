@@ -733,6 +733,30 @@ class BackApiController extends Controller
        
     }
 
+    public function full_delete_cadry(Request $request, $cadry_id)
+    {
+        $cadry = Cadry::find($cadry_id);
+        $cadry->status = false;
+        $cadry->save();
+        
+        DepartmentCadry::where('cadry_id',$cadry_id)->delete();
+
+        $arr = Cadry::find($cadry_id)->toArray();
+        $arr['number'] = $request->command_number ?? '';
+        $arr['comment'] = $request->comment ?? '';
+        $arr['cadry_id'] = $cadry_id;
+
+        if($request->blackStatus == true) 
+            $arr['status'] = true;
+            
+        DemoCadry::create($arr);
+
+        return response()->json([
+            'status' => true, 
+            'message' => "Xodim mehnat faoliyati to'laqonli yakunlandi!"
+        ]);
+    }
+
     public function apiStaffCadryEdit($id)
     {
         $item =  DepartmentCadry::find($id);
@@ -743,6 +767,9 @@ class BackApiController extends Controller
             'department_id' => $item->department_id,
             'rate' => $item->stavka,
             'staff_status' => $item->staff_status,
+            'status_sverx' => $item->status_sv,
+            'status_for_decret' => $item->status,
+            'status_decret' => $item->status_decret,
             'staff_statuts' => [
                 [
                     'id' => 0,
@@ -826,6 +853,17 @@ class BackApiController extends Controller
                     $newItem->status_sv = false;
 
                 $newItem->stavka = $request->rate;
+
+                if($request->status_sverx == true) {
+                    $newItem->status_sv = true;
+                } else $newItem->status_sv = false;
+                if($request->status_for_decret == true) {
+                    $newItem->status = true;
+                } else $newItem->status = false;
+                if($request->status_decret == true) {
+                    $newItem->status_decret = true;
+                } else $newItem->status_decret = false;
+
                 $newItem->save();
 
                 if($request->staff_status == 0) {

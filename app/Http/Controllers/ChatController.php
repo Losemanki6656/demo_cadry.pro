@@ -377,7 +377,6 @@ class ChatController extends Controller
         $cadry->department_id = $item->department_id;
         $cadry->save();
 
-        //\Session::flash('msm', 1);
          return redirect()->back()->with('msg', 1);
     }
 

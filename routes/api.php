@@ -14,6 +14,7 @@ use App\Http\Controllers\VacationController;
 use App\Http\Controllers\MedController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\EmmatController;
 
 
 /*
@@ -173,6 +174,10 @@ Route::group([
         Route::delete('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'SuccessDeleteCadryStaff']);
 
         
+        Route::delete('/organization/cadry/{cadry_id}/delete', [BackApiController::class, 'full_delete_cadry']);
+
+
+        
         Route::get('/organization/check-pinfl', [BackApiController::class, 'api_check_pinfl']);
 
         //organization-Staff-positions
@@ -285,6 +290,16 @@ Route::group([
         Route::post('/organization/archive/accepted-cadry/{archive_cadry_id}', [ArchiveController::class, 'save_archive_cadry']);
         
     }); 
+    //cadry statistics
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+        
+        Route::get('/organization/statistics', [CadryController::class, 'api_cadry_statistics']);
+       
+    });
     
     Route::group([
         'middleware' => [
@@ -293,6 +308,17 @@ Route::group([
         ], function () {
         
         Route::get('/administration/permissions', [OrganizationController::class, 'api_permissions']);
+       
+    });
+
+    //emmat
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+        
+        Route::get('/emmat/cadries', [EmmatController::class, 'emmat_cadries']);
        
     });
     
