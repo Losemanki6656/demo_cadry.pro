@@ -759,12 +759,12 @@ class BackApiController extends Controller
 
     public function apiStaffCadryEdit($id)
     {
-        $item =  DepartmentCadry::find($id);
+        $item =  DepartmentCadry::with('department')->find($id);
 
         $staffs = DepartmentStaff::where('department_id', $item->department_id)->get();
 
         return response()->json([
-            'department_id' => $item->department_id,
+            'department_id' => new DepResource($item->department),
             'rate' => $item->stavka,
             'staff_status' => $item->staff_status,
             'status_sverx' => $item->status_sv,
