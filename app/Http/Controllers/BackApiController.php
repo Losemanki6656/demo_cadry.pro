@@ -998,8 +998,8 @@ class BackApiController extends Controller
         $newDelCadry->save();
 
         $car = Career::find($request->career_id);
-        return response()->json($car);
-        
+      //  return response()->json($car);
+
         $car->date2 = date("Y", strtotime($request->date));
         $car->save();
 
