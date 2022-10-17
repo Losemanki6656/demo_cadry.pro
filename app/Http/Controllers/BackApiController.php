@@ -74,15 +74,14 @@ use App\Http\Resources\CadryStaffResource;
 
 class BackApiController extends Controller
 {
-    
+
     public function api_permissions()
     {
-        
     }
 
     public function api_cadry_edit($id)
     {
-        $cadry = Cadry::with(['allStaffs.department','work_level'])->find($id);
+        $cadry = Cadry::with(['allStaffs.department', 'work_level'])->find($id);
 
         return response()->json([
             'cadry' => new CadryEditResource($cadry),
@@ -99,7 +98,7 @@ class BackApiController extends Controller
     }
 
     public function api_cadry_information_post(Request $request, Cadry $cadry)
-    {       
+    {
         $cadry->update($request->all());
 
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
@@ -109,7 +108,7 @@ class BackApiController extends Controller
     }
 
     public function api_cadry_edit_post(Request $request, Cadry $cadry)
-    {       
+    {
         $cadry->update($request->all());
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
@@ -125,12 +124,11 @@ class BackApiController extends Controller
         return response()->json([
             'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
         ]);
-
     }
 
     public function api_cadry_institut(Request $request)
     {
-        $infoeducations = InfoEducation::where('cadry_id',$request->cadry_id)->get();
+        $infoeducations = InfoEducation::where('cadry_id', $request->cadry_id)->get();
 
         return response()->json([
             'infoeducations' =>  InfoEducationResource::collection($infoeducations),
@@ -139,10 +137,10 @@ class BackApiController extends Controller
 
     public function api_cadry_institut_add($cadry, Request $request)
     {
-        if(Cadry::find($cadry)->organization_id != auth()->user()->userorganization->organization_id)
-        return response()->json([
-            'error' => "Xodim topilmadi!"
-        ],404);
+        if (Cadry::find($cadry)->organization_id != auth()->user()->userorganization->organization_id)
+            return response()->json([
+                'error' => "Xodim topilmadi!"
+            ], 404);
 
         $neweducation = new InfoEducation();
         $neweducation->cadry_id = $cadry;
@@ -158,14 +156,14 @@ class BackApiController extends Controller
         ]);
     }
 
-    public function api_cadry_institut_update(InfoEducation $infoeducation_id , Request $request)
+    public function api_cadry_institut_update(InfoEducation $infoeducation_id, Request $request)
     {
         $infoeducation_id->date1 = $request->date1 ?? '';
         $infoeducation_id->date2 = $request->date2 ?? '';
         $infoeducation_id->institut = $request->institut ?? '';
         $infoeducation_id->speciality = $request->speciality ?? '';
         $infoeducation_id->save();
-        
+
         return response()->json([
             'message' => "Muvaffaqqiyatli taxrirlandi!"
         ]);
@@ -183,14 +181,14 @@ class BackApiController extends Controller
     public function cadry_api_careers($id)
     {
         $careers = Career::where('cadry_id', $id)
-            ->orderBy('sort','asc')->get();
+            ->orderBy('sort', 'asc')->get();
 
         return response()->json([
             'careers' => CareerResource::collection($careers)
         ]);
     }
 
-    
+
     public function cadry_api_career_add($cadry_id, Request $request)
     {
         $count = Career::where('cadry_id', $cadry_id)->count();
@@ -232,29 +230,30 @@ class BackApiController extends Controller
 
     public function api_career_sortable(Request $request)
     {
-        if(!$request->orders) return response()->json([
+        if (!$request->orders) return response()->json([
             'error' => 'orders empty elements'
-        ]); else
+        ]);
+        else
 
-        foreach ($request->orders as $item) {
-            Career::find($item['career_id'])->update(['sort' => $item['position']]);      
-        }
+            foreach ($request->orders as $item) {
+                Career::find($item['career_id'])->update(['sort' => $item['position']]);
+            }
 
         return response()->json([
             'message' => 'Tartiblash muvaffaqqiyatli amalga oshirildi!'
-        ]);   
+        ]);
     }
 
     public function cadry_api_relatives($cadry_id)
     {
-        if(Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
-        return response()->json([
-            'error' => "Xodim topilmadi!"
-        ],404);
+        if (Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
+            return response()->json([
+                'error' => "Xodim topilmadi!"
+            ], 404);
 
         $relatives = Relative::all();
-        $cadryrelatives = CadryRelative::where('cadry_id',$cadry_id)
-            ->orderBy('sort','asc')
+        $cadryrelatives = CadryRelative::where('cadry_id', $cadry_id)
+            ->orderBy('sort', 'asc')
             ->with('relative')->get();
 
         return response()->json([
@@ -300,7 +299,7 @@ class BackApiController extends Controller
 
     public function api_delete_relative_cadry(CadryRelative $cadry_relative_id)
     {
-       $cadry_relative_id->delete();
+        $cadry_relative_id->delete();
 
         return response()->json([
             'message' => "Yaqin qarindosh malumotlari muvaffaqqiyatli o'chirildi!"
@@ -309,25 +308,26 @@ class BackApiController extends Controller
 
     public function api_relatives_sortable(Request $request)
     {
-        if(!$request->orders) return response()->json([
+        if (!$request->orders) return response()->json([
             'error' => 'orders empty elements'
-        ]); else
+        ]);
+        else
 
-        foreach ($request->orders as $item) {
-            CadryRelative::find($item['cadry_relative_id'])->update(['sort' => $item['position']]);      
-        }
+            foreach ($request->orders as $item) {
+                CadryRelative::find($item['cadry_relative_id'])->update(['sort' => $item['position']]);
+            }
 
         return response()->json([
             'message' => 'Tartiblash muvaffaqqiyatli amalga oshirildi!'
-        ]);   
+        ]);
     }
 
     public function api_add_discip_cadry($cadry_id, Request $request)
     {
         $validated = $request->validate([
             'date_punishment' => ['required', 'date']
-         ]);
-      
+        ]);
+
         $dis = new DisciplinaryAction();
         $dis->cadry_id = $cadry_id;
         $dis->number = $request->command_number ?? '';
@@ -338,17 +338,17 @@ class BackApiController extends Controller
 
         return response()->json([
             'message' => "Intizomiy jazo qo'shish muvaffaqqiyatli amalga oshirildi!"
-        ]);   
+        ]);
     }
 
     public function cadry_api_punishments($cadry_id)
     {
-        if(Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
-        return response()->json([
-            'error' => "Xodim topilmadi!"
-        ],404);
+        if (Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
+            return response()->json([
+                'error' => "Xodim topilmadi!"
+            ], 404);
 
-        $punishments = DisciplinaryAction::where('cadry_id',$cadry_id)->get();
+        $punishments = DisciplinaryAction::where('cadry_id', $cadry_id)->get();
 
         return response()->json([
             'punishments' => DisciplinaryActionResource::collection($punishments)
@@ -359,8 +359,8 @@ class BackApiController extends Controller
     {
         $validated = $request->validate([
             'date_punishment' => ['required', 'date']
-         ]);
-      
+        ]);
+
         $dis = DisciplinaryAction::find($punishment_id);
         $dis->number = $request->command_number ?? '';
         $dis->date_action = $request->date_punishment;
@@ -370,7 +370,7 @@ class BackApiController extends Controller
 
         return response()->json([
             'message' => "Intizomiy jazo muvaffaqqiyatli taxrirlandi!"
-        ]);   
+        ]);
     }
 
     public function api_delete_discip_cadry(DisciplinaryAction $punishment_id)
@@ -379,15 +379,15 @@ class BackApiController extends Controller
 
         return response()->json([
             'message' => "Intizomiy jazo muvaffaqqiyatli o'chirildi!"
-        ]);   
+        ]);
     }
 
-     
+
     public function api_add_incentive_cadry($cadry_id, Request $request)
     {
         $validated = $request->validate([
             'incentive_date' => ['required', 'date']
-         ]);
+        ]);
 
         $incentive = new Incentive();
         $incentive->cadry_id = $cadry_id;
@@ -408,7 +408,7 @@ class BackApiController extends Controller
     {
         $validated = $request->validate([
             'incentive_date' => ['required', 'date']
-         ]);
+        ]);
 
         $incentive = Incentive::find($incentive_id);
         $incentive->by_whom = $request->by_whom ?? '';
@@ -432,10 +432,10 @@ class BackApiController extends Controller
             'message' => "Rag'batlantirish muvaffaqqiyatli o'chirildi!"
         ]);
     }
-   
+
     public function api_cadry_incentives($cadry_id)
     {
-        $incentives = Incentive::where('cadry_id',$cadry_id)->get();
+        $incentives = Incentive::where('cadry_id', $cadry_id)->get();
 
         return response()->json([
             'incentives' => IncentiveResource::collection($incentives)
@@ -444,7 +444,7 @@ class BackApiController extends Controller
 
     public function api_cadry_stafffiles($cadry_id)
     {
-        $incentives = StaffFile::where('cadry_id',$cadry_id)->get();
+        $incentives = StaffFile::where('cadry_id', $cadry_id)->get();
 
         return response()->json([
             'staff_files' => StaffFileResource::collection($incentives)
@@ -455,9 +455,9 @@ class BackApiController extends Controller
     {
         $validated = $request->validate([
             'file_staff' => ['required', 'file']
-         ]);
+        ]);
 
-        $fileName = time().'.'.$request->file_staff->extension();
+        $fileName = time() . '.' . $request->file_staff->extension();
 
         $path = $request->file_staff->storeAs('stafffiles', $fileName);
 
@@ -474,20 +474,20 @@ class BackApiController extends Controller
 
     public function api_update_stafffiles_cadry($staff_file_id, Request $request)
     {
-       if($request->file_staff) {
+        if ($request->file_staff) {
             $validated = $request->validate([
                 'file_staff' => ['required', 'file']
             ]);
 
-            $fileName = time().'.'.$request->file_staff->extension();
+            $fileName = time() . '.' . $request->file_staff->extension();
 
             $path = $request->file_staff->storeAs('stafffiles', $fileName);
-       }
+        }
 
         $newfile = StaffFile::find($staff_file_id);
         $newfile->comment = 'asd';
-        if($request->file_staff) 
-        $newfile->file_path = 'storage/' . $path;
+        if ($request->file_staff)
+            $newfile->file_path = 'storage/' . $path;
         $newfile->save();
 
         return response()->json([
@@ -505,15 +505,15 @@ class BackApiController extends Controller
     }
 
     public function cadry_api_abroadStudies($cadry_id)
-    {   
-        $data = AbroadStudyResource::collection(AbroadStudy::where('cadry_id',$cadry_id)->get());
+    {
+        $data = AbroadStudyResource::collection(AbroadStudy::where('cadry_id', $cadry_id)->get());
 
         return response()->json($data);
     }
 
     public function cadry_api_academicStudies($cadry_id)
-    {   
-        $data = AcademicStudyResource::collection(AcademiStudy::where('cadry_id',$cadry_id)->get());
+    {
+        $data = AcademicStudyResource::collection(AcademiStudy::where('cadry_id', $cadry_id)->get());
 
         return response()->json($data);
     }
@@ -524,7 +524,7 @@ class BackApiController extends Controller
             'date1' => ['required'],
             'date2' => ['required'],
             'abroad_id' => ['required']
-         ]);
+        ]);
 
         $new = new AbroadStudy();
         $new->cadry_id = $cadry_id;
@@ -546,7 +546,7 @@ class BackApiController extends Controller
             'date1' => ['required'],
             'date2' => ['required'],
             'abroad_id' => ['required']
-         ]);
+        ]);
 
         $new = AbroadStudy::find($abroad_study_id);
         $new->date1 = $request->date1;
@@ -576,15 +576,15 @@ class BackApiController extends Controller
             'date1' => ['required'],
             'date2' => ['required'],
             'academic_id' => ['required']
-         ]);
+        ]);
 
-         $new = new AcademiStudy();
-         $new->cadry_id = $cadry_id;
-         $new->date1 = $request->date1;
-         $new->date2 = $request->date2;
-         $new->institute = $request->academic_id;
-         $new->save();
- 
+        $new = new AcademiStudy();
+        $new->cadry_id = $cadry_id;
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->academic_id;
+        $new->save();
+
 
         return response()->json([
             'message' => "Akademiya muvaffaqqiyatli qo'shildi!"
@@ -597,14 +597,14 @@ class BackApiController extends Controller
             'date1' => ['required'],
             'date2' => ['required'],
             'academic_id' => ['required']
-         ]);
+        ]);
 
-         $new = AcademiStudy::find($academic_study_id);
-         $new->date1 = $request->date1;
-         $new->date2 = $request->date2;
-         $new->institute = $request->academic_id;
-         $new->save();
- 
+        $new = AcademiStudy::find($academic_study_id);
+        $new->date1 = $request->date1;
+        $new->date2 = $request->date2;
+        $new->institute = $request->academic_id;
+        $new->save();
+
 
         return response()->json([
             'message' => "Akademiya muvaffaqqiyatli yangilandi!"
@@ -651,11 +651,11 @@ class BackApiController extends Controller
             'address' => ['required'],
             'pass_region_id' => ['required'],
             'pass_city_id' => ['required'],
-            'jshshir' => ['required','min:14'],
-            'job_date' => ['required','date'],
+            'jshshir' => ['required', 'min:14'],
+            'job_date' => ['required', 'date'],
             'department_id' => ['required'],
             'staff_id' => ['required'],
-            'post_date' => ['required','date'],
+            'post_date' => ['required', 'date'],
             'education_id' => ['required'],
             'academictitle_id' => ['required'],
             'academicdegree_id' => ['required'],
@@ -666,35 +666,31 @@ class BackApiController extends Controller
             'military_rank' => ['required'],
             'deputy' => ['required'],
             'phone' => ['required'],
-         ]);
+        ]);
 
-        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->jshshir)->get();
-        $validator = Cadry::where('status',true)->where('jshshir',$request->jshshir)->with('organization')->get();
-        $validator2 = Cadry::where('status',false)->where('jshshir',$request->jshshir)->with('organization')->get();
+        $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->jshshir)->get();
+        $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->get();
+        $validator2 = Cadry::where('status', false)->where('jshshir', $request->jshshir)->with('organization')->get();
 
-        if(count($validator3) > 0)
-        {
+        if (count($validator3) > 0) {
             return response()->json([
-                'status' => 3, 
+                'status' => 3,
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
             ], 200);
-
         } else
-        if ( count($validator) > 0 ) {
+        if (count($validator) > 0) {
 
             return response()->json([
-                'status' => 1, 
+                'status' => 1,
                 'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
                 'organization' => $validator[0]->organization->name
             ], 200);
+        } else if (count($validator2) > 0) {
 
-        } else if(count($validator2) > 0) {
-            
             return response()->json([
-                'status' => 2, 
+                'status' => 2,
                 'message' => "Ushbu xodim arxivda mavjud"
             ], 200);
-
         } else {
 
             $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
@@ -717,21 +713,19 @@ class BackApiController extends Controller
             $newItem->staff_full = $dep->staff_full;
             $newItem->staff_date = $request->post_date;
 
-            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka) 
-                $newItem->status_sv = true; 
+            if ($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka)
+                $newItem->status_sv = true;
             else
                 $newItem->status_sv = false;
-                $newItem->cadry_id = $cadry->id;
-                $newItem->stavka = $request->stavka;
-                $newItem->save();
-        
+            $newItem->cadry_id = $cadry->id;
+            $newItem->stavka = $request->stavka;
+            $newItem->save();
+
             return response()->json([
                 'status' => 4,
                 'message' => "Xodim muvaffaqqiyatli qo'shildi!"
             ]);;
         }
-
-       
     }
 
     public function full_delete_cadry(Request $request, $cadry_id)
@@ -739,28 +733,28 @@ class BackApiController extends Controller
         $cadry = Cadry::find($cadry_id);
         $cadry->status = false;
         $cadry->save();
-        
-        DepartmentCadry::where('cadry_id',$cadry_id)->delete();
+
+        DepartmentCadry::where('cadry_id', $cadry_id)->delete();
 
         $arr = Cadry::find($cadry_id)->toArray();
         $arr['number'] = $request->command_number ?? '';
         $arr['comment'] = $request->comment ?? '';
         $arr['cadry_id'] = $cadry_id;
 
-        if($request->blackStatus == true) 
+        if ($request->blackStatus == true)
             $arr['status'] = true;
-            
+
         DemoCadry::create($arr);
 
         return response()->json([
-            'status' => true, 
+            'status' => true,
             'message' => "Xodim mehnat faoliyati to'laqonli yakunlandi!"
         ]);
     }
 
     public function apiNewStaffToCadry($cadry_id)
     {
-        
+
         $items =  DepartmentCadry::where('cadry_id', $cadry_id)->get();
 
         return response()->json([
@@ -775,13 +769,13 @@ class BackApiController extends Controller
                     'name' => "O'rindosh"
                 ]
             ],
-            'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
+            'departments' => DepResource::collection(Department::where('organization_id', auth()->user()->userorganization->organization_id)->get()),
         ]);
     }
-    public function apiNewStaffToCadryPost($cadry_id,Request $request)
+    public function apiNewStaffToCadryPost($cadry_id, Request $request)
     {
-        $all = DepartmentCadry::where('cadry_id', $cadry_id)->where('staff_status',false)->get();
-        if(count($all) && $request->staff_status == 0)  
+        $all = DepartmentCadry::where('cadry_id', $cadry_id)->where('staff_status', false)->get();
+        if (count($all) && $request->staff_status == 0)
             return response()->json([
                 'status' => false,
                 'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
@@ -799,44 +793,41 @@ class BackApiController extends Controller
         $newItem->staff_status = $request->staff_status;
         $newItem->staff_date = $request->staff_date;
 
-                if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
-                    $newItem->status_sv = true; 
-                else
-                    $newItem->status_sv = false;
-                    $newItem->cadry_id = $request->cadry_id;
-                    $newItem->stavka = $request->rate;
-                    
-                if($request->status_for_decret == true) {
-                    $newItem->status = true;
-                } else $newItem->status = false;
-                if($request->status_decret == true) {
-                    $newItem->status_decret = true;
-                } else $newItem->status_decret = false;
+        if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
+            $newItem->status_sv = true;
+        else
+            $newItem->status_sv = false;
+        $newItem->cadry_id = $request->cadry_id;
+        $newItem->stavka = $request->rate;
 
-                $newItem->save();
+        if ($request->status_for_decret == true) {
+            $newItem->status = true;
+        } else $newItem->status = false;
+        if ($request->status_decret == true) {
+            $newItem->status_decret = true;
+        } else $newItem->status_decret = false;
 
-                if($request->staff_status == 0) {
-                    $cadry = Cadry::find($cadry_id);
-                    $cadry->department_id = $request->department_id;
-                    $cadry->staff_id = $editstaff->staff_id;
-                    $cadry->post_name = $editstaff->staff_full;
-                    $cadry->save();
-                }
+        $newItem->save();
 
-                if($request->careerCheck == true) {
-                    $careerItem = Career::find($request->career_id);
-                    $careerItem->date2 = date("Y", strtotime($request->staff_date));
-                    $careerItem->save();
+        if ($request->staff_status == 0) {
+            $cadry = Cadry::find($cadry_id);
+            $cadry->department_id = $request->department_id;
+            $cadry->staff_id = $editstaff->staff_id;
+            $cadry->post_name = $editstaff->staff_full;
+            $cadry->save();
+        }
 
-                    $itC = new Career();
-                    $itC->cadry_id = $cadry_id;
-                    $itC->sort = $careerItem->sort + 1;
-                    $itC->date1 =  date("Y", strtotime($request->staff_date));
-                    $itC->date2 = '';
-                    $itC->staff = $editstaff->staff_full;
-                    $itC->save();
+        if ($request->careerCheck == true) {
+            $x = Career::where('cadry_id',$cadry_id)->count();
 
-                }
+            $itC = new Career();
+            $itC->cadry_id = $cadry_id;
+            $itC->sort = $x + 1;
+            $itC->date1 =  date("Y", strtotime($request->staff_date));
+            $itC->date2 = '';
+            $itC->staff = $editstaff->staff_full;
+            $itC->save();
+        }
 
         return response()->json([
             'status' => true,
@@ -850,8 +841,8 @@ class BackApiController extends Controller
         $item =  DepartmentCadry::with('department')->find($id);
         $staff = DepartmentStaff::find($item->department_staff_id);
         $staffs = DepartmentStaff::where('department_id', $item->department_id)->get();
-       
-        if($item->staff_status == 0 ){
+
+        if ($item->staff_status == 0) {
             $staff_status =  [
                 'id' => 0,
                 'name' => "Asosiy"
@@ -883,7 +874,7 @@ class BackApiController extends Controller
                 ]
             ],
             'staff_date' => $item->staff_date,
-            'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
+            'departments' => DepResource::collection(Department::where('organization_id', auth()->user()->userorganization->organization_id)->get()),
             'department_staffs' => DepartmentStaffResource::collection(DepartmentStaff::where('department_id', $item->department_id)->get())
         ]);
     }
@@ -893,47 +884,42 @@ class BackApiController extends Controller
         $data = [];
         if ($request->has('cadry_id')) {
             $id = $request->cadry_id;
-            $data = Career::where('cadry_id', $id )->orderBy('id', 'desc')->get();
+            $data = Career::where('cadry_id', $id)->orderBy('id', 'desc')->get();
         }
         return response()->json($data);
     }
 
     public function api_check_pinfl(Request $request)
     {
-        $validator3 = DemoCadry::where('status',true)->where('jshshir',$request->pinfl)->with('organization')->get();
-        $validator = Cadry::where('status',true)->where('jshshir',$request->pinfl)->with('organization')->get();
-        $validator2 = Cadry::where('status',false)->where('jshshir',$request->pinfl)->with('organization')->get();
+        $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->pinfl)->with('organization')->get();
+        $validator = Cadry::where('status', true)->where('jshshir', $request->pinfl)->with('organization')->get();
+        $validator2 = Cadry::where('status', false)->where('jshshir', $request->pinfl)->with('organization')->get();
 
-        if(count($validator3) > 0)
-        {
+        if (count($validator3) > 0) {
             return response()->json([
-                'status' => 3, 
+                'status' => 3,
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
             ], 200);
-
         } else
-        if ( count($validator) > 0 ) {
+        if (count($validator) > 0) {
 
             return response()->json([
-                'status' => 1, 
+                'status' => 1,
                 'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
                 'organization' => $validator[0]->organization->name
             ], 200);
+        } else if (count($validator2) > 0) {
 
-        } else if(count($validator2) > 0) {
-            
             return response()->json([
-                'status' => 2, 
+                'status' => 2,
                 'message' => "Ushbu xodim arxivda mavjud"
             ], 200);
+        } else
 
-        } else 
-
-        return response()->json([
-            'status' => 4, 
-            'message' => "Xodim topilmadi"
-        ]);
-
+            return response()->json([
+                'status' => 4,
+                'message' => "Xodim topilmadi"
+            ]);
     }
 
     public function api_department_cadry_update($department_cadry_id, Request $request)
@@ -947,49 +933,48 @@ class BackApiController extends Controller
         $newItem->staff_id = $editstaff->staff_id;
         $newItem->staff_full = $editstaff->staff_full;
         $newItem->staff_status = $request->staff_status;
-                $newItem->staff_date = $request->staff_date;
+        $newItem->staff_date = $request->staff_date;
 
-                if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
-                    $newItem->status_sv = true; 
-                else
-                    $newItem->status_sv = false;
+        if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
+            $newItem->status_sv = true;
+        else
+            $newItem->status_sv = false;
 
-                $newItem->stavka = $request->rate;
+        $newItem->stavka = $request->rate;
 
-                if($request->status_sverx == true) {
-                    $newItem->status_sv = true;
-                } else $newItem->status_sv = false;
-                if($request->status_for_decret == true) {
-                    $newItem->status = true;
-                } else $newItem->status = false;
-                if($request->status_decret == true) {
-                    $newItem->status_decret = true;
-                } else $newItem->status_decret = false;
+        if ($request->status_sverx == true) {
+            $newItem->status_sv = true;
+        } else $newItem->status_sv = false;
+        if ($request->status_for_decret == true) {
+            $newItem->status = true;
+        } else $newItem->status = false;
+        if ($request->status_decret == true) {
+            $newItem->status_decret = true;
+        } else $newItem->status_decret = false;
 
-                $newItem->save();
+        $newItem->save();
 
-                if($request->staff_status == 0) {
-                    $cadry = Cadry::find($newItem->cadry_id);
-                    $cadry->department_id = $request->department_id;
-                    $cadry->staff_id = $editstaff->staff_id;
-                    $cadry->post_name = $editstaff->staff_full;
-                    $cadry->save();
-                }
+        if ($request->staff_status == 0) {
+            $cadry = Cadry::find($newItem->cadry_id);
+            $cadry->department_id = $request->department_id;
+            $cadry->staff_id = $editstaff->staff_id;
+            $cadry->post_name = $editstaff->staff_full;
+            $cadry->save();
+        }
 
-                if($request->careerCheck == true) {
-                    $careerItem = Career::find($request->career_id);
-                    $careerItem->date2 = date("Y", strtotime($request->staff_date));
-                    $careerItem->save();
+        if ($request->careerCheck == true) {
+            $careerItem = Career::find($request->career_id);
+            $careerItem->date2 = date("Y", strtotime($request->staff_date));
+            $careerItem->save();
 
-                    $itC = new Career();
-                    $itC->cadry_id = $newItem->cadry_id;
-                    $itC->sort = $careerItem->sort + 1;
-                    $itC->date1 =  date("Y", strtotime($request->staff_date));
-                    $itC->date2 = '';
-                    $itC->staff = $editstaff->staff_full;
-                    $itC->save();
-
-                }
+            $itC = new Career();
+            $itC->cadry_id = $newItem->cadry_id;
+            $itC->sort = $careerItem->sort + 1;
+            $itC->date1 =  date("Y", strtotime($request->staff_date));
+            $itC->date2 = '';
+            $itC->staff = $editstaff->staff_full;
+            $itC->save();
+        }
 
         return response()->json([
             'status' => true,
@@ -1000,7 +985,7 @@ class BackApiController extends Controller
     public function SuccessDeleteCadryStaff($department_cadry_id, Request $request)
     {
         $item =  DepartmentCadry::with('cadry')->find($department_cadry_id);
-        
+
         $newDelCadry = new DeleteCadry();
         $newDelCadry->railway_id = $item->railway_id;
         $newDelCadry->organization_id = $item->organization_id;
@@ -1017,12 +1002,10 @@ class BackApiController extends Controller
         $car->save();
 
         $item->delete();
-        
+
         return response()->json([
             'status' => true,
             'message' => "Xodim lavozimi muvaffaqqiyatli yakunlandi!"
         ]);
-
     }
-
 }
