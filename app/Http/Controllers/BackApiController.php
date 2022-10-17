@@ -787,7 +787,7 @@ class BackApiController extends Controller
                 'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
             ]);
 
-        $newItem = DepartmentCadry::where('cadyr_id', $cadry_id)->first();
+        $newItem = DepartmentCadry::where('cadry_id', $cadry_id)->first();
 
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 

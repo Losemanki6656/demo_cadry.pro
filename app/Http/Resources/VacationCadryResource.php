@@ -19,6 +19,10 @@ class VacationCadryResource extends JsonResource
             'date1' => $this->date1,
             'date2' => $this->date2,
             'status_decret' => $this->status_decret,
+            'command_number' => $this->command_number,
+            'period1' => $this->period1,
+            'period2' => $this->period2,
+            'alldays' => $this->alldays,
             'cadry' => new CadryVacationResource($this->cadry)
         ];
     }
