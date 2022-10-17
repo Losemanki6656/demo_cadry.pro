@@ -817,7 +817,7 @@ class BackApiController extends Controller
                     $cadry->save();
                 }
 
-                if($request->careerCheck == 'on') {
+                if($request->careerCheck == true) {
                     $careerItem = Career::find($request->career_id);
                     $careerItem->date2 = date("Y", strtotime($request->staff_date));
                     $careerItem->save();
@@ -970,7 +970,7 @@ class BackApiController extends Controller
                     $cadry->save();
                 }
 
-                if($request->careerCheck == 'on') {
+                if($request->careerCheck == true) {
                     $careerItem = Career::find($request->career_id);
                     $careerItem->date2 = date("Y", strtotime($request->staff_date));
                     $careerItem->save();
