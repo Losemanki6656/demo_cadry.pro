@@ -319,6 +319,7 @@ Route::group([
         ], function () {
         
         Route::get('/emmat/cadries', [EmmatController::class, 'emmat_cadries']);
+        Route::post('/emmat/cadry/addToken/{emmat_cadry_id}', [EmmatController::class, 'add_token_to_cadry']);
        
     });
     

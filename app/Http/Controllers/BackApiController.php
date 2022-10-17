@@ -760,13 +760,27 @@ class BackApiController extends Controller
     public function apiStaffCadryEdit($id)
     {
         $item =  DepartmentCadry::with('department')->find($id);
-
+        $staff = DepartmentStaff::find($item->department_staff_id);
         $staffs = DepartmentStaff::where('department_id', $item->department_id)->get();
+       
+        if($item->staff_status == 0 ){
+            $staff_status =  [
+                'id' => 0,
+                'name' => "Asosiy"
+            ];
+        } else  $staff_status =  [
+            'id' => 1,
+            'name' => "O'rindosh"
+        ];
 
         return response()->json([
             'department_id' => new DepResource($item->department),
+            'staff_id' => [
+                'id' => $staff->id,
+                'name' => $staff->staff_full
+            ],
             'rate' => $item->stavka,
-            'staff_status' => $item->staff_status,
+            'staff_status' => $staff_status,
             'status_sverx' => $item->status_sv,
             'status_for_decret' => $item->status,
             'status_decret' => $item->status_decret,
@@ -779,7 +793,7 @@ class BackApiController extends Controller
                     'id' => 1,
                     'name' => "O'rindosh"
                 ]
-                ],
+            ],
             'staff_date' => $item->staff_date,
             'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
             'department_staffs' => DepartmentStaffResource::collection(DepartmentStaff::where('department_id', $item->department_id)->get())
