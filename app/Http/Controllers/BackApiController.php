@@ -675,7 +675,7 @@ class BackApiController extends Controller
         if(count($validator3) > 0)
         {
             return response()->json([
-                'status' => false, 
+                'status' => 3, 
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
             ], 200);
 
@@ -683,7 +683,7 @@ class BackApiController extends Controller
         if ( count($validator) > 0 ) {
 
             return response()->json([
-                'status' => false, 
+                'status' => 1, 
                 'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
                 'organization' => $validator[0]->organization->name
             ], 200);
@@ -691,8 +691,8 @@ class BackApiController extends Controller
         } else if(count($validator2) > 0) {
             
             return response()->json([
-                'status' => false, 
-                'message' => "Ushbu xodim qora arxivda mavjud"
+                'status' => 2, 
+                'message' => "Ushbu xodim arxivda mavjud"
             ], 200);
 
         } else {
@@ -726,7 +726,7 @@ class BackApiController extends Controller
                 $newItem->save();
         
             return response()->json([
-                'status' => true,
+                'status' => 4,
                 'message' => "Xodim muvaffaqqiyatli qo'shildi!"
             ]);;
         }
@@ -901,7 +901,7 @@ class BackApiController extends Controller
         if(count($validator3) > 0)
         {
             return response()->json([
-                'status' => false, 
+                'status' => 3, 
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
             ], 200);
 
@@ -909,7 +909,7 @@ class BackApiController extends Controller
         if ( count($validator) > 0 ) {
 
             return response()->json([
-                'status' => false, 
+                'status' => 1, 
                 'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
                 'organization' => $validator[0]->organization->name
             ], 200);
@@ -917,14 +917,14 @@ class BackApiController extends Controller
         } else if(count($validator2) > 0) {
             
             return response()->json([
-                'status' => false, 
-                'message' => "Ushbu xodim qora arxivda mavjud"
+                'status' => 2, 
+                'message' => "Ushbu xodim arxivda mavjud"
             ], 200);
 
         } else 
 
         return response()->json([
-            'status' => true, 
+            'status' => 4, 
             'message' => "Xodim topilmadi"
         ]);
 
