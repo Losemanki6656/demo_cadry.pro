@@ -787,27 +787,25 @@ class BackApiController extends Controller
                 'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
             ]);
 
-        $newItem = DepartmentCadry::where('cadry_id', $cadry_id)->first();
+        $newI = DepartmentCadry::where('cadry_id', $cadry_id)->first();
 
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
+        $newItem = new DepartmentCadry();
         $newItem->department_id = $request->department_id;
         $newItem->department_staff_id = $request->staff_id;
         $newItem->staff_id = $editstaff->staff_id;
         $newItem->staff_full = $editstaff->staff_full;
         $newItem->staff_status = $request->staff_status;
-                $newItem->staff_date = $request->staff_date;
+        $newItem->staff_date = $request->staff_date;
 
                 if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
                     $newItem->status_sv = true; 
                 else
                     $newItem->status_sv = false;
-
-                $newItem->stavka = $request->rate;
-
-                if($request->status_sverx == true) {
-                    $newItem->status_sv = true;
-                } else $newItem->status_sv = false;
+                    $newItem->cadry_id = $request->cadry_id;
+                    $newItem->stavka = $request->rate;
+                    
                 if($request->status_for_decret == true) {
                     $newItem->status = true;
                 } else $newItem->status = false;
