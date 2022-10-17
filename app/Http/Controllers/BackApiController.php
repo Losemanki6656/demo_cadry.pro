@@ -996,13 +996,13 @@ class BackApiController extends Controller
         $newDelCadry->number = $request->command_number;
         $newDelCadry->comment = $request->comment;
         $newDelCadry->staff_full = $item->staff_full;
-        $newDelCadry->date = $request->date;
+        $newDelCadry->date = $request->delete_date;
         $newDelCadry->save();
 
         $car = Career::find($request->career_id);
       //  return response()->json($car);
 
-        $car->date2 = date("Y", strtotime($request->date));
+        $car->date2 = date("Y", strtotime($request->delete_date));
         $car->save();
 
         $item->delete();
