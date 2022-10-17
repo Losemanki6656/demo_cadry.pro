@@ -984,7 +984,7 @@ class BackApiController extends Controller
 
     public function SuccessDeleteCadryStaff($department_cadry_id, Request $request)
     {
-        return response()->json($request->all());
+       // return response()->json($request->all());
 
         $item =  DepartmentCadry::with('cadry')->find($department_cadry_id);
 
