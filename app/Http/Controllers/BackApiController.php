@@ -70,6 +70,7 @@ use App\Http\Resources\AbroadResource;
 use App\Http\Resources\AcademicResource;
 use App\Http\Resources\MedicalResource;
 use App\Http\Resources\DepartmentStaffResource;
+use App\Http\Resources\CadryStaffResource;
 
 class BackApiController extends Controller
 {
@@ -756,6 +757,87 @@ class BackApiController extends Controller
             'message' => "Xodim mehnat faoliyati to'laqonli yakunlandi!"
         ]);
     }
+
+    public function apiNewStaffToCadry($cadry_id)
+    {
+        
+        $items =  DepartmentCadry::where('cadry_id', $cadry_id)->get();
+
+        return response()->json([
+            'staffs' => CadryStaffResource::collection($items),
+            'staff_statuts' => [
+                [
+                    'id' => 0,
+                    'name' => "Asosiy"
+                ],
+                [
+                    'id' => 1,
+                    'name' => "O'rindosh"
+                ]
+            ],
+            'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
+        ]);
+    }
+    public function apiNewStaffToCadryPost($department_cadry_id,Request $request)
+    {
+        $newItem = DepartmentCadry::find($department_cadry_id);
+        $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
+
+        $newItem->department_id = $request->department_id;
+        $newItem->department_staff_id = $request->staff_id;
+        $newItem->staff_id = $editstaff->staff_id;
+        $newItem->staff_full = $editstaff->staff_full;
+        $newItem->staff_status = $request->staff_status;
+                $newItem->staff_date = $request->staff_date;
+
+                if($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1) 
+                    $newItem->status_sv = true; 
+                else
+                    $newItem->status_sv = false;
+
+                $newItem->stavka = $request->rate;
+
+                if($request->status_sverx == true) {
+                    $newItem->status_sv = true;
+                } else $newItem->status_sv = false;
+                if($request->status_for_decret == true) {
+                    $newItem->status = true;
+                } else $newItem->status = false;
+                if($request->status_decret == true) {
+                    $newItem->status_decret = true;
+                } else $newItem->status_decret = false;
+
+                $newItem->save();
+
+                if($request->staff_status == 0) {
+                    $cadry = Cadry::find($newItem->cadry_id);
+                    $cadry->department_id = $request->department_id;
+                    $cadry->staff_id = $editstaff->staff_id;
+                    $cadry->post_name = $editstaff->staff_full;
+                    $cadry->save();
+                }
+
+                if($request->careerCheck == 'on') {
+                    $careerItem = Career::find($request->career_id);
+                    $careerItem->date2 = date("Y", strtotime($request->staff_date));
+                    $careerItem->save();
+
+                    $itC = new Career();
+                    $itC->cadry_id = $newItem->cadry_id;
+                    $itC->sort = $careerItem->sort + 1;
+                    $itC->date1 =  date("Y", strtotime($request->staff_date));
+                    $itC->date2 = '';
+                    $itC->staff = $editstaff->staff_full;
+                    $itC->save();
+
+                }
+
+        return response()->json([
+            'status' => true,
+            'message' => "Xodim lavozimi muvaffaqqiyatli yangilandi!"
+        ]);
+    }
+
 
     public function apiStaffCadryEdit($id)
     {
