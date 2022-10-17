@@ -859,7 +859,7 @@ class BackApiController extends Controller
             'department_id' => new DepResource($item->department),
             'staff_id' => [
                 'id' => $staff->id,
-                'name' => $staff->staff_full
+                'staff_fullname' => $staff->staff_full
             ],
             'rate' => $item->stavka,
             'staff_status' => $staff_status,
