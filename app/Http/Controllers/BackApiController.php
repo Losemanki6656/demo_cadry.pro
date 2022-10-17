@@ -823,7 +823,7 @@ class BackApiController extends Controller
             $itC = new Career();
             $itC->cadry_id = $cadry_id;
             $itC->sort = $x + 1;
-            $itC->date1 =  date("Y", strtotime($request->staff_date));
+            $itC->date1 = date("Y", strtotime($request->staff_date));
             $itC->date2 = '';
             $itC->staff = $editstaff->staff_full;
             $itC->save();
@@ -998,6 +998,8 @@ class BackApiController extends Controller
         $newDelCadry->save();
 
         $car = Career::find($request->career_id);
+        return response()->json($car);
+        
         $car->date2 = date("Y", strtotime($request->date));
         $car->save();
 
