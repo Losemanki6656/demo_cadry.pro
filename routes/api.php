@@ -171,7 +171,7 @@ Route::group([
         Route::get('/organization/cadry-staff/{cadry_staff_id}', [BackApiController::class, 'apiStaffCadryEdit']);
         
         Route::get('/organization/new-cadry-staff/{cadry_id}', [BackApiController::class, 'apiNewStaffToCadry']);
-        Route::post('/organization/new-cadry-staff/{department_cadry_id}', [BackApiController::class, 'apiNewStaffToCadryPost']);
+        Route::post('/organization/new-cadry-staff/{cadry_id}', [BackApiController::class, 'apiNewStaffToCadryPost']);
 
         Route::get('/organization/careerCheck', [BackApiController::class, 'careerCheck']);
         Route::put('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'api_department_cadry_update']);

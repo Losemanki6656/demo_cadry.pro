@@ -778,9 +778,17 @@ class BackApiController extends Controller
             'departments' => DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get()),
         ]);
     }
-    public function apiNewStaffToCadryPost($department_cadry_id,Request $request)
+    public function apiNewStaffToCadryPost($cadry_id,Request $request)
     {
-        $newItem = DepartmentCadry::find($department_cadry_id);
+        $all = DepartmentCadry::where('cadry_id', $cadry_id)->where('staff_status',false)->get();
+        if(count($all) && $request->staff_status == 0)  
+            return response()->json([
+                'status' => false,
+                'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
+            ]);
+
+        $newItem = DepartmentCadry::where('cadyr_id', $cadry_id)->first();
+
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
         $newItem->department_id = $request->department_id;
@@ -810,7 +818,7 @@ class BackApiController extends Controller
                 $newItem->save();
 
                 if($request->staff_status == 0) {
-                    $cadry = Cadry::find($newItem->cadry_id);
+                    $cadry = Cadry::find($cadry_id);
                     $cadry->department_id = $request->department_id;
                     $cadry->staff_id = $editstaff->staff_id;
                     $cadry->post_name = $editstaff->staff_full;
@@ -823,7 +831,7 @@ class BackApiController extends Controller
                     $careerItem->save();
 
                     $itC = new Career();
-                    $itC->cadry_id = $newItem->cadry_id;
+                    $itC->cadry_id = $cadry_id;
                     $itC->sort = $careerItem->sort + 1;
                     $itC->date1 =  date("Y", strtotime($request->staff_date));
                     $itC->date2 = '';
