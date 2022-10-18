@@ -287,7 +287,8 @@ class Cadry extends Model
                 return $query->where('department_id', $department_id);
 
         })->when(request('staff_id'), function ($query, $staff_id) {
-            return $query->where('staff_id', $staff_id);
+            $arr = DepartmentCadry::where('staff_id',$staff_id)->pluck('cadry_id')->toArray();
+            return $query->whereIn('id', $arr);
 
         })->when(request('education_id'), function ($query, $education_id) {
             return $query->where('education_id', $education_id);
