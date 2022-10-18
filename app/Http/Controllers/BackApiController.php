@@ -984,8 +984,6 @@ class BackApiController extends Controller
 
     public function SuccessDeleteCadryStaff($department_cadry_id, Request $request)
     {
-       // return response()->json($request->all());
-
         $item =  DepartmentCadry::with('cadry')->find($department_cadry_id);
 
         $newDelCadry = new DeleteCadry();
@@ -1000,9 +998,8 @@ class BackApiController extends Controller
         $newDelCadry->save();
 
         $car = Career::find($request->career_id);
-      //  return response()->json($car);
-
-        $car->date2 = date("Y", strtotime($request->delete_date));
+        $car->date2 = $request->delete_date;
+        // date("Y", strtotime($request->delete_date));
         $car->save();
 
         $item->delete();
