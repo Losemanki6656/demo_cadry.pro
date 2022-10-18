@@ -1371,7 +1371,7 @@ class CadryController extends Controller
             'delete_cadries' => $democadries->count(),
             'highly_special_educations' => $eduoliy,
             'medium_special_cadries' => $edumaxsus,
-            'secondary_special_cadries' => $all - $edumaxsus,
+            'secondary_special_cadries' => $all - $edumaxsus - $eduoliy,
             'cadry45' => $cadry45-$cadry30,
             'black_list_cadries' => $democadriesback->count()
         ]);
