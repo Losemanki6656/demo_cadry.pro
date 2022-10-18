@@ -779,7 +779,7 @@ class BackApiController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
-            ]);
+            ], 400);
 
         $newI = DepartmentCadry::where('cadry_id', $cadry_id)->first();
 
