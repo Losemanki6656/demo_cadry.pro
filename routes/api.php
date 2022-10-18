@@ -175,7 +175,7 @@ Route::group([
 
         Route::get('/organization/careerCheck', [BackApiController::class, 'careerCheck']);
         Route::put('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'api_department_cadry_update']);
-        Route::delete('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'SuccessDeleteCadryStaff']);
+        Route::post('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'SuccessDeleteCadryStaff']);
 
         
         Route::delete('/organization/cadry/{cadry_id}/delete', [BackApiController::class, 'full_delete_cadry']);
