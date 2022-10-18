@@ -18,6 +18,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'photo' => url(asset($this->userorganization->photo)),
+            'phone' => $this->userorganization->phone,
             'email' => $this->email,
             'organization' => new OrganizationResource($this->userorganization->organization),
             'roles' => new RoleResource($this->roles->first())
