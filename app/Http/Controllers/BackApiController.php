@@ -998,8 +998,7 @@ class BackApiController extends Controller
         $newDelCadry->save();
 
         $car = Career::find($request->career_id);
-        $car->date2 = $request->delete_date;
-        // date("Y", strtotime($request->delete_date));
+        $car->date2 = date("Y", strtotime($request->delete_date));
         $car->save();
 
         $item->delete();
