@@ -112,8 +112,9 @@ class OrganizationController extends Controller
 
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
+
         $cadries = Cadry::ApiOrgFilter()
-        ->with(['vacation','allStaffs','department'])->paginate($per_page, ['*'], 'page', $page);
+            ->with(['vacation','allStaffs','department'])->paginate($per_page, ['*'], 'page', $page);
     
         return response()->json([
             'cadries' => new OrganizationCadryCollection($cadries)

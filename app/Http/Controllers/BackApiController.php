@@ -924,7 +924,15 @@ class BackApiController extends Controller
 
     public function api_department_cadry_update($department_cadry_id, Request $request)
     {
+        $cadr = DepartmentCadry::find($department_cadry_id)->cadry_id;
 
+        $all = DepartmentCadry::where('cadry_id', $cadr)->where('staff_status', false)->get();
+        if (count($all) && $request->staff_status == 0)
+            return response()->json([
+                'status' => false,
+                'message' => "Ushbu xodimda asosiy faoliyat turi mavjud!"
+            ], 400);
+            
         $newItem = DepartmentCadry::find($department_cadry_id);
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
