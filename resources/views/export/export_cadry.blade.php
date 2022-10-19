@@ -7,13 +7,7 @@
                 #</th>
             <th
                 style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
-                Familiyasi</th>
-            <th
-                style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
-                Ismi</th>
-            <th
-                style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
-                Otasining ismi</th>
+                FIO</th>
             <th
                 style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
                 Tug'ilgan joyi</th>
@@ -38,6 +32,12 @@
             <th
                 style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
                 Ma'lumoti</th>
+            <th
+                style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
+                Institutu</th>
+            <th
+                style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
+                Mutaxassisligi</th>
             <th
                 style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
                 Millati</th>
@@ -89,12 +89,7 @@
                         {{ $loop->index + 1 }}
                     </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
-                        {{ $item->last_name }} </td>
-                    <td style="border: 1pt solid black; align-items: center; text-align: center;">
-                        {{ $item->first_name }} </td>
-                    <td style="border: 1pt solid black; align-items: center; text-align: center;">
-                        {{ $item->middle_name }} </td>
-
+                        {{ $item->last_name }}  {{ $item->first_name }}  {{ $item->middle_name }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
                         {{ $item->birth_region->name }},{{ $item->birth_city->name }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
@@ -114,6 +109,10 @@
 
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
                         {{ $item->education->name }} </td>
+                    <td style="border: 1pt solid black; align-items: center; text-align: center;">
+                        {{ implode(',', $item->instituts->pluck('institut')->toArray()) }} </td>
+                    <td style="border: 1pt solid black; align-items: center; text-align: center;">
+                        {{ implode(',', $item->instituts->pluck('speciality')->toArray()) }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
                         {{ $item->nationality->name }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">

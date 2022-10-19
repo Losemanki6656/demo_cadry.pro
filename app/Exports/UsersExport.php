@@ -63,7 +63,7 @@ class UsersExport implements FromView
         })->when(request('end_se'), function ($query, $end_se) {
             return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
 
-        })->with(['education','birth_city','birth_region','staff','pass_region','pass_city','address_region','address_city','nationality','education','party',
+        })->with(['education','birth_city','birth_region','staff','pass_region','instituts', 'pass_city','address_region','address_city','nationality','education','party',
         'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category'])->get();
 
         $arr = []; $x = 0;
