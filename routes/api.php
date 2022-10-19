@@ -184,6 +184,8 @@ Route::group([
         
         Route::get('/organization/check-pinfl', [BackApiController::class, 'api_check_pinfl']);
 
+        Route::get('/organization/cadry/ExportToExcel', [BackApiController::class, 'ExportToExcel']);
+
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });

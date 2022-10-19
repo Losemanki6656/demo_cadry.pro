@@ -16,7 +16,10 @@ class InstitutResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'date1' => $this->date1,
+            'date2' => $this->date2,
+            'name' => $this->institut,
+            'speciality' => $this->speciality,
         ];
     }
 }

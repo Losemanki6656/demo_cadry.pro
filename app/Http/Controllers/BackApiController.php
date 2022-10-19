@@ -46,6 +46,7 @@ use App\Http\Resources\CadryResource;
 use App\Http\Resources\CadryCollection;
 use App\Http\Resources\OrgResource;
 use App\Http\Resources\DepResource;
+use App\Http\Resources\ExcelOrgResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\StaffResource;
@@ -1015,5 +1016,15 @@ class BackApiController extends Controller
             'status' => true,
             'message' => "Xodim lavozimi muvaffaqqiyatli yakunlandi!"
         ]);
+    }
+
+    public function ExportToExcel()
+    {
+        $cadries = Cadry::ApiOrgFilter()->with(['education','birth_city','birth_region','staff','pass_region','instituts', 'pass_city','address_region','address_city','nationality','education','party',
+        'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category'])->paginate(5);
+
+        return response()->json(
+            ExcelOrgResource::collection($cadries)
+        );
     }
 }
