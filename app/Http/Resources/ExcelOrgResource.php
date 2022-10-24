@@ -22,6 +22,7 @@ class ExcelOrgResource extends JsonResource
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
+            'birth_date' => $this->birht_date,
             'phone' => $this->phone,
             'department' => $this->department->name,
             'education' => $this->education->name,
