@@ -18,6 +18,9 @@ class ExcelOrgResource extends JsonResource
         if($this->sex == true) $sex = "Erkak"; else $sex = "Ayol";
         $languages = Language::whereIn('id', explode(',',$this->language))->get();
 
+        $relative = $this->relatives->where('relative_id',7)->count();
+        if($relative > 0) $rel = "Oilali"; else $rel = "Turmush qurmagan";
+
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
@@ -44,9 +47,8 @@ class ExcelOrgResource extends JsonResource
             'nationality' => $this->nationality->name,
             'party' => $this->party->name,
             'languages' => LanguageResource::collection($languages),
-            'incentives' => IncentiveResource::collection($this->incentives),
-            'discips' => DisciplinaryActionResource::collection($this->discips),
             'sex' => $sex,
+            'family_status' => $rel,
             'department_and_staffs' =>  ExcelOrgDepartmentCadryResource::collection($this->allStaffs),
             'instituts' =>  InstitutResource::collection($this->instituts),
         ];
