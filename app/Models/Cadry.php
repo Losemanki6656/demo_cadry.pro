@@ -37,6 +37,11 @@ class Cadry extends Model
         return $this->hasOne(MedicalExamination::class)->where(['status' => true]);
     }
 
+    public function abroad_studies()
+    {
+        return $this->hasMany(AbroadStudy::class);
+    }
+
     public function vacation()
     {
         return $this->hasOne(Vacation::class)->where('status',true);
@@ -145,7 +150,7 @@ class Cadry extends Model
     public function setLanguageAttribute($value)
     {   
         if(is_array($value) == true) 
-            $this->attributes['language'] = implode($value, ',');
+            $this->attributes['language'] = implode(',',$value);
         else $this->attributes['language'] = $value;
     }
 

@@ -612,8 +612,8 @@ class CadryController extends Controller
             $dep = DepartmentStaff::with('cadry')->find($request->staff_id);
 
             $array = $request->all();
-            $array['railway_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('railway_id');
-            $array['organization_id'] = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
+            $array['railway_id'] = auth()->user()->userorganization->railway_id;
+            $array['organization_id'] = auth()->user()->userorganization->organization_id;
             $array['post_name'] = $dep->staff_full ?? '';
             $array['staff_id'] = $dep->staff_id;
 

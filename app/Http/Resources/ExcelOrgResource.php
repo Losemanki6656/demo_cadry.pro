@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Models\Language;
 class ExcelOrgResource extends JsonResource
 {
     /**
@@ -15,20 +16,34 @@ class ExcelOrgResource extends JsonResource
     public function toArray($request)
     {
         if($this->sex == true) $sex = "Erkak"; else $sex = "Ayol";
+        $languages = Language::whereIn('id', explode(',',$this->language))->get();
+
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
             'department' => $this->department->name,
             'education' => $this->education->name,
-            'birth_position' => $this->birth_region->name . ', ' . $this->birth_city->name,
-            'now_position' => $this->address_region->name . ', ' . $this->address_city->name,
-            'passport_position' => $this->pass_region->name . ', ' . $this->pass_city->name,
+            'birth_region' => $this->birth_region->name,
+            'birth_city' => $this->birth_city->name,
+            'now_position_region' => $this->address_region->name,
+            'now_position_city' => $this->address_city->name,
+            'passport_position_region' => $this->pass_region->name,
+            'passport_position_city' => $this->pass_city->name,
             'passport' => $this->passport,
             'passport_date' => $this->pass_date,
             'pinfl' => $this->jshshir,
+            'job_date' => $this->job_date,
+            'academic_title' => new AcademicTitleResource($this->cadry_title),
+            'academic_degree' => new AcademicDegreeResource($this->cadry_degree),
+            'work_level' => $this->job_date,
+            'military_rank' => $this->military_rank,
+            'deputy' => $this->deputy,
             'nationality' => $this->nationality->name,
             'party' => $this->party->name,
+            'languages' => LanguageResource::collection($languages),
+            'incentives' => IncentiveResource::collection($this->incentives),
+            'discips' => DisciplinaryActionResource::collection($this->discips),
             'sex' => $sex,
             'department_and_staffs' =>  ExcelOrgDepartmentCadryResource::collection($this->allStaffs),
             'instituts' =>  InstitutResource::collection($this->instituts),
