@@ -385,9 +385,15 @@ class ChatController extends Controller
     {
         $organizations = Organization::get();
         $u = [];
+
         foreach ($organizations as $yy)
         {
+            
             $org_id = $yy->id;
+
+        $careersCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('careers', '=', 0)->count();
+        $relativesCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('relatives', '=', 0)->count();
+        $mednotCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('med','=',0)->count();
 
             $all = 0; $allSv = 0;
 
@@ -420,7 +426,7 @@ class ChatController extends Controller
                 $all = $all + $z;
                 $allSv =  $allSv + $q;
             }
-            $u[$org_id] = $yy->railway->name . '#' . $yy->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv;
+            $u[$org_id] = $yy->railway->name . '#' . $yy->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv . '#' . $careersCount . '#' . $relativesCount . '#' . $mednotCount;
         }
         dd($u);
        
