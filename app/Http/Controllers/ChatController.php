@@ -414,13 +414,12 @@ class ChatController extends Controller
                     ->with(['departmentstaff','departmentstaff.cadry'])->get();
                 }
                 
-                $a = []; $b = []; 
                 foreach ($alldepartments as $item)
                 {
                     $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
                     foreach($item->departmentstaff as $staff) {
                         $x = $staff->stavka;
-                         $p = $p  + $x;
+                        $p = $p + $x;
                         $l = $staff->cadry->sum('stavka');
                         $y = $staff->cadry->where('status', false)->sum('stavka');
                         $fakt = $fakt + $y;
@@ -428,8 +427,6 @@ class ChatController extends Controller
                         if($x<$y) $q = $q + $y - $x;
                     }
                     
-                    $a[$item->id] = $z;
-                    $b[$item->id] = $q;
                     $all = $all + $z;
                     $allSv =  $allSv + $q;
                 }

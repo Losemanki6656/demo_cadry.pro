@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Abroad extends Model
 {
     use HasFactory;
+
+    public function abroads()
+    {
+        return $this->hasMany(AbroadStudy::class,'type_abroad');
+    }
 }
