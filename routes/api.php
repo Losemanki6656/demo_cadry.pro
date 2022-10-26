@@ -328,6 +328,10 @@ Route::group([
         ], function () {
         
         Route::get('/administration/users', [UserController::class, 'api_users']);
+        Route::get('/administration/user/{user_id}/update', [UserController::class, 'api_user_update_view']);
+        Route::post('/administration/user/{user_id}/update', [UserController::class, 'api_user_update']);
+        Route::get('/administration/user/create', [UserController::class, 'api_user_create_get']);
+        Route::post('/administration/user/create', [UserController::class, 'api_user_create_post']);
        
     });
 

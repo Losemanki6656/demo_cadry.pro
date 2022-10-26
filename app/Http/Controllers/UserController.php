@@ -6,13 +6,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Permission;
+use App\Models\Organization;
+use App\Models\UserOrganization;
 use Spatie\Permission\Models\Role;
 //use Spatie\Permission\Models\;
 use DB;
 use Hash;
 use Illuminate\Support\Arr;
 use App\Http\Resources\RoleAdminCollection;
+use App\Http\Resources\UserApiCollection;
+use App\Http\Resources\UserApiResource;
+use App\Http\Resources\RoleApiResource;
+use App\Http\Resources\OrgResource;
 use App\Http\Resources\PermissionAdminResource;
+use Storage;
+use File;
     
 class UserController extends Controller
 {
@@ -224,10 +232,142 @@ class UserController extends Controller
     public function api_users()
     {
 
-        $users = User::all();
+        $users = User::paginate(10);
 
         return response()->json([
-            'users' => $users
+            'users' => new UserApiCollection($users)
         ]);
+    }
+
+    public function api_user_update_view($user_id)
+    {
+        $user = User::find($user_id);
+        $organizations = OrgResource::collection(Organization::get());
+        $roles = Role::get();
+
+        return response()->json([
+            'users' => new UserApiResource($user),
+            'roles' => RoleApiResource::collection($roles),
+            'organizations' => $organizations
+        ]);
+    }
+
+    public function api_user_update($user_id, Request $request)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email']
+        ]);
+
+        $user = User::find($user_id);
+        if($user->email != $request->email)
+        if(User::where('email', $request->email)->count() > 0) {
+            return response()->json([
+                'message' => "such email user exists!"
+            ], 401); 
+        } 
+
+            $rail_id = Organization::find($request->organization_id)->railway_id;
+
+            if($request->photo) {
+
+                $fileName   = time() . $request->photo->getClientOriginalName();
+                Storage::disk('public')->put('users/' . $fileName, File::get($request->photo));
+                $file_name  = $request->photo->getClientOriginalName();
+                $file_type  = $request->photo->getClientOriginalExtension();
+                $filePath   = 'storage/users/' . $fileName;
+                
+
+                $userOrgan = UserOrganization::where('user_id',$user_id)->first();
+                $userOrgan->railway_id = $rail_id;
+                $userOrgan->organization_id = $request->organization_id;
+                $userOrgan->photo = $filePath;
+                $userOrgan->phone = $request->phone;
+                $userOrgan->post_id = $request->password;
+                $userOrgan->save();
+    
+                $user = User::find($user_id);
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->password);
+                $user->save();
+    
+            } else  {
+    
+                $userOrgan = UserOrganization::where('user_id',$user_id)->first();
+                $userOrgan->phone = $request->phone;
+                $userOrgan->post_id = $request->password;
+                $userOrgan->save();
+    
+                $user = User::find($user_id);
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->password);
+                $user->save();
+                
+            }
+
+            return response()->json([
+                'message' => 'Successfully updated!'
+            ]); 
+
+        
+    }
+
+    public function api_user_create_get()
+    {
+        $organizations = OrgResource::collection(Organization::get());
+        $roles = Role::get();
+
+        return response()->json([
+            'roles' => RoleApiResource::collection($roles),
+            'organizations' => $organizations
+        ]);
+    }
+
+    public function api_user_create_post(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+            'photo' => ['required']
+        ]);
+        
+        if(User::where('email', $request->email)->count() > 0) {
+            return response()->json([
+                'message' => "such email user exists!"
+            ], 401); 
+        } 
+
+            $rail_id = Organization::find($request->organization_id)->railway_id;
+
+            if($request->photo) {
+
+                $fileName   = time() . $request->photo->getClientOriginalName();
+                Storage::disk('public')->put('users/' . $fileName, File::get($request->photo));
+                $file_name  = $request->photo->getClientOriginalName();
+                $file_type  = $request->photo->getClientOriginalExtension();
+                $filePath   = 'storage/users/' . $fileName;
+                
+                $user = new User();
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->password);
+                $user->save();
+
+                $userOrgan = new UserOrganization();
+                $userOrgan->user_id = $user->id;
+                $userOrgan->railway_id = $rail_id;
+                $userOrgan->organization_id = $request->organization_id;
+                $userOrgan->department_id = 1;
+                $userOrgan->photo = $filePath;
+                $userOrgan->phone = $request->phone;
+                $userOrgan->post_id = $request->password;
+                $userOrgan->save();    
+    
+            } 
+
+            return response()->json([
+                'message' => 'user successfully created!'
+            ]); 
+
     }
 }
