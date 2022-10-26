@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\DepartmentCadry;
 use App\Models\MedicalExamination;
 use App\Models\Organization;
+use App\Models\Railway;
 use App\Models\DeleteCadry;
 use Auth;
 use Illuminate\Http\Request;
@@ -383,50 +384,59 @@ class ChatController extends Controller
 
     public function control()
     {
-        $organizations = Organization::get();
+        $railways = Railway::all();
         $u = [];
-
-        foreach ($organizations as $yy)
-        {
+        foreach ( $railways as $rail) {
+           
+            $organizations = Organization::where('railway_id',$rail->id)->get();
             
-            $org_id = $yy->id;
-
-        $careersCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('careers', '=', 0)->count();
-        $relativesCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('relatives', '=', 0)->count();
-        $mednotCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('med','=',0)->count();
-
-            $all = 0; $allSv = 0;
-
-            if($org_id == 152) {
-                
-                $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
-                ->with(['departmentstaff','departmentstaff.cadry'])->get();
-            } else {
-                
-                $alldepartments = Department::where('organization_id', $org_id)
-                ->with(['departmentstaff','departmentstaff.cadry'])->get();
-            }
-            
-            $a = []; $b = []; $p = 0; $fakt = 0;
-            foreach ($alldepartments as $item)
+            $p = 0; $fakt = 0; $all = 0; $allSv = 0; $car = 0; $rel = 0; $med = 0;
+            foreach($organizations as $organ)
             {
-                $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
-                foreach($item->departmentstaff as $staff) {
-                    $x = $staff->stavka;
-                     $p = $p  + $x;
-                    $l = $staff->cadry->sum('stavka');
-                    $y = $staff->cadry->where('status', false)->sum('stavka');
-                    $fakt = $fakt + $y;
-                    if($x>$l) $z = $z + $x - $l;
-                    if($x<$y) $q = $q + $y - $x;
+                
+                $org_id = $organ->id;
+    
+                $careersCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('relatives', '=', 0)->count();
+                $mednotCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('med','=',0)->count();
+                $car = $car + $careersCount;
+                $rel = $rel + $relativesCount;
+                $med = $med + $mednotCount;
+               
+    
+                if($org_id == 152) {
+                    
+                    $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
+                    ->with(['departmentstaff','departmentstaff.cadry'])->get();
+                } else {
+                    
+                    $alldepartments = Department::where('organization_id', $org_id)
+                    ->with(['departmentstaff','departmentstaff.cadry'])->get();
                 }
                 
-                $a[$item->id] = $z;
-                $b[$item->id] = $q;
-                $all = $all + $z;
-                $allSv =  $allSv + $q;
+                $a = []; $b = []; 
+                foreach ($alldepartments as $item)
+                {
+                    $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
+                    foreach($item->departmentstaff as $staff) {
+                        $x = $staff->stavka;
+                         $p = $p  + $x;
+                        $l = $staff->cadry->sum('stavka');
+                        $y = $staff->cadry->where('status', false)->sum('stavka');
+                        $fakt = $fakt + $y;
+                        if($x>$l) $z = $z + $x - $l;
+                        if($x<$y) $q = $q + $y - $x;
+                    }
+                    
+                    $a[$item->id] = $z;
+                    $b[$item->id] = $q;
+                    $all = $all + $z;
+                    $allSv =  $allSv + $q;
+                }
             }
-            $u[$org_id] = $yy->railway->name . '#' . $yy->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv . '#' . $careersCount . '#' . $relativesCount . '#' . $mednotCount;
+            
+            $u[$org_id] = $rail->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv . '#' . $car . '#' . $rel . '#' . $med;
+          
         }
         dd($u);
        
