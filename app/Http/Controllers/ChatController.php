@@ -10,6 +10,7 @@ use App\Models\Cadry;
 use App\Models\Region;
 use App\Models\DepartmentCadry;
 use App\Models\MedicalExamination;
+use App\Models\Organization;
 use App\Models\DeleteCadry;
 use Auth;
 use Illuminate\Http\Request;
@@ -382,7 +383,47 @@ class ChatController extends Controller
 
     public function control()
     {
-        
+        $organizations = Organization::get();
+        $u = [];
+        foreach ($organizations as $yy)
+        {
+            $org_id = $yy->id;
+
+            $all = 0; $allSv = 0;
+
+            if($org_id == 152) {
+                
+                $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
+                ->with(['departmentstaff','departmentstaff.cadry'])->get();
+            } else {
+                
+                $alldepartments = Department::where('organization_id', $org_id)
+                ->with(['departmentstaff','departmentstaff.cadry'])->get();
+            }
+            
+            $a = []; $b = []; $p = 0; $fakt = 0;
+            foreach ($alldepartments as $item)
+            {
+                $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
+                foreach($item->departmentstaff as $staff) {
+                    $x = $staff->stavka;
+                     $p = $p  + $x;
+                    $l = $staff->cadry->sum('stavka');
+                    $y = $staff->cadry->where('status', false)->sum('stavka');
+                    $fakt = $fakt + $y;
+                    if($x>$l) $z = $z + $x - $l;
+                    if($x<$y) $q = $q + $y - $x;
+                }
+                
+                $a[$item->id] = $z;
+                $b[$item->id] = $q;
+                $all = $all + $z;
+                $allSv =  $allSv + $q;
+            }
+            $u[$org_id] = $yy->railway->name . '#' . $yy->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv;
+        }
+        dd($u);
+       
     }
 
     public function xx()

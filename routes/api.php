@@ -15,6 +15,7 @@ use App\Http\Controllers\MedController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\EmmatController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -309,11 +310,24 @@ Route::group([
     
     Route::group([
         'middleware' => [
-            'permission:administration:administration_permissions'
+            'permission:organization_cadries'
             ]
         ], function () {
         
-        Route::get('/administration/permissions', [OrganizationController::class, 'api_permissions']);
+        Route::get('/administration/roles', [UserController::class, 'api_roles']);
+        Route::get('/administration/role/{role_id}/permissions', [UserController::class, 'api_role_pers']);
+        Route::put('/administration/role/{role_id}/permissions/update', [UserController::class, 'api_role_pers_update']);
+        Route::delete('/administration/role/{role_id}/delete', [UserController::class, 'api_role_delete']);
+       
+    });
+
+    Route::group([
+        'middleware' => [
+            'permission:organization_cadries'
+            ]
+        ], function () {
+        
+        Route::get('/administration/users', [UserController::class, 'api_users']);
        
     });
 

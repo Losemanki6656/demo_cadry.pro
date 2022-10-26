@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Permission;
 use Spatie\Permission\Models\Role;
+//use Spatie\Permission\Models\;
 use DB;
 use Hash;
 use Illuminate\Support\Arr;
+use App\Http\Resources\RoleAdminCollection;
+use App\Http\Resources\PermissionAdminResource;
     
 class UserController extends Controller
 {
@@ -147,5 +151,83 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect()->route('users.index')
                         ->with('success','User deleted successfully');
+    }
+
+    public function api_roles()
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $roles = new RoleAdminCollection(Role::with('permissions')->paginate($per_page));
+
+        return response()->json($roles);
+    }
+
+    public function api_role_pers($role_id)
+    {
+        $user_permissions = Role::with('permissions')->find($role_id)->permissions;
+
+        $permissions = Permission::all()->map(function ($permission) use ($user_permissions) {
+
+            return [
+                'id' => $permission->id,
+                'name' => $permission->name,
+                'check' => in_array($permission->id, $user_permissions->pluck('id')->toArray())
+            ];
+         });
+
+        return response()->json($permissions);
+    }
+
+    public function api_role_pers_update($role_id, Request $request)
+    {
+        $arr = $request->all();
+
+        $role = Role::find($role_id);
+
+        foreach ($arr as $item)
+        {
+           if($item['check'] == true) {
+                if(!$role->hasPermissionTo($item['name'])) 
+                    $role->givePermissionTo($item['name']);
+           } else if($role->hasPermissionTo($item['name'])) 
+           $role->revokePermissionTo($item['name']);
+        }
+
+        return response()->json([
+            'message' => "Permission successfully given to role!"
+        ]);
+    }
+
+    public function api_role_delete(Role $role_id)
+    {
+
+        $users = User::all();
+
+        foreach($users as $item)
+        {
+            if($item->hasRole($role_id->name)) {
+
+                return response()->json([
+                    'message' => "Dont remove role!"
+                ], 403);
+            }
+                
+        }
+
+        $role_id->delete();
+
+        return response()->json([
+            'message' => "Role successfully deleted!"
+        ]);
+    }
+
+    public function api_users()
+    {
+
+        $users = User::all();
+
+        return response()->json([
+            'users' => $users
+        ]);
     }
 }
