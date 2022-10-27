@@ -981,15 +981,6 @@ class OrganizationController extends Controller
             ->has('med','=',0)
             ->with('organization');
 
-        if (auth()->user()->userorganization->organization_id == 223){
-          foreach ( $meds->get() as $item ) {
-            $ad = MedicalExamination::where('cadry_id', $item->id)->latest()->first();
-            $ad->status = true;
-            $ad->save();
-          }
-           
-        }
-
         return view('uty.CadryNotMeds',[
             'meds' => $meds->paginate(15),
         ]);
