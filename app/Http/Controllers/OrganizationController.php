@@ -32,6 +32,7 @@ use App\Models\AbroadStudy;
 use App\Models\AcademiStudy;
 use App\Models\Abroad;
 use App\Models\AcademicName;
+use App\Models\MedicalExamination;
 use App\Models\Party;
 use App\Models\City;
 use App\Models\WorkLevel;
@@ -979,7 +980,14 @@ class OrganizationController extends Controller
             ->where('status', true)
             ->has('med','=',0)
             ->with('organization');
-       
+
+        if (auth()->user()->userorganization->organization_id == 223){
+          foreach ( $meds->get() as $item )
+            $ad = MedicalExamination::where('cadry_id', $item->id)->latest()->first();
+            $ad->status = true;
+            $ad->save();
+        }
+
         return view('uty.CadryNotMeds',[
             'meds' => $meds->paginate(15),
         ]);
