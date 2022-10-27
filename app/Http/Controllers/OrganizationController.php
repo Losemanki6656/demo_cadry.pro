@@ -24,6 +24,7 @@ use App\Models\Revision;
 use App\Models\Education;
 use App\Models\DepartmentCadry;
 use App\Models\DepartmentStaff;
+use App\Models\DisciplinaryAction;
 use App\Models\AcademicTitle;
 use App\Models\AcademicDegree;
 use App\Models\Institut;
@@ -44,6 +45,7 @@ use App\Exports\CareerExport;
 use App\Exports\RelativeExport;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
+use App\Http\Resources\MedicalResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\CadryResource;
 use App\Http\Resources\CadryCollection;
@@ -72,6 +74,8 @@ use App\Http\Resources\AcademicStudyResource;
 use App\Http\Resources\AbroadResource;
 use App\Http\Resources\AcademicResource;
 use App\Http\Resources\DepartmentStaffResource;
+use App\Http\Resources\DisciplinaryActionResource;
+use App\Http\Resources\IncentiveResource;
 use Auth;
 use File;
 use DB;
@@ -367,6 +371,9 @@ class OrganizationController extends Controller
         $carers = Career::where('cadry_id',$id)->orderBy('sort','asc')->get();
         $cadry_relatives = CadryRelative::where('cadry_id',$id)->with('relative')->orderBy('sort','asc')->get();
         $incentives = Incentive::where('cadry_id',$id)->get();
+        $discips = DisciplinaryAction::where('cadry_id',$id)->get();
+        $meds = MedicalExamination::where('cadry_id',$id)->get();
+        $vacations = Vacation::where('cadry_id',$id)->get();
 
         return response()->json([
             'cadry' => $cadry,
@@ -374,7 +381,10 @@ class OrganizationController extends Controller
             'educations' =>  InfoEducationResource::collection($cadry->instituts),
             'carers' => CareerResource::collection($carers),
             'relatives' =>  RelativesResource::collection($cadry_relatives),
-            'incentives' => $incentives
+            'incentives' => IncentiveResource::collection($incentives),
+            'discips' => DisciplinaryActionResource::collection($discips),
+            'vacations' => VacationResource::collection($vacations),
+            'meds' => MedicalResource::collection($meds)
         ]);
 
     }
