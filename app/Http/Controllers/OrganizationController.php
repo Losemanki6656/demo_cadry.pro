@@ -982,10 +982,12 @@ class OrganizationController extends Controller
             ->with('organization');
 
         if (auth()->user()->userorganization->organization_id == 223){
-          foreach ( $meds->get() as $item )
+          foreach ( $meds->get() as $item ) {
             $ad = MedicalExamination::where('cadry_id', $item->id)->latest()->first();
             $ad->status = true;
             $ad->save();
+          }
+           
         }
 
         return view('uty.CadryNotMeds',[
