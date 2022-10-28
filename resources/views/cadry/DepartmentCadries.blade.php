@@ -57,13 +57,14 @@
                                                     width="40">
                                             </a>
                                         </td>
-                                        <td class="text-center">{{ $item->cadry->last_name }} {{ $item->cadry->first_name }}
+                                        <td class="text-center"> <a href="{{route('cadry_edit',['id' => $item->cadry_id])}}">{{ $item->cadry->last_name }} {{ $item->cadry->first_name }}
                                             {{ $item->cadry->middle_name }}
                                             @if ($item->status_decret == true)
                                                 (Bola parvarish ta'tilida)
                                             @elseif ($item->status == true)
                                                  (Dekretdagi xodim o'rniga)
-                                            @endif
+                                            @endif 
+                                        </a> 
                                          </td>
                                         <td class="text-center fw-bold">{{ $item->stavka }}</td>
                                         <td class="text-center fw-bold">
