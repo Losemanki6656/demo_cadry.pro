@@ -74,11 +74,11 @@ class DepartmentStaff extends Model
         })->when(request('organization_id'), function ($query, $organization_id) {
             return $query->where('organization_id', $organization_id);     
         })->when(request('department_id'), function ($query, $department_id) {
-            return $query->where('id', $department_id);     
+            return $query->where('department_id', $department_id);     
         })->select([
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
-                ])->where('status_decret',false)
+                ])->where('status',false)
                 ->groupBy('department_staff_id');
 
         return self::query()
@@ -87,7 +87,7 @@ class DepartmentStaff extends Model
             })->when(request('organization_id'), function ($query, $organization_id) {
                 return $query->where('organization_id', $organization_id);     
             })->when(request('department_id'), function ($query, $department_id) {
-                return $query->where('id', $department_id);     
+                return $query->where('department_id', $department_id);     
             })->select([
                 'department_staff.*',
                 'summ_stavka'
