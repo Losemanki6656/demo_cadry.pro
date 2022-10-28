@@ -1103,43 +1103,43 @@ class CadryController extends Controller
     public function api_statistics(Request $request)
     {
 
-            $all = Cadry::filter()->count();
-            $man = Cadry::filter()->where('sex',1)->count();
+            $all = Cadry::ApiFilter()->count();
+            $man = Cadry::ApiFilter()->where('sex',1)->count();
             $woman = $all - $man;
-            $dog =  Cadry::filter()->where('worklevel_id',5)->count();
+            $dog =  Cadry::ApiFilter()->where('worklevel_id',5)->count();
 
-            $cadry30 = Cadry::filter()->where('birht_date','>=','1992-01-01')->count();
-            $cadry45 = Cadry::filter()->where('birht_date','>=','1977-01-01')->count();
+            $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1992-01-01')->count();
+            $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1977-01-01')->count();
             
-            $nafaqaMan = Cadry::filter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
-            $nafaqaWoman = Cadry::filter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
+            $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
+            $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
 
-            $eduoliy = Cadry::filter()->where('education_id',1)->count();
-            $edumaxsus = Cadry::filter()->where('education_id',3)->count();
-            $eduorta = Cadry::filter()->where('education_id',4)->count();
+            $eduoliy = Cadry::ApiFilter()->where('education_id',1)->count();
+            $edumaxsus = Cadry::ApiFilter()->where('education_id',3)->count();
+            $eduorta = Cadry::ApiFilter()->where('education_id',4)->count();
 
-            $birthdays = Cadry::filter()
+            $birthdays = Cadry::ApiFilter()
                 ->whereMonth('birht_date', '=', now()->format('m'))
                 ->whereDay('birht_date', '=', now()->format('d'));
 
-            $newcadries = Cadry::filter()->whereDate('created_at',now()->format('Y-m-d'));
+            $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
        
-            $democadries = DemoCadry::filter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
-            $democadriesback = DemoCadry::filter()->where('status',1);
+            $democadries = DemoCadry::ApiFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
+            $democadriesback = DemoCadry::ApiFilter()->where('status',1);
             
-            $vacations = Vacation::OrgFilter();
+            $vacations = Vacation::ApiFilter();
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
 
-            $allStaffs = DepartmentStaff::Filter();
+            $allStaffs = DepartmentStaff::ApiFilter();
 
             $plan = $allStaffs->sum('stavka');
-            $sverx = DepartmentStaff::Filter()->whereRaw('stavka < summ_stavka');
+            $sverx = DepartmentStaff::ApiFilter()->whereRaw('stavka < summ_stavka');
             $x = $sverx->sum('stavka');
             $y = $sverx->sum('summ_stavka');
             $sverxCount = $y - $x;
 
-            $vacant = DepartmentStaff::Filter()
+            $vacant = DepartmentStaff::ApiFilter()
                 ->where(function ($query) {
                     $query->whereRaw('stavka > summ_stavka')
                             ->orWhere('summ_stavka', null);
@@ -1148,7 +1148,7 @@ class CadryController extends Controller
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
 
-            $meds = Cadry::FilterJoin()
+            $meds = Cadry::FilterJoinApi()
                 ->where('railway_id','!=',3)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
@@ -1161,8 +1161,8 @@ class CadryController extends Controller
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
-                $careersCount = Cadry::filter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::filter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
+                $careersCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
             } 
         
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
@@ -1174,16 +1174,16 @@ class CadryController extends Controller
             {
                 $news[] = [
                     'id' => $i,
-                    'count' => Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
+                    'count' => Cadry::ApiFilter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
                 ];
                 $demo[] = [
                     'id' => $i,
-                    'count' => DemoCadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
+                    'count' => DemoCadry::ApiFilter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
                 ];
 
             }
                 
-            $mednotCount = Cadry::filter()->where('railway_id','!=',3)->has('med','=',0)->count();
+            $mednotCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('med','=',0)->count();
 
         return response()->json([
             'mednotCount' => $mednotCount,
