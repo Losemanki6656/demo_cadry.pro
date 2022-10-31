@@ -126,6 +126,21 @@ class OrganizationController extends Controller
         ]);
     }
 
+    public function api_cadry_leader_cadries(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $page = request('page', session('cadry_page', 1));
+        session(['cadry_page' => $page]);
+
+        $cadries = Cadry::ApiLeaderFilter()
+            ->with(['vacation','allStaffs','department'])->paginate($per_page, ['*'], 'page', $page);
+    
+        return response()->json([
+            'cadries' => new OrganizationCadryCollection($cadries)
+        ]);
+    }
+
     public function api_organizations(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;

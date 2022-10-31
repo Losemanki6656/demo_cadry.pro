@@ -329,6 +329,52 @@ class Cadry extends Model
         });
     }
 
+    public function scopeApiLeaderFilter()
+    {
+        return self::query()
+        ->where('status',true)
+        ->where('railway_id', auth()->user()->userorganization->railway_id)
+        ->when(request('organization_id'), function ( $query, $organization_id) {
+            return $query->where('organization_id', $organization_id);
+
+        })->when(request('department_id'), function ( $query, $department_id) {
+                return $query->where('department_id', $department_id);
+
+        })->when(request('last_name'), function ( $query, $last_name) {
+            return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
+            
+        })->when(request('middle_name'), function ( $query, $middle_name) {
+            return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
+            
+        })->when(request('first_name'), function ( $query, $first_name) {
+            return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
+
+        })->when(request('department_id'), function ( $query, $department_id) {
+                return $query->where('department_id', $department_id);
+
+        })->when(request('staff_id'), function ($query, $staff_id) {
+            $arr = DepartmentCadry::where('staff_id',$staff_id)->pluck('cadry_id')->toArray();
+            return $query->whereIn('id', $arr);
+
+        })->when(request('education_id'), function ($query, $education_id) {
+            return $query->where('education_id', $education_id);
+
+        })->when(request('birth_region_id'), function ($query, $birth_region_id) {
+            return $query->where('birth_region_id', $birth_region_id);
+
+        })->when(request('sex'), function ($query, $sex) {
+            if($sex == "true") $z = true; else $z = false;
+            return $query->where('sex', $z);
+
+        })->when(request('age_start'), function ($query, $age_start) {
+            return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
+
+        })->when(request('age_end'), function ($query, $age_end) {
+            return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
+
+        });
+    }
+
     public function scopeApiMedFilter()
     {
         return self::query()

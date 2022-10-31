@@ -317,10 +317,20 @@ Route::group([
         Route::get('/organization/leader/statistics', [CadryController::class, 'api_cadry_leader_statistics']);
        
     });
+
+    Route::group([
+        'middleware' => [
+            'permission:cadry_leader_cadries'
+            ]
+        ], function () {
+        
+        Route::get('/organization/leader/cadries', [OrganizationController::class, 'api_cadry_leader_cadries']);
+       
+    });
     
     Route::group([
         'middleware' => [
-            'permission:admin'
+            'permission:organization_statistics'
             ]
         ], function () {
         
