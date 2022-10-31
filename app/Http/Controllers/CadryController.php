@@ -1194,7 +1194,7 @@ class CadryController extends Controller
             'relativesCount' => $relativesCount,
             'retired_Man' => $nafaqaMan,
             'retired_WoMan' => $nafaqaWoman,
-            'allCadriesCount' => $all,
+            'all_cadries_count' => $all,
             'all_man_cadries' => $man,
             'all_woman_cadries' => $woman,
             'cadry30' => $cadry30,
@@ -1311,7 +1311,7 @@ class CadryController extends Controller
             'relativesCount' => $relativesCount,
             'retired_Man' => $nafaqaMan,
             'retired_WoMan' => $nafaqaWoman,
-            'allCadriesCount' => $all,
+            'all_cadries_count' => $all,
             'all_man_cadries' => $man,
             'all_woman_cadries' => $woman,
             'cadry30' => $cadry30,
@@ -1328,7 +1328,7 @@ class CadryController extends Controller
             'plan' => $plan,
             'vacations' => $vac,
             'vacations_decret' => $vacDec,
-            'black_cadries_count' => $democadriesback->count(),
+            'black_list_cadries' => $democadriesback->count(),
             'new_caries_year' => $news,
             'delete_cadries_year' => $demo,
         ]);
@@ -1427,7 +1427,7 @@ class CadryController extends Controller
             'eduoliy' => $eduoliy,
             'edumaxsus' => $edumaxsus,
             'cadry45' => $cadry45,
-            'democadriesback' => $democadriesback->count()
+            'black_list_cadries' => $democadriesback->count()
         ]);
     }
 
