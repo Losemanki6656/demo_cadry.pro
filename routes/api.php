@@ -193,7 +193,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_staffs'
             ]
         ], function () {
 
@@ -209,7 +209,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_departments'
             ]
         ], function () {
 
@@ -235,7 +235,7 @@ Route::group([
     
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_vacations'
             ]
         ], function () {
 
@@ -252,7 +252,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_meds'
             ]
         ], function () {
 
@@ -265,7 +265,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_incentives'
             ]
         ], function () {
 
@@ -276,7 +276,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_discips'
             ]
         ], function () {
 
@@ -287,7 +287,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_archive'
             ]
         ], function () {
 
@@ -300,17 +300,27 @@ Route::group([
     //cadry statistics
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:organization_statistics'
             ]
         ], function () {
         
         Route::get('/organization/statistics', [CadryController::class, 'api_cadry_statistics']);
        
     });
+
+    Route::group([
+        'middleware' => [
+            'permission:cadry_leader_statistics'
+            ]
+        ], function () {
+        
+        Route::get('/organization/leader/statistics', [CadryController::class, 'api_cadry_leader_statistics']);
+       
+    });
     
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:admin'
             ]
         ], function () {
         
@@ -323,7 +333,7 @@ Route::group([
 
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:admin'
             ]
         ], function () {
         
@@ -338,7 +348,7 @@ Route::group([
     //emmat
     Route::group([
         'middleware' => [
-            'permission:organization_cadries'
+            'permission:admin'
             ]
         ], function () {
         
