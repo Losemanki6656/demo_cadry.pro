@@ -1211,7 +1211,7 @@ class CadryController extends Controller
             'plan' => $plan,
             'vacations' => $vac,
             'vacations_decret' => $vacDec,
-            'black_cadries_count' => $democadriesback->count(),
+            'black_list_cadries' => $democadriesback->count(),
             'new_caries_year' => $news,
             'delete_cadries_year' => $demo,
         ]);

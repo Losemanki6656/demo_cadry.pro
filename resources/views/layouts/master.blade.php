@@ -275,6 +275,12 @@
                         @can('role-list')
                             <li class="menu-title" data-key="t-menu">{{ __('messages.xodimlar') }}</li>
                             <li>
+                                <a href="https://exodim.netlify.app/" class="btn btn-primary text-light">
+                                    Exodim yangi ko'rinishi
+                                    <span class="badge bg-warning">New</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('cadry_statistics') }}">
                                     <i data-feather="pie-chart"></i>
                                     <span data-key="t-dashboard">{{ __('messages.statistika') }}</span>
@@ -302,14 +308,12 @@
                                 <a href="{{ route('vacations') }}">
                                     <i data-feather="bar-chart-2"></i>
                                     <span data-key="t-dashboard">Ta'tillar</span>
-                                    <span class="badge bg-primary">New</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('meds') }}">
                                     <i data-feather="bar-chart-2"></i>
                                     <span data-key="t-dashboard">Tibbiy ko'rik</span>
-                                    <span class="badge bg-success">New</span>
                                 </a>
                             </li>
                             <li>
