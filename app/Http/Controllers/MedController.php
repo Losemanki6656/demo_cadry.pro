@@ -13,7 +13,7 @@ class MedController extends Controller
    {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-         $cadries = Cadry::SeFilter()
+         $cadries = Cadry::ApiSeFilter()
             ->select(['cadries.*', 'medical_examinations.*'])
             ->where('cadries.status',true)
             ->where('medical_examinations.status',true)
