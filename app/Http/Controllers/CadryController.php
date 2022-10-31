@@ -1500,11 +1500,31 @@ class CadryController extends Controller
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
 
+            $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
+            $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
+
+
+            $news = [];
+            for($i = 1; $i <= 12; $i ++)
+            {
+                $news[] = [
+                    'id' => $i,
+                    'count' => Cadry::ApiFilter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
+                ];
+                $demo[] = [
+                    'id' => $i,
+                    'count' => DemoCadry::ApiFilter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count()
+                ];
+
+            }
+
         return response()->json([
             'mednotCount' => $mednotCount,
             'vacations_decret' => $vacDec,
             'vacations' => $vac,
             'meds' => $meds,
+            'abroads' => $abroads,
+            'academics' => $academics,
             'careersCount' => $careersCount,
             'relativesCount' => $relativesCount,
             'plan' => $plan,
@@ -1524,7 +1544,9 @@ class CadryController extends Controller
             'medium_special_cadries' => $edumaxsus,
             'secondary_special_cadries' => $all - $edumaxsus - $eduoliy,
             'cadry45' => $cadry45-$cadry30,
-            'black_list_cadries' => $democadriesback->count()
+            'black_list_cadries' => $democadriesback->count(),
+            'new_caries_year' => $news,
+            'delete_cadries_year' => $demo,
         ]);
     }
 
