@@ -330,7 +330,7 @@ Route::group([
     
     Route::group([
         'middleware' => [
-            'permission:organization_statistics'
+            'permission:admin'
             ]
         ], function () {
         
