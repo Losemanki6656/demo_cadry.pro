@@ -330,7 +330,7 @@ Route::group([
     
     Route::group([
         'middleware' => [
-            'permission:admin'
+            'permission:organization_cadries'
             ]
         ], function () {
         

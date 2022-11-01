@@ -35,7 +35,7 @@ class MedResource extends JsonResource
             'staff' => new DepartmentCadryResource($post_name),
             'date1' => $this->date1,
             'date2' => $this->date2,
-            'days' => $days
+            'days' => $days + 1
         ];
     }
 }
