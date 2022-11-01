@@ -504,6 +504,7 @@ class Cadry extends Model
     public function scopeApicadryFilter()
     {
         return self::query()
+        ->where('status', true)
         ->where('organization_id',auth()->user()->userorganization->organization_id)
         ->when(\Request::input('search'),function($query,$search){
            $query->where(function ($query) use ($search) {

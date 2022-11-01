@@ -78,6 +78,7 @@ class MedController extends Controller
       $med->date1 = $request->date1;
       $med->date2 = $request->date2;
       $med->result = $request->result ?? '';
+      $med->save();
       
       return response()->json([
          'status' => true,
