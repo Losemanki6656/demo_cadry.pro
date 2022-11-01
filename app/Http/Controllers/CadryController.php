@@ -1427,7 +1427,7 @@ class CadryController extends Controller
             'eduoliy' => $eduoliy,
             'edumaxsus' => $edumaxsus,
             'cadry45' => $cadry45,
-            'black_list_cadries' => $democadriesback->count()
+            'democadriesback' => $democadriesback->count()
         ]);
     }
 
