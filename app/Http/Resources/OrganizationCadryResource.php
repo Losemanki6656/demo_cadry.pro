@@ -35,7 +35,7 @@ class OrganizationCadryResource extends JsonResource
             'passport_date' => $this->pass_date,
             'sex' => $this->sex,
             'full_birth_address' => $this->birth_region->name . ', ' . $this->birth_city->name,
-            'full_live_address' => $this->address_region->name . ', ' . $this->address_city->name
+            'full_live_address' => $this->address_region->name ?? '' . ', ' . $this->address_city->name ?? ''
         ];
     }
 }
