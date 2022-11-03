@@ -775,7 +775,6 @@ class BackApiController extends Controller
     }
     public function apiNewStaffToCadryPost($cadry_id, Request $request)
     {
-
         $newI = DepartmentCadry::where('cadry_id', $cadry_id)->first();
 
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);

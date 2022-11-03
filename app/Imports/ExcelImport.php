@@ -15,7 +15,6 @@ class ExcelImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-
     }
 
     public function transformDate($value, $format = 'Y-m-d')

@@ -16,6 +16,7 @@ use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\EmmatController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PereviewStatisticController;
 
 
 /*
@@ -90,6 +91,16 @@ Route::group([
         ], function () {
         
         Route::get('/management/statistics', [CadryController::class, 'api_statistics']);
+        
+    }); 
+
+    Route::group([
+        'middleware' => [
+            'permission:pereview_statistics'
+            ]
+        ], function () {
+        
+        Route::get('/pereview/statistics/retireds', [PereviewStatisticController::class, 'pereview_retireds']);
         
     }); 
 

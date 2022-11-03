@@ -80,6 +80,9 @@
             <th
                 style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
                 Kategoriya</th>
+            <th
+                style="border: 1pt solid black;background-color: #4b5bf3;align-items: center;text-align: center;font-weight: bold;">
+                Jazo turi</th>
         </tr>
         <tbody>
 
@@ -89,7 +92,7 @@
                         {{ $loop->index + 1 }}
                     </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
-                        {{ $item->last_name }}  {{ $item->first_name }}  {{ $item->middle_name }} </td>
+                        {{ $item->last_name }} {{ $item->first_name }} {{ $item->middle_name }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
                         {{ $item->birth_region->name }},{{ $item->birth_city->name }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
@@ -143,6 +146,14 @@
                         {{ $item->allStaffs[0]->staff_full ?? '' }} </td>
                     <td style="border: 1pt solid black; align-items: center; text-align: center;">
                         {{ $item->allStaffs[0]->staff->category->name ?? '' }} </td>
+                    <td style="border: 1pt solid black; align-items: center; text-align: center;">
+                        @if ($item->discips->first())
+                            {{ $item->discips->first()->number }}, {{ $item->discips->first()->date_action }} yil,
+                            {{ $item->discips->first()->type_action }}
+                        @else
+                            Ko'rilmagan
+                        @endif
+                    </td>
 
                 </tr>
             @endforeach

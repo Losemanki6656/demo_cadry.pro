@@ -9,6 +9,7 @@ use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ExcelImport;
 use App\Exports\UsersExport;
+use App\Exports\ArrExport;
 use App\Models\Cadry;
 use App\Models\UserOrganization;
 use App\Models\Department;
@@ -928,23 +929,32 @@ class CadryController extends Controller
         set_time_limit(600);
 
         $collections = Excel::toCollection(new ExcelImport, $request->file('file'));
-
+        $cadries = Cadry::query()->where('organization_id',152);
         $arr = $collections[0];
         $x = 0;
 
         foreach($arr as $item)
         {
-            $x ++;
-            Classification::create([
-                'name_ru' => $item[0],
-                'name_uz' => $item[1],
-                'code_staff' => $item[2],
-                'type_staff' => $item[3],
-                'category' => $item[4],
-            ]);
-        }
+            $h = "";
+            $r = $item[7];
+            
+            $top = Cadry::query()->where('organization_id',152)->where('passport', 'LIKE', "%{$r}%");
 
-        dd($x);
+            if($top->first()) {
+                $y = DisciplinaryAction::where('cadry_id', $top->first()->id)->whereYear('date_action', '=', now()->format('Y'));
+                if($y->first()){
+                    $z = $y->first();
+                    if($item[19]!='')
+                        $item[19] = $item[19] . '; ' . $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
+                    else
+                        $item[19] = $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
+                }        
+            } 
+        }
+        $invoices = $arr->toArray();
+        $export = new ArrExport($invoices);
+        return Excel::download($export, 'export.xlsx');
+
     }
 
 
