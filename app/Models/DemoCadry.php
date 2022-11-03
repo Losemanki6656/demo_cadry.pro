@@ -81,6 +81,21 @@ class DemoCadry extends Model
     public function scopeApiFilter()
     {
         return self::query()
+        ->where('status',0)
+        ->when(request('organization_id'), function ($query, $organization_id) {
+            return $query->where('organization_id', $organization_id);
+
+        })->when(request('department_id'), function ($query, $department_id) {
+            return $query->where('department_id', $department_id);
+
+        })->when(request('railway_id'), function ($query, $railway_id) {
+            return $query->where('railway_id', $railway_id);
+        })->with(['organization','region','city']);
+    }
+    public function scopeApiBlackFilter()
+    {
+        return self::query()
+        ->where('status',1)
         ->when(request('organization_id'), function ($query, $organization_id) {
             return $query->where('organization_id', $organization_id);
 

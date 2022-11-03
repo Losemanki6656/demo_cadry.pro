@@ -101,6 +101,19 @@ Route::group([
         ], function () {
         
         Route::get('/pereview/statistics/retireds', [PereviewStatisticController::class, 'pereview_retireds']);
+        Route::get('/pereview/statistics/contractors', [PereviewStatisticController::class, 'pereview_contractors']);
+        Route::get('/pereview/statistics/domestic_workers', [PereviewStatisticController::class, 'pereview_domestic_workers']);
+        Route::get('/pereview/statistics/not-meds', [PereviewStatisticController::class, 'pereview_not_meds']);
+        Route::get('/pereview/statistics/expired-meds', [PereviewStatisticController::class, 'pereview_expired_meds']);
+        Route::get('/pereview/statistics/vacations', [PereviewStatisticController::class, 'pereview_vacations']);
+        Route::get('/pereview/statistics/not-career-cadries', [PereviewStatisticController::class, 'pereview_not_careers']);
+        Route::get('/pereview/statistics/not-relative-cadries', [PereviewStatisticController::class, 'pereview_not_relatives']);
+        Route::get('/pereview/statistics/birthdays', [PereviewStatisticController::class, 'pereview_birthdays']);
+        Route::get('/pereview/statistics/new-cadries', [PereviewStatisticController::class, 'pereview_new_cadries']);
+        Route::get('/pereview/statistics/delete-cadries', [PereviewStatisticController::class, 'pereview_delete_cadries']);
+        Route::get('/pereview/statistics/delete-black-cadries', [PereviewStatisticController::class, 'pereview_delete_black_cadries']);
+        Route::get('/pereview/statistics/vacancies', [PereviewStatisticController::class, 'pereview_vacancies']);
+        Route::get('/pereview/statistics/over', [PereviewStatisticController::class, 'pereview_over']);
         
     }); 
 
@@ -190,7 +203,7 @@ Route::group([
         Route::post('/organization/cadry-staff/{department_cadry_id}', [BackApiController::class, 'SuccessDeleteCadryStaff']);
 
         
-        Route::delete('/organization/cadry/{cadry_id}/delete', [BackApiController::class, 'full_delete_cadry']);
+        Route::post('/organization/cadry/{cadry_id}/delete', [BackApiController::class, 'full_delete_cadry']);
 
 
         

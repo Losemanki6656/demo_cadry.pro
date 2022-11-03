@@ -34,6 +34,10 @@ class DepartmentCadryResource extends JsonResource
                 'fullname' => $this->cadry->last_name .' ' . $this->cadry->first_name . ' ' . $this->cadry->middle_name,
                 'photo' => url(asset('storage/' . $this->cadry->photo)),
             ],
+            'department_id' => [
+                'id' => $this->department->id,
+                'name' => $this->department->name
+            ],
             'staff_full' => $this->staff_full,
             'staff_date' => $this->staff_date,
             'rate' => $this->stavka,
