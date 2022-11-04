@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class CadryResource extends JsonResource
 {
@@ -23,6 +24,8 @@ class CadryResource extends JsonResource
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
+            'birth_date' => $this->birht_date,
+            'cadry_age' => Carbon::parse($this->birht_date)->age,
             'organization' => new OrganizationResource($this->organization),
             'staff' => new DepartmentCadryResource($post_name),
         ];

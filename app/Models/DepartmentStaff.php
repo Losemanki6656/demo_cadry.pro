@@ -96,6 +96,7 @@ class DepartmentStaff extends Model
                 $join->on('t1.department_staff_id', '=', 'department_staff.id');
             });
     }
+    
     public function scopeCadryFilter()
     {
         $cadryGroupByQuery = DepartmentCadry::where('organization_id', auth()->user()->userorganization->organization_id)

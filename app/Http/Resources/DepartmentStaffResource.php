@@ -17,6 +17,7 @@ class DepartmentStaffResource extends JsonResource
         return [
             'id' => $this->id,
             'staff_id' => new StaffResource($this->staff),
+            'organization_id' => new OrganizationResource($this->organization),
             'classification_id' => new ClassificationResource($this->classification),
             'staff_fullname' => $this->staff_full,
             'rate' => $this->stavka,

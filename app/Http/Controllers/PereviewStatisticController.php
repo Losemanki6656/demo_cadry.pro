@@ -208,7 +208,13 @@ class PereviewStatisticController extends Controller
                             ->orWhere('summ_stavka', null);
                 });
 
+        $x = $cadries->sum('stavka');
+        $y = $cadries->sum('summ_stavka');
+
+        $vacancies_count = $x - $y;
+
         return response()->json([
+            'vacancies_count' => $vacancies_count,
             'vacancies' => new DepartmentStaffCollection($cadries->paginate($per_page))
         ]);
         
@@ -220,8 +226,13 @@ class PereviewStatisticController extends Controller
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
         
         $cadries = DepartmentStaff::ApiFilter()->whereRaw('stavka < summ_stavka');
+        
+        $x = $cadries->sum('stavka');
+        $y = $cadries->sum('summ_stavka');
+        $over_count = $y - $x;
 
         return response()->json([
+            'over_count' => $over_count,
             'over' => new DepartmentStaffCollection($cadries->paginate($per_page))
         ]);
         
