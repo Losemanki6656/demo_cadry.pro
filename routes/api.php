@@ -17,6 +17,8 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\EmmatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PereviewStatisticController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\TrainingController;
 
 
 /*
@@ -388,6 +390,17 @@ Route::group([
         
         Route::get('/emmat/cadries', [EmmatController::class, 'emmat_cadries']);
         Route::post('/emmat/cadry/addToken/{emmat_cadry_id}', [EmmatController::class, 'add_token_to_cadry']);
+       
+    });
+
+    //qulaification
+    Route::group([
+        'middleware' => [
+            'permission:admin'
+            ]
+        ], function () {
+        
+        Route::get('/qualification/apparats', [TrainingController::class, 'apparats']);
        
     });
     

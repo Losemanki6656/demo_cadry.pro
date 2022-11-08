@@ -31,14 +31,18 @@ class PereviewStatisticController extends Controller
                     });
                 });
        } else {
-
+        
             $cadries = Cadry::ApiFilter()
-                ->where(function ($query) {
-                    $query->Where('sex', 1)->where('birht_date','<=','1957-01-01');
-                })
-                ->orwhere(function ($query) {
-                    $query->Where('sex', 0)->where('birht_date','<=','1967-01-01');
-                });
+                ->where(function($query) {
+                    $query->where([
+                                    ['birht_date','<=','1957-01-01'],
+                                    ['sex', 1],
+                                ])
+                        ->orwhere([
+                                    ['birht_date','<=','1967-01-01'],
+                                    ['sex', 0],
+                        ]);
+                    });
 
        }
 
