@@ -618,8 +618,8 @@ class OrganizationController extends Controller
 
         //     $response = curl_exec($curl);
             
-            return redirect()->back()->with('msg' ,$response);
-        }
+            //return redirect()->back()->with('msg');
+     //   }
         
     }
 
