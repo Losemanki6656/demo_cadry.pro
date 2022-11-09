@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Apparat extends Model
 {
     use HasFactory;
+
+    public function directions()
+    {
+        return $this->hasMany(TrainingDirection::class);
+    }
 }
