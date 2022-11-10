@@ -159,7 +159,8 @@ class DepartmentController extends Controller
 
     public function department_staffs($department_id)
     {
-        $department = DepartmentStaff::where('department_id', $department_id)->with(['cadry','staff','classification'])->get();
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+        $department = DepartmentStaff::where('department_id', $department_id)->with(['cadry','staff','classification'])->paginate($per_page);
 
         return response()->json([
             'department' => new DepartmentStaffCollection($department)
