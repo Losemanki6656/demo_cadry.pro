@@ -294,6 +294,8 @@ class UserController extends Controller
             } else  {
     
                 $userOrgan = UserOrganization::where('user_id',$user_id)->first();
+                $userOrgan->railway_id = $rail_id;
+                $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->phone = $request->phone;
                 $userOrgan->post_id = $request->password;
                 $userOrgan->save();
