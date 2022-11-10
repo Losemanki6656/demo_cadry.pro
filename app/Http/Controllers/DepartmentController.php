@@ -16,6 +16,7 @@ use App\Http\Resources\DepartmentCadryCollection;
 use App\Http\Resources\OrganizationCadryCollection;
 use App\Http\Resources\OrgStaffResource;
 use App\Http\Resources\OrgStaffCollection;
+use App\Http\Resources\DepartmentStaffCollection;
 
 
 use App\Http\Resources\DepartmentCollection;
