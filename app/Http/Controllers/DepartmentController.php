@@ -161,7 +161,7 @@ class DepartmentController extends Controller
         $department = DepartmentStaff::where('department_id', $department_id)->with(['cadry','staff','classification'])->get();
 
         return response()->json([
-            'department' => DepartmentStaffResource::collection($department)
+            'department' => new DepartmentStaffCollection($department)
         ]);
     }
 
