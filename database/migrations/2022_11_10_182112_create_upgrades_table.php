@@ -22,6 +22,8 @@ class CreateUpgradesTable extends Migration
             $table->bigInteger('training_direction_id')->unsigned()->index()->nullable();
             $table->integer('type_training')->nullable();
             $table->boolean('status')->default(true);
+            $table->integer('dataqual')->nullable();
+            $table->boolean('status_bedroom')->default(false);
             $table->date('date1')->nullable();
             $table->date('date2')->nullable();
             $table->string('group_number')->nullable();
