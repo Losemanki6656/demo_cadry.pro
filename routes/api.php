@@ -407,6 +407,7 @@ Route::group([
         Route::get('/qualification/cadry/{cadry_id}', [TrainingController::class, 'cadry_filter']);
         Route::post('/qualification/cadry/{cadry_id}/add', [TrainingController::class, 'cadry_add_qual']);
         Route::get('/qualification/statistics', [TrainingController::class, 'statistics']);
+        Route::put('/qualification/{qualification_id}/update', [TrainingController::class, 'cadry_qual_update']);
        
     });
     
