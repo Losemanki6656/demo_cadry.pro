@@ -11,6 +11,7 @@ use App\Http\Resources\CadryCollection;
 use App\Http\Resources\DeleteCadryCollection;
 use App\Http\Resources\VacationCadryCollection;
 use App\Http\Resources\DepartmentStaffCollection;
+use App\Http\Resources\CadryMedCollection;
 
 class PereviewStatisticController extends Controller
 {
@@ -84,14 +85,15 @@ class PereviewStatisticController extends Controller
 
         $cadries = Cadry::FilterJoinApi()
             ->select(['cadries.*', 'medical_examinations.*'])
-            ->where('cadries.status',true)
+            ->where('cadries.status', true)
             ->where('medical_examinations.status',true)
             ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
             ->orderBy('medical_examinations.date2')
-            ->whereDate('medical_examinations.date2','<=', now());
+            ->whereDate('medical_examinations.date2','<=', now())
+            ->with('allstaffs');
 
         return response()->json([
-            'cadries' => new CadryCollection($cadries->paginate($per_page))
+            'cadries' => new CadryMedCollection($cadries->paginate($per_page))
         ]);
         
     }
@@ -100,10 +102,10 @@ class PereviewStatisticController extends Controller
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $cadries = Cadry::ApiFilter()->has('med','=',0);
+        $cadries = Cadry::ApiFilter()->with('allstaffs')->has('med','=',0);
 
         return response()->json([
-            'cadries' => new CadryCollection($cadries->paginate($per_page))
+            'cadries' => new CadryMedCollection($cadries->paginate($per_page))
         ]);
         
     }
