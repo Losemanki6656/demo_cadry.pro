@@ -20,4 +20,16 @@ class Upgrade extends Model
 
             });
     }
+
+    public function training_direction()
+    {
+        return $this->belongsTo(TrainingDirection::class);
+    }
+
+    public function apparat()
+    {
+        return $this->belongsTo(Apparat::class);
+    }
+
+
 }

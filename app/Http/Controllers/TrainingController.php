@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Apparat;
 use App\Models\Upgrade;
 use App\Models\Cadry;
+use App\Http\Resources\UpgradeResource;
 
 class TrainingController extends Controller
 {
@@ -93,10 +94,10 @@ class TrainingController extends Controller
 
     public function cadry_filter($cadry_id)
     {
-        $cadries = Upgrade::where('cadry_id', $cadry_id)->get();
+        $cadries = Upgrade::where('cadry_id', $cadry_id)->with(['apparat','training_direction'])->get();
 
         return response()->json([
-            'cadries' => $cadries
+             'cadries' => UpgradeResource::collection($cadries)
         ]);
         
     }
