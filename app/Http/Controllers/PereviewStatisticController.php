@@ -105,7 +105,7 @@ class PereviewStatisticController extends Controller
         $cadries = Cadry::ApiFilter()->with('allstaffs')->has('med','=',0);
 
         return response()->json([
-            'cadries' => new CadryMedCollection($cadries->paginate($per_page))
+            'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
         
     }
