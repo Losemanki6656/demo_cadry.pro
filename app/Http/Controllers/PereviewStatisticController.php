@@ -241,4 +241,15 @@ class PereviewStatisticController extends Controller
         ]);
         
     }
+
+    public function stafffiles(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+        
+        $stafffiles = Cadry::ApiFilter()->has('staff_files', '=', 0);
+
+        return response()->json([
+            'stafffiles' => new CadryCollection($stafffiles->paginate($per_page))
+        ]);
+    }
 }
