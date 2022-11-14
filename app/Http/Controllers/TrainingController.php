@@ -63,7 +63,7 @@ class TrainingController extends Controller
 
     public function cadry_filter($cadry_id)
     {
-        $cadries = Upgrade::where('cadry_id',$cadry_id)->get();
+        $cadries = Upgrade::where('cadry_id', $cadry_id)->where('status',true)->get();
 
         return response()->json([
             'cadries' => $cadries
