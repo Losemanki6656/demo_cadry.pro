@@ -321,7 +321,8 @@ class Cadry extends Model
             return $query->where('birth_region_id', $birth_region_id);
 
         })->when(request('sex'), function ($query, $sex) {
-            return $query->where('sex', $sex);
+            if ($sex == "true") $z = true; else $z = false;
+            return $query->where('sex', $z);
 
         })->when(request('age_start'), function ($query, $age_start) {
             return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);

@@ -149,10 +149,14 @@ class PereviewStatisticController extends Controller
 
     public function pereview_birthdays(Request $request)
     {
+        $birth_date = strtotime($request->birth_date);
+        $dateMonth = date('m', $birth_date);
+        $dateDay = date('d', $birth_date);
+
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
         
-        $cadries = Cadry::ApiFilter()->whereMonth('birht_date', '=', now()->format('m'))
-            ->whereDay('birht_date', '=', now()->format('d'));
+        $cadries = Cadry::ApiFilter()->whereMonth('birht_date', '=', $dateMonth)
+            ->whereDay('birht_date', '=', $dateDay);
 
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))

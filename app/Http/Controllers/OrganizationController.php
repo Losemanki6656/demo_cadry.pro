@@ -113,6 +113,10 @@ class OrganizationController extends Controller
 
     public function api_cadries(Request $request)
     {
+        // return response()->json([
+        //     'cadries' => $request->all()
+        // ]);
+
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
         $page = request('page', session('cadry_page', 1));
