@@ -68,5 +68,15 @@ class TrainingController extends Controller
         return response()->json([
             'cadries' => $cadries
         ]);
+        
+    }
+
+    public function statistics(Request $request)
+    {
+        $cadries = Upgrade::where('cadry_id',$cadry_id)->get();
+
+        return response()->json([
+            'cadries' => $cadries
+        ]);
     }
 }

@@ -120,7 +120,6 @@ class Cadry extends Model
         return $this->hasOne(DepartmentCadry::class);
     }
     
-    
     public function careers()
     {
         return $this->hasMany(Career::class);
@@ -176,117 +175,117 @@ class Cadry extends Model
     public function scopeFilter()
     {
         return self::query()
-        ->where('status',true)
-        ->when(\Request::input('name_se'),function($query,$name_se){
-            $query->where(function ($query) use ($name_se) {
-                $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-               
-            });
-        })->when(request('railway_id'), function ( $query, $railway_id) {
-                return $query->where('railway_id', $railway_id);
+            ->where('status',true)
+            ->when(\Request::input('name_se'),function($query,$name_se){
+                $query->where(function ($query) use ($name_se) {
+                    $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                        ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                        ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
                 
-        })->when(request('org_id'), function ( $query, $org_id) {
-                return $query->where('organization_id', $org_id);
+                });
+            })->when(request('railway_id'), function ( $query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);
+                    
+            })->when(request('org_id'), function ( $query, $org_id) {
+                    return $query->where('organization_id', $org_id);
 
-        })->when(request('dep_id'), function ( $query, $dep_id) {
-                return $query->where('department_id', $dep_id);
+            })->when(request('dep_id'), function ( $query, $dep_id) {
+                    return $query->where('department_id', $dep_id);
 
-        })->when(request('staff_se'), function ($query, $staff_se) {
-            return $query->where('staff_id', $staff_se);
+            })->when(request('staff_se'), function ($query, $staff_se) {
+                return $query->where('staff_id', $staff_se);
 
-        })->when(request('education_se'), function ($query, $education_se) {
-            return $query->where('education_id', $education_se);
+            })->when(request('education_se'), function ($query, $education_se) {
+                return $query->where('education_id', $education_se);
 
-        })->when(request('region_se'), function ($query, $region_se) {
-            return $query->where('birth_region_id', $region_se);
+            })->when(request('region_se'), function ($query, $region_se) {
+                return $query->where('birth_region_id', $region_se);
 
-        })->when(request('sex_se'), function ($query, $sex_se) {
-            if($sex_se == "true") $z = true; else $z = false;
-            return $query->where('sex', $z);
+            })->when(request('sex_se'), function ($query, $sex_se) {
+                if($sex_se == "true") $z = true; else $z = false;
+                return $query->where('sex', $z);
 
-        })->when(request('start_se'), function ($query, $start_se) {
-            return $query->whereYear('birht_date', '<=', now()->format('Y') - $start_se);
+            })->when(request('start_se'), function ($query, $start_se) {
+                return $query->whereYear('birht_date', '<=', now()->format('Y') - $start_se);
 
-        })->when(request('end_se'), function ($query, $end_se) {
-            return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
+            })->when(request('end_se'), function ($query, $end_se) {
+                return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
 
-        });
+            });
     }
 
     public function scopeFilterJoin()
     {
         return self::query()
-        ->when(request('railway_id'), function ( $query, $railway_id) {
-                return $query->where('railway_id', $railway_id);
-                
-        })->when(request('org_id'), function ( $query, $org_id) {
-                return $query->where('organization_id', $org_id);
+            ->when(request('railway_id'), function ( $query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);
+                    
+            })->when(request('org_id'), function ( $query, $org_id) {
+                    return $query->where('organization_id', $org_id);
 
-        })->when(request('dep_id'), function ( $query, $dep_id) {
-                return $query->where('department_id', $dep_id);
+            })->when(request('dep_id'), function ( $query, $dep_id) {
+                    return $query->where('department_id', $dep_id);
 
-        });
+            });
     }
 
     public function scopeFilterJoinApi()
     {
         return self::query()
-        ->when(request('railway_id'), function ( $query, $railway_id) {
-                return $query->where('railway_id', $railway_id);
-                
-        })->when(request('organization_id'), function ( $query, $organization_id) {
-                return $query->where('organization_id', $organization_id);
+            ->when(request('railway_id'), function ( $query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);
+                    
+            })->when(request('organization_id'), function ( $query, $organization_id) {
+                    return $query->where('organization_id', $organization_id);
 
-        })->when(request('department_id'), function ( $query, $department_id) {
-                return $query->where('department_id', $department_id);
+            })->when(request('department_id'), function ( $query, $department_id) {
+                    return $query->where('department_id', $department_id);
 
-        });
+            });
     }
 
     public function scopeApiFilter()
     {
         return self::query()
-        ->where('status',true)
-        ->when(request('last_name'), function ( $query, $last_name) {
-            return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-            
-        })->when(request('middle_name'), function ( $query, $middle_name) {
-            return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-            
-        })->when(request('first_name'), function ( $query, $first_name) {
-            return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
-            
-        })->when(request('railway_id'), function ( $query, $railway_id) {
-            return $query->where('railway_id', $railway_id);
+            ->where('status',true)
+            ->when(request('last_name'), function ( $query, $last_name) {
+                return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
                 
-        })->when(request('organization_id'), function ( $query, $organization_id) {
-            return $query->where('organization_id', $organization_id);
+            })->when(request('middle_name'), function ( $query, $middle_name) {
+                return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
+                
+            })->when(request('first_name'), function ( $query, $first_name) {
+                return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
+                
+            })->when(request('railway_id'), function ( $query, $railway_id) {
+                return $query->where('railway_id', $railway_id);
+                    
+            })->when(request('organization_id'), function ( $query, $organization_id) {
+                return $query->where('organization_id', $organization_id);
 
-        })->when(request('department_id'), function ( $query, $department_id) {
-                return $query->where('department_id', $department_id);
+            })->when(request('department_id'), function ( $query, $department_id) {
+                    return $query->where('department_id', $department_id);
 
-        })->when(request('staff_id'), function ($query, $staff_id) {
-            return $query->where('staff_id', $staff_id);
+            })->when(request('staff_id'), function ($query, $staff_id) {
+                return $query->where('staff_id', $staff_id);
 
-        })->when(request('education_id'), function ($query, $education_id) {
-            return $query->where('education_id', $education_id);
+            })->when(request('education_id'), function ($query, $education_id) {
+                return $query->where('education_id', $education_id);
 
-        })->when(request('birth_region_id'), function ($query, $birth_region_id) {
-            return $query->where('birth_region_id', $birth_region_id);
+            })->when(request('birth_region_id'), function ($query, $birth_region_id) {
+                return $query->where('birth_region_id', $birth_region_id);
 
-        })->when(request('sex'), function ($query, $sex) {
-            if($sex == "true") $z = true; else $z = false;
-            return $query->where('sex', $z);
+            })->when(request('sex'), function ($query, $sex) {
+                if($sex == "true") $z = true; else $z = false;
+                return $query->where('sex', $z);
 
-        })->when(request('age_start'), function ($query, $age_start) {
-            return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
+            })->when(request('age_start'), function ($query, $age_start) {
+                return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
 
-        })->when(request('age_end'), function ($query, $age_end) {
-            return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
+            })->when(request('age_end'), function ($query, $age_end) {
+                return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
 
-        });
+            });
     }
 
     public function scopeApiOrgFilter()
@@ -332,128 +331,128 @@ class Cadry extends Model
     public function scopeApiLeaderFilter()
     {
         return self::query()
-        ->where('status',true)
-        ->where('railway_id', auth()->user()->userorganization->railway_id)
-        ->when(request('organization_id'), function ( $query, $organization_id) {
-            return $query->where('organization_id', $organization_id);
+            ->where('status',true)
+            ->where('railway_id', auth()->user()->userorganization->railway_id)
+            ->when(request('organization_id'), function ( $query, $organization_id) {
+                return $query->where('organization_id', $organization_id);
 
-        })->when(request('department_id'), function ( $query, $department_id) {
-                return $query->where('department_id', $department_id);
+            })->when(request('department_id'), function ( $query, $department_id) {
+                    return $query->where('department_id', $department_id);
 
-        })->when(request('last_name'), function ( $query, $last_name) {
-            return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-            
-        })->when(request('middle_name'), function ( $query, $middle_name) {
-            return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-            
-        })->when(request('first_name'), function ( $query, $first_name) {
-            return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
+            })->when(request('last_name'), function ( $query, $last_name) {
+                return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
+                
+            })->when(request('middle_name'), function ( $query, $middle_name) {
+                return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
+                
+            })->when(request('first_name'), function ( $query, $first_name) {
+                return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
 
-        })->when(request('department_id'), function ( $query, $department_id) {
-                return $query->where('department_id', $department_id);
+            })->when(request('department_id'), function ( $query, $department_id) {
+                    return $query->where('department_id', $department_id);
 
-        })->when(request('staff_id'), function ($query, $staff_id) {
-            $arr = DepartmentCadry::where('staff_id',$staff_id)->pluck('cadry_id')->toArray();
-            return $query->whereIn('id', $arr);
+            })->when(request('staff_id'), function ($query, $staff_id) {
+                $arr = DepartmentCadry::where('staff_id',$staff_id)->pluck('cadry_id')->toArray();
+                return $query->whereIn('id', $arr);
 
-        })->when(request('education_id'), function ($query, $education_id) {
-            return $query->where('education_id', $education_id);
+            })->when(request('education_id'), function ($query, $education_id) {
+                return $query->where('education_id', $education_id);
 
-        })->when(request('birth_region_id'), function ($query, $birth_region_id) {
-            return $query->where('birth_region_id', $birth_region_id);
+            })->when(request('birth_region_id'), function ($query, $birth_region_id) {
+                return $query->where('birth_region_id', $birth_region_id);
 
-        })->when(request('sex'), function ($query, $sex) {
-            if($sex == "true") $z = true; else $z = false;
-            return $query->where('sex', $z);
+            })->when(request('sex'), function ($query, $sex) {
+                if($sex == "true") $z = true; else $z = false;
+                return $query->where('sex', $z);
 
-        })->when(request('age_start'), function ($query, $age_start) {
-            return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
+            })->when(request('age_start'), function ($query, $age_start) {
+                return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
 
-        })->when(request('age_end'), function ($query, $age_end) {
-            return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
+            })->when(request('age_end'), function ($query, $age_end) {
+                return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
 
-        });
+            });
     }
 
     public function scopeApiMedFilter()
     {
         return self::query()
-        ->when(request('last_name'), function ( $query, $last_name) {
-            return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-            
-        })->when(request('middle_name'), function ( $query, $middle_name) {
-            return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-            
-        })->when(request('first_name'), function ( $query, $first_name) {
-            return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
-            
-        })->when(request('railway_id'), function ( $query, $railway_id) {
-            return $query->where('railway_id', $railway_id);
+            ->when(request('last_name'), function ( $query, $last_name) {
+                return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
                 
-        })->when(request('organization_id'), function ( $query, $organization_id) {
-            return $query->where('organization_id', $organization_id);
+            })->when(request('middle_name'), function ( $query, $middle_name) {
+                return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
+                
+            })->when(request('first_name'), function ( $query, $first_name) {
+                return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
+                
+            })->when(request('railway_id'), function ( $query, $railway_id) {
+                return $query->where('railway_id', $railway_id);
+                    
+            })->when(request('organization_id'), function ( $query, $organization_id) {
+                return $query->where('organization_id', $organization_id);
 
-        })->when(request('department_id'), function ( $query, $department_id) {
-                return $query->where('department_id', $department_id);
+            })->when(request('department_id'), function ( $query, $department_id) {
+                    return $query->where('department_id', $department_id);
 
-        })->when(request('staff_id'), function ($query, $staff_id) {
-            return $query->where('staff_id', $staff_id);
+            })->when(request('staff_id'), function ($query, $staff_id) {
+                return $query->where('staff_id', $staff_id);
 
-        })->when(request('education_id'), function ($query, $education_id) {
-            return $query->where('education_id', $education_id);
+            })->when(request('education_id'), function ($query, $education_id) {
+                return $query->where('education_id', $education_id);
 
-        })->when(request('birth_region_id'), function ($query, $birth_region_id) {
-            return $query->where('birth_region_id', $birth_region_id);
+            })->when(request('birth_region_id'), function ($query, $birth_region_id) {
+                return $query->where('birth_region_id', $birth_region_id);
 
-        })->when(request('sex'), function ($query, $sex) {
-            if($sex == "true") $z = true; else $z = false;
-            return $query->where('sex', $z);
+            })->when(request('sex'), function ($query, $sex) {
+                if($sex == "true") $z = true; else $z = false;
+                return $query->where('sex', $z);
 
-        })->when(request('age_start'), function ($query, $age_start) {
-            return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
+            })->when(request('age_start'), function ($query, $age_start) {
+                return $query->whereYear('birht_date', '<=', now()->format('Y') - $age_start);
 
-        })->when(request('age_end'), function ($query, $age_end) {
-            return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
+            })->when(request('age_end'), function ($query, $age_end) {
+                return $query->whereYear('birht_date', '>=', now()->format('Y') - $age_end);
 
-        });
+            });
     }
 
 
     public function scopeFullFilter()
     {
         return self::query()
-        ->where('status',true)
-        ->where('organization_id', auth()->user()->userorganization->organization_id)
-        ->when(\Request::input('name_se'),function($query,$name_se){
-            $query->where(function ($query) use ($name_se) {
-                $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-               
+            ->where('status',true)
+            ->where('organization_id', auth()->user()->userorganization->organization_id)
+            ->when(\Request::input('name_se'),function($query,$name_se){
+                $query->where(function ($query) use ($name_se) {
+                    $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                        ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                        ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
+                
+                });
+            })->when(request('staff_se'), function ($query, $staff_se) {
+                return $query->where('staff_id', $staff_se);
+
+            })->when(request('education_se'), function ($query, $education_se) {
+                return $query->where('education_id', $education_se);
+
+            })->when(request('region_se'), function ($query, $region_se) {
+                return $query->where('birth_region_id', $region_se);
+
+            })->when(request('department_se'), function ($query, $department_se) {
+                return $query->where('department_id', $department_se);
+
+            })->when(request('sex_se'), function ($query, $sex_se) {
+                if($sex_se == "true") $z = true; else $z = false;
+                return $query->where('sex', $z);
+
+            })->when(request('start_se'), function ($query, $start_se) {
+                return $query->whereYear('birht_date', '<=', now()->format('Y') - $start_se);
+
+            })->when(request('end_se'), function ($query, $end_se) {
+                return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
+
             });
-        })->when(request('staff_se'), function ($query, $staff_se) {
-            return $query->where('staff_id', $staff_se);
-
-        })->when(request('education_se'), function ($query, $education_se) {
-            return $query->where('education_id', $education_se);
-
-        })->when(request('region_se'), function ($query, $region_se) {
-            return $query->where('birth_region_id', $region_se);
-
-        })->when(request('department_se'), function ($query, $department_se) {
-            return $query->where('department_id', $department_se);
-
-        })->when(request('sex_se'), function ($query, $sex_se) {
-            if($sex_se == "true") $z = true; else $z = false;
-            return $query->where('sex', $z);
-
-        })->when(request('start_se'), function ($query, $start_se) {
-            return $query->whereYear('birht_date', '<=', now()->format('Y') - $start_se);
-
-        })->when(request('end_se'), function ($query, $end_se) {
-            return $query->whereYear('birht_date', '>=', now()->format('Y') - $end_se);
-
-        });
     }
 
     public function scopeOrgFilter()
@@ -464,56 +463,56 @@ class Cadry extends Model
     public function scopeDemoFilter()
     {
         return self::query()
-        ->where('status', false)
-        ->when(\Request::input('jshshir'),function($query, $jshshir){
-            $query->where(function ($query) use ($jshshir) {
-                $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+            ->where('status', false)
+            ->when(\Request::input('jshshir'),function($query, $jshshir){
+                $query->where(function ($query) use ($jshshir) {
+                    $query->Where('jshshir', 'LIKE', '%'. $jshshir .'%');
+                });
             });
-        });
     }
 
     public function scopeSeFilter()
     {
         return self::query()
-        ->where('organization_id',auth()->user()->userorganization->organization_id)
-        ->when(\Request::input('name_se'),function($query,$name_se){
-           $query->where(function ($query) use ($name_se) {
-              $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-              
-           });
-        });
+            ->where('organization_id',auth()->user()->userorganization->organization_id)
+            ->when(\Request::input('name_se'),function($query,$name_se){
+            $query->where(function ($query) use ($name_se) {
+                $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
+                        ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
+                        ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
+                
+            });
+            });
     }
 
     public function scopeApiSeFilter()
     {
         return self::query()
-        ->where('organization_id',auth()->user()->userorganization->organization_id)
-        ->when(\Request::input('search'),function($query,$search){
-           $query->where(function ($query) use ($search) {
-              $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
-              
-           });
-        });
+            ->where('organization_id',auth()->user()->userorganization->organization_id)
+            ->when(\Request::input('search'),function($query,$search){
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
+                        ->orWhere('first_name', 'LIKE', '%'.$search.'%')
+                        ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
+                
+            });
+            });
     }
 
 
     public function scopeApicadryFilter()
     {
         return self::query()
-        ->where('status', true)
-        ->where('organization_id',auth()->user()->userorganization->organization_id)
-        ->when(\Request::input('search'),function($query,$search){
-           $query->where(function ($query) use ($search) {
-              $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
-                    ->orWhere('first_name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
-              
-           });
-        });
+            ->where('status', true)
+            ->where('organization_id',auth()->user()->userorganization->organization_id)
+            ->when(\Request::input('search'),function($query,$search){
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
+                        ->orWhere('first_name', 'LIKE', '%'.$search.'%')
+                        ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
+                
+            });
+            });
     }
 
 }

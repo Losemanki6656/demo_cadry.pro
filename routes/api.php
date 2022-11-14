@@ -403,6 +403,7 @@ Route::group([
         Route::get('/qualification/apparats', [TrainingController::class, 'apparats']);
         Route::get('/qualification/cadry/{cadry_id}', [TrainingController::class, 'cadry_filter']);
         Route::post('/qualification/cadry/{cadry_id}/add', [TrainingController::class, 'cadry_add_qual']);
+        Route::get('/qualification/statistics', [TrainingController::class, 'statistics']);
        
     });
     
