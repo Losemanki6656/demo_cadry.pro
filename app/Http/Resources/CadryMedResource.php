@@ -29,6 +29,7 @@ class CadryMedResource extends JsonResource
             'organization' => new OrganizationResource($this->organization),
             'date1' => $this->date1,
             'date2' => $this->date2,
+            'comment' => $this->result,
             'staff' => new DepartmentCadryResource($post_name)
         ];
     }
