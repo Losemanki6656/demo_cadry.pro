@@ -82,6 +82,15 @@ class TrainingController extends Controller
         ]);
     }
 
+    public function cadry_qual_delete($qualification_id)
+    {           
+        $newUpgrade = Upgrade::find($qualification_id)->delete();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
     public function cadry_filter($cadry_id)
     {
         $cadries = Upgrade::where('cadry_id', $cadry_id)->get();
