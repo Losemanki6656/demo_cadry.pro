@@ -1033,7 +1033,6 @@ class CadryController extends Controller
             $vacanCount = $x - $y;
 
             $meds = Cadry::FilterJoin()
-                ->where('railway_id','!=',3)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
                 ->where('medical_examinations.status',true)
@@ -1045,8 +1044,8 @@ class CadryController extends Controller
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
-                $careersCount = Cadry::filter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::filter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
+                $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
             } 
         
             $academic1 = AcademiStudy::where('institute',1)->count();
@@ -1067,7 +1066,7 @@ class CadryController extends Controller
                 $news[$i] = Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
             }
                 
-            $mednotCount = Cadry::filter()->where('railway_id','!=',3)->has('med','=',0)->count();
+            $mednotCount = Cadry::filter()->has('med','=',0)->count();
 
         return view('uty.statistics', [
             'mednotCount' => $mednotCount,
@@ -1159,7 +1158,6 @@ class CadryController extends Controller
             $vacanCount = $x - $y;
 
             $meds = Cadry::FilterJoinApi()
-                ->where('railway_id','!=',3)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
                 ->where('medical_examinations.status',true)
@@ -1171,10 +1169,13 @@ class CadryController extends Controller
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
-                $careersCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
+                $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
             } 
-        
+            
+            
+            $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
+
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
@@ -1193,9 +1194,10 @@ class CadryController extends Controller
 
             }
                 
-            $mednotCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('med','=',0)->count();
+            $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
 
         return response()->json([
+            'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'meds' => $meds,
             'abroads' => $abroads,
@@ -1276,7 +1278,6 @@ class CadryController extends Controller
             $vacanCount = $x - $y;
 
             $meds = Cadry::FilterJoinApi()
-                ->where('railway_id','!=',3)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
                 ->where('medical_examinations.status',true)
@@ -1288,12 +1289,14 @@ class CadryController extends Controller
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
-                $careersCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('relatives', '=', 0)->count();
+                $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
             } 
         
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
+
+            $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
 
 
             $news = [];
@@ -1310,9 +1313,10 @@ class CadryController extends Controller
 
             }
                 
-            $mednotCount = Cadry::ApiFilter()->where('railway_id','!=',3)->has('med','=',0)->count();
+            $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
 
         return response()->json([
+            'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'meds' => $meds,
             'abroads' => $abroads,
@@ -1510,6 +1514,8 @@ class CadryController extends Controller
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
 
+            $not_staff_files = Cadry::OrgFilter()->has('staff_files', '=', 0)->count();
+
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
@@ -1529,6 +1535,7 @@ class CadryController extends Controller
             }
 
         return response()->json([
+            'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'vacations_decret' => $vacDec,
             'vacations' => $vac - $vacDec,

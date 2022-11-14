@@ -106,6 +106,11 @@ class Cadry extends Model
     {
         return $this->hasMany(Incentive::class);
     }
+    public function staff_files()
+    {
+        return $this->hasMany(StaffFile::class);
+    }
+
     public function relatives()
     {
         return $this->hasMany(CadryRelative::class);
