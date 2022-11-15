@@ -928,30 +928,39 @@ class CadryController extends Controller
     {
         set_time_limit(600);
 
-        $collections = Excel::toCollection(new ExcelImport, $request->file('file'));
-        $cadries = Cadry::query()->where('organization_id',152);
-        $arr = $collections[0];
-        $x = 0;
+        // $collections = Excel::toCollection(new ExcelImport, $request->file('file'));
+        // $cadries = Cadry::query()->where('organization_id',152);
+        // $arr = $collections[0];
+        // $x = 0;
 
-        foreach($arr as $item)
-        {
-            $h = "";
-            $r = $item[7];
+        // foreach($arr as $item)
+        // {
+        //     $h = "";
+        //     $r = $item[7];
             
-            $top = Cadry::query()->where('organization_id',152)->where('passport', 'LIKE', "%{$r}%");
+        //     $top = Cadry::query()->where('organization_id',152)->where('passport', 'LIKE', "%{$r}%");
 
-            if($top->first()) {
-                $y = DisciplinaryAction::where('cadry_id', $top->first()->id)->whereYear('date_action', '=', now()->format('Y'));
-                if($y->first()){
-                    $z = $y->first();
-                    if($item[19]!='')
-                        $item[19] = $item[19] . '; ' . $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
-                    else
-                        $item[19] = $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
-                }        
-            } 
-        }
-        $invoices = $arr->toArray();
+        //     if($top->first()) {
+        //         $y = DisciplinaryAction::where('cadry_id', $top->first()->id)->whereYear('date_action', '=', now()->format('Y'));
+        //         if($y->first()){
+        //             $z = $y->first();
+        //             if($item[19]!='')
+        //                 $item[19] = $item[19] . '; ' . $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
+        //             else
+        //                 $item[19] = $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
+        //         }        
+        //     } 
+        // }
+
+        $cadries = Cadry::SeFilter()
+            ->select(['cadries.*', 'medical_examinations.*'])
+            ->where('cadries.status',true)
+            ->where('medical_examinations.status',true)
+            ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+            ->orderBy('medical_examinations.date2')
+            ->paginate(10);
+
+        $cadries = $arr->toArray();
         $export = new ArrExport($invoices);
         return Excel::download($export, 'export.xlsx');
 
@@ -1649,17 +1658,33 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-        set_time_limit(600);
-       
-        $cadries = Cadry::where('status',true)->where('railway_id','!=',3)->has('careers', '=', 0)->with('organization')->get();
+        $cadries = Cadry::SeFilter()
+            ->select(['cadries.*', 'medical_examinations.*'])
+            ->where('cadries.status',true)
+            ->where('medical_examinations.status',true)
+            ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+            ->with(['allStaffs','allStaffs.department','allStaffs.staff'])->get();
 
-        $x = []; $y = 0;
-        foreach($cadries as $item){
-            $y ++;
-            $x[$y] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name;
+        $arr = [];
+        foreach($cadries as $item)
+        {
+            $dep = DepartmentCadry::where('cadry_id',$item->cadry_id)->first();
+
+            $arr[] = [
+                'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
+                'birth_date' => $item->birht_date,
+                'department' => $dep->department->name ?? '',
+                'staff' => $dep->staff_full ?? '',
+                'date2' => $item->date2->format('d-m-Y')
+            ]; 
+           // $arr[] = $item->date2->format('d-m-Y'); 
         }
 
-        dd($x);
+       // $invoices = $cadries->toArray();
+
+        $export = new ArrExport($arr);
+
+        return Excel::download($export, 'export.xlsx');
 
     }
 
