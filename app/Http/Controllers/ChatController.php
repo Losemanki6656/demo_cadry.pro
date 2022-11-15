@@ -384,58 +384,59 @@ class ChatController extends Controller
 
     public function control()
     {
-        // $railways = Railway::all();
-        // $u = [];
-        // foreach ( $railways as $rail) {
+        $railways = Railway::all();
+        $u = [];
+        foreach ( $railways as $rail) {
            
-        //     $organizations = Organization::where('railway_id',$rail->id)->get();
+            $organizations = Organization::where('railway_id',$rail->id)->get();
             
-        //     $p = 0; $fakt = 0; $all = 0; $allSv = 0; $car = 0; $rel = 0; $med = 0;
-        //     foreach($organizations as $organ)
-        //     {
+            $p = 0; $fakt = 0; $all = 0; $allSv = 0; $car = 0; $rel = 0; $med = 0;
+            foreach($organizations as $organ)
+            {
                 
-        //         $org_id = $organ->id;
+                $org_id = $organ->id;
     
-        //         $careersCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('careers', '=', 0)->count();
-        //         $relativesCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('relatives', '=', 0)->count();
-        //         $mednotCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('med','=',0)->count();
-        //         $car = $car + $careersCount;
-        //         $rel = $rel + $relativesCount;
-        //         $med = $med + $mednotCount;
+                $careersCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('careers', '=', 0)->count();
+                $relativesCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('relatives', '=', 0)->count();
+                $mednotCount = Cadry::where('organization_id', $org_id)->where('status',true)->has('med','=',0)->count();
+                $car = $car + $careersCount;
+                $rel = $rel + $relativesCount;
+                $med = $med + $mednotCount;
                
     
-        //         if($org_id == 152) {
+                if($org_id == 152) {
                     
-        //             $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
-        //             ->with(['departmentstaff','departmentstaff.cadry'])->get();
-        //         } else {
+                    $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
+                    ->with(['departmentstaff','departmentstaff.cadry'])->get();
+                } else {
                     
-        //             $alldepartments = Department::where('organization_id', $org_id)
-        //             ->with(['departmentstaff','departmentstaff.cadry'])->get();
-        //         }
+                    $alldepartments = Department::where('organization_id', $org_id)
+                    ->with(['departmentstaff','departmentstaff.cadry'])->get();
+                }
                 
-        //         foreach ($alldepartments as $item)
-        //         {
-        //             $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
-        //             foreach($item->departmentstaff as $staff) {
-        //                 $x = $staff->stavka;
-        //                 $p = $p + $x;
-        //                 $l = $staff->cadry->sum('stavka');
-        //                 $y = $staff->cadry->where('status', false)->sum('stavka');
-        //                 $fakt = $fakt + $y;
-        //                 if($x>$l) $z = $z + $x - $l;
-        //                 if($x<$y) $q = $q + $y - $x;
-        //             }
+                foreach ($alldepartments as $item)
+                {
+                    $z = 0; $q = 0; $x = 0; $y = 0; $q = 0;
+                    foreach($item->departmentstaff as $staff) {
+                        $x = $staff->stavka;
+                        $p = $p + $x;
+                        $l = $staff->cadry->sum('stavka');
+                        $y = $staff->cadry->where('status', false)->sum('stavka');
+                        $fakt = $fakt + $y;
+                        if($x>$l) $z = $z + $x - $l;
+                        if($x<$y) $q = $q + $y - $x;
+                    }
                     
-        //             $all = $all + $z;
-        //             $allSv =  $allSv + $q;
-        //         }
-        //     }
+                    $all = $all + $z;
+                    $allSv =  $allSv + $q;
+                }
+            }
             
-        //     $u[$org_id] = $rail->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv . '#' . $car . '#' . $rel . '#' . $med;
+            $u[$org_id] = $rail->name . '#' . $p . '#' . $fakt . '#' . $all . '#' . $allSv . '#' . $car . '#' . $rel . '#' . $med;
           
-        // }
-        // dd($u);
+        }
+        
+        dd($u);
        
     }
 
