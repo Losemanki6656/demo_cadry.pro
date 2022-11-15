@@ -14,6 +14,8 @@ class UpgradeResource extends JsonResource
      */
     public function toArray($request)
     {
+        $directions = $this->apparat->directions;
+
         if ($this->type_training == 1)
         $type_qualification = [
             'id' => 1,
@@ -50,7 +52,7 @@ class UpgradeResource extends JsonResource
             'file_path' => $this->file_path,
             'type_test' => $this->type_test,
             'ball' => $this->ball,
-
+            'directions' => $directions
 
         ];
     }
