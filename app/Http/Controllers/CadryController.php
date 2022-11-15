@@ -1663,7 +1663,8 @@ class CadryController extends Controller
             ->where('cadries.status',true)
             ->where('medical_examinations.status',true)
             ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
-            ->with(['allStaffs','allStaffs.department','allStaffs.staff'])->get();
+            ->with(['allStaffs','allStaffs.department','allStaffs.staff'])
+            ->get();
 
         $arr = [];
         foreach($cadries as $item)
@@ -1674,8 +1675,8 @@ class CadryController extends Controller
                 'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
                 'birth_date' => $item->birht_date,
                 'department' => $dep->department->name ?? '',
-                'staff' => $dep->staff_full ?? '',
-                'date2' => $item->date2->format('d-m-Y')
+                'staff' => $dep->staff->name ?? '',
+                'date2' => $item->date2->format('Y-m-d')
             ]; 
            // $arr[] = $item->date2->format('d-m-Y'); 
         }
