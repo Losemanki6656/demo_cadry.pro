@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Apparat;
 use App\Models\Upgrade;
 use App\Models\Cadry;
+use App\Models\TrainingDirection;
 use App\Http\Resources\UpgradeResource;
+use App\Http\Resources\ManagementApparatCollection;
+use App\Http\Resources\TrainingDirectionCollection;
 
 class TrainingController extends Controller
 {
@@ -108,6 +111,124 @@ class TrainingController extends Controller
 
         return response()->json([
             'cadries' => $cadries
+        ]);
+    }
+
+    public function management_apparats(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $apparats = Apparat::query()
+            ->when(\Request::input('search'),function($query,$search){
+                $query->where(function ($query) use ($search) {
+                    $query->where('name','like','%'.$search.'%');
+                });
+            }
+            )->with('directions')->paginate($per_page);
+
+        return response()->json([
+            'apparats' => new ManagementApparatCollection($apparats)
+        ]);
+    }
+
+    public function management_apparat_update($apparat_id, Request $request)
+    {
+        $apparat = Apparat::find($apparat_id);
+        $apparat->name = $request->name;
+        $apparat->save();
+
+        return response()->json([
+            'message' => 'Muvaffaqqiyatli taxrirlandi!'
+        ]);
+    }
+    
+    public function management_apparat_delete(Apparat $apparat_id)
+    {
+        try {
+            $apparat_id->delete();
+
+        } catch (\Throwable $th) {  
+
+            return response()->json([
+                'message' => "Ushbu Xo'jalikka tegishli yo'nalishlar mavjud!"
+            ], 403 );
+
+        }
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
+    public function management_apparat_directions(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $directions = TrainingDirection::query()
+            ->when(\Request::input('search'),function($query,$search){
+                $query->where(function ($query) use ($search) {
+                    $query->where('name','like','%'.$search.'%')
+                          ->orWhere('staff_name','like','%'.$search.'%');
+                });
+            })
+            ->when(request('apparat_id'), function ( $query, $apparat_id) {
+                return $query->where('apparat_id', $apparat_id);
+            })->with('apparat')->paginate($per_page);
+
+
+        return response()->json([
+            'directions' => new TrainingDirectionCollection($directions)
+        ]);
+    }
+
+    public function management_add_direction(Request $request)
+    {
+        $direction = new TrainingDirection();
+        $direction->apparat_id = $request->apparat_id;
+        $direction->name = $request->name;
+        $direction->staff_name = $request->staff_name;
+        $direction->time_lesson = $request->time_lesson;
+        $direction->comment_time = $request->comment_time;
+        $direction->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    
+    public function management_update_direction($direction_id, Request $request)
+    {
+        $direction = TrainingDirection::find($direction_id);
+        $direction->apparat_id = $request->apparat_id;
+        $direction->name = $request->name;
+        $direction->staff_name = $request->staff_name;
+        $direction->time_lesson = $request->time_lesson;
+        $direction->comment_time = $request->comment_time;
+        $direction->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function management_delete_direction( $direction_id )
+    {
+        try {
+           
+            $direction = TrainingDirection::find($direction_id);
+            $direction->delete();
+    
+        } catch (\Throwable $th) {  
+
+            return response()->json([
+                'message' => "Ushbu yo'nalishga tegishli xodimalar mavjud!"
+            ], 403 );
+
+        }
+      
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
         ]);
     }
 }

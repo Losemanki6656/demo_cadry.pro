@@ -1658,34 +1658,38 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-        $cadries = Cadry::SeFilter()
-            ->select(['cadries.*', 'medical_examinations.*'])
-            ->where('cadries.status',true)
-            ->where('medical_examinations.status',true)
-            ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
-            ->with(['allStaffs','allStaffs.department','allStaffs.staff'])
-            ->get();
+    //     $cadries = Cadry::SeFilter()
+    //         ->select(['cadries.*', 'medical_examinations.*'])
+    //         ->where('cadries.status',true)
+    //         ->where('medical_examinations.status',true)
+    //         ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
+    //         ->with(['allStaffs','allStaffs.department','allStaffs.staff'])
+    //         ->get();
 
-        $arr = [];
-        foreach($cadries as $item)
-        {
-            $dep = DepartmentCadry::where('cadry_id',$item->cadry_id)->first();
+    //     $arr = [];
+    //     foreach($cadries as $item)
+    //     {
+    //         $dep = DepartmentCadry::where('cadry_id',$item->cadry_id)->first();
 
-            $arr[] = [
-                'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
-                'birth_date' => $item->birht_date,
-                'department' => $dep->department->name ?? '',
-                'staff' => $dep->staff->name ?? '',
-                'date2' => $item->date2->format('Y-m-d')
-            ]; 
-           // $arr[] = $item->date2->format('d-m-Y'); 
-        }
+    //         $arr[] = [
+    //             'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
+    //             'birth_date' => $item->birht_date,
+    //             'department' => $dep->department->name ?? '',
+    //             'staff' => $dep->staff->name ?? '',
+    //             'date2' => $item->date2->format('Y-m-d')
+    //         ]; 
+    //        // $arr[] = $item->date2->format('d-m-Y'); 
+    //     }
 
-       // $invoices = $cadries->toArray();
+    //    // $invoices = $cadries->toArray();
 
-        $export = new ArrExport($arr);
+    //     $export = new ArrExport($arr);
 
-        return Excel::download($export, 'export.xlsx');
+    //     return Excel::download($export, 'export.xlsx');
+
+    
+
+    $cadries = Cadry::where('status', true)->where('organization_id',1)->where('department_id',1155)->get();
 
     }
 

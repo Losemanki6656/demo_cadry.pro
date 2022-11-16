@@ -409,6 +409,17 @@ Route::group([
         Route::get('/qualification/statistics', [TrainingController::class, 'statistics']);
         Route::put('/qualification/{qualification_id}/update', [TrainingController::class, 'cadry_qual_update']);
         Route::delete('/qualification/{qualification_id}/delete', [TrainingController::class, 'cadry_qual_delete']);
+
+        
+        Route::get('/qualification/management/apparats', [TrainingController::class, 'management_apparats']);
+        Route::put('/qualification/management/apparat/{apparat_id}/update', [TrainingController::class, 'management_apparat_update']);
+        Route::delete('/qualification/management/apparat/{apparat_id}/delete', [TrainingController::class, 'management_apparat_delete']);
+
+        
+        Route::get('/qualification/management/directions', [TrainingController::class, 'management_apparat_directions']);
+        Route::post('/qualification/management/direction/add', [TrainingController::class, 'management_add_direction']);
+        Route::put('/qualification/management/direction/{direction_id}/update', [TrainingController::class, 'management_update_direction']);
+        Route::delete('/qualification/management/direction/{direction_id}/delete', [TrainingController::class, 'management_delete_direction']);
        
     });
     
