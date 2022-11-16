@@ -412,6 +412,7 @@ Route::group([
 
         
         Route::get('/qualification/management/apparats', [TrainingController::class, 'management_apparats']);
+        Route::post('/qualification/management/apparats/add', [TrainingController::class, 'management_add_apparat']);
         Route::put('/qualification/management/apparat/{apparat_id}/update', [TrainingController::class, 'management_apparat_update']);
         Route::delete('/qualification/management/apparat/{apparat_id}/delete', [TrainingController::class, 'management_apparat_delete']);
 

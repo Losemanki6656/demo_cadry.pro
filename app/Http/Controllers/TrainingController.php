@@ -131,6 +131,17 @@ class TrainingController extends Controller
         ]);
     }
 
+    public function management_add_apparat(Request $request)
+    {
+        $apparat = new Apparat();
+        $apparat->name = $request->name;
+        $apparat->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
     public function management_apparat_update($apparat_id, Request $request)
     {
         $apparat = Apparat::find($apparat_id);
