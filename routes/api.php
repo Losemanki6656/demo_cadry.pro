@@ -425,6 +425,19 @@ Route::group([
         Route::delete('/qualification/management/direction/{direction_id}/delete', [TrainingController::class, 'management_delete_direction']);
        
     });
+
+
+    //mobileApplication
+    Route::group([
+        'middleware' => [
+            'permission:admin'
+            ]
+        ], function () {
+        
+        Route::post('/admin/application/cadry', [ApplicationController::class, 'find_cadry']);
+       
+    });
+
     
 });
 

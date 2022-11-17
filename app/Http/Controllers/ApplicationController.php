@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 class ApplicationController extends Controller
 {
     
-    public function checkCadry(Cadry $cadry_id)
+    public function find_cadry(Request $request)
     {
-        return 1;
+        return response()->json([
+            'message' => "salom"
+        ]);
     }
 }
