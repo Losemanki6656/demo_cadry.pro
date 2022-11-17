@@ -408,7 +408,7 @@ Route::group([
     //qulaification
     Route::group([
         'middleware' => [
-            'permission:admin'
+            'permission:management_qualifications'
             ]
         ], function () {
 
