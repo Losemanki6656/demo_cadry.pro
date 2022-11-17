@@ -216,6 +216,15 @@ Route::group([
 
         Route::get('/organization/cadry/ExportToExcel', [BackApiController::class, 'ExportToExcel']);
 
+        
+        
+        Route::get('/qualification/apparats', [TrainingController::class, 'apparats']);
+        Route::get('/qualification/cadry/{cadry_id}', [TrainingController::class, 'cadry_filter']);
+        Route::post('/qualification/cadry/{cadry_id}/add', [TrainingController::class, 'cadry_add_qual']);
+        Route::get('/qualification/statistics', [TrainingController::class, 'statistics']);
+        Route::put('/qualification/{qualification_id}/update', [TrainingController::class, 'cadry_qual_update']);
+        Route::delete('/qualification/{qualification_id}/delete', [TrainingController::class, 'cadry_qual_delete']);
+
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });
@@ -402,13 +411,6 @@ Route::group([
             'permission:admin'
             ]
         ], function () {
-        
-        Route::get('/qualification/apparats', [TrainingController::class, 'apparats']);
-        Route::get('/qualification/cadry/{cadry_id}', [TrainingController::class, 'cadry_filter']);
-        Route::post('/qualification/cadry/{cadry_id}/add', [TrainingController::class, 'cadry_add_qual']);
-        Route::get('/qualification/statistics', [TrainingController::class, 'statistics']);
-        Route::put('/qualification/{qualification_id}/update', [TrainingController::class, 'cadry_qual_update']);
-        Route::delete('/qualification/{qualification_id}/delete', [TrainingController::class, 'cadry_qual_delete']);
 
         
         Route::get('/qualification/management/apparats', [TrainingController::class, 'management_apparats']);
