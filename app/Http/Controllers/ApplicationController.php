@@ -9,8 +9,9 @@ class ApplicationController extends Controller
     
     public function find_cadry(Request $request)
     {
+
         return response()->json([
-            'message' => "salom"
+            'data' => $request->all()
         ]);
     }
 }
