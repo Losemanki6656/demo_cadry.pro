@@ -34,6 +34,7 @@ class MedResource extends JsonResource
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
             'staff' => new DepartmentCadryResource($post_name),
             'date1' => $this->date1,
+            'result' => $this->result,
             'date2' => $this->date2,
             'days' => $days + 1
         ];
