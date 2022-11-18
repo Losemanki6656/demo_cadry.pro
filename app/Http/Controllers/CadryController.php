@@ -1674,20 +1674,27 @@ class CadryController extends Controller
 
         // dd($a);
 
-        $cadries = Cadry::with('organization')->orderBy('organization_id')->get();
+        $cadries = DepartmentCadry::with(['staff'])->get();
 
-        $arr =[];
+        $arr = [];
 
         foreach($cadries as $item)
         {
 
             $arr[] = [
-                'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
-                'organization' => $item->organization->name,
-                'lavozim' => $item->post_name,
-                'passport' => $item->passport
+                'name' => $item->name,
+                'staff' => $item->staff->category_id,
             ]; 
         }
+
+        
+
+        // $a = []; $i = 0;
+        // foreach ($orgs as $item){
+        //     $i ++;
+        //     $a[$i] = $item->name . '#' . $item->cadries_count;
+        // }
+
 
 
         $export = new ArrExport($arr);
