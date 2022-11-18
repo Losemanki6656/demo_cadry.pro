@@ -134,8 +134,11 @@ class TrainingController extends Controller
                 $query->where(function ($query) use ($search) {
                     $query->where('name','like','%'.$search.'%');
                 });
-            }
-            )->with('directions')->paginate($per_page);
+            })
+            ->when(request('type_qualification_id'), function ( $query, $type_qualification_id) {
+                return $query->where('type_qualification_id', $type_qualification_id);
+            })
+            ->with('directions')->paginate($per_page);
 
         return response()->json([
             'apparats' => new ManagementApparatCollection($apparats),
