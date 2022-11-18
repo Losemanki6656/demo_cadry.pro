@@ -1658,38 +1658,40 @@ class CadryController extends Controller
 
     public function ssss(Request $request)
     { 
-    //     $cadries = Cadry::SeFilter()
-    //         ->select(['cadries.*', 'medical_examinations.*'])
-    //         ->where('cadries.status',true)
-    //         ->where('medical_examinations.status',true)
-    //         ->leftjoin('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
-    //         ->with(['allStaffs','allStaffs.department','allStaffs.staff'])
-    //         ->get();
+        set_time_limit(3000);
 
-    //     $arr = [];
-    //     foreach($cadries as $item)
-    //     {
-    //         $dep = DepartmentCadry::where('cadry_id',$item->cadry_id)->first();
+        $orgs = \App\Models\Railway::query()
+            ->withCount(['cadries' => function ($query) {
+                $query->where('post_name', 'LIKE', '%qozonxona%');
+            }])
+            ->get();
 
-    //         $arr[] = [
-    //             'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
-    //             'birth_date' => $item->birht_date,
-    //             'department' => $dep->department->name ?? '',
-    //             'staff' => $dep->staff->name ?? '',
-    //             'date2' => $item->date2->format('Y-m-d')
-    //         ]; 
-    //        // $arr[] = $item->date2->format('d-m-Y'); 
-    //     }
+            $a = []; $i = 0;
+        foreach ($orgs as $item){
+            $i ++;
+            $a[$i] = $item->name . '#' . $item->cadries_count;
+        }
 
-    //    // $invoices = $cadries->toArray();
+        dd($a);
 
-    //     $export = new ArrExport($arr);
+        // $cadries = Cadry::with('organization')->orderBy('organization_id')->get();
 
-    //     return Excel::download($export, 'export.xlsx');
+        // $arr =[];
 
-    
+        // foreach($cadries as $item)
+        // {
 
-    $cadries = Cadry::where('status', true)->where('organization_id',1)->where('department_id',1155)->get();
+        //     $arr[] = [
+        //         'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
+        //         'organization' => $item->organization->name,
+        //         'passport' => $item->passport
+        //     ]; 
+        // }
+
+
+        // $export = new ArrExport($arr);
+
+        // return Excel::download($export, 'export.xlsx');
 
     }
 
