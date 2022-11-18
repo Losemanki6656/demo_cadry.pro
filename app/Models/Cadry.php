@@ -185,7 +185,8 @@ class Cadry extends Model
                 $query->where(function ($query) use ($name_se) {
                     $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
                         ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
-                        ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
+                        ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%')
+                        ->orWhere('post_name', 'LIKE', '%'.$name_se.'%');
                 
                 });
             })->when(request('railway_id'), function ( $query, $railway_id) {
