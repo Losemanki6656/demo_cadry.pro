@@ -15,7 +15,15 @@ class TrainingController extends Controller
 {
     public function apparats()
     {
-        $apparats = Apparat::with('directions')->get();
+        $apparats = Apparat::query()
+            ->when(\Request::input('search'),function($query,$search){
+                $query->where(function ($query) use ($search) {
+                    $query->where('name','like','%'.$search.'%');
+                });
+            })
+            ->when(request('type_qualification_id'), function ( $query, $type_qualification_id) {
+                return $query->where('type_qualification_id', $type_qualification_id);
+            })->with('directions')->get();
 
         $type_qualification = [
                 [
