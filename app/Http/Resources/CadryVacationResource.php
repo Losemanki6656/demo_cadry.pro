@@ -24,6 +24,7 @@ class CadryVacationResource extends JsonResource
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
             'staff' => $post_name->staff_full,
+            'department' => $post_name->department->name,
         ];
     }
 }
