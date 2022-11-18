@@ -1660,38 +1660,39 @@ class CadryController extends Controller
     { 
         set_time_limit(3000);
 
-        $orgs = \App\Models\Railway::query()
-            ->withCount(['cadries' => function ($query) {
-                $query->where('post_name', 'LIKE', '%qozonxona%');
-            }])
-            ->get();
+        // $orgs = \App\Models\Railway::query()
+        //     ->withCount(['cadries' => function ($query) {
+        //         $query->where('post_name', 'LIKE', '%qozonxona%');
+        //     }])
+        //     ->get();
 
-            $a = []; $i = 0;
-        foreach ($orgs as $item){
-            $i ++;
-            $a[$i] = $item->name . '#' . $item->cadries_count;
-        }
-
-        dd($a);
-
-        // $cadries = Cadry::with('organization')->orderBy('organization_id')->get();
-
-        // $arr =[];
-
-        // foreach($cadries as $item)
-        // {
-
-        //     $arr[] = [
-        //         'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
-        //         'organization' => $item->organization->name,
-        //         'passport' => $item->passport
-        //     ]; 
+        //     $a = []; $i = 0;
+        // foreach ($orgs as $item){
+        //     $i ++;
+        //     $a[$i] = $item->name . '#' . $item->cadries_count;
         // }
 
+        // dd($a);
 
-        // $export = new ArrExport($arr);
+        $cadries = Cadry::with('organization')->orderBy('organization_id')->get();
 
-        // return Excel::download($export, 'export.xlsx');
+        $arr =[];
+
+        foreach($cadries as $item)
+        {
+
+            $arr[] = [
+                'name' => $item->last_name .' ' . $item->first_name . ' ' . $item->middle_name,
+                'organization' => $item->organization->name,
+                'lavozim' => $item->post_name,
+                'passport' => $item->passport
+            ]; 
+        }
+
+
+        $export = new ArrExport($arr);
+
+        return Excel::download($export, 'export.xlsx');
 
     }
 
