@@ -118,6 +118,17 @@ class TrainingController extends Controller
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
+        $type_qualification = [
+            [
+                'id' => 1,
+                'name' => "Malaka oshirish"
+            ],
+            [
+                'id' => 2,
+                'name' => "Qayta tayyorlash"
+            ]
+        ];
+
         $apparats = Apparat::query()
             ->when(\Request::input('search'),function($query,$search){
                 $query->where(function ($query) use ($search) {
@@ -127,13 +138,15 @@ class TrainingController extends Controller
             )->with('directions')->paginate($per_page);
 
         return response()->json([
-            'apparats' => new ManagementApparatCollection($apparats)
+            'apparats' => new ManagementApparatCollection($apparats),
+            'type_qualifications' => $type_qualification
         ]);
     }
 
     public function management_add_apparat(Request $request)
     {
         $apparat = new Apparat();
+        $apparat->type_qualification_id = $request->type_qualification_id;
         $apparat->name = $request->name;
         $apparat->save();
 
@@ -145,6 +158,7 @@ class TrainingController extends Controller
     public function management_apparat_update($apparat_id, Request $request)
     {
         $apparat = Apparat::find($apparat_id);
+        $apparat->type_qualification_id = $request->type_qualification_id;
         $apparat->name = $request->name;
         $apparat->save();
 

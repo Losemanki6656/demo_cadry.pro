@@ -14,8 +14,21 @@ class ManagementApparatResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($this->type_qualification_id == 1) 
+        
+        $tq =  [
+            'id' => 1,
+            'name' => "Malaka oshirish"
+        ];
+         else
+         $tq =  [
+            'id' => 2,
+            'name' => "Qayta topshirish"
+        ];
+
         return [
             'id' => $this->id,
+            'type_qualification' => $tq,
             'name' => $this->name,
             'directions' => $this->directions->count(),
         ];
