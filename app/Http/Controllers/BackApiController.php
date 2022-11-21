@@ -31,6 +31,7 @@ use App\Models\DisciplinaryAction;
 use App\Models\AuthenticationLog;
 use App\Models\MedicalExamination;
 use App\Models\InfoEducation;
+use App\Models\CadryCreate;
 use App\Models\Revision;
 use App\Models\Education;
 use App\Models\DepartmentCadry;
@@ -813,6 +814,8 @@ class BackApiController extends Controller
         $editstaff = DepartmentStaff::with('cadry')->find($request->staff_id);
 
         $newItem = new DepartmentCadry();
+        $newItem->railway_id = $newI->railway_id;
+        $newItem->organization_id = $newI->organization_id;
         $newItem->department_id = $request->department_id;
         $newItem->department_staff_id = $request->staff_id;
         $newItem->staff_id = $editstaff->staff_id;
@@ -824,7 +827,7 @@ class BackApiController extends Controller
             $newItem->status_sv = true;
         else
             $newItem->status_sv = false;
-        $newItem->cadry_id = $request->cadry_id;
+        $newItem->cadry_id = $cadry_id;
         $newItem->stavka = $request->rate;
 
         if ($request->status_for_decret == true) {
@@ -834,6 +837,7 @@ class BackApiController extends Controller
             $newItem->status_decret = true;
         } else $newItem->status_decret = false;
 
+        $newItem->command_number = $request->command_number;
         $newItem->save();
 
         if ($request->staff_status == 0) {
@@ -843,6 +847,15 @@ class BackApiController extends Controller
             $cadry->post_name = $editstaff->staff_full;
             $cadry->save();
         }
+
+        $cadryCreate = new CadryCreate();
+        $cadryCreate->railway_id = $newI->railway_id;
+        $cadryCreate->organization_id = $newI->organization_id;
+        $cadryCreate->cadry_id = $cadry_id;
+        $cadryCreate->command_number = $request->command_number;
+        $cadryCreate->save();
+
+
 
         if ($request->careerCheck == true) {
             $x = Career::where('cadry_id',$cadry_id)->count();
