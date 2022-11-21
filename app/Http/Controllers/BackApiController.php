@@ -126,21 +126,23 @@ class BackApiController extends Controller
             return response()->json([
                 'status' => 3,
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
-            ], 200);
+            ], 400);
         } else
         if ($validator && $validator->id != $cadry->id) {
             return response()->json([
                 'status' => 1,
                 'fullname' => $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name,
                 'organization' => $validator->organization->name
-            ], 200);
+            ], 400);
         } else if (count($validator2) > 0) {
 
             return response()->json([
                 'status' => 2,
                 'message' => "Ushbu xodim arxivda mavjud"
-            ], 200);
-        } else $cadry->update($request->all());
+            ], 400);
+        } 
+          else 
+            $cadry->update($request->all());
 
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
