@@ -100,6 +100,18 @@ class BackApiController extends Controller
 
     public function api_cadry_information_post(Request $request, Cadry $cadry)
     {
+        $cadry->update($request->all());
+
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+
+        return response()->json([
+            'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
+        ]);
+    }
+
+    public function api_cadry_edit_post(Request $request, Cadry $cadry)
+    {
+        
         $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->jshshir)->get();
         $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->first();
         $validator2 = Cadry::where('status', false)->where('jshshir', $request->jshshir)->with('organization')->get();
@@ -123,17 +135,6 @@ class BackApiController extends Controller
                 'message' => "Ushbu xodim arxivda mavjud"
             ], 200);
         } else $cadry->update($request->all());
-
-        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
-
-        return response()->json([
-            'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
-        ]);
-    }
-
-    public function api_cadry_edit_post(Request $request, Cadry $cadry)
-    {
-        $cadry->update($request->all());
 
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
