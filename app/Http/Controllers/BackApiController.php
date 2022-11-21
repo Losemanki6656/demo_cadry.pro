@@ -101,7 +101,7 @@ class BackApiController extends Controller
     public function api_cadry_information_post(Request $request, Cadry $cadry)
     {
         $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->jshshir)->get();
-        $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->get();
+        $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->first();
         $validator2 = Cadry::where('status', false)->where('jshshir', $request->jshshir)->with('organization')->get();
 
         if (count($validator3) > 0) {
@@ -110,8 +110,7 @@ class BackApiController extends Controller
                 'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
             ], 200);
         } else
-        if (count($validator) > 0) {
-
+        if ($validator && $validator->id != $cadry->id) {
             return response()->json([
                 'status' => 1,
                 'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
