@@ -7,6 +7,7 @@ use App\Models\Cadry;
 use App\Models\Department;
 use App\Models\DepartmentStaff;
 use App\Models\DepartmentCadry;
+use App\Models\DemoCadry;
 use App\Models\Career;
 use App\Http\Resources\ArchiveCadryCollection;
 use App\Http\Resources\ArchiveCadryResource;
