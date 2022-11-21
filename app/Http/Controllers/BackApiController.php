@@ -100,9 +100,33 @@ class BackApiController extends Controller
 
     public function api_cadry_information_post(Request $request, Cadry $cadry)
     {
-        $cadry->update($request->all());
+        $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->jshshir)->get();
+        $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->get();
+        $validator2 = Cadry::where('status', false)->where('jshshir', $request->jshshir)->with('organization')->get();
+
+        if (count($validator3) > 0) {
+            return response()->json([
+                'status' => 3,
+                'message' => "Ushbu xodim qora ro'yxatga kiritilgan"
+            ], 200);
+        } else
+        if (count($validator) > 0) {
+
+            return response()->json([
+                'status' => 1,
+                'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
+                'organization' => $validator[0]->organization->name
+            ], 200);
+        } else if (count($validator2) > 0) {
+
+            return response()->json([
+                'status' => 2,
+                'message' => "Ushbu xodim arxivda mavjud"
+            ], 200);
+        } else $cadry->update($request->all());
 
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+
         return response()->json([
             'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
         ]);
@@ -111,6 +135,7 @@ class BackApiController extends Controller
     public function api_cadry_edit_post(Request $request, Cadry $cadry)
     {
         $cadry->update($request->all());
+
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         return response()->json([
             'message' => $fullname . " ma'lumotlari muvaffaqqiyatli taxrirlandi !"
