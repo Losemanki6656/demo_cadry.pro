@@ -110,11 +110,17 @@ class BackApiController extends Controller
     }
 
     public function api_cadry_edit_post(Request $request, Cadry $cadry)
-    {
-        
-        $validator3 = DemoCadry::where('status', true)->where('jshshir', $request->jshshir)->get();
-        $validator = Cadry::where('status', true)->where('jshshir', $request->jshshir)->with('organization')->first();
-        $validator2 = Cadry::where('status', false)->where('jshshir', $request->jshshir)->with('organization')->get();
+    {       
+        $validator3 = DemoCadry::where('status', true)
+            ->where('jshshir', $request->jshshir)
+            ->get();
+        $validator = Cadry::where('status', true)
+            ->where('jshshir', $request->jshshir)
+            ->with('organization')->first();
+
+        $validator2 = Cadry::where('status', false)
+            ->where('jshshir', $request->jshshir)
+            ->with('organization')->get();
 
         if (count($validator3) > 0) {
             return response()->json([
@@ -125,8 +131,8 @@ class BackApiController extends Controller
         if ($validator && $validator->id != $cadry->id) {
             return response()->json([
                 'status' => 1,
-                'fullname' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name,
-                'organization' => $validator[0]->organization->name
+                'fullname' => $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name,
+                'organization' => $validator->organization->name
             ], 200);
         } else if (count($validator2) > 0) {
 
