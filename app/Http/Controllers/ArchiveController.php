@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\DepartmentStaff;
 use App\Models\DepartmentCadry;
 use App\Models\DemoCadry;
+use App\Models\CadryCreate;
 use App\Models\Career;
 use App\Http\Resources\ArchiveCadryCollection;
 use App\Http\Resources\ArchiveCadryResource;
@@ -82,6 +83,7 @@ class ArchiveController extends Controller
             $newItem->staff_full = $dep->staff_full;
             $newItem->staff_date = $request->staff_date;
             $newItem->staff_status = $request->staff_status;
+            $newItem->command_number = $request->command_number;
 
             if($dep->stavka < $dep->cadry->sum('stavka') +  $request->rate) 
                 $newItem->status_sv = true; 
@@ -99,6 +101,15 @@ class ArchiveController extends Controller
                 $cadr->post_name = $dep->staff_full;
                 $cadr->status = true;
                 $cadr->save();
+
+                $cadryCreate = new CadryCreate();
+                $cadryCreate->railway_id = $org->railway_id;
+                $cadryCreate->organization_id = $org->organization_id;
+                $cadryCreate->cadry_id = $cadr->id;
+                $cadryCreate->command_number = $request->command_number;
+                $cadryCreate->comment = $request->comment;
+                $cadryCreate->save();
+        
 
                 $x = Career::where('cadry_id',$archive_cadry_id)->count();
                 $y = new Career();

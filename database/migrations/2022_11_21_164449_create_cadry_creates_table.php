@@ -21,6 +21,7 @@ class CreateCadryCreatesTable extends Migration
             $table->string('command_number')->nullable();
             $table->boolean('update_staff')->default(false);
             $table->boolean('status')->default(false);
+            $table->string('comment')->nullable();
             $table->foreign('railway_id')->references('id')->on('railways');
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->foreign('cadry_id')->references('id')->on('cadries');

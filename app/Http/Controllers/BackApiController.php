@@ -756,6 +756,14 @@ class BackApiController extends Controller
             $newItem->stavka = $request->stavka;
             $newItem->save();
 
+            $cadryCreate = new CadryCreate();
+            $cadryCreate->railway_id = $organ->railway_id;
+            $cadryCreate->organization_id = $organ->organization_id;
+            $cadryCreate->cadry_id = $cadry->id;
+            $cadryCreate->command_number = $request->command_number;
+            $cadryCreate->comment = $request->comment;
+            $cadryCreate->save();
+
             return response()->json([
                 'status' => 4,
                 'message' => "Xodim muvaffaqqiyatli qo'shildi!"
@@ -853,6 +861,7 @@ class BackApiController extends Controller
         $cadryCreate->organization_id = $newI->organization_id;
         $cadryCreate->cadry_id = $cadry_id;
         $cadryCreate->command_number = $request->command_number;
+        $cadryCreate->update_staff = true;
         $cadryCreate->save();
 
 
