@@ -40,6 +40,8 @@ class CadryEditResource extends JsonResource
             'jshshir' =>  $this->jshshir,
             'sex' =>  $this->sex,
             'phone' =>  $this->phone,
+            'order' =>  $this->order,
+            'status_dec' =>  $this->status_dec,
             'worklevel_id' => new WorklevelResource($this->work_level),
             'job_date' =>  $this->job_date,
             'allStaffs' =>  DepartmentCadryResource::collection($this->allstaffs)
