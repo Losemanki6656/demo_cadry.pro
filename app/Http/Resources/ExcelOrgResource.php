@@ -33,6 +33,7 @@ class ExcelOrgResource extends JsonResource
             'birth_city' => $this->birth_city->name,
             'now_position_region' => $this->address_region->name ?? '',
             'now_position_city' => $this->address_city->name ?? '',
+            'address' => $this->address,
             'passport_position_region' => $this->pass_region->name ?? '',
             'passport_position_city' => $this->pass_city->name ?? '',
             'passport' => $this->passport,
@@ -51,6 +52,7 @@ class ExcelOrgResource extends JsonResource
             'family_status' => $rel,
             'department_and_staffs' =>  ExcelOrgDepartmentCadryResource::collection($this->allStaffs),
             'instituts' =>  InstitutResource::collection($this->instituts),
+            'med' => new ExportMedResource($this->med)
         ];
     }
 }
