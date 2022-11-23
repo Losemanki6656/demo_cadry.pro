@@ -16,9 +16,7 @@ class ExcelOrgDepartmentCadryResource extends JsonResource
     {
         if($this->staff_status == 0) $status = "Asosiy"; else $status = "O'rindosh";
         
-        $status_vacation = Vacation::where('cadry_id',$this->cadry->id)
-            ->where('status', true)
-            ->whereDate( 'date2' , '>=' , now() )->first();
+        $status_vacation = $this->cadry->vacationExport;
         
         if($status_vacation) {
             if($status_vacation->status_decret == true) $st = 2;

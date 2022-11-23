@@ -18,7 +18,7 @@ class ExcelOrgResource extends JsonResource
         if($this->sex == true) $sex = "Erkak"; else $sex = "Ayol";
         $languages = Language::whereIn('id', explode(',',$this->language))->get();
 
-        $relative = $this->relatives->where('relative_id',7)->count();
+        $relative = $this->relatives->where('relative_id', 7)->count();
         if($relative > 0) $rel = "Oilali"; else $rel = "Turmush qurmagan";
 
         return [
@@ -50,9 +50,9 @@ class ExcelOrgResource extends JsonResource
             'languages' => LanguageResource::collection($languages),
             'sex' => $sex,
             'family_status' => $rel,
-            'department_and_staffs' =>  ExcelOrgDepartmentCadryResource::collection($this->allStaffs),
+            'department_and_staffs' => ExcelOrgDepartmentCadryResource::collection($this->allStaffs),
             'instituts' =>  InstitutResource::collection($this->instituts),
-            'med' => new ExportMedResource($this->med)
+            'med' => new ExportMedResource($this->med),
         ];
     }
 }

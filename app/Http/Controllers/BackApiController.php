@@ -1060,8 +1060,8 @@ class BackApiController extends Controller
 
     public function ExportToExcel()
     {
-        $cadries = Cadry::ApiOrgFilter()->with(['education','birth_city','birth_region','staff','pass_region','instituts', 'pass_city','address_region','address_city','nationality','education','party',
-            'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category','relatives','med'])->get();
+        $cadries = Cadry::ApiOrgFilter()->with(['education','birth_city','birth_region','pass_region','instituts', 'pass_city','address_region','address_city','nationality','education','party',
+            'cadry_title','cadry_degree','allStaffs','allStaffs.department','allStaffs.staff.category','relatives','med','allStaffs.cadry.vacationExport'])->get();
 
         return response()->json(
             ExcelOrgResource::collection($cadries)

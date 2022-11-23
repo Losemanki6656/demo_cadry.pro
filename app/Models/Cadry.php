@@ -37,6 +37,11 @@ class Cadry extends Model
         return $this->hasOne(MedicalExamination::class)->where(['status' => true]);
     }
 
+    public function vacationExport()
+    {
+        return $this->hasOne(Vacation::class)->where('status',true)->where('date2','>',now());
+    }
+
     public function abroad_studies()
     {
         return $this->hasMany(AbroadStudy::class);
