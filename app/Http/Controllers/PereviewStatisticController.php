@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Cadry;
 use App\Models\DemoCadry;
 use App\Models\Vacation;
+use App\Models\UserTask;
 use App\Models\DepartmentStaff;
 use App\Http\Resources\CadryCollection;
 use App\Http\Resources\DeleteCadryCollection;
 use App\Http\Resources\VacationCadryCollection;
 use App\Http\Resources\DepartmentStaffCollection;
 use App\Http\Resources\CadryMedCollection;
+use App\Http\Resources\UserTaskCollection;
 
 class PereviewStatisticController extends Controller
 {
@@ -256,6 +258,22 @@ class PereviewStatisticController extends Controller
 
         return response()->json([
             'stafffiles' => new CadryCollection($stafffiles->paginate($per_page))
+        ]);
+    }
+
+    public function user_tasks()
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $tasks = UserTask::query()->where('user_id', auth()->user()->id)
+            ->when(\Request::input('search'),function($query,$search){
+                $query->where(function ($query) use ($search) {
+                    $query->where('comment','like','%'.$search.'%');
+                });
+            });
+
+        return response()->json([
+            'tasks' => new UserTaskCollection($tasks->paginate($per_page))
         ]);
     }
 }
