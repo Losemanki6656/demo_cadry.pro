@@ -17,6 +17,7 @@ class UserTaskResource extends JsonResource
         return [
             'id' => $this->id,
             'comment' => $this->comment,
+            'status' => $this->status,
             'file_path' => url(asset($this->file_path)),
             'time' => $this->updated_at->diffinSeconds($this->created_at),
             'created_at' => $this->created_at
