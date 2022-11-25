@@ -37,6 +37,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        //return redirect()->to('https://exodim.netlify.app/');
         //$all = User::find(1)->lastLoginIp();
         //dd($all);
         $quotrand = Quote::find(rand(1,8));

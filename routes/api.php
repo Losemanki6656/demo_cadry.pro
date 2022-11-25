@@ -50,6 +50,7 @@ Route::group([
     Route::get('/profile', [AuthController::class, 'userProfile']);
     
     Route::get('/cadry/ExportToWord/{id}', [OrganizationController::class, 'word_export_api']);
+    Route::get('/cadry/ExportCadriesToWord', [OrganizationController::class, 'word_export_archive_api']);
 
     Route::get('/filter/railways', [OrganizationController::class, 'filter_api_railways']);
     Route::get('/filter/organizations', [OrganizationController::class, 'filter_api_organizations']);
@@ -225,6 +226,11 @@ Route::group([
         Route::put('/qualification/{qualification_id}/update', [TrainingController::class, 'cadry_qual_update']);
         Route::delete('/qualification/{qualification_id}/delete', [TrainingController::class, 'cadry_qual_delete']);
 
+
+        Route::get('/organization/cadry/{cadry_id}/passports', [BackApiController::class, 'api_cadry_passports']);
+        Route::post('/organization/cadry/passport/{cadry_id}/add', [BackApiController::class, 'api_add_passports_cadry']);
+        Route::post('/organization/cadry/passport/{passport_id}/update', [BackApiController::class, 'api_update_passports_cadry']);
+        Route::delete('/organization/cadry/passport/{passport_id}/delete', [BackApiController::class, 'api_delete_passports_cadry']);
         //organization-Staff-positions
        // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
     });

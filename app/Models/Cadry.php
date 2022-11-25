@@ -111,6 +111,14 @@ class Cadry extends Model
     {
         return $this->hasMany(Incentive::class);
     }
+    public function passports()
+    {
+        return $this->hasMany(Passport::class);
+    }
+    public function passport_file()
+    {
+        return $this->hasOne(Passport::class);
+    }
     public function staff_files()
     {
         return $this->hasMany(StaffFile::class);

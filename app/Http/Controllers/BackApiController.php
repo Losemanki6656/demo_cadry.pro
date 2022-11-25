@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cadry;
 use App\Models\DemoCadry;
+use App\Models\Passport;
 use App\Models\AcademicTitle;
 use App\Models\AcademicDegree;
 use App\Models\Nationality;
@@ -51,6 +52,7 @@ use App\Http\Resources\ExcelOrgResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\StaffResource;
+use App\Http\Resources\PassportResource;
 use App\Http\Resources\WordExportCadryResource;
 use App\Http\Resources\InfoEducationResource;
 use App\Http\Resources\CareerResource;
@@ -1066,5 +1068,79 @@ class BackApiController extends Controller
         return response()->json(
             ExcelOrgResource::collection($cadries)
         );
+    }
+
+
+    public function api_cadry_passports($cadry_id)
+    {
+        $passports = Passport::where('cadry_id', $cadry_id)->get();
+
+        return response()->json([
+            'passports' => PassportResource::collection($passports)
+        ]); 
+    }
+
+    public function api_add_passports_cadry($cadry_id, Request $request)
+    {
+        $validated = $request->validate([
+            'file_path' => ['required', 'file']
+        ]);
+
+        $filenameWithExt = $request->file('file_path')->getClientOriginalName();
+        //Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+        $extension = $request->file('file_path')->getClientOriginalExtension();
+
+        $fileName = $filename .'_'. time() . '.' . $extension;
+
+        $path = $request->file_path->storeAs('passports', $fileName);
+
+        $newfile = new Passport();
+        $newfile->cadry_id = $cadry_id;
+        $newfile->file_path = 'storage/' . $path;
+        $newfile->file_extension = $extension;
+        $newfile->save();
+
+        return response()->json([
+            'message' => "Passport muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function api_update_passports_cadry($passport_id, Request $request)
+    {
+        if ($request->file_path) {
+            $validated = $request->validate([
+                'file_path' => ['required', 'file']
+            ]);
+
+            $extension = $request->file('file_path')->getClientOriginalExtension();
+
+            $filenameWithExt = $request->file('file_path')->getClientOriginalName();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            $fileName = $filename .'_'. time() . '.' . $extension;
+
+            $path = $request->file_path->storeAs('stafffiles', $fileName);
+
+            $newfile = Passport::find($passport_id);
+            $newfile->file_path = 'storage/' . $path;
+            $newfile->file_extension = $extension;
+            $newfile->save();
+        }
+
+        return response()->json([
+            'message' => "Passport muvaffaqqiyatli taxrirlandi!"
+        ]);
+    }
+
+    public function api_delete_passports_cadry(Passport $passport_id)
+    {
+        $passport_id->delete();
+
+        return response()->json([
+            'message' => "Passport muvaffaqqiyatli o'chirildi!"
+        ]);
     }
 }

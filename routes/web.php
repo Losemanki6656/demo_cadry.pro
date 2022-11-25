@@ -104,6 +104,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/word-export-demo/{id}', [App\Http\Controllers\OrganizationController::class, 'word_export_demo'])->name('word_export_demo');
 
     Route::get('/cadry/cadry-export-all', [App\Http\Controllers\OrganizationController::class, 'export_excel'])->name('export_excel');
+    Route::get('/cadry/exportwords', [App\Http\Controllers\OrganizationController::class, 'word_export_archive'])->name('exportwords');
 
     Route::get('/cadry/demo-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_cadry'])->name('demo_to_cadry');
     Route::get('/cadry/delete-to-cadry/{id}', [App\Http\Controllers\OrganizationController::class, 'demo_to_delete'])->name('demo_to_delete');

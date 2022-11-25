@@ -137,7 +137,7 @@
                                     @foreach ($cadries as $key => $item)
                                         <tr>
                                             <td class="text-center fw-bold align-middle">
-                                                    {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
+                                                {{ $cadries->currentPage() * 10 - 10 + $loop->index + 1 }}
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ asset('storage/' . $item->photo) }}" class="image-popup-desc"
@@ -273,6 +273,7 @@
                                         vacation_se=${vacation_se}&
                                         dep_id=${dep_id}&`;
         }
+
     </script>
     <script>
         $('.region').select2({

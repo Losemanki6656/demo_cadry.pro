@@ -37,6 +37,7 @@ use App\Models\MedicalExamination;
 use App\Models\Party;
 use App\Models\City;
 use App\Models\WorkLevel;
+use App\Jobs\ExportWorkersToZip;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -511,6 +512,54 @@ class OrganizationController extends Controller
         ])->render();
 
         return \Response::make($content, 200, $headers);
+    }
+
+    public function word_export_archive_api(Request $request){
+
+        if($request->send_all) {
+
+            if($request->not_send_arr) {
+
+                $cadries = Cadry::ApiOrgFilter()->whereNotIn('id', $request->not_send_arr)
+                    ->with(['careers' => function($query){
+                        $query->orderBy('sort','asc');
+                    },'relatives' => function($query){
+                        $query->orderBy('sort','asc');
+                    },'incentives']);
+                
+            } else {
+                
+                $cadries = Cadry::ApiOrgFilter()
+                    ->with(['careers' => function($query){
+                        $query->orderBy('sort','asc');
+                    },'relatives' => function($query){
+                        $query->orderBy('sort','asc');
+                    },'incentives']);
+
+            }
+
+        } else {
+
+            $cadries = Cadry::ApiOrgFilter()->whereIn('id', $request->send_arr)
+                ->with(['careers' => function($query){
+                    $query->orderBy('sort','asc');
+                },'relatives' => function($query){
+                    $query->orderBy('sort','asc');
+                },'incentives']);
+
+        }
+
+        if($request->passport_files) $cadries = $cadries->with('passport_file')->get(); else $cadries = $cadries->get();
+
+        $languages = Language::get();
+        $emailJobs = new ExportWorkersToZip($cadries, $languages, auth()->user()->id, $request->comment, $request->passport_files);
+
+        $this->dispatch($emailJobs);
+       
+        return response()->json([
+            'message' => "Ma'lumotlarni yuklash topshiriqlarga yuborildi!"
+        ]);
+       
     }
 
     public function export_excel(Request $request)

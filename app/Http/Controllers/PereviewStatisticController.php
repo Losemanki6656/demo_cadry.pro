@@ -149,7 +149,8 @@ class PereviewStatisticController extends Controller
 
     public function pereview_birthdays(Request $request)
     {
-        $birth_date = strtotime($request->birth_date);
+        if($request->birth_date) 
+        $birth_date = strtotime($request->birth_date); else $birth_date = now();
         $dateMonth = date('m', $birth_date);
         $dateDay = date('d', $birth_date);
 
