@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Apparat;
 use App\Models\Upgrade;
 use App\Models\Cadry;
+use App\Models\Railway;
 use App\Models\TrainingDirection;
 use App\Http\Resources\UpgradeResource;
+use App\Http\Resources\ManagementUpgradeCollection;
 use App\Http\Resources\ManagementApparatCollection;
 use App\Http\Resources\TrainingDirectionCollection;
 
@@ -265,6 +267,33 @@ class TrainingController extends Controller
       
         return response()->json([
             'message' => "Muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
+    public function management_upgrades(Request $request)
+    {
+
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $date_qual = $request->date_qual;
+
+        $railways = Railway::whereHas('upgrades', function ($query) use ($date_qual) {
+                return $query->where('dataqual', $date_qual);
+            })->paginate($per_page);
+
+        // $upgrades = Upgrade::query()
+        //     ->where('status',true)
+        //     ->when(request('date_qual'), function ( $query, $date_qual) {
+        //             return $query->where('dataqual', $date_qual);
+                    
+        //     })
+        //     ->when(request('status_bedroom'), function ( $query, $status_bedroom) {
+        //         return $query->where('status_bedroom', $status_bedroom);
+                
+        //     });
+
+        return response()->json([
+            'railways' => new ManagementUpgradeCollection($railways)
         ]);
     }
 }

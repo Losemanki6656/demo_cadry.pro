@@ -384,6 +384,28 @@ class ChatController extends Controller
 
     public function control()
     {
+        
+        $items = InfoEducation::get();
+       
+    }
+
+    public function xx()
+    {
+        $orgs = \App\Models\Organization::query()
+            ->where('railway_id', '!=',3)
+            ->withCount(['cadries' => function ($query) {
+                $query->has('med', '=', 0);
+            }])
+            ->get();
+
+            $a = []; $i = 0;
+        foreach ($orgs as $item){
+            $i ++;
+            $a[$i] = $item->name . '#' . $item->cadries_count;
+        }
+
+        dd($a);
+
         $railways = Railway::all();
         $u = [];
         foreach ( $railways as $rail) {
@@ -437,24 +459,5 @@ class ChatController extends Controller
         }
         
         dd($u);
-       
-    }
-
-    public function xx()
-    {
-        $orgs = \App\Models\Organization::query()
-            ->where('railway_id', '!=',3)
-            ->withCount(['cadries' => function ($query) {
-                $query->has('med', '=', 0);
-            }])
-            ->get();
-
-            $a = []; $i = 0;
-        foreach ($orgs as $item){
-            $i ++;
-            $a[$i] = $item->name . '#' . $item->cadries_count;
-        }
-
-        dd($a);
     }
 }

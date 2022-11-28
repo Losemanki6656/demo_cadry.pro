@@ -13,4 +13,9 @@ class Railway extends Model
     {
         return $this->hasMany(Cadry::class)->where(['status' => true]);
     }
+
+    public function upgrades()
+    {
+        return $this->hasMany(Upgrade::class);
+    }
 }

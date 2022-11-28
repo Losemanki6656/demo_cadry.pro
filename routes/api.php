@@ -430,6 +430,9 @@ Route::group([
         Route::post('/qualification/management/direction/add', [TrainingController::class, 'management_add_direction']);
         Route::put('/qualification/management/direction/{direction_id}/update', [TrainingController::class, 'management_update_direction']);
         Route::delete('/qualification/management/direction/{direction_id}/delete', [TrainingController::class, 'management_delete_direction']);
+
+        
+        Route::get('/qualification/management/upgrades', [TrainingController::class, 'management_upgrades']);
        
     });
 
