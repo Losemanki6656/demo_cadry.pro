@@ -44,8 +44,8 @@ class ExportWorkersToZip implements ShouldQueue
      */
     public function handle()
     {        
-        $newTask = UserTask::find($task_id);
-        
+        $newTask = UserTask::find($this->task_id);
+
         $user_time = $this->user . time();
 
         if($this->passport_files) {
