@@ -540,12 +540,17 @@ class OrganizationController extends Controller
 
         } else {
 
-            if(!$request->send_arr) return response()->json([
+            if(!$request->send_arr) 
+            
+            return response()->json([
                 'message' => "Ma'lumotlarni yuklash uchun yetarli ro'yxat shakllanmadi !"
             ], 400);
-            
+
             $cadries = Cadry::ApiOrgFilter()
-                ->whereIn('id', $request->send_arr)
+                ->when(request('send_arr'), function ( $query, $send_arr) {
+                    return $query->whereIn('id', $send_arr);
+
+                })
                 ->with(['careers' => function($query){
                     $query->orderBy('sort','asc');
                 },'relatives' => function($query){
