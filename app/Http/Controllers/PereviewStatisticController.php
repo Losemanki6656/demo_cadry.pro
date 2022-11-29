@@ -265,7 +265,7 @@ class PereviewStatisticController extends Controller
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $tasks = UserTask::query()->where('user_id', auth()->user()->id)
+        $tasks = UserTask::query()->where( 'user_id', auth()->user()->id )
             ->when(\Request::input('search'),function($query,$search){
                 $query->where(function ($query) use ($search) {
                     $query->where('comment','like','%'.$search.'%');
