@@ -21,18 +21,20 @@ class ExportWorkersToZip implements ShouldQueue
     protected $languages;
     protected $user;
     protected $passport_files;
+    protected $task_id;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($cadries, $languages, $user, $comment, $passport_files)
+    public function __construct($cadries, $languages, $user, $comment, $passport_files, $task_id)
     {
         $this->cadries = $cadries;
         $this->user = $user;
         $this->comment = $comment;
         $this->languages = $languages;
         $this->passport_files = $passport_files;
+        $this->task_id = $task_id;
     }
 
     /**
@@ -42,11 +44,8 @@ class ExportWorkersToZip implements ShouldQueue
      */
     public function handle()
     {        
-        $newTask = new UserTask();
-        $newTask->user_id = $this->user;
-        $newTask->comment = $this->comment;
-        $newTask->save();
-
+        $newTask = UserTask::find($task_id);
+        
         $user_time = $this->user . time();
 
         if($this->passport_files) {

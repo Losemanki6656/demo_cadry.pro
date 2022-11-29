@@ -546,11 +546,7 @@ class OrganizationController extends Controller
                 'message' => "Ma'lumotlarni yuklash uchun yetarli ro'yxat shakllanmadi !"
             ], 400);
 
-            $cadries = Cadry::ApiOrgFilter()
-                ->when(request('send_arr'), function ( $query, $send_arr) {
-                    return $query->whereIn('id', $send_arr);
-
-                })
+            $cadries = Cadry::whereIn('id', $request->send_arr)
                 ->with(['careers' => function($query){
                     $query->orderBy('sort','asc');
                 },'relatives' => function($query){
@@ -562,7 +558,13 @@ class OrganizationController extends Controller
         if($request->passport_files) $cadries = $cadries->with('passport_file')->get(); else $cadries = $cadries->get();
 
         $languages = Language::get();
-        $emailJobs = new ExportWorkersToZip($cadries, $languages, auth()->user()->id, $request->comment, $request->passport_files);
+
+        $newTask = new UserTask();
+        $newTask->user_id = auth()->user()->id;
+        $newTask->comment = $request->comment;
+        $newTask->save();
+
+        $emailJobs = new ExportWorkersToZip($cadries, $languages, auth()->user()->id, $request->comment, $request->passport_files, $newTask->id);
 
         $this->dispatch($emailJobs);
        
