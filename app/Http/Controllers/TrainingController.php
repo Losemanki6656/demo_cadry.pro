@@ -277,7 +277,15 @@ class TrainingController extends Controller
 
         $date_qual = $request->date_qual;
 
-        $railways = Railway::whereHas('upgrades', function ($query) use ($date_qual) {
+        $railways = Railway::query()
+            ->where('status',true)
+            ->when(\Request::input('search'),function($query, $search){
+                $query->where(function ($query) use ($search) {
+                    $query->orWhere('name', 'LIKE', '%'. $search .'%');
+                
+                });
+            })
+            ->whereHas('upgrades', function ($query) use ($date_qual) {
                 return $query->where('dataqual', $date_qual);
             })->paginate($per_page);
 

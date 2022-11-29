@@ -71,8 +71,8 @@ class ExportWorkersToZip implements ShouldQueue
                     'incentives' => $incentives
                 ])->render();
     
-                $fileName   = $item->last_name . " " . $item->first_name . " " . $item->middle_name;
-                Storage::disk('public')->put('ArchiveWords/' . $user_time . '/' . $this->comment . '/' .  $fileName . "/Ma'lumotnoma.doc", \Response::make($content));
+                $fileName = $item->last_name . " " . $item->first_name . " " . $item->middle_name;
+                Storage::disk('public')->put('ArchiveWords/' . $user_time . '/' . $this->comment . '/' . $fileName . "/Ma'lumotnoma.doc", \Response::make($content));
                 
                 if($item->passport_file) File::copy(public_path($item->passport_file->file_path), public_path('storage/ArchiveWords/' . $user_time . '/' .
                    $this->comment . '/' .  $fileName . "/Passport" . '.' . $item->passport_file->file_extension));
