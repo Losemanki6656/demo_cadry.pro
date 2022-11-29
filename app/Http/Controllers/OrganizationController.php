@@ -36,6 +36,7 @@ use App\Models\AcademicName;
 use App\Models\MedicalExamination;
 use App\Models\Party;
 use App\Models\City;
+use App\Models\UserTask;
 use App\Models\WorkLevel;
 use App\Jobs\ExportWorkersToZip;
 use Illuminate\Database\Eloquent\Builder;

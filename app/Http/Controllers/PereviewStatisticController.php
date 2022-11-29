@@ -270,7 +270,7 @@ class PereviewStatisticController extends Controller
                 $query->where(function ($query) use ($search) {
                     $query->where('comment','like','%'.$search.'%');
                 });
-            })->orderBy('created_at', 'desc');
+            })->orderBy('created_at', 'desc');s
 
         return response()->json([
             'tasks' => new UserTaskCollection($tasks->paginate($per_page))
