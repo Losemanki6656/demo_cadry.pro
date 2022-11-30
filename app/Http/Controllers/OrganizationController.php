@@ -517,6 +517,13 @@ class OrganizationController extends Controller
 
     public function word_export_archive_api(Request $request){
 
+        $tasks = UserTask::where('user_id', auth()->user()->id)->count();
+
+        if($tasks >= 3) 
+            return response()->json([
+                'message' => "3 martadan ortiq ma'lumot yuklashga ruxsat etilmadi!"
+            ], 403);
+
         if($request->send_all) {
 
             if($request->not_send_arr) {

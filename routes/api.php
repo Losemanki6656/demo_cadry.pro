@@ -51,7 +51,9 @@ Route::group([
     
     Route::get('/cadry/ExportToWord/{id}', [OrganizationController::class, 'word_export_api']);
     Route::get('/cadry/ExportCadriesToWord', [OrganizationController::class, 'word_export_archive_api']);
+
     Route::get('/user/tasks', [PereviewStatisticController::class, 'user_tasks']);
+    Route::delete('/user/task/{task_id}/delete', [PereviewStatisticController::class, 'task_delete']);
 
     Route::get('/filter/railways', [OrganizationController::class, 'filter_api_railways']);
     Route::get('/filter/organizations', [OrganizationController::class, 'filter_api_organizations']);

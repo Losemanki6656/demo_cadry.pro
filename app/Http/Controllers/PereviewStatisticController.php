@@ -276,4 +276,20 @@ class PereviewStatisticController extends Controller
             'tasks' => new UserTaskCollection($tasks->paginate($per_page))
         ]);
     }
+
+    public function task_delete($task_id)
+    {
+        
+        if(!UserTask::find($task_id))
+            return response()->json([
+                'message' => "Bunday topshiriq topilmadi!"
+            ],404);
+           
+        $task_id->delete();
+
+        return response()->json([
+            'message' => "Topshiriq muvaffaqqiyatli o'chirildi!"
+        ]);
+        
+    }
 }
