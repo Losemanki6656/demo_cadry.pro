@@ -285,7 +285,7 @@ class PereviewStatisticController extends Controller
                 'message' => "Bunday topshiriq topilmadi!"
             ],404);
            
-        $task_id->delete();
+        UserTask::find($task_id)->delete();
 
         return response()->json([
             'message' => "Topshiriq muvaffaqqiyatli o'chirildi!"
