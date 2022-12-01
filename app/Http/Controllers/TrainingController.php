@@ -278,7 +278,6 @@ class TrainingController extends Controller
         $date_qual = $request->date_qual;
 
         $railways = Railway::query()
-            ->where('status',true)
             ->when(\Request::input('search'),function($query, $search){
                 $query->where(function ($query) use ($search) {
                     $query->orWhere('name', 'LIKE', '%'. $search .'%');
