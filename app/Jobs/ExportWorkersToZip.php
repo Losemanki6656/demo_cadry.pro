@@ -113,7 +113,7 @@ class ExportWorkersToZip implements ShouldQueue
                 
                 $photo = url(asset('storage/' . $item->photo));
     
-                $content = view('uty.export_word_blade.blade',[
+                $content = view('uty.export_word_blade',[
                     'cadry' => $item,
                     'lan' => $lan,
                     'carers' => $carers,
