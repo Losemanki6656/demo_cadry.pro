@@ -110,16 +110,20 @@ class ExportWorkersToZip implements ShouldQueue
                 $carers = $item->careers;
                 $cadry_relatives = $item->relatives;
                 $incentives = $item->incentives;
+                
+                $photo = url(asset('storage/' . $item->photo));
     
-                $content = view('uty.cadry_view',[
+                $content = view('uty.export_word_blade.blade',[
                     'cadry' => $item,
                     'lan' => $lan,
                     'carers' => $carers,
                     'cadry_relatives' => $cadry_relatives,
-                    'incentives' => $incentives
+                    'incentives' => $incentives,
+                    'photo' => $photo
                 ])->render();
-    
+
                 $fileName   = $item->last_name . " " . $item->first_name . " " . $item->middle_name;
+
                 Storage::disk('public')->put('ArchiveWords/' . $user_time . '/' . $this->comment . '/' . $fileName  . ".doc", \Response::make($content));
     
             }
