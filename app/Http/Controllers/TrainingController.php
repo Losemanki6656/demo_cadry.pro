@@ -284,20 +284,23 @@ class TrainingController extends Controller
                 
                 });
             })
-            ->whereHas('upgrades', function ($query) use ($date_qual) {
-                return $query->where('dataqual', $date_qual);
+            ->with('upgrades', function ($query) use ($date_qual) {
+                return $query
+                    ->where('dataqual', $date_qual)
+                    ->when(\Request::input('apparat_id'),function($query, $apparat_id){
+                        $query->where(function ($query) use ($apparat_id) {
+                            $query->where('apparat_id', $apparat_id);
+                        
+                        });
+                    })
+                    ->when(\Request::input('training_direction_id'),function($query, $training_direction_id ){
+                        $query->where(function ($query) use ($training_direction_id ) {
+                            $query->where('training_direction_id', $training_direction_id );
+                        
+                        });
+                    });
             })->paginate($per_page);
-
-        // $upgrades = Upgrade::query()
-        //     ->where('status',true)
-        //     ->when(request('date_qual'), function ( $query, $date_qual) {
-        //             return $query->where('dataqual', $date_qual);
-                    
-        //     })
-        //     ->when(request('status_bedroom'), function ( $query, $status_bedroom) {
-        //         return $query->where('status_bedroom', $status_bedroom);
-                
-        //     });
+            
 
         return response()->json([
             'railways' => new ManagementUpgradeCollection($railways)
