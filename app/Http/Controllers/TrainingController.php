@@ -322,7 +322,7 @@ class TrainingController extends Controller
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
             foreach($directions as $direc) {
-                
+
                 $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
                 $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
@@ -331,26 +331,28 @@ class TrainingController extends Controller
                 $mtu5 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 5)->count();
                 $mtu6 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 6)->count();
 
-                $data[] = [
-                    [
-                        'id' => 0,
-                        'name' => $item->name,
-                        'directions' => [
-                            'id' => $direc->id,
-                            'name' => $direc->name,
-                            'staff_name' => $direc->staff_name,
-                            'comment_time' => $direc->comment_time,
-                            'mtu1' => $mtu1,
-                            'mtu2' => $mtu2,
-                            'mtu3' => $mtu3,
-                            'mtu4' => $mtu4,
-                            'mtu5' => $mtu5,
-                            'mtu6' => $mtu6,
-                            'others' => $all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6,
-                        ]
-                    ]
+                $x[] = [
+                    'id' => $direc->id,
+                    'name' => $direc->name,
+                    'staff_name' => $direc->staff_name,
+                    'comment_time' => $direc->comment_time,
+                    'mtu1' => $mtu1,
+                    'mtu2' => $mtu2,
+                    'mtu3' => $mtu3,
+                    'mtu4' => $mtu4,
+                    'mtu5' => $mtu5,
+                    'mtu6' => $mtu6,
+                    'others' => $all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6
                 ];
             }
+
+            $data[] = [
+                [
+                    'id' => 0,
+                    'name' => $item->name,
+                    'directions' => $x
+                ]
+            ];
             
         }
 
