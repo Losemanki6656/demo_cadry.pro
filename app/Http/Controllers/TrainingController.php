@@ -322,15 +322,14 @@ class TrainingController extends Controller
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
             foreach($directions as $direc) {
-
-                $filter = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual);
-                $all = $filter->count();   
-                $mtu1 = $filter->where('railway_id', 1)->count();
-                $mtu2 = $filter->where('railway_id', 2)->count();
-                $mtu3 = $filter->where('railway_id', 3)->count();
-                $mtu4 = $filter->where('railway_id', 4)->count();
-                $mtu5 = $filter->where('railway_id', 5)->count();
-                $mtu6 = $filter->where('railway_id', 6)->count();
+                
+                $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+                $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
+                $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
+                $mtu3 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 3)->count();
+                $mtu4 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 4)->count();
+                $mtu5 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 5)->count();
+                $mtu6 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 6)->count();
 
                 $data[] = [
                     [
