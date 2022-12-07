@@ -329,7 +329,7 @@ class TrainingController extends Controller
                 $mtu5 = Upgrade::where('training_direction_id', $direc->id)->where('railway_id', 5)->count();
                 $mtu6 = Upgrade::where('training_direction_id', $direc->id)->where('railway_id', 6)->count();
 
-                $data = [
+                $data[] = [
                     [
                         'id' => 0,
                         'name' => $item->name,
