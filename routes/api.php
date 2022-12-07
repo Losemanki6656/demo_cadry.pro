@@ -435,6 +435,7 @@ Route::group([
 
         
         Route::get('/qualification/management/upgrades', [TrainingController::class, 'management_upgrades']);
+        Route::get('/qualification/management/upgrades/export', [TrainingController::class, 'management_upgrades_export']);
        
     });
 
