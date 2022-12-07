@@ -319,6 +319,15 @@ class TrainingController extends Controller
         foreach($apparats as $item)
         {
 
+            $total_mtu1 = 0;
+            $total_mtu2 = 0;
+            $total_mtu3 = 0;
+            $total_mtu4 = 0;
+            $total_mtu5 = 0;
+            $total_mtu6 = 0;
+            $total_all = 0;
+            $total_time = 0;
+
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
             foreach($directions as $direc) {
@@ -331,6 +340,16 @@ class TrainingController extends Controller
                 $mtu5 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 5)->count();
                 $mtu6 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 6)->count();
 
+                $total_mtu1 = $total_mtu1 + $mtu1;
+                $total_mtu2 = $total_mtu2 + $mtu2;
+                $total_mtu3 = $total_mtu3 + $mtu3;
+                $total_mtu4 = $total_mtu4 + $mtu4;
+                $total_mtu5 = $total_mtu5 + $mtu5;
+                $total_mtu6 = $total_mtu6 + $mtu6;
+                $total_all = $total_all + $all;
+                $total_time = $total_time + $direc->time_lesson;
+
+
                 $x[] = [
                     'id' => $direc->id,
                     'name' => $direc->name,
@@ -342,7 +361,8 @@ class TrainingController extends Controller
                     'mtu4' => $mtu4,
                     'mtu5' => $mtu5,
                     'mtu6' => $mtu6,
-                    'others' => $all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6
+                    'others' => $all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6,
+                    'total' => $all
                 ];
             }
 
@@ -350,7 +370,29 @@ class TrainingController extends Controller
                 [
                     'id' => 0,
                     'name' => $item->name,
-                    'directions' => $x
+                    'type_staff' => "Tinglovchilarning kasbiy toifalari",
+                    'time_education' => "O'qish davri",
+                    'mtu1' => "Toshkent MTU",
+                    'mtu2' => "Qo'qon MTU",
+                    'mtu3' => "Buxoro MTU",
+                    'mtu4' => "Qo'ng'irot MTU",
+                    'mtu5' => "Qarshi MTU",
+                    'mtu6' => "Termiz MTU",
+                    'others' => "Boshqalar",
+                    'total' => "Jami",
+                    'directions' => $x,
+                    'total_directions' => [
+                        'total' => 'Jami',
+                        'total_directions' => $directions->count(),
+                        'total_time' => $total_time,
+                        'total_mtu1' => $total_mtu1,
+                        'total_mtu2' => $total_mtu2,
+                        'total_mtu3' => $total_mtu3,
+                        'total_mtu4' => $total_mtu4,
+                        'total_mtu5' => $total_mtu5,
+                        'total_mtu6' => $total_mtu6,
+                        'total_all' => $total_all
+                    ]
                 ]
             ];
             
