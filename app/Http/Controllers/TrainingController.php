@@ -314,6 +314,8 @@ class TrainingController extends Controller
 
         $data = [];
 
+        $date_qual = $request->date_qual;
+
         foreach($apparats as $item)
         {
 
