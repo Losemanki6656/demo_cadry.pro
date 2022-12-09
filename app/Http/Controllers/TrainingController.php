@@ -347,7 +347,7 @@ class TrainingController extends Controller
                 $total_mtu5 = $total_mtu5 + $mtu5;
                 $total_mtu6 = $total_mtu6 + $mtu6;
                 $total_all = $total_all + $all;
-                $total_others = $total_all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6;
+                $total_others = $total_all - $total_mtu1 - $total_mtu2 - $total_mtu3 - $total_mtu4 - $total_mtu5 - $total_mtu6;
                 $total_time = $total_time + $direc->time_lesson;
 
 
