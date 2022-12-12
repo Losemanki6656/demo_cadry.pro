@@ -7,9 +7,11 @@ use App\Models\Apparat;
 use App\Models\Upgrade;
 use App\Models\Cadry;
 use App\Models\Railway;
+use App\Models\Organization;
 use App\Models\TrainingDirection;
 use App\Http\Resources\UpgradeResource;
 use App\Http\Resources\ManagementUpgradeCollection;
+use App\Http\Resources\ManagementOrganizationCollection;
 use App\Http\Resources\ManagementApparatCollection;
 use App\Http\Resources\TrainingDirectionCollection;
 
@@ -304,6 +306,44 @@ class TrainingController extends Controller
 
         return response()->json([
             'railways' => new ManagementUpgradeCollection($railways)
+        ]);
+    }
+
+    public function management_upgrades_organization(Request $request, $railway_id)
+    {
+
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+
+        $date_qual = $request->date_qual;
+
+        $organizations = Organization::query()
+            ->where('railway_id', $railway_id)
+            ->when(\Request::input('search'),function($query, $search){
+                $query->where(function ($query) use ($search) {
+                    $query->orWhere('name', 'LIKE', '%'. $search .'%');
+                
+                });
+            })
+            ->with('upgrades', function ($query) use ($date_qual) {
+                return $query
+                    ->where('dataqual', $date_qual)
+                    ->when(\Request::input('apparat_id'),function($query, $apparat_id){
+                        $query->where(function ($query) use ($apparat_id) {
+                            $query->where('apparat_id', $apparat_id);
+                        
+                        });
+                    })
+                    ->when(\Request::input('training_direction_id'),function($query, $training_direction_id ){
+                        $query->where(function ($query) use ($training_direction_id ) {
+                            $query->where('training_direction_id', $training_direction_id );
+                        
+                        });
+                    });
+            })->paginate($per_page);
+            
+
+        return response()->json([
+            'organizations' => new ManagementOrganizationCollection($organizations)
         ]);
     }
 

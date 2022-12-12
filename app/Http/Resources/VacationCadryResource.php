@@ -16,8 +16,8 @@ class VacationCadryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date1' => $this->date1,
-            'date2' => $this->date2,
+            'date1' => $this->date1->format('Y-m-d'),
+            'date2' => $this->date2->format('Y-m-d'),
             'status_decret' => $this->status_decret,
             'command_number' => $this->command_number,
             'period1' => $this->period1,

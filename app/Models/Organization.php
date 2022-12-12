@@ -23,6 +23,11 @@ class Organization extends Model
         return $this->belongsTo(Railway::class,'railway_id');
     }
 
+    public function upgrades()
+    {
+        return $this->hasMany(Upgrade::class);
+    }
+
     public function cadries()
     {
         return $this->hasMany(Cadry::class)->where(['status' => true]);
