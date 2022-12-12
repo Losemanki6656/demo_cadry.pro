@@ -278,6 +278,8 @@ Route::group([
         Route::get('/organization/departmentStaffCadries/{department_staff_id}', [DepartmentController::class, 'department_staff_caddries']);
         
     });
+
+
     
     
     Route::group([
@@ -342,6 +344,9 @@ Route::group([
         Route::get('/organization/archive/pinfl', [ArchiveController::class, 'archive_cadry']);
         Route::get('/organization/archive/accepted-cadry/{archive_cadry_id}', [ArchiveController::class, 'accept_get_cadry']);
         Route::post('/organization/archive/accepted-cadry/{archive_cadry_id}', [ArchiveController::class, 'save_archive_cadry']);
+
+        
+        Route::get('/organization/archive/cadries', [ArchiveController::class, 'archive_cadries']);
         
     }); 
     //cadry statistics
