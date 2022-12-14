@@ -18,4 +18,9 @@ class Railway extends Model
     {
         return $this->hasMany(Upgrade::class);
     }
+
+    public function department_cadries()
+    {
+        return $this->hasMany(DepartmentCadry::class);
+    }
 }
