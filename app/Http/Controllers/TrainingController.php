@@ -371,7 +371,8 @@ class TrainingController extends Controller
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
             foreach($directions as $direc) {
-
+                $x = [];
+                
                 $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
                 $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
