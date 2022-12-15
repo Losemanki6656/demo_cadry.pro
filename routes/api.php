@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PereviewStatisticController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\SmsController;
 
 
 /*
@@ -442,6 +443,17 @@ Route::group([
         Route::get('/qualification/management/upgrades', [TrainingController::class, 'management_upgrades']);
         Route::get('/qualification/management/organization/{railway_id}/upgrades', [TrainingController::class, 'management_upgrades_organization']);
         Route::get('/qualification/management/upgrades/export', [TrainingController::class, 'management_upgrades_export']);
+       
+    });
+
+    //sms send
+    Route::group([
+        'middleware' => [
+            'permission:admin'
+            ]
+        ], function () {
+        
+        Route::post('/admin/management/sms/{cadry_id0}/send', [SmsController::class, 'send_sms']);
        
     });
 
