@@ -229,10 +229,17 @@ class UserController extends Controller
         ]);
     }
 
-    public function api_users()
+    public function api_users(Request $request)
     {
 
-        $users = User::paginate(10);
+        $users = User::query()
+            ->when(\Request::input('search'),function($query,$search){
+                $query->where(function ($query) use ($search) {
+                    $query->orWhere('email', 'LIKE', '%'. $search .'%')
+                        ->orWhere('name', 'LIKE', '%'.$search.'%');
+                
+                });
+            })->paginate(10);
 
         return response()->json([
             'users' => new UserApiCollection($users)
