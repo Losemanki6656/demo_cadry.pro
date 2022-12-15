@@ -25,11 +25,6 @@ class DepartmentCadry extends Model
         return $this->belongsTo(Staff::class);
     }
 
-    public function staff_category()
-    {
-        return $this->hasOne(Staff::class);
-    }
-
     public function department()
     {
         return $this->belongsTo(Department::class);
