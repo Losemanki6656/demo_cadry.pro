@@ -445,4 +445,50 @@ class TrainingController extends Controller
             'data' => $data
         ]);
     }
+
+    public function management_organization_upgrades($organization_id, Request $request)
+    {
+        $apparats = Apparat::get();
+
+        $data = [];
+
+        $date_qual = $request->date_qual;
+
+        foreach($apparats as $item)
+        {
+
+            $directions = TrainingDirection::where('apparat_id', $item->id)->get();
+            
+            $x = []; $y = 0;
+            foreach($directions as $direc) {
+
+                $all  =  Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+
+                if($all > 0) {
+                    $y ++;
+                    $x[] = [
+                        'id' => $direc->id,
+                        'name' => $direc->name,
+                        'upgrades_count' => $all
+                    ];
+                }
+                    
+            }
+
+           if($y > 0) {
+                $data[] = [
+                    [
+                        'id' => 0,
+                        'name' => $item->name,
+                        'directions' => $x
+                    ]
+                ];
+           }
+            
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
 }
