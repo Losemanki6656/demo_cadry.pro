@@ -462,7 +462,7 @@ class TrainingController extends Controller
             //$x = []; $y = 0;
             foreach($directions as $direc) {
 
-                $all  =  Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+                $all  =  Upgrade::where('organization_id', $organization_id)->where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
 
                 if($all > 0) {
                     //$y ++;
