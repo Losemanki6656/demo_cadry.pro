@@ -451,7 +451,8 @@ class TrainingController extends Controller
         $apparats = Apparat::get();
 
         $data = [];
-
+        $x = [];
+        
         $date_qual = $request->date_qual;
 
         foreach($apparats as $item)
@@ -459,13 +460,11 @@ class TrainingController extends Controller
 
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
-            //$x = []; $y = 0;
             foreach($directions as $direc) {
 
                 $all  =  Upgrade::where('organization_id', $organization_id)->where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
 
                 if($all > 0) {
-                    //$y ++;
                     $x[] = [
                         'id' => $direc->id,
                         'apparat_id' => $direc->apparat,
