@@ -459,15 +459,16 @@ class TrainingController extends Controller
 
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
-            $x = []; $y = 0;
+            //$x = []; $y = 0;
             foreach($directions as $direc) {
 
                 $all  =  Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
 
                 if($all > 0) {
-                    $y ++;
+                    //$y ++;
                     $x[] = [
                         'id' => $direc->id,
+                        'apparat_id' => $direc->apparat,
                         'name' => $direc->name,
                         'upgrades_count' => $all
                     ];
@@ -475,20 +476,12 @@ class TrainingController extends Controller
                     
             }
 
-           if($y > 0) {
-                $data[] = [
-                    [
-                        'id' => 0,
-                        'name' => $item->name,
-                        'directions' => $x
-                    ]
-                ];
-           }
+          
             
         }
 
         return response()->json([
-            'data' => $data
+            'data' => $x
         ]);
     }
 }
