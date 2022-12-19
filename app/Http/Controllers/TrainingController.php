@@ -448,7 +448,14 @@ class TrainingController extends Controller
 
     public function management_organization_upgrades($organization_id, Request $request)
     {
-        $apparats = Apparat::get();
+        $apparats = Apparat::query()
+            ->when(\Request::input('apparat_id'),function($query, $apparat_id ){
+                        $query->where(function ($query) use ($apparat_id ) {
+                            $query->where('id', $apparat_id );
+                        
+                        });
+                    })
+            ->get();
 
         $data = [];
         $x = [];
@@ -462,7 +469,14 @@ class TrainingController extends Controller
             
             foreach($directions as $direc) {
 
-                $all  =  Upgrade::where('organization_id', $organization_id)->where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+                $all  =  Upgrade::query()
+                    ->when(\Request::input('training_direction_id'),function($query, $training_direction_id ){
+                        $query->where(function ($query) use ($training_direction_id ) {
+                            $query->where('training_direction_id', $training_direction_id );
+                        
+                        });
+                    })
+                    ->where('organization_id', $organization_id)->where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
 
                 if($all > 0) {
                     $x[] = [
