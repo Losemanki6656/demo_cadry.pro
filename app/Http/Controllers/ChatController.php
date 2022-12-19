@@ -385,7 +385,7 @@ class ChatController extends Controller
     public function control()
     {
         
-        $cadries = Cadry::where('sex',0)->where('birht_date','<=','1982-01-01')->where('birht_date','>=','1972-01-01')->whereYear('job_date','<=',2002)->get();
+        $cadries = Cadry::where('status', true)->where('sex',0)->where('birht_date','<=','1982-01-01')->where('birht_date','>=','1972-01-01')->whereYear('job_date','<=',2002)->get();
         $a = []; $x = 0;
         foreach($cadries as $item)
         {
