@@ -385,43 +385,16 @@ class ChatController extends Controller
     public function control()
     {
         
-        $regions = Region::get();
-
-        $orgs = \App\Models\Region::query()
-            ->withCount(['cadries' => function ($query) {
-                $query->whereYear('job_date', '=', now()->format('Y'));
-            }])
-            ->get();
-            
-            $a= []; $x = 0;
-        foreach($orgs as $item)
+        $cadries = Cadry::where('sex',0)->where('birht_date','<=','1982-01-01')->where('birht_date','>=','1972-01-01')->whereYear('job_date','<=',2002)->get();
+        $a = []; $x = 0;
+        foreach($cadries as $item)
         {
-            $x++;
-            $a[$x] = $item->name. '#' . $item->cadries_count;
-        }    
-        // $railways = Railway::with(['cadries', 'cadries.staff'])->get();
+            $x ++;
+            $year = now()->diffInYears($item->job_date);
+            $a[$x] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '#' . $item->staff->name. '#'. $item->birht_date . '#' . $item->job_date . '#' . $year;
 
-        // $x = 0; $a = [];
-        // foreach($railways as $railway)
-        // {
-        //     $x ++; $m = 0; $t = 0; $ichx = 0;
-
-        //     foreach($railway->cadries as $cadry)
-        //     {
-        //         if($cadry->education_id == 4) {
-        //             if($cadry->staff->category_id == 2) $m ++;
-        //             if($cadry->staff->category_id == 3) $t ++;
-        //             if($cadry->staff->category_id == 4) $ichx ++;
-        //         }
-               
-        //     }
-
-        //     $a[$x] = $railway->name. '#' . $m . '#' . $t . '#' . $ichx;
-
-        // }
-
+        }
         dd($a);
-        
        
     }
 

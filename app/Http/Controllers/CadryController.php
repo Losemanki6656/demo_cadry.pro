@@ -1005,7 +1005,7 @@ class CadryController extends Controller
             $cadry30 = Cadry::filter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::filter()->where('birht_date','>=','1977-01-01')->count();
             
-            $nafaqaMan = Cadry::filter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
+            $nafaqaMan = Cadry::filter()->where('sex',1)->where('birht_date','<=','1962-01-01')->count();
             $nafaqaWoman = Cadry::filter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
 
             $eduoliy = Cadry::filter()->where('education_id',1)->count();
