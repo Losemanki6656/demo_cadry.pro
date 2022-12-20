@@ -385,13 +385,19 @@ class ChatController extends Controller
     public function control()
     {
         
-        $cadries = Cadry::where('status', true)->where('sex',0)->where('birht_date','<=','1982-01-01')->where('birht_date','>=','1972-01-01')->whereYear('job_date','<=',2002)->get();
+        $cadries = Cadry::where('status', true)->where('organization_id',4)->with(['relatives','relatives.relative'])->get();
         $a = []; $x = 0;
         foreach($cadries as $item)
         {
             $x ++;
-            $year = now()->diffInYears($item->job_date);
-            $a[$x] = $item->organization->name . '#' . $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '#' . $item->staff->name. '#'. $item->birht_date . '#' . $item->job_date . '#' . $year;
+            $rels = $item->relatives;
+            $d = '';
+            foreach ($rels as $rel)
+            {
+                $d = $d . $rel->relative->name . ' - ' . $rel->fullname. ', ';
+            }
+
+            $a[$x] = $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '#' . $item->staff->name. '#'. $d;
 
         }
         dd($a);
