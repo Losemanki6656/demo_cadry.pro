@@ -231,9 +231,13 @@ class OrganizationController extends Controller
         return response()->json($data);
     }
     
-    public function filter_api_cities()
+    public function filter_api_cities(Request $request)
     {   
-        $data = CityResource::collection(City::get());
+        $data = CityResource::collection(
+            City::query()
+            ->when(\Request::input('region_id'),function($query,$region_id){
+                $query->where('region_id',$region_id);
+            })->get());
 
         return response()->json($data);
     }
