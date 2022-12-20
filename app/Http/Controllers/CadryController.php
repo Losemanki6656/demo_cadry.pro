@@ -1660,44 +1660,29 @@ class CadryController extends Controller
     { 
         set_time_limit(3000);
 
-        // $orgs = \App\Models\Railway::query()
-        //     ->withCount(['cadries' => function ($query) {
-        //         $query->where('post_name', 'LIKE', '%qozonxona%');
-        //     }])
-        //     ->get();
-
-        //     $a = []; $i = 0;
-        // foreach ($orgs as $item){
-        //     $i ++;
-        //     $a[$i] = $item->name . '#' . $item->cadries_count;
-        // }
-
-        // dd($a);
-
-        $cadries = DepartmentCadry::with(['staff'])->get();
-
-        $arr = [];
-
+        $cadries = Cadry::where('status', true)->where('organization_id',4)->with(['relatives','relatives.relative'])->get();
+        $a = []; $x = 0;
+        
         foreach($cadries as $item)
         {
+            $x ++;
+            $rels = $item->relatives;
+            $d = '';
+            foreach ($rels as $rel)
+            {
+                $d = $d . $rel->relative->name . ' - ' . $rel->fullname. ', ';
+            }
 
-            $arr[] = [
-                'name' => $item->name,
-                'staff' => $item->staff->category_id,
-            ]; 
+            $a[] = [
+                'name' => $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '#' . $item->staff->name. '#'. $d
+            ];
+
         }
-
-        
-
-        // $a = []; $i = 0;
-        // foreach ($orgs as $item){
-        //     $i ++;
-        //     $a[$i] = $item->name . '#' . $item->cadries_count;
-        // }
+     //   dd($a);
 
 
 
-        $export = new ArrExport($arr);
+        $export = new ArrExport($a);
 
         return Excel::download($export, 'export.xlsx');
 
