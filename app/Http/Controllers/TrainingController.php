@@ -372,7 +372,7 @@ class TrainingController extends Controller
             
             $x = [];
             foreach($directions as $direc) {
-
+                $datas = [];
                 $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count(); 
 
                 $organizations = Railway::query()
