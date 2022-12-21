@@ -140,7 +140,7 @@ class OrganizationController extends Controller
         session(['cadry_page' => $page]);
 
         $cadries = Cadry::ApiLeaderFilter()
-            ->with(['vacation','allStaffs','department'])->paginate($per_page, ['*'], 'page', $page);
+            ->with(['vacation','allStaffs','department','organization'])->paginate($per_page, ['*'], 'page', $page);
     
         return response()->json([
             'cadries' => new OrganizationCadryCollection($cadries)

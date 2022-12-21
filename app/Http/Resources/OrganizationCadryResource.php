@@ -31,6 +31,7 @@ class OrganizationCadryResource extends JsonResource
             'vacation' => $vacation,
             'phone' => $this->phone,
             'department' => $this->department->name,
+            'organization_id' => $this->organization,
             'passport' => $this->passport,
             'passport_date' => $this->pass_date,
             'sex' => $this->sex,
