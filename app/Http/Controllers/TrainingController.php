@@ -389,7 +389,7 @@ class TrainingController extends Controller
 
                 $datas = $organizations->where('upgrades_count','>',0);
                 
-                $atext = 0;
+                $atext = '';
                 foreach ($datas as $tex) 
                 {
                     $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . ', ';
