@@ -365,15 +365,30 @@ class TrainingController extends Controller
             $total_mtu4 = 0;
             $total_mtu5 = 0;
             $total_mtu6 = 0;
-            $total_all = 0;
             $total_time = 0;
+            $total_all = 0;
 
             $directions = TrainingDirection::where('apparat_id', $item->id)->get();
             
             $x = [];
             foreach($directions as $direc) {
 
-                $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+                $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count(); 
+
+                $organizations = Railway::query()
+                    ->where('id','!=', 1)
+                    ->where('id','!=', 2)
+                    ->where('id','!=', 3)
+                    ->where('id','!=', 4)
+                    ->where('id','!=', 5)
+                    ->where('id','!=', 6)
+                    ->withCount(['upgrades' => function ($query) use ($date_qual, $direc) {
+                        $query->where('dataqual', $date_qual)
+                            ->where('training_direction_id', $direc->id );
+                    }])->get();
+
+                $organizations = $organizations->where('upgrades_count','>',0);
+
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
                 $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
                 $mtu3 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 3)->count();
@@ -403,7 +418,7 @@ class TrainingController extends Controller
                     'mtu4' => $mtu4,
                     'mtu5' => $mtu5,
                     'mtu6' => $mtu6,
-                    'others' => $all - $mtu1 - $mtu2 - $mtu3 - $mtu4 - $mtu5 - $mtu6,
+                    'others' => $organizations,
                     'total' => $all
                 ];
             }
