@@ -388,8 +388,12 @@ class TrainingController extends Controller
                     }])->get();
 
                 $datas = $organizations->where('upgrades_count','>',0);
-
-                return $datas;
+                
+                $atext = 0;
+                foreach ($datas as $tex) 
+                {
+                    $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . ', ';
+                }
 
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
                 $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
@@ -420,7 +424,7 @@ class TrainingController extends Controller
                     'mtu4' => $mtu4,
                     'mtu5' => $mtu5,
                     'mtu6' => $mtu6,
-                    'others' => $datas,
+                    'others' => $atext,
                     'total' => $all
                 ];
             }
