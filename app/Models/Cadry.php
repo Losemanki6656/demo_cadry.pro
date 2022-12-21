@@ -294,7 +294,7 @@ class Cadry extends Model
             })->when(request('birth_region_id'), function ($query, $birth_region_id) {
                 return $query->where('birth_region_id', $birth_region_id);
 
-            })->>when(request('birth_city_id'), function ($query, $birth_city_id) {
+            })->when(request('birth_city_id'), function ($query, $birth_city_id) {
                 return $query->where('birth_city_id', $birth_city_id);
 
             })->when(request('address_region_id'), function ($query, $address_region_id) {
@@ -343,7 +343,7 @@ class Cadry extends Model
         })->when(request('birth_region_id'), function ($query, $birth_region_id) {
             return $query->where('birth_region_id', $birth_region_id);
 
-        })->>when(request('birth_city_id'), function ($query, $birth_city_id) {
+        })->when(request('birth_city_id'), function ($query, $birth_city_id) {
             return $query->where('birth_city_id', $birth_city_id);
 
         })->when(request('address_region_id'), function ($query, $address_region_id) {
@@ -401,7 +401,7 @@ class Cadry extends Model
             })->when(request('birth_region_id'), function ($query, $birth_region_id) {
                 return $query->where('birth_region_id', $birth_region_id);
 
-            })->>when(request('birth_city_id'), function ($query, $birth_city_id) {
+            })->when(request('birth_city_id'), function ($query, $birth_city_id) {
                 return $query->where('birth_city_id', $birth_city_id);
 
             })->when(request('address_region_id'), function ($query, $address_region_id) {
