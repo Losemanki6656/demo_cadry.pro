@@ -392,7 +392,7 @@ class TrainingController extends Controller
                 $atext = '';
                 foreach ($datas as $tex) 
                 {
-                    $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . ', ';
+                    $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
                 }
 
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
