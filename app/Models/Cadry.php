@@ -294,6 +294,15 @@ class Cadry extends Model
             })->when(request('birth_region_id'), function ($query, $birth_region_id) {
                 return $query->where('birth_region_id', $birth_region_id);
 
+            })>when(request('birth_city_id'), function ($query, $birth_city_id) {
+                return $query->where('birth_city_id', $birth_city_id);
+
+            })->when(request('address_region_id'), function ($query, $address_region_id) {
+                return $query->where('address_region_id', $address_region_id);
+
+            })->when(request('address_city_id'), function ($query, $address_city_id) {
+                return $query->where('address_city_id', $address_city_id);
+
             })->when(request('sex'), function ($query, $sex) {
                 if($sex == "true") $z = true; else $z = false;
                 return $query->where('sex', $z);
@@ -332,7 +341,16 @@ class Cadry extends Model
             return $query->where('education_id', $education_id);
 
         })->when(request('birth_region_id'), function ($query, $birth_region_id) {
-            return $query->where('address_region_id', $birth_region_id);
+            return $query->where('birth_region_id', $birth_region_id);
+
+        })>when(request('birth_city_id'), function ($query, $birth_city_id) {
+            return $query->where('birth_city_id', $birth_city_id);
+
+        })->when(request('address_region_id'), function ($query, $address_region_id) {
+            return $query->where('address_region_id', $address_region_id);
+
+        })->when(request('address_city_id'), function ($query, $address_city_id) {
+            return $query->where('address_city_id', $address_city_id);
 
         })->when(request('address_city_id'), function ($query, $address_city_id ) {
             return $query->where('address_city_id', $address_city_id);
@@ -382,6 +400,15 @@ class Cadry extends Model
 
             })->when(request('birth_region_id'), function ($query, $birth_region_id) {
                 return $query->where('birth_region_id', $birth_region_id);
+
+            })>when(request('birth_city_id'), function ($query, $birth_city_id) {
+                return $query->where('birth_city_id', $birth_city_id);
+
+            })->when(request('address_region_id'), function ($query, $address_region_id) {
+                return $query->where('address_region_id', $address_region_id);
+
+            })->when(request('address_city_id'), function ($query, $address_city_id) {
+                return $query->where('address_city_id', $address_city_id);
 
             })->when(request('sex'), function ($query, $sex) {
                 if($sex == "true") $z = true; else $z = false;
