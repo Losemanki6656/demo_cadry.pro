@@ -389,6 +389,8 @@ class TrainingController extends Controller
 
                 $datas = $organizations->where('upgrades_count','>',0);
 
+                return $datas;
+
                 $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
                 $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
                 $mtu3 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 3)->count();
