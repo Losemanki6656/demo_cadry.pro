@@ -85,11 +85,31 @@ class BackApiController extends Controller
 
     public function api_cadry_edit($id)
     {
+        $user = auth()->user()->userorganization;
         $cadry = Cadry::with(['allStaffs.department', 'work_level'])->find($id);
 
-        return response()->json([
-            'cadry' => new CadryEditResource($cadry),
-        ]);
+        if(auth()->user()->can('cadry_leader_cadries')) {
+            if($cadry->railway_id == $user->railway_id) {
+                return response()->json([
+                    'cadry' => new CadryEditResource($cadry),
+                ]);
+            } else {
+                return response()->json([
+                    'message' => "Ma'lumot topilmadi",
+                ], 404);
+            }
+        } else {
+            if($cadry->organization_id == $user->organization_id) {
+                return response()->json([
+                    'cadry' => new CadryEditResource($cadry),
+                ]);
+            } else {
+                return response()->json([
+                    'message' => "Ma'lumot topilmadi",
+                ], 404);
+            }
+        }
+        
     }
 
     public function api_cadry_information($id)
