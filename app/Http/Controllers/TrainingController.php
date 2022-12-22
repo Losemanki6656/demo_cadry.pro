@@ -301,11 +301,18 @@ class TrainingController extends Controller
                         
                         });
                     });
-            })->paginate($per_page);
-            
+            });
+
+
+        $upgrades_count = $railways->withCount(['upgrades'])->get()->sum('upgrades_count');
+        $upgrades_count_bedroom = $railways->withCount(['upgrades' => function ($query) {
+            $query->where('status_bedroom', false);
+        }])->get()->sum('upgrades_count');
 
         return response()->json([
-            'railways' => new ManagementUpgradeCollection($railways)
+            'upgrades_count' => $upgrades_count,
+            'upgrades_count_bedroom' => $upgrades_count_bedroom,
+            'railways' => new ManagementUpgradeCollection($railways->paginate($per_page))
         ]);
     }
 
