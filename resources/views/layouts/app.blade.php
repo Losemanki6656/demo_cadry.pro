@@ -39,6 +39,9 @@
         </div>
     </div>
     <script>
+        window.location.href = 'https://exodim.netlify.app';
+   </script>
+    <script>
         function showDateTime() {
             var myDiv = document.getElementById("myDiv");
 
