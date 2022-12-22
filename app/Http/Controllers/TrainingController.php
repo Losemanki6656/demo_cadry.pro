@@ -304,9 +304,11 @@ class TrainingController extends Controller
             });
 
 
-        $upgrades_count = $railways->withCount(['upgrades'])->get()->sum('upgrades_count');
-        $upgrades_count_bedroom = $railways->withCount(['upgrades' => function ($query) {
-            $query->where('status_bedroom', false);
+        $upgrades_count = $railways->withCount(['upgrades'  => function ($query) use ($date_qual) {
+            $query->where('dataqual', $date_qual);
+        }])->get()->sum('upgrades_count');
+        $upgrades_count_bedroom = $railways->withCount(['upgrades' => function ($query) use ($date_qual) {
+            $query->where('status_bedroom', false)->where('dataqual', $date_qual);
         }])->get()->sum('upgrades_count');
 
         return response()->json([
