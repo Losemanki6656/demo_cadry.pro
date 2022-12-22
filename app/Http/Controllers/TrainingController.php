@@ -375,13 +375,13 @@ class TrainingController extends Controller
                 $datas = [];
                 $all = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count(); 
 
-                $organizations = Railway::query()
-                    ->where('id','!=', 1)
-                    ->where('id','!=', 2)
-                    ->where('id','!=', 3)
-                    ->where('id','!=', 4)
-                    ->where('id','!=', 5)
-                    ->where('id','!=', 6)
+                $organizations = Organization::query()
+                    ->where('railway_id','!=', 1)
+                    ->where('railway_id','!=', 2)
+                    ->where('railway_id','!=', 3)
+                    ->where('railway_id','!=', 4)
+                    ->where('railway_id','!=', 5)
+                    ->where('railway_id','!=', 6)
                     ->withCount(['upgrades' => function ($query) use ($date_qual, $direc) {
                         $query->where('dataqual', $date_qual)
                             ->where('training_direction_id', $direc->id );
