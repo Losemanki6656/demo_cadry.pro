@@ -289,7 +289,7 @@ class UserController extends Controller
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->photo = $filePath;
                 $userOrgan->phone = $request->phone;
-                $userOrgan->post_id = $request->password;
+                $userOrgan->post_id = $request->password ?? '';
                 $userOrgan->save();
     
                 $user = User::find($user_id);
@@ -308,7 +308,7 @@ class UserController extends Controller
                 $userOrgan->railway_id = $rail_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->phone = $request->phone;
-                $userOrgan->post_id = $request->password;
+                $userOrgan->post_id = $request->password ?? '';
                 $userOrgan->save();
     
                 $user = User::find($user_id);
