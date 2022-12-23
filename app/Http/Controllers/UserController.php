@@ -249,13 +249,11 @@ class UserController extends Controller
     public function api_user_update_view($user_id)
     {
         $user = User::find($user_id);
-        $organizations = OrgResource::collection(Organization::get());
         $roles = Role::get();
 
         return response()->json([
             'users' => new UserApiResource($user),
-            'roles' => RoleApiResource::collection($roles),
-            'organizations' => $organizations
+            'roles' => RoleApiResource::collection($roles)
         ]);
     }
 
@@ -273,8 +271,6 @@ class UserController extends Controller
             ], 401); 
         } 
 
-            $rail_id = Organization::find($request->organization_id)->railway_id;
-
             if($request->photo) {
 
                 $fileName   = time() . $request->photo->getClientOriginalName();
@@ -285,7 +281,7 @@ class UserController extends Controller
                 
 
                 $userOrgan = UserOrganization::where('user_id',$user_id)->first();
-                $userOrgan->railway_id = $rail_id;
+                $userOrgan->railway_id = $request->railway_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->photo = $filePath;
                 $userOrgan->phone = $request->phone;
@@ -305,7 +301,7 @@ class UserController extends Controller
             } else  {
     
                 $userOrgan = UserOrganization::where('user_id',$user_id)->first();
-                $userOrgan->railway_id = $rail_id;
+                $userOrgan->railway_id = $request->railway_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->phone = $request->phone;
                 $userOrgan->post_id = $request->password ?? '';
