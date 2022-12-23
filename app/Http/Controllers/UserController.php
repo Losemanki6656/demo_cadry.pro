@@ -295,8 +295,12 @@ class UserController extends Controller
                 $user = User::find($user_id);
                 $user->name = $request->name;
                 $user->email = $request->email;
-                $user->password = bcrypt($request->password);
+                if($request->password)
+                    $user->password = bcrypt($request->password);
                 $user->save();
+
+                DB::table('model_has_roles')->where('model_id',$user->id)->delete();
+                $user->assignRole($request->role_id);
     
             } else  {
     
@@ -310,8 +314,12 @@ class UserController extends Controller
                 $user = User::find($user_id);
                 $user->name = $request->name;
                 $user->email = $request->email;
-                $user->password = bcrypt($request->password);
+                if($request->password)
+                    $user->password = bcrypt($request->password);
                 $user->save();
+
+                DB::table('model_has_roles')->where('model_id',$user->id)->delete();
+                $user->assignRole($request->role_id);
                 
             }
 
