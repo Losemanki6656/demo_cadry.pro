@@ -476,17 +476,17 @@ Route::group([
 });
 
 
-Route::post('control', function (Request $request) {
+// Route::post('control', function (Request $request) {
 
-    $control = new Turnicet();
-    $control->railway_id = 1;
-    $control->organization_id = 1;
-    $control->department_id = 1;
-    $control->organization_name = $request->organization_name;
-    $control->department_name = $request->action;
-    $control->tabel = $request->tabel;
-    $control->fullname = $request->fullname;
-    $control->save();
+//     $control = new Turnicet();
+//     $control->railway_id = 1;
+//     $control->organization_id = 1;
+//     $control->department_id = 1;
+//     $control->organization_name = $request->organization_name;
+//     $control->department_name = $request->action;
+//     $control->tabel = $request->tabel;
+//     $control->fullname = $request->fullname;
+//     $control->save();
 
-    return response()->json(['message' => 'success'], 200);
-});
+//     return response()->json(['message' => 'success'], 200);
+// });
