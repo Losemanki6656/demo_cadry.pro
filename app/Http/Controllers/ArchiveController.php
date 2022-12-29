@@ -160,7 +160,7 @@ class ArchiveController extends Controller
                 $cadryCreate->save();
         
 
-                $x = Career::where('cadry_id',$archive_cadry_id)->count();
+                $x = Career::where('cadry_id', $archive_cadry_id)->count();
                 $y = new Career();
                 $y->sort = $x + 1;
                 $y->cadry_id = $archive_cadry_id;

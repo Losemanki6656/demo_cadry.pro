@@ -619,7 +619,9 @@ class CadryController extends Controller
             $array['organization_id'] = auth()->user()->userorganization->organization_id;
             $array['post_name'] = $dep->staff_full ?? '';
             $array['staff_id'] = $dep->staff_id;
-            $array['order'] = $request->order ?? 0;
+            if($request->order == null) 
+                $array['order'] = 0;
+                else $array['order'] = $request->order;
             $array['status_dec'] = $request->status_dec ?? 0;
 
             $cadry = Cadry::create($array);
@@ -632,7 +634,7 @@ class CadryController extends Controller
             $newItem->staff_id = $dep->staff_id;
             $newItem->staff_full = $dep->staff_full;
             $newItem->staff_date = $request->post_date;
-            //$newItem->staff_status = $request->staff_status;
+            $newItem->command_number = $request->command_number ?? '';
             if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka) 
                 $newItem->status_sv = true; 
             else
