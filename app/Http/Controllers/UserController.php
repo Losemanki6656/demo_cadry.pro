@@ -271,6 +271,8 @@ class UserController extends Controller
             ], 401); 
         } 
 
+        $railway_id = Organization::find($request->organization_id);
+
             if($request->photo) {
 
                 $fileName   = time() . $request->photo->getClientOriginalName();
@@ -281,7 +283,7 @@ class UserController extends Controller
                 
 
                 $userOrgan = UserOrganization::where('user_id',$user_id)->first();
-                $userOrgan->railway_id = $request->railway_id;
+                $userOrgan->railway_id = $railway_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->photo = $filePath;
                 $userOrgan->phone = $request->phone;
@@ -301,7 +303,7 @@ class UserController extends Controller
             } else  {
     
                 $userOrgan = UserOrganization::where('user_id',$user_id)->first();
-                $userOrgan->railway_id = $request->railway_id;
+                $userOrgan->railway_id = $railway_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->phone = $request->phone;
                 $userOrgan->post_id = $request->password ?? '';
