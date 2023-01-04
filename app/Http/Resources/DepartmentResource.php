@@ -30,8 +30,8 @@ class DepartmentResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'vakan' => $z,
-            'sverx' => $q,
+            'vakan' => (float)number_format($z,2),
+            'sverx' => (float)number_format($q,2),
             'plan' => $p,
             'cadries_count' => $cadries_count
         ];

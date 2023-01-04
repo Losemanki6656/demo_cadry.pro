@@ -21,7 +21,7 @@ class DepartmentStaffResource extends JsonResource
             'classification_id' => new ClassificationResource($this->classification),
             'staff_fullname' => $this->staff_full,
             'rate' => $this->stavka,
-            'rate_sum' => $this->cadry->sum('stavka')
+            'rate_sum' => (float)number_format($this->cadry->sum('stavka'),2)
         ];
     }
 }
