@@ -271,7 +271,7 @@ class UserController extends Controller
             ], 401); 
         } 
 
-        $railway_id = Organization::find($request->organization_id);
+        $railway_id = Organization::find($request->organization_id)->railway_id;
 
             if($request->photo) {
 
@@ -301,8 +301,8 @@ class UserController extends Controller
                 $user->assignRole($request->role_id);
     
             } else  {
-    
-                $userOrgan = UserOrganization::where('user_id',$user_id)->first();
+                
+                $userOrgan = UserOrganization::where('user_id', $user_id)->first();
                 $userOrgan->railway_id = $railway_id;
                 $userOrgan->organization_id = $request->organization_id;
                 $userOrgan->phone = $request->phone;
