@@ -15,6 +15,7 @@ use App\Models\UserOrganization;
 use App\Models\Department;
 use App\Models\Region;
 use App\Models\City;
+use App\Models\Upgrade;
 use App\Models\Education;
 use App\Models\AcademicTitle;
 use App\Models\AcademicDegree;
@@ -1188,7 +1189,19 @@ class CadryController extends Controller
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
+            
+            $upgrades = Upgrade::query()
+                ->where('dataqual', now()->format('y'))
+                ->when(request('railway_id'), function ( $query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);
+                    
+                })->when(request('organization_id'), function ( $query, $organization_id) {
+                    return $query->where('organization_id', $organization_id);
+                });
 
+            $upgrades_count = $upgrades->count();     
+            $bedroom = $upgrades->where('status_bedroom', false)->count();
+            
             $news = [];
             for($i = 1; $i <= 12; $i ++)
             {
@@ -1206,6 +1219,8 @@ class CadryController extends Controller
             $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
 
         return response()->json([
+            'upgrades_count' => $upgrades_count,
+            'status_bedroom' => $bedroom,
             'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'not_passport_files' => $not_passport_files,
@@ -1532,6 +1547,15 @@ class CadryController extends Controller
 
             $not_passport_files = Cadry::OrgFilter()->has('passports', '=', 0)->count();
 
+            $upgrades = Upgrade::query()
+                ->where('dataqual', now()->format('y'))
+                ->when(request('organization_id'), function ( $query, $organization_id) {
+                    return $query->where('organization_id', $organization_id);
+                });
+
+            $upgrades_count = $upgrades->count();     
+            $bedroom = $upgrades->where('status_bedroom', false)->count();
+            
             $news = [];
             for($i = 1; $i <= 12; $i ++)
             {
@@ -1547,6 +1571,8 @@ class CadryController extends Controller
             }
 
         return response()->json([
+            'upgrades_count' => $upgrades_count,
+            'status_bedroom' => $bedroom,
             'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'vacations_decret' => $vacDec,
