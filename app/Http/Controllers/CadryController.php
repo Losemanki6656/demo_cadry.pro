@@ -1130,11 +1130,11 @@ class CadryController extends Controller
             $woman = $all - $man;
             $dog =  Cadry::ApiFilter()->where('worklevel_id',5)->count();
 
-            $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1992-01-01')->count();
-            $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1977-01-01')->count();
+            $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1993-01-01')->count();
+            $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1978-01-01')->count();
             
-            $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
-            $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
+            $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1958-01-01')->count();
+            $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
 
             $eduoliy = Cadry::ApiFilter()->where('education_id',1)->count();
             $edumaxsus = Cadry::ApiFilter()->where('education_id',3)->count();
@@ -1477,11 +1477,11 @@ class CadryController extends Controller
             $woman = $all - $man;
             $dog =  Cadry::OrgFilter()->where('worklevel_id',5)->count();
 
-            $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1992-01-01')->count();
-            $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1977-01-01')->count();
+            $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1993-01-01')->count();
+            $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1978-01-01')->count();
             
-            $nafaqaMan = Cadry::OrgFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
-            $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
+            $nafaqaMan = Cadry::OrgFilter()->where('sex',1)->where('birht_date','<=','1958-01-01')->count();
+            $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
 
             $eduoliy = Cadry::OrgFilter()->where('education_id',1)->count();
             $edumaxsus = Cadry::OrgFilter()->where('education_id',3)->count();
