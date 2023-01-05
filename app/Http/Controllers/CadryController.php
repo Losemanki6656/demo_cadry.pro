@@ -1323,6 +1323,20 @@ class CadryController extends Controller
 
             $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
 
+            
+            $not_passport_files = Cadry::ApiFilter()->has('passports', '=', 0)->count();
+
+            $upgrades = Upgrade::query()
+                ->where('dataqual', now()->format('Y'))
+                ->when(request('railway_id'), function ( $query, $railway_id) {
+                    return $query->where('railway_id', $railway_id);    
+                })
+                ->when(request('organization_id'), function ( $query, $organization_id) {
+                    return $query->where('organization_id', $organization_id);
+                });
+
+            $upgrades_count = $upgrades->count();     
+            $bedroom = $upgrades->where('status_bedroom', false)->count();
 
             $news = [];
             for($i = 1; $i <= 12; $i ++)
@@ -1341,6 +1355,9 @@ class CadryController extends Controller
             $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
 
         return response()->json([
+            'not_passport_files' => $not_passport_files,
+            'upgrades_count' => $upgrades_count,
+            'status_bedroom' => $bedroom,
             'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
             'meds' => $meds,
