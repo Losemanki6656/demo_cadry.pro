@@ -45,6 +45,28 @@ class TrainingController extends Controller
             'apparats' => $apparats
         ]);
     }
+
+    public function api_statistics_upgrades()
+    {
+       $upgrades = Upgrade::query()
+            ->where('dataqual', request('date_qual'))
+            ->when(request('railway_id'), function ( $query, $railway_id) {
+                return $query->where('railway_id', $railway_id);
+                
+            })->when(request('organization_id'), function ( $query, $organization_id) {
+                return $query->where('organization_id', $organization_id);
+            });
+
+        $upgrades_count = $upgrades->count();     
+        $bedroom = $upgrades->where('status_bedroom', false)->count();
+
+        return response()->json([
+            'upgrades_count' => $upgrades_count,
+            'status_bedroom' => $bedroom
+        ]);
+    }
+
+
     public function cadry_add_qual(Cadry $cadry_id, Request $request)
     {           
         $newUpgrade = new Upgrade();
@@ -506,7 +528,9 @@ class TrainingController extends Controller
                         
                         });
                     })
-                    ->where('organization_id', $organization_id)->where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->count();   
+                    ->where('organization_id', $organization_id)->where('training_direction_id', $direc->id)
+                    ->where('dataqual', $date_qual)
+                    ->count();   
 
                 if($all > 0) {
                     $x[] = [

@@ -98,6 +98,7 @@ Route::group([
         ], function () {
         
         Route::get('/management/statistics', [CadryController::class, 'api_statistics']);
+        Route::get('/management/statistics/upgrades', [TrainingController::class, 'api_statistics_upgrades']);
         
     }); 
 

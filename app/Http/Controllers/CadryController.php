@@ -1178,14 +1178,10 @@ class CadryController extends Controller
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
                 
-            if($request->railway_id == 3) {
-                $careersCount = 0;
-                $relativesCount = 0;
-            } else {
-                $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
-                $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
-            } 
-            
+           
+            $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
+            $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
+            $not_passport_files = Cadry::ApiFilter()->has('passports', '=', 0)->count();
             
             $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
 
@@ -1212,6 +1208,7 @@ class CadryController extends Controller
         return response()->json([
             'not_staff_files' => $not_staff_files,
             'mednotCount' => $mednotCount,
+            'not_passport_files' => $not_passport_files,
             'meds' => $meds,
             'abroads' => $abroads,
             'academics' => $academics,
@@ -1223,7 +1220,8 @@ class CadryController extends Controller
             'all_man_cadries' => $man,
             'all_woman_cadries' => $woman,
             'cadry30' => $cadry30,
-            'cadry45' => $cadry45 - $cadry30,
+            'cadry3045' => $cadry45 - $cadry30,
+            'cadry45' => $all - $cadry45,
             'vakant' => (int)$vacanCount,
             'sverx' => (int)$sverxCount,
             'contract_cadries' => $dog,
@@ -1532,6 +1530,7 @@ class CadryController extends Controller
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
+            $not_passport_files = Cadry::OrgFilter()->has('passports', '=', 0)->count();
 
             $news = [];
             for($i = 1; $i <= 12; $i ++)
@@ -1552,6 +1551,7 @@ class CadryController extends Controller
             'mednotCount' => $mednotCount,
             'vacations_decret' => $vacDec,
             'vacations' => $vac - $vacDec,
+            'not_passport_files' => $not_passport_files,
             'meds' => $meds,
             'abroads' => $abroads,
             'academics' => $academics,
@@ -1563,7 +1563,6 @@ class CadryController extends Controller
             'all_cadries_count' => $all,
             'all_man_cadries' => $man,
             'all_woman_cadries' => $woman,
-            'cadry30' => $cadry30,
             'vakant' => (float)number_format($vacanCount,2),
             'sverx' => (float)number_format($sverxCount,2),
             'contract_cadries' => $dog,
@@ -1573,7 +1572,9 @@ class CadryController extends Controller
             'highly_special_educations' => $eduoliy,
             'medium_special_cadries' => $edumaxsus,
             'secondary_special_cadries' => $all - $edumaxsus - $eduoliy,
-            'cadry45' => $cadry45-$cadry30,
+            'cadry30' => $cadry30,
+            'cadry3045' => $cadry45-$cadry30,
+            'cadry45' => $all - $cadry45,
             'black_list_cadries' => $democadriesback->count(),
             'new_caries_year' => $news,
             'delete_cadries_year' => $demo,
