@@ -1025,6 +1025,17 @@ class BackApiController extends Controller
 
         $newItem->save();
 
+        if($request->status) {
+            
+            $cadryCreate = new CadryCreate();
+            $cadryCreate->railway_id = $newItem->railway_id;
+            $cadryCreate->organization_id = $newItem->organization_id;
+            $cadryCreate->cadry_id = $newItem->cadry_id;
+            $cadryCreate->command_number = $request->command_number;
+            $cadryCreate->update_staff = true;
+            $cadryCreate->save();
+        }
+
         if ($request->staff_status == 0) {
             $cadry = Cadry::find($newItem->cadry_id);
             $cadry->department_id = $request->department_id;

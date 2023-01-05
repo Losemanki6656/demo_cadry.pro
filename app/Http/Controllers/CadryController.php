@@ -66,7 +66,6 @@ class CadryController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request->all());
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
         $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
@@ -1191,11 +1190,11 @@ class CadryController extends Controller
 
             
             $upgrades = Upgrade::query()
-                ->where('dataqual', now()->format('y'))
+                ->where('dataqual', now()->format('Y'))
                 ->when(request('railway_id'), function ( $query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);
-                    
-                })->when(request('organization_id'), function ( $query, $organization_id) {
+                    return $query->where('railway_id', $railway_id);    
+                })
+                ->when(request('organization_id'), function ( $query, $organization_id) {
                     return $query->where('organization_id', $organization_id);
                 });
 
@@ -1548,7 +1547,7 @@ class CadryController extends Controller
             $not_passport_files = Cadry::OrgFilter()->has('passports', '=', 0)->count();
 
             $upgrades = Upgrade::query()
-                ->where('dataqual', now()->format('y'))
+                ->where('dataqual', now()->format('Y'))
                 ->when(request('organization_id'), function ( $query, $organization_id) {
                     return $query->where('organization_id', $organization_id);
                 });
