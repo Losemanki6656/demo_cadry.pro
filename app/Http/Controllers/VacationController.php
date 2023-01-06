@@ -54,7 +54,7 @@ class VacationController extends Controller
            $search = $request->search;
            $data = Cadry::OrgFilter()
                ->where(function ($query) use ($search) {
-                   $query->Orwhere('last_name', 'like', '%' . $search . '%')
+                   $query->where('last_name', 'like', '%' . $search . '%')
                        ->orWhere('first_name', 'like', '%' . $search . '%')
                        ->orWhere('middle_name', 'like', '%' . $search . '%');
                })

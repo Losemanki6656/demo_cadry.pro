@@ -20,6 +20,7 @@ use App\Http\Controllers\PereviewStatisticController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\TechnicalSchoolController;
 
 
 /*
@@ -447,6 +448,33 @@ Route::group([
 
         
         Route::get('/qualification/management/organization/{organization_id}', [TrainingController::class, 'management_organization_upgrades']);
+       
+    });
+
+
+    //professions
+    Route::group([
+        'middleware' => [
+            'permission:management_professions'
+            ]
+        ], function () {
+
+        
+        Route::get('/dual/professions', [TechnicalSchoolController::class, 'professions']);
+        Route::post('/dual/profession/create', [TechnicalSchoolController::class, 'add_profession']);
+        Route::put('/dual/profession/{profession_id}/update', [TechnicalSchoolController::class, 'update_profession']);
+        Route::delete('/dual/profession/{profession_id}/delete', [TechnicalSchoolController::class, 'delete_profession']);
+        
+        Route::get('/dual/specialties', [TechnicalSchoolController::class, 'specialties']);
+        Route::post('/dual/specialty/create', [TechnicalSchoolController::class, 'add_specialty']);
+        Route::put('/dual/specialty/{specialty_id}/update', [TechnicalSchoolController::class, 'update_specialty']);
+        Route::delete('/dual/specialty/{specialty_id}/delete', [TechnicalSchoolController::class, 'delete_specialty']);
+
+        
+        Route::get('/dual/technicals', [TechnicalSchoolController::class, 'technicals']);
+        Route::post('/dual/technical/create', [TechnicalSchoolController::class, 'add_technical']);
+        Route::put('/dual/technical/{technical_id}/update', [TechnicalSchoolController::class, 'update_technical']);
+        Route::delete('/dual/technical/{technical_id}/delete', [TechnicalSchoolController::class, 'delete_technical']);
        
     });
 
