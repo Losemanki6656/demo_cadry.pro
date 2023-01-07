@@ -16,6 +16,7 @@ use App\Http\Resources\SpecialtyResource;
 use App\Http\Resources\ProfessionResource;
 use App\Http\Resources\TechnicalResource;
 use App\Http\Resources\CadryDualResource;
+use App\Http\Resources\DualResource;
 
 class TechnicalSchoolController extends Controller
 {
@@ -230,11 +231,16 @@ class TechnicalSchoolController extends Controller
 
     public function duals($cadry_id)
     {
-        $cadries = Dual::where('cadry_id', $cadry_id)->get();
+        $cadries = Dual::where('cadry_id', $cadry_id)->with([
+            'profession',
+            'technical',
+            'specialty'
+        ])->get();
+        
         $professions = Position::with(['technicals','specialties'])->get();
 
         return response()->json([
-             'cadries' => $cadries,
+             'cadries' => DualResource::collection($cadries),
              'professions' => CadryDualResource::collection($professions)
         ]);
         
