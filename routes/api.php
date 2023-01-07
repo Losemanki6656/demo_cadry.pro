@@ -479,8 +479,8 @@ Route::group([
         
         Route::get('/dual/{cadry_id}/duals', [TechnicalSchoolController::class, 'duals']);
         Route::post('/dual/{cadry_id}/add-dual', [TechnicalSchoolController::class, 'add_dual']);
-        // Route::put('/dual/technical/{technical_id}/update', [TechnicalSchoolController::class, 'update_technical']);
-        // Route::delete('/dual/technical/{technical_id}/delete', [TechnicalSchoolController::class, 'delete_technical']);
+        Route::put('/dual/{dual_id}/update-dual', [TechnicalSchoolController::class, 'update_dual']);
+        Route::delete('/dual/{dual_id}/delete-dual', [TechnicalSchoolController::class, 'delete_dual']);
        
     });
 

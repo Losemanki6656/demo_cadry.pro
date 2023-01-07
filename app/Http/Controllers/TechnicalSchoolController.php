@@ -229,6 +229,29 @@ class TechnicalSchoolController extends Controller
         ]);
     }
 
+    public function update_dual($dual_id, Request $request)
+    {           
+        $newUpgrade = Dual::find($dual_id);
+        $newUpgrade->position_id = $request->profession_id;
+        $newUpgrade->technical_id = $request->technical_id;
+        $newUpgrade->specialty_id = $request->specialty_id;
+        $newUpgrade->status = false;
+        $newUpgrade->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'xzgartirildi!"
+        ]);
+    }
+
+    public function delete_dual($dual_id)
+    {           
+        $newUpgrade = Dual::find($dual_id)->delete();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'chirildi!"
+        ]);
+    }
+
     public function duals($cadry_id)
     {
         $duals = Dual::where('cadry_id', $cadry_id)->with([
