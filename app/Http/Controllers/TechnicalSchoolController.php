@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Technical;
 use App\Models\Dual;
+use App\Models\Cadry;
 use App\Models\PositionTechnical;
 
 
@@ -212,7 +213,7 @@ class TechnicalSchoolController extends Controller
 
     public function add_dual(Cadry $cadry_id, Request $request)
     {           
-        $newUpgrade = new Upgrade();
+        $newUpgrade = new Dual();
         $newUpgrade->railway_id = $cadry_id->railway_id;
         $newUpgrade->organization_id = $cadry_id->organization_id;
         $newUpgrade->cadry_id = $cadry_id->id;
