@@ -240,7 +240,7 @@ class TechnicalSchoolController extends Controller
         $professions = Position::with(['technicals','specialties'])->get();
 
         return response()->json([
-             'duals' => DualResource::collection($cadries),
+             'duals' => DualResource::collection($duals),
              'professions' => CadryDualResource::collection($professions)
         ]);
         
