@@ -16,7 +16,6 @@ class DualResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'profession' => $this->profession,
             'technical' => new TechnicalResource($this->technical),
             'specialty' => new SpecialtyResource($this->specialty),

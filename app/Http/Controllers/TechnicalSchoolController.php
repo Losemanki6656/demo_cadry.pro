@@ -231,16 +231,16 @@ class TechnicalSchoolController extends Controller
 
     public function duals($cadry_id)
     {
-        $cadries = Dual::where('cadry_id', $cadry_id)->with([
+        $duals = Dual::where('cadry_id', $cadry_id)->with([
             'profession',
             'technical',
             'specialty'
         ])->get();
-        
+
         $professions = Position::with(['technicals','specialties'])->get();
 
         return response()->json([
-             'cadries' => DualResource::collection($cadries),
+             'duals' => DualResource::collection($cadries),
              'professions' => CadryDualResource::collection($professions)
         ]);
         
