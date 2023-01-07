@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Technical;
+use App\Models\Dual;
 use App\Models\PositionTechnical;
 
 
@@ -94,9 +95,12 @@ class TechnicalSchoolController extends Controller
     {
         $specialties = Specialty::with('profession')->get();
 
+        $professions = Position::get();
+
         return response()->json([
 
-            'specialties' => SpecialtyResource::collection($specialties)
+            'specialties' => SpecialtyResource::collection($specialties),
+            'professions' => $professions
 
         ]);
     }
@@ -205,6 +209,34 @@ class TechnicalSchoolController extends Controller
             'message' => "Ta'lim muassasasi muvaffaqqiyatli biriktirildi!"
             
         ]);
+    }
+
+    public function add_dual(Cadry $cadry_id, Request $request)
+    {           
+        $newUpgrade = new Upgrade();
+        $newUpgrade->railway_id = $cadry_id->railway_id;
+        $newUpgrade->organization_id = $cadry_id->organization_id;
+        $newUpgrade->cadry_id = $cadry_id->id;
+        $newUpgrade->position_id = $request->profession_id;
+        $newUpgrade->technical_id = $request->technical_id;
+        $newUpgrade->specialty_id = $request->specialty_id;
+        $newUpgrade->date_dual = $request->date_dual;
+        $newUpgrade->status = false;
+        $newUpgrade->save();
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli qo'shildi!"
+        ]);
+    }
+
+    public function duals($cadry_id)
+    {
+        $cadries = Dual::where('cadry_id', $cadry_id)->get();
+
+        return response()->json([
+             'cadries' => ($cadries)
+        ]);
+        
     }
 
 
