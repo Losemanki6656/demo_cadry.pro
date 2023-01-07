@@ -14,4 +14,9 @@ class Position extends Model
     {
         return $this->belongsToMany(Technical::class, 'position_technicals');
     }
+
+    public function specialties()
+    {
+        return $this->hasMany(Specialty::class);
+    }
 }

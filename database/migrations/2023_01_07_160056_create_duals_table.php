@@ -22,7 +22,6 @@ class CreateDualsTable extends Migration
             $table->bigInteger('technical_id')->unsigned()->index()->nullable();
             $table->bigInteger('specialty_id')->unsigned()->index()->nullable();
 
-            $table->date('date_dual')->nullable();
             $table->boolean('status')->default(false);
             $table->date('date1')->nullable();
             $table->date('date2')->nullable();

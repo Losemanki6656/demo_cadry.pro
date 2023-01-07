@@ -17,8 +17,6 @@ use App\Http\Resources\TechnicalResource;
 
 class TechnicalSchoolController extends Controller
 {
-    
-
     public function professions()
     {
         $professions = Position::with('technicals')->get();
@@ -220,7 +218,6 @@ class TechnicalSchoolController extends Controller
         $newUpgrade->position_id = $request->profession_id;
         $newUpgrade->technical_id = $request->technical_id;
         $newUpgrade->specialty_id = $request->specialty_id;
-        $newUpgrade->date_dual = $request->date_dual;
         $newUpgrade->status = false;
         $newUpgrade->save();
 
@@ -232,9 +229,11 @@ class TechnicalSchoolController extends Controller
     public function duals($cadry_id)
     {
         $cadries = Dual::where('cadry_id', $cadry_id)->get();
+        $professions = Position::with(['technicals','specialties'])->get();
 
         return response()->json([
-             'cadries' => ($cadries)
+             'cadries' => $cadries,
+             'professions' => $professions
         ]);
         
     }
