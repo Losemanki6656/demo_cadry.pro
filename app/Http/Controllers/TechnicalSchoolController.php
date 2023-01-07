@@ -11,6 +11,8 @@ use App\Models\PositionTechnical;
 
 
 use App\Http\Resources\SpecialtyResource;
+use App\Http\Resources\ProfessionResource;
+use App\Http\Resources\TechnicalResource;
 
 class TechnicalSchoolController extends Controller
 {
@@ -18,11 +20,11 @@ class TechnicalSchoolController extends Controller
 
     public function professions()
     {
-        $professions = Position::get();
+        $professions = Position::with('technicals')->get();
 
         return response()->json([
 
-            'professions' => $professions
+            'professions' => ProfessionResource::collection($professions)
 
         ]);
     }
@@ -32,6 +34,16 @@ class TechnicalSchoolController extends Controller
         $newprof = new Position();
         $newprof->name = $request->name;
         $newprof->save();
+
+        foreach ($request->technicals as $tech) {
+            if($tech['status'] == true) {
+                $rel = new PositionTechnical();
+                $rel->position_id = $newprof->id;
+                $rel->technical_id = $tech['id'];
+                $rel->save();
+            }
+            
+        }
 
         return response()->json([
 
@@ -46,6 +58,18 @@ class TechnicalSchoolController extends Controller
         $newprof->name = $request->name;
         $newprof->save();
 
+        PositionTechnical::where('position_id',$profession_id)->delete();
+
+        foreach ($request->technicals as $tech) {
+            if($tech['status'] == true) {
+                $rel = new PositionTechnical();
+                $rel->position_id = $profession_id;
+                $rel->technical_id = $tech['id'];
+                $rel->save();
+            }
+            
+        }
+
         return response()->json([
 
             'message' => "Kasb muvaffaqqiyatli o'zgartirildi!"
@@ -53,9 +77,11 @@ class TechnicalSchoolController extends Controller
         ]);
     }
 
-    public function delete_profession(Position $profession_id)
+    public function delete_profession($profession_id)
     {
-        $profession_id->delete();
+        PositionTechnical::where('position_id', $profession_id)->delete();
+
+        Position::find($profession_id)->delete();
 
         return response()->json([
 
@@ -161,6 +187,22 @@ class TechnicalSchoolController extends Controller
         return response()->json([
 
             'message' => "Ta'lim muassasasi muvaffaqqiyatli o'chirildi!"
+            
+        ]);
+    }
+
+    public function add_profession_technical($profession_id, Request $request)
+    {
+        foreach ($request->technicals as $tech) {
+            $rel = new PositionTechnical();
+            $rel->position_id = $profession_id;
+            $rel->technical_id = $tech['id'];
+            $rel->save();
+        }
+       
+        return response()->json([
+
+            'message' => "Ta'lim muassasasi muvaffaqqiyatli biriktirildi!"
             
         ]);
     }

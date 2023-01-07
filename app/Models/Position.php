@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model
 {
     use HasFactory;
+
+
+    public function technicals()
+    {
+        return $this->belongsToMany(Technical::class, 'position_technicals');
+    }
 }
