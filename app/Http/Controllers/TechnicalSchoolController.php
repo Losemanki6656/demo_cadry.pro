@@ -14,6 +14,7 @@ use App\Models\PositionTechnical;
 use App\Http\Resources\SpecialtyResource;
 use App\Http\Resources\ProfessionResource;
 use App\Http\Resources\TechnicalResource;
+use App\Http\Resources\CadryDualResource;
 
 class TechnicalSchoolController extends Controller
 {
@@ -233,7 +234,7 @@ class TechnicalSchoolController extends Controller
 
         return response()->json([
              'cadries' => $cadries,
-             'professions' => $professions
+             'professions' => CadryDualResource::collection($professions)
         ]);
         
     }
