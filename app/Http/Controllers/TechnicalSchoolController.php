@@ -21,11 +21,11 @@ class TechnicalSchoolController extends Controller
     public function professions()
     {
         $professions = Position::with('technicals')->get();
+        $technicals = Technical::get();
 
         return response()->json([
-
-            'professions' => ProfessionResource::collection($professions)
-
+            'professions' => ProfessionResource::collection($professions),
+            'technicals' => $technicals
         ]);
     }
 
@@ -167,7 +167,7 @@ class TechnicalSchoolController extends Controller
         ]);
     }
 
-    public function update_technical($technical_id, Technical $request)
+    public function update_technical($technical_id, Request $request)
     {
         $newprof = Technical::find($technical_id);
         $newprof->name = $request->name;
