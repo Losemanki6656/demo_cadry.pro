@@ -123,6 +123,8 @@ Route::group([
         Route::get('/pereview/statistics/delete-black-cadries', [PereviewStatisticController::class, 'pereview_delete_black_cadries']);
         Route::get('/pereview/statistics/vacancies', [PereviewStatisticController::class, 'pereview_vacancies']);
         Route::get('/pereview/statistics/over', [PereviewStatisticController::class, 'pereview_over']);
+        
+        Route::get('/pereview/statistics/passports', [PereviewStatisticController::class, 'pereview_passports']);
 
         
         Route::get('/pereview/statistics/stafffiles', [PereviewStatisticController::class, 'stafffiles']);

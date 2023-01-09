@@ -292,4 +292,16 @@ class PereviewStatisticController extends Controller
         ]);
         
     }
+
+
+    public function pereview_passports(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+        
+        $passports = Cadry::ApiFilter()->has('passports', '=', 0);
+
+        return response()->json([
+            'passports' => new CadryCollection($passports->paginate($per_page))
+        ]);
+    }
 }
