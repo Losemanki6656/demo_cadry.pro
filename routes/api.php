@@ -240,7 +240,14 @@ Route::group([
         Route::post('/organization/cadry/passport/{passport_id}/update', [BackApiController::class, 'api_update_passports_cadry']);
         Route::delete('/organization/cadry/passport/{passport_id}/delete', [BackApiController::class, 'api_delete_passports_cadry']);
         //organization-Staff-positions
-       // Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
+        //Route::get('/organization/staff/positions', [StaffController::class, 'api_staff_positions']);
+
+       
+       Route::get('/dual/{cadry_id}/duals', [TechnicalSchoolController::class, 'duals']);
+       Route::post('/dual/{cadry_id}/add-dual', [TechnicalSchoolController::class, 'add_dual']);
+       Route::put('/dual/{dual_id}/update-dual', [TechnicalSchoolController::class, 'update_dual']);
+       Route::delete('/dual/{dual_id}/delete-dual', [TechnicalSchoolController::class, 'delete_dual']);
+
     });
 
     Route::group([
@@ -480,19 +487,6 @@ Route::group([
        
     });
 
-        //professions
-        Route::group([
-            'middleware' => [
-                'permission:organization_dual'
-                ]
-            ], function () {
-            
-            Route::get('/dual/{cadry_id}/duals', [TechnicalSchoolController::class, 'duals']);
-            Route::post('/dual/{cadry_id}/add-dual', [TechnicalSchoolController::class, 'add_dual']);
-            Route::put('/dual/{dual_id}/update-dual', [TechnicalSchoolController::class, 'update_dual']);
-            Route::delete('/dual/{dual_id}/delete-dual', [TechnicalSchoolController::class, 'delete_dual']);
-           
-        });
     
 
     //sms send
