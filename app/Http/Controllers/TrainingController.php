@@ -37,10 +37,6 @@ class TrainingController extends Controller
                 [
                     'id' => 2,
                     'name' => "Qayta tayyorlash"
-                ],
-                [
-                    'id' => 3,
-                    'name' => "Dual ta'lim"
                 ]
             ];
 
@@ -164,10 +160,6 @@ class TrainingController extends Controller
             [
                 'id' => 2,
                 'name' => "Qayta tayyorlash"
-            ],
-            [
-                'id' => 3,
-                'name' => "Dual ta'lim"
             ]
         ];
 
