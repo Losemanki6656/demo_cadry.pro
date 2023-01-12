@@ -395,30 +395,36 @@ Route::group([
        
     });
     
-    Route::group([
-        'middleware' => [
-            'permission:organization_cadries'
-            ]
-        ], function () {
+    // Route::group([
+    //     'middleware' => [
+    //         'permission:organization_cadries'
+    //         ]
+    //     ], function () {
         
-        Route::get('/administration/roles', [UserController::class, 'api_roles']);
-        Route::get('/administration/role/{role_id}/permissions', [UserController::class, 'api_role_pers']);
-        Route::put('/administration/role/{role_id}/permissions/update', [UserController::class, 'api_role_pers_update']);
-        Route::delete('/administration/role/{role_id}/delete', [UserController::class, 'api_role_delete']);
        
-    });
+    // });
 
     Route::group([
         'middleware' => [
             'permission:admin'
             ]
         ], function () {
+            
+        Route::get('/administration/checkcadry/{pinfl}', [CadryController::class, 'check_cadry_child_support']);
+
+
         
         Route::get('/administration/users', [UserController::class, 'api_users']);
         Route::get('/administration/user/{user_id}/update', [UserController::class, 'api_user_update_view']);
         Route::post('/administration/user/{user_id}/update', [UserController::class, 'api_user_update']);
         Route::get('/administration/user/create', [UserController::class, 'api_user_create_get']);
         Route::post('/administration/user/create', [UserController::class, 'api_user_create_post']);
+
+        
+        Route::get('/administration/roles', [UserController::class, 'api_roles']);
+        Route::get('/administration/role/{role_id}/permissions', [UserController::class, 'api_role_pers']);
+        Route::put('/administration/role/{role_id}/permissions/update', [UserController::class, 'api_role_pers_update']);
+        Route::delete('/administration/role/{role_id}/delete', [UserController::class, 'api_role_delete']);
        
     });
 

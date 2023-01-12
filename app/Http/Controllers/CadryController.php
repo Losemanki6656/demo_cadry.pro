@@ -558,6 +558,31 @@ class CadryController extends Controller
         ]);
     }
 
+    public function check_cadry_child_support($pinfl)
+    {
+        $cadry = Cadry::where('jshshir', $pinfl)->first();
+
+        if($cadry) {
+            if($cadry->status == true) {
+                return response()->json([
+                    'status' => true,
+                    'organization_id' => $cadry->organization_id
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Xodim bilan mehnat shartnomasi yakunlangan."
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => "Bunday xodim topilmadi!"
+            ],403);
+        }
+
+        
+    }
+
     public function addworker()
     {
         $railways = Railway::all();
