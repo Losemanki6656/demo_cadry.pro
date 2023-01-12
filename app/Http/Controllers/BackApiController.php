@@ -1176,4 +1176,130 @@ class BackApiController extends Controller
             'message' => "Passport muvaffaqqiyatli o'chirildi!"
         ]);
     }
+
+    public function api_cadry_translate($cadry_id)
+    {
+        
+        $cyr = [
+            'а','б','в','г','д',' е','е','ё','ж','з','и','й','к','л','м','н','о','п',
+            'р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я',
+            'А','Б','В','Г','Д'," Е",'Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П',
+            'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я','Қ','қ','Ў','ў','Ғ','ғ','Ҳ','ҳ', '"'
+        ];
+
+        $lat = [
+            'a','b','v','g','d'," ye",'e','yo','j','z','i','y','k','l','m','n','o','p',
+            'r','s','t','u','f','x','ts',"ch","sh","sh","'",'i',"",'e','yu','ya',
+            'A','B','V','G','D'," Ye","Ye","Yo",'J','Z','I','Y','K','L','M','N','O','P',
+            'R','S','T','U','F','X','Ts',"Ch",'Sh','Sht',"'",'I',"",'E','Yu','Ya','Q','q',"O'","o'","G'","g'",'H','h', ''
+        ];
+
+        $item = Cadry::find($cadry_id);
+
+        $item->last_name = str_replace($cyr, $lat, $item->last_name);
+        $item->first_name = str_replace($cyr, $lat, $item->first_name);
+        $item->middle_name = str_replace($cyr, $lat, $item->middle_name);
+        $item->post_name = str_replace($cyr, $lat, $item->post_name);
+        $item->address = str_replace($cyr, $lat, $item->address);
+
+        $infos = InfoEducation::where('cadry_id',$cadry_id)->get();
+
+        foreach($infos as $info)
+        {
+            $info->institut = str_replace($cyr, $lat, $info->institut);
+            $info->speciality = str_replace($cyr, $lat, $info->speciality);
+            $info->save();
+        }
+
+        $careers = Career::where('cadry_id',$cadry_id)->get();
+
+        foreach($careers as $career)
+        {
+            $career->staff = str_replace($cyr, $lat, $career->staff);
+            $career->save();
+        }
+
+        $relatives = CadryRelative::where('cadry_id', $cadry_id)->get();
+
+        foreach($relatives as $relative)
+        {
+            $relative->fullname = str_replace($cyr, $lat, $relative->fullname);
+            $relative->birth_place = str_replace($cyr, $lat, $relative->birth_place);
+            $relative->post = str_replace($cyr, $lat, $relative->post);
+            $relative->address = str_replace($cyr, $lat, $relative->address);
+            $relative->save();
+        }
+
+        $abroads = AbroadStudy::where('cadry_id', $cadry_id)->get();
+
+        foreach($abroads as $abroad)
+        {
+            $abroad->institute = str_replace($cyr, $lat, $abroad->institute);
+            $abroad->direction = str_replace($cyr, $lat, $abroad->direction);
+            $abroad->save();
+        }
+
+        $depcadries = DepartmentCadry::where('cadry_id',$cadry_id)->get();
+
+        foreach($depcadries as $depcadry)
+        {
+            $depcadry->staff_full = str_replace($cyr, $lat, $depcadry->staff_full);
+            $depstaff = DepartmentStaff::find($depcadry->department_staff_id);
+            $dep = Department::find($depcadry->department_id);
+            $staff = Staff::find($depcadry->staff_id);
+
+            $depstaff->staff_full = $depcadry->staff_full;
+            $dep->name = str_replace($cyr, $lat, $dep->name);
+            $staff->name = str_replace($cyr, $lat, $staff->name);
+
+            $depcadry->save();
+            $depstaff->save();
+            $dep->save();
+            $staff->save();
+        }
+
+        $disciplinaryactions = DisciplinaryAction::where('cadry_id',$cadry_id)->get();
+
+        foreach($disciplinaryactions as $action)
+        {
+            $action->type_action = str_replace($cyr, $lat, $action->type_action);
+            $action->reason_action = str_replace($cyr, $lat, $action->reason_action);
+            $action->save();
+        }
+
+        $incentives = Incentive::where('cadry_id', $cadry_id)->get();
+
+        foreach($incentives as $incentive)
+        {
+            $incentive->by_whom = str_replace($cyr, $lat, $incentive->by_whom);
+            $incentive->number = str_replace($cyr, $lat, $incentive->number);
+            $incentive->type_action = str_replace($cyr, $lat, $incentive->type_action);
+            $incentive->type_reason = str_replace($cyr, $lat, $incentive->type_reason);
+            $incentive->save();
+        }
+
+        $medicalExaminations = MedicalExamination::where('cadry_id',$cadry_id)->get();
+
+        foreach($medicalExaminations as $med)
+        {
+            $med->result = str_replace($cyr, $lat, $med->result);
+            $med->save();
+        }
+
+        $staff_files = StaffFile::where('cadry_id',$cadry_id)->get();
+
+        foreach($staff_files as $staff_file)
+        {
+            $staff_file->comment = str_replace($cyr, $lat, $staff_file->comment);
+            $staff_file->save();
+        }
+
+
+        $item->save();
+
+
+        return response()->json([
+            'message' => "Muvaffaqqiyatli o'zgartirildi!"
+        ], 200);
+    }
 }
