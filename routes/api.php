@@ -21,6 +21,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TechnicalSchoolController;
+use App\Http\Controllers\ChatController;
 
 
 /*
