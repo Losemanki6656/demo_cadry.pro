@@ -271,13 +271,10 @@ class Cadry extends Model
                 return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
                 
             })->when(request('middle_name'), function ( $query, $middle_name) {
-                return $query->where('post_name', 'LIKE', '%'. $middle_name .'%');
+                return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
                 
             })->when(request('first_name'), function ( $query, $first_name) {
-                return $query->where('post_name', 'LIKE', '%'. $first_name .'%');
-                
-            })->when(request('post_name'), function ( $query, $post_name) {
-                return $query->where('post_name', 'LIKE', '%'. $post_name .'%');
+                return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
                 
             })->when(request('railway_id'), function ( $query, $railway_id) {
                 return $query->where('railway_id', $railway_id);
