@@ -406,7 +406,7 @@ class ChatController extends Controller
                     'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count
                 ];
             }
-
+            dd($a);
             return response()->json($a);
        
     }
