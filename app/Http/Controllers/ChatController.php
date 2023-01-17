@@ -400,7 +400,14 @@ class ChatController extends Controller
             }])
             ->get();
 
-            return response()->json($orgs);
+            $a = [];
+            foreach($orgs as $item) {
+                $a[] = [
+                    'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count;
+                ]
+            }
+
+            return response()->json($a);
        
     }
 
