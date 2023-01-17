@@ -403,7 +403,7 @@ class ChatController extends Controller
             $a = [];
             foreach($orgs as $item) {
                 $a[] = [
-                    'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count;
+                    'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count
                 ]
             }
 
