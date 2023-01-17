@@ -402,11 +402,17 @@ class ChatController extends Controller
 
             $a = [];
             foreach($orgs as $item) {
+                $cadry30 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->count();
+                $cadry30_women = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('sex', false)->count();
                 $a[] = [
-                    'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count
+                    'id' => $item->id,
+                    'name' =>  $item->name,
+                    'cadries_count' => $item->cadries_count,
+                    'cadry30_all' => $cadry30,
+                    'cadry30_women' => $cadry30_womenss
+
                 ];
             }
-            dd($a);
             return response()->json($a);
        
     }
