@@ -409,7 +409,7 @@ class ChatController extends Controller
                     'name' =>  $item->name,
                     'cadries_count' => $item->cadries_count,
                     'cadry30_all' => $cadry30,
-                    'cadry30_women' => $cadry30_womens
+                    'cadry30_women' => $cadry30_women
 
                 ];
             }
