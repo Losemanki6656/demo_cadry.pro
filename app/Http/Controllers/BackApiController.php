@@ -763,7 +763,7 @@ class BackApiController extends Controller
                 $array['order'] = 0; else $array['order'] = $request->order;
             $array['status_dec'] = $request->status_dec ?? 0;
 
-            return response()->json($array);
+            //return response()->json($array);
             
             $cadry = Cadry::create($array);
 
