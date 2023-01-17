@@ -404,7 +404,7 @@ class ChatController extends Controller
             foreach($orgs as $item) {
                 $a[] = [
                     'id' => $item->id . '#' . $item->name . '#' . $item->cadries_count
-                ]
+                ];
             }
 
             return response()->json($a);
