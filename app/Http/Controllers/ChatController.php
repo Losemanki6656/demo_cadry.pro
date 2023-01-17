@@ -404,12 +404,15 @@ class ChatController extends Controller
             foreach($orgs as $item) {
                 $cadry30 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->count();
                 $cadry30_women = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('sex', false)->count();
+                $cadry30_leaders = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->>where('post_name', 'LIKE', '%boshli%')->count();
                 $a[] = [
                     'id' => $item->id,
                     'name' =>  $item->name,
                     'cadries_count' => $item->cadries_count,
                     'cadry30_all' => $cadry30,
-                    'cadry30_women' => $cadry30_women
+                    'cadry30_man' => $cadry30 - $cadry30_women,
+                    'cadry30_women' => $cadry30_women,
+                    'cadry30_leaders' => $cadry30_leaders,
 
                 ];
             }
