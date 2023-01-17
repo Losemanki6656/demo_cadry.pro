@@ -89,6 +89,7 @@ Route::group([
         ], function () {
         
         Route::get('/management/organizations', [OrganizationController::class, 'api_organizations']);
+        Route::get('/management/control', [ChatController::class, 'api_control']);
 
     }); 
 

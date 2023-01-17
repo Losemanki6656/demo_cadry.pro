@@ -384,25 +384,26 @@ class ChatController extends Controller
 
     public function control()
     {
-        
-        $cadries = Cadry::where('status', true)->where('organization_id',4)->with(['relatives','relatives.relative'])->get();
-        $a = []; $x = 0;
-        foreach($cadries as $item)
-        {
-            $x ++;
-            $rels = $item->relatives;
-            $d = '';
-            foreach ($rels as $rel)
-            {
-                $d = $d . $rel->relative->name . ' - ' . $rel->fullname. ', ';
-            }
-
-            $a[$x] = $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '#' . $item->staff->name. '#'. $d;
-
-        }
-        dd($a);
+        $orgs = \App\Models\Railway::query()
+            ->withCount(['cadries' => function ($query) {
+                $query->where('status', true);
+            }])
+            ->get();
        
     }
+
+    public function api_control()
+    {
+        $orgs = \App\Models\Railway::query()
+            ->withCount(['cadries' => function ($query) {
+                $query->where('status', true);
+            }])
+            ->get();
+
+            return response()->json($orgs);
+       
+    }
+
 
     public function xx()
     {
