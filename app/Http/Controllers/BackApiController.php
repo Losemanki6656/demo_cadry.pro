@@ -758,7 +758,8 @@ class BackApiController extends Controller
             $array['organization_id'] = $organ->organization_id;
             $array['post_name'] = $dep->staff_full;
             $array['staff_id'] = $dep->staff_id;
-            $array['order'] = $request->order ?? 0;
+            if($request->order == null) 
+                $array['order'] = 0; else $array['order'] = $request->order;
             $array['status_dec'] = $request->status_dec ?? 0;
             
             $cadry = Cadry::create($array);
