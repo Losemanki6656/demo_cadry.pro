@@ -99,7 +99,17 @@ class ArchiveController extends Controller
         $cadry = Cadry::find($archive_cadry_id);
 
         $cadries = Cadry::where('id','!=',$archive_cadry_id)->where('jshshir', $request->pinfl);
+        $black_cadries = DemoCadry::where('jshshir', $request->pinfl)->where('status', true);
         
+        if($black_cadries->count() != 0) {
+
+            return response()->json([
+                'status' => false,
+                'message' => "Ushbu jshshir raqamga tegishli xodim qora ro'yxatga kiritilgan!",
+                'cadry' => null
+            ]);
+        }
+
         if($cadries->count() == 0) {
             $cadry->jshshir = $request->pinfl;
             $cadry->save();
@@ -115,6 +125,7 @@ class ArchiveController extends Controller
                 'message' => "Bunday xodim mavjud!",
                 'cadry' => new ArchiveCadryResource($cadries->first())
             ]);
+            
         }
 
     }

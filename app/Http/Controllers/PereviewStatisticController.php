@@ -7,6 +7,7 @@ use App\Models\Cadry;
 use App\Models\DemoCadry;
 use App\Models\Vacation;
 use App\Models\UserTask;
+use App\Models\Upgrade;
 use App\Models\DepartmentStaff;
 use App\Http\Resources\CadryCollection;
 use App\Http\Resources\DeleteCadryCollection;
@@ -14,6 +15,7 @@ use App\Http\Resources\VacationCadryCollection;
 use App\Http\Resources\DepartmentStaffCollection;
 use App\Http\Resources\CadryMedCollection;
 use App\Http\Resources\UserTaskCollection;
+use App\Http\Resources\CadryUpgradesCollection;
 
 class PereviewStatisticController extends Controller
 {
@@ -302,6 +304,17 @@ class PereviewStatisticController extends Controller
 
         return response()->json([
             'passports' => new CadryCollection($passports->paginate($per_page))
+        ]);
+    }
+
+    public function pereview_upgrades(Request $request)
+    {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
+        
+        $cadries = Upgrade::OrgFilter()->paginate($per_page);
+
+        return response()->json([
+            'cadries' => new CadryUpgradesCollection($cadries)
         ]);
     }
 }

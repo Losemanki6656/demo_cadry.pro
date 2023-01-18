@@ -130,6 +130,8 @@ Route::group([
 
         
         Route::get('/pereview/statistics/stafffiles', [PereviewStatisticController::class, 'stafffiles']);
+
+        Route::get('/pereview/statistics/upgrades', [PereviewStatisticController::class, 'pereview_upgrades']);
         
     }); 
 

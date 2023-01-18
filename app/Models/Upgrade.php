@@ -21,6 +21,17 @@ class Upgrade extends Model
             });
     }
 
+    public function scopeOrgFilter()
+    {
+        return self::query()
+            ->where('organization_id', auth()->user()->userorganization->organization_id)
+            ->when(request('data_qual'), function ( $query, $data_qual) {
+                return $query->where('dataqual', $data_qual);
+
+            })
+            ->with(['cadry','apparat','training_direction']);
+    }
+
     public function training_direction()
     {
         return $this->belongsTo(TrainingDirection::class);
@@ -30,6 +41,12 @@ class Upgrade extends Model
     {
         return $this->belongsTo(Apparat::class);
     }
+
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
+    }
+
 
 
 }
