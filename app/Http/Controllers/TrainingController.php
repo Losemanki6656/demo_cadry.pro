@@ -418,27 +418,45 @@ class TrainingController extends Controller
                             ->where('training_direction_id', $direc->id );
                     }])->get();
 
-                $datas = $organizations->where('upgrades_count','>',0);
+                    $datas = $organizations->where('upgrades_count','>',0);
                 
-                $atext = '';
-                foreach ($datas as $tex) 
-                {
-                    $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
-                }
+                    $atext = '';
+                    foreach ($datas as $tex) 
+                    {
+                        $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
+                    }
 
-                $mtu1 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 1)->count();
-                $mtu2 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 2)->count();
-                $mtu3 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 3)->count();
-                $mtu4 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 4)->count();
-                $mtu5 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 5)->count();
-                $mtu6 = Upgrade::where('training_direction_id', $direc->id)->where('dataqual', $date_qual)->where('railway_id', 6)->count();
+                    $m = []; $sm = [];
+                    for($i = 1; $i <= 6; $i ++) {
 
-                $total_mtu1 = $total_mtu1 + $mtu1;
-                $total_mtu2 = $total_mtu2 + $mtu2;
-                $total_mtu3 = $total_mtu3 + $mtu3;
-                $total_mtu4 = $total_mtu4 + $mtu4;
-                $total_mtu5 = $total_mtu5 + $mtu5;
-                $total_mtu6 = $total_mtu6 + $mtu6;
+                        $mtu = Organization::query()
+                            ->where('railway_id', $i)
+                            ->withCount(['upgrades' => function ($query) use ($date_qual, $direc) {
+                                $query->where('dataqual', $date_qual)
+                                    ->where('training_direction_id', $direc->id );
+                            }])->get();
+
+                        $datas = $mtu->where('upgrades_count','>',0);
+                
+                        $atext = '';
+                        foreach ($datas as $tex) 
+                        {
+                            $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
+                        }
+
+                        $m[$i] = $atext;
+
+                        $sm[$i] = array_sum($mtu->pluck('upgrades_count')->toArray());
+
+
+                    }
+
+                $total_mtu1 = $total_mtu1 + $sm[1];
+                $total_mtu2 = $total_mtu2 + $sm[2];
+                $total_mtu3 = $total_mtu3 + $sm[3];
+                $total_mtu4 = $total_mtu4 + $sm[4];
+                $total_mtu5 = $total_mtu5 + $sm[5];
+                $total_mtu6 = $total_mtu6 + $sm[6];
                 $total_all = $total_all + $all;
                 $total_others = $total_all - $total_mtu1 - $total_mtu2 - $total_mtu3 - $total_mtu4 - $total_mtu5 - $total_mtu6;
                 $total_time = $total_time + $direc->time_lesson;
@@ -449,12 +467,12 @@ class TrainingController extends Controller
                     'name' => $direc->name,
                     'staff_name' => $direc->staff_name,
                     'comment_time' => $direc->comment_time,
-                    'mtu1' => $mtu1,
-                    'mtu2' => $mtu2,
-                    'mtu3' => $mtu3,
-                    'mtu4' => $mtu4,
-                    'mtu5' => $mtu5,
-                    'mtu6' => $mtu6,
+                    'mtu1' => $m[1],
+                    'mtu2' => $m[2],
+                    'mtu3' => $m[3],
+                    'mtu4' => $m[4],
+                    'mtu5' => $m[5],
+                    'mtu6' => $m[6],
                     'others' => $atext,
                     'total' => $all
                 ];
