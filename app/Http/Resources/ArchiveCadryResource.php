@@ -22,8 +22,8 @@ class ArchiveCadryResource extends JsonResource
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
             'staff_full' => $this->post_name,
             'organization' => $this->organization->name,
-            'command_number' => $demo->number,
-            'comment' => $demo->comment
+            'command_number' => $demo->number ?? '',
+            'comment' => $demo->comment ?? ''
         ];
     }
 }

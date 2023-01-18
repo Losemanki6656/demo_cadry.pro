@@ -94,6 +94,31 @@ class ArchiveController extends Controller
        
     }
 
+    public function archive_cadry_pinfl_update($archive_cadry_id, Request $request)
+    {
+        $cadry = Cadry::find($archive_cadry_id);
+
+        $cadries = Cadry::where('id','!=',$archive_cadry_id)->where('jshshir', $request->pinfl);
+        
+        if($cadries->count() == 0) {
+            $cadry->jshshir = $request->pinfl;
+            $cadry->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => "Muvaffaqqiyatli o'zgartirildi!",
+                'cadry' => null
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => "Bunday xodim mavjud!",
+                'cadry' => new ArchiveCadryResource($cadries->first())
+            ]);
+        }
+
+    }
+
     
     public function accept_get_cadry($archive_cadry_id)
     {

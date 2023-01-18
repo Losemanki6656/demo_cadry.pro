@@ -364,6 +364,7 @@ Route::group([
 
         
         Route::get('/organization/archive/cadries', [ArchiveController::class, 'archive_cadries']);
+        Route::put('/organization/archive/cadry/{archive_cadry_id}/update', [ArchiveController::class, 'archive_cadry_pinfl_update']);
         
     }); 
     //cadry statistics
