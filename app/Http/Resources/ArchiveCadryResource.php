@@ -19,6 +19,7 @@ class ArchiveCadryResource extends JsonResource
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
+            'pinfl' => $this->jshshir,
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
             'staff_full' => $this->post_name,
             'organization' => $this->organization->name,
