@@ -17,7 +17,7 @@ class CadryUpgradesResource extends JsonResource
         return [
             'id' => $this->id,
             'data_qual' => $this->dataqual,
-            'cadry' => new CadryExportResource($this->cadry),
+            'cadry' => new CadryResource($this->cadry),
             'apparat' => new ApparatResource($this->apparat),
             'training_direction' => new TrainingDirectionResource($this->training_direction)
         ];
