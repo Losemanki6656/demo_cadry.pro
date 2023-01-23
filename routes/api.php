@@ -91,6 +91,7 @@ Route::group([
         
         Route::get('/management/organizations', [OrganizationController::class, 'api_organizations']);
         Route::get('/management/control', [ChatController::class, 'api_control']);
+        Route::get('/management/control-all', [ChatController::class, 'api_control_all']);
 
     }); 
 

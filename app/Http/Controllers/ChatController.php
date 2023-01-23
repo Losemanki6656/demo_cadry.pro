@@ -13,6 +13,8 @@ use App\Models\MedicalExamination;
 use App\Models\Organization;
 use App\Models\Railway;
 use App\Models\DeleteCadry;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ArrExport;
 use Auth;
 use Illuminate\Http\Request;
 use DB;
@@ -417,6 +419,69 @@ class ChatController extends Controller
                 ];
             }
             return response()->json($a);
+       
+    }
+
+    public function api_control_all()
+    {
+
+        $cadries = Cadry::where('railway_id', '!=', 1)->where('organization_id', 165)->get();
+        foreach($cadries as $item)
+        {
+            $item->railway_id = 1;
+            $item->save();
+        }
+
+        return 1;
+        // $orgs = \App\Models\Railway::query()
+        //     ->withCount(['cadries' => function ($query) {
+        //         $query->where('status', true);
+        //     }])
+        //     ->get();
+
+        //     $a = [];
+        //     foreach($orgs as $item) {
+
+        //         $cadry30 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->count();
+        //         $cadry_man = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('sex', true)->count();
+        //         $cadry18 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 2006)->count();
+        //         $cadry18_man = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 2006)->where('sex', true)->count();
+        //         $cadry18_20 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '<=', 2005)->whereYear('birht_date', '>=', 2003)->count();
+        //         $cadry18_20_man = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '<=', 2005)->whereYear('birht_date', '>=', 2003)->where('sex', true)->count();
+        //         $cadry20_25 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '<=', 2002)->whereYear('birht_date', '>=', 1998)->count();
+        //         $cadry20_25_man = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '<=', 2002)->whereYear('birht_date', '>=', 1998)->where('sex', true)->count();
+
+        //         // $cadry30_leaders = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('post_name', 'LIKE', '%boshli%')->count();
+
+        //         $a[] = [
+        //             'id' => $item->id,
+        //             'name' =>  $item->name,
+        //             'sex' =>  "Erkak",
+        //             'cadry_man' =>  $cadry_man,
+        //             'cadry18_man' =>  $cadry18_man,
+        //             'cadry18_20_man' =>  $cadry18_20_man,
+        //             'cadry20_25_man' =>  $cadry20_25_man,
+        //             'cadry26_31_man' =>  $cadry_man - $cadry18_man - $cadry18_20_man - $cadry20_25_man,
+
+        //         ];
+
+        //         $a[] = [
+        //             'id' => $item->id,
+        //             'name' =>  "",
+        //             'sex' =>  "Ayol",
+        //             'cadry_woman' =>  $cadry30 - $cadry_man,
+        //             'cadry18_woman' =>  $cadry18 - $cadry18_man,
+        //             'cadry18_20_woman' =>  $cadry18_20 - $cadry18_20_man,
+        //             'cadry20_25_woman' =>  $cadry20_25 - $cadry20_25_man,
+        //             'cadry26_31_man' =>  $cadry30 - $cadry_man - ($cadry18 - $cadry18_man) - ($cadry20_25 - $cadry20_25_man) - ($cadry18_20 - $cadry18_20_man),
+
+        //         ];
+        //     }
+
+        //     $export = new ArrExport($a);
+        //     return Excel::download($export, 'export.xlsx');
+
+        //     return response()->json($a);
        
     }
 

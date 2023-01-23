@@ -185,6 +185,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/cadry/administration/turnicet', [App\Http\Controllers\OrganizationController::class, 'turnicet'])->name('turnicet');
         Route::get('/organizations/cadry-search', [App\Http\Controllers\CadryController::class, 'cadry_search'])->name('cadry_search');
         Route::get('/statistics', [App\Http\Controllers\CadryController::class, 'statistics'])->name('statistics');
+        
+        Route::get('/api_control_all', [App\Http\Controllers\ChatController::class, 'api_control_all'])->name('api_control_all');
+
         Route::get('/cadry/statistics/photoView', [App\Http\Controllers\OrganizationController::class, 'photoView'])->name('photoView');
         Route::get('/cadry/NewCadries', [App\Http\Controllers\OrganizationController::class, 'newcadries'])->name('newcadries');
         Route::get('/cadry/DelCadries', [App\Http\Controllers\OrganizationController::class, 'delcadries'])->name('delcadries');
