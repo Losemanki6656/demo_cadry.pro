@@ -420,10 +420,10 @@ class TrainingController extends Controller
 
                     $datas = $organizations->where('upgrades_count','>',0);
                 
-                    $atext = '';
+                    $btext = '';
                     foreach ($datas as $tex) 
                     {
-                        $atext = $atext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
+                        $btext = $btext . $tex->name . ' - ' . $tex->upgrades_count . '<br>';
                     }
 
                     $m = []; $sm = [];
@@ -473,7 +473,7 @@ class TrainingController extends Controller
                     'mtu4' => $m[4],
                     'mtu5' => $m[5],
                     'mtu6' => $m[6],
-                    'others' => $atext,
+                    'others' => $btext,
                     'total' => $all
                 ];
             }
