@@ -303,6 +303,7 @@ class BackApiController extends Controller
 
     public function cadry_api_relatives($cadry_id)
     {
+        
         if (Cadry::find($cadry_id)->organization_id != auth()->user()->userorganization->organization_id)
             return response()->json([
                 'error' => "Xodim topilmadi!"

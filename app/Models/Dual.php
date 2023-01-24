@@ -23,4 +23,14 @@ class Dual extends Model
     {
         return $this->belongsTo(Specialty::class);
     }
+
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }

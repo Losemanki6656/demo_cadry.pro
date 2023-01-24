@@ -483,6 +483,8 @@ Route::group([
             ]
         ], function () {
 
+            
+        Route::get('/dual/export/excel', [TechnicalSchoolController::class, 'api_duals_export']);
         
         Route::get('/dual/professions', [TechnicalSchoolController::class, 'professions']);
         Route::post('/dual/profession/create', [TechnicalSchoolController::class, 'add_profession']);

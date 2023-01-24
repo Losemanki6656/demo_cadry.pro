@@ -31,6 +31,13 @@ class TechnicalSchoolController extends Controller
         ]);
     }
 
+    public function api_duals_export()
+    {
+        $duals = Dual::orderBy('organization_id', 'desc')->with(['technical','cadry','organization','specialty','profession'])->get();
+
+        return response()->json([ $duals ]);
+    }
+
     public function add_profession(Request $request)
     {
         $newprof = new Position();
