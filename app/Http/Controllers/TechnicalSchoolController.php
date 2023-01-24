@@ -11,6 +11,9 @@ use App\Models\Dual;
 use App\Models\Cadry;
 use App\Models\PositionTechnical;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ArrExport;
+
 
 use App\Http\Resources\SpecialtyResource;
 use App\Http\Resources\ProfessionResource;
@@ -34,6 +37,22 @@ class TechnicalSchoolController extends Controller
     public function api_duals_export()
     {
         $duals = Dual::orderBy('organization_id', 'desc')->with(['technical','cadry','organization','specialty','profession'])->get();
+
+        $a = []; $x = 0;
+        foreach($duals as $item) {
+            $x ++;
+            $a[] = [
+                'id' = $x,
+                'organization' => $item->organization->name,
+                'fullname' => $item->cadry->last_name . ' ' . $item->cadry->first_name . ' ' . $item->cadry->middle_name,
+                'technical' => $item->technical->name,
+                'specialty' => $item->specialty->name,
+                'profession' => $item->profession->name
+            ];
+        }
+
+        $export = new ArrExport($a);
+        return Excel::download($export, 'export.xlsx');
 
         return response()->json([ $duals ]);
     }
