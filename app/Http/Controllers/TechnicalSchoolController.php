@@ -42,7 +42,7 @@ class TechnicalSchoolController extends Controller
         foreach($duals as $item) {
             $x ++;
             $a[] = [
-                'id' = $x,
+                'id' => $x,
                 'organization' => $item->organization->name,
                 'fullname' => $item->cadry->last_name . ' ' . $item->cadry->first_name . ' ' . $item->cadry->middle_name,
                 'technical' => $item->technical->name,
@@ -51,10 +51,10 @@ class TechnicalSchoolController extends Controller
             ];
         }
 
-        $export = new ArrExport($a);
-        return Excel::download($export, 'export.xlsx');
+        // $export = new ArrExport($a);
+        // return Excel::download($export, 'export.xlsx');
 
-        return response()->json([ $duals ]);
+        return response()->json([ $a ]);
     }
 
     public function add_profession(Request $request)
