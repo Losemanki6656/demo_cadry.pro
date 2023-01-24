@@ -435,7 +435,7 @@ class ChatController extends Controller
             'organization' => $item->organization->name,
             'user' => $item->user->name,
             'phone' => $item->phone,
-           ]
+           ];
         }
 
         return response()->json($a);
