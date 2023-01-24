@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TechnicalSchoolController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -187,6 +188,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/statistics', [App\Http\Controllers\CadryController::class, 'statistics'])->name('statistics');
         
         Route::get('/api_control_all', [App\Http\Controllers\ChatController::class, 'api_control_all'])->name('api_control_all');
+        Route::get('/api_duals_export', [App\Http\Controllers\TechnicalSchoolController::class, 'api_duals_export'])->name('api_duals_export');
 
         Route::get('/cadry/statistics/photoView', [App\Http\Controllers\OrganizationController::class, 'photoView'])->name('photoView');
         Route::get('/cadry/NewCadries', [App\Http\Controllers\OrganizationController::class, 'newcadries'])->name('newcadries');

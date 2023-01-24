@@ -51,8 +51,8 @@ class TechnicalSchoolController extends Controller
             ];
         }
 
-        // $export = new ArrExport($a);
-        // return Excel::download($export, 'export.xlsx');
+         $export = new ArrExport($a);
+         return Excel::download($export, 'export.xlsx');
 
         return response()->json([ $a ]);
     }
