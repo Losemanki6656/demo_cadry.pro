@@ -18,4 +18,9 @@ class UserOrganization extends Model
     {
         return $this->belongsTo(Railway::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

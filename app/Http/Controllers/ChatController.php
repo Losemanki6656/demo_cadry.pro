@@ -13,6 +13,7 @@ use App\Models\MedicalExamination;
 use App\Models\Organization;
 use App\Models\Railway;
 use App\Models\DeleteCadry;
+use App\Models\UserOrganization;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ArrExport;
 use Auth;
@@ -425,14 +426,19 @@ class ChatController extends Controller
     public function api_control_all()
     {
 
-        $cadries = Cadry::where('railway_id', '!=', 1)->where('organization_id', 165)->get();
+        $cadries = UserOrganization::where('raiway_id',1)->with(['user','organization','railway'])->get();
+        $a = [];
         foreach($cadries as $item)
         {
-            $item->railway_id = 1;
-            $item->save();
+           $a[] = [
+            'railway' => $item->railway->name,
+            'organization' => $item->organization->name,
+            'user' => $item->user->name,
+            'phone' => $item->phone,
+           ]
         }
 
-        return 1;
+        return response()->json($a);
         // $orgs = \App\Models\Railway::query()
         //     ->withCount(['cadries' => function ($query) {
         //         $query->where('status', true);
