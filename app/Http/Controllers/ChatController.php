@@ -426,7 +426,7 @@ class ChatController extends Controller
     public function api_control_all()
     {
 
-        $cadries = UserOrganization::where('raiway_id',1)->with(['user','organization','railway'])->get();
+        $cadries = UserOrganization::where('railway_id',1)->with(['user','organization','railway'])->get();
         $a = [];
         foreach($cadries as $item)
         {
