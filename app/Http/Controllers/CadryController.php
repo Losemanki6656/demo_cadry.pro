@@ -1241,7 +1241,7 @@ class CadryController extends Controller
 
             }
                 
-            $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
+            $mednotCount = Cadry::ApiFilter()->has('notmed','=',0)->count();
 
         return response()->json([
             'upgrades_count' => $upgrades_count,
@@ -1378,7 +1378,7 @@ class CadryController extends Controller
 
             }
                 
-            $mednotCount = Cadry::ApiFilter()->has('med','=',0)->count();
+            $mednotCount = Cadry::ApiFilter()->has('notmed','=',0)->count();
 
         return response()->json([
             'not_passport_files' => $not_passport_files,
@@ -1569,7 +1569,7 @@ class CadryController extends Controller
                 
             $mednotCount = Cadry::where('status',true)
                 ->where('organization_id',auth()->user()->userorganization->organization_id)
-                ->has('med','=', 0)
+                ->has('notmed','=', 0)
                 ->count();
 
                 $careersCount = Cadry::OrgFilter()->has('careers', '=', 0)->count();
