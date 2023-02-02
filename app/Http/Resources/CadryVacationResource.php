@@ -18,13 +18,21 @@ class CadryVacationResource extends JsonResource
             $post_name = $this->allstaffs->where('staff_status', false)->first();
         else 
             $post_name = $this->allstaffs->first();
+        
+            if($post_name) {
+                $staff = $post_name->staff_full;
+                $department = $post_name->department->name;
+            } else {
+                $staff = null;
+                $department = null;
+            }
 
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),
             'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
-            'staff' => $post_name->staff_full,
-            'department' => $post_name->department->name,
+            'staff' => $staff,
+            'department' => $department
         ];
     }
 }
