@@ -21,7 +21,9 @@ class OrganizationCadryResource extends JsonResource
         $vacation = null;
         if($this->vacation)
         if($this->vacation->date2 > now()) $vacation = new VacationResource($this->vacation);
+
         if($this->department) $dep = $this->department->name; else $dep = "Bo'lim topilmadi";
+        
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->photo)),

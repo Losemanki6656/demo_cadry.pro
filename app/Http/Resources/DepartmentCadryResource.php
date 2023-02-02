@@ -27,6 +27,14 @@ class DepartmentCadryResource extends JsonResource
              $st = 1;
         } else $st = 3;
 
+        if($this->department) {
+            $id = $this->department->id;
+            $department = $this->department->name;
+        } else {
+            $id = null;
+            $department = null;
+        }
+
         return [
             'id' => $this->id,
             'cadry' => [
@@ -35,8 +43,8 @@ class DepartmentCadryResource extends JsonResource
                 'photo' => url(asset('storage/' . $this->cadry->photo)),
             ],
             'department_id' => [
-                'id' => $this->department->id,
-                'name' => $this->department->name
+                'id' => $id,
+                'name' => $department
             ],
             'staff_full' => $this->staff_full,
             'staff_date' => $this->staff_date,
