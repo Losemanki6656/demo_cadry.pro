@@ -419,7 +419,7 @@ class ChatController extends Controller
 
                 ];
             }
-            return response()->json($a);
+        return response()->json($a);
        
     }
 

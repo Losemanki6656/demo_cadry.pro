@@ -1173,7 +1173,7 @@ class CadryController extends Controller
             $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
        
             $democadries = DemoCadry::ApiFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
-            $democadriesback = DemoCadry::ApiFilter()->where('status',1);
+            $democadriesback = DemoCadry::ApiBlackFilter()->where('status', 1);
             
             $vacations = Vacation::ApiFilter();
             $vac = $vacations->count();
