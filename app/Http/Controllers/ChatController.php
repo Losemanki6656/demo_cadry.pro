@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\DepartmentCadry;
 use App\Models\MedicalExamination;
 use App\Models\Organization;
+use App\Models\Nationality;
 use App\Models\Railway;
 use App\Models\DeleteCadry;
 use App\Models\UserOrganization;
@@ -387,11 +388,58 @@ class ChatController extends Controller
 
     public function control()
     {
-        $orgs = \App\Models\Railway::query()
-            ->withCount(['cadries' => function ($query) {
-                $query->where('status', true);
-            }])
-            ->get();
+        $orgs = \App\Models\Railway::get();
+
+        // $a = [];
+        // foreach($orgs as $item)
+        // {
+        //     $nationalities = Nationality::with(['cadries' => function ($query) use ($item){
+        //         $query->where('railway_id',$item->id)->where('status',true);
+        //     }])->get();
+        //     $educations = \App\Models\Education::where('id','!=',2)->with(['cadries' => function ($query) use ($item) {
+        //         $query->where('railway_id',$item->id)->where('status',true);
+        //     }])->get();
+
+        //     $d = '';
+        //     foreach ($nationalities as $nat) {
+        //         $r = $nat->cadries->count();
+        //         if($r!=0)
+        //         $d = $d . $nat->name . '-' . $r . "\n"; 
+        //     }
+
+        //     $x = '';
+        //     foreach ($educations as $ed) {
+        //         $r = $ed->cadries->count();
+        //         $x = $x . $r . '#'; 
+        //     }
+
+
+        //     $a[] = [
+        //         'name' => $item->name,
+        //         'millat' => $d,
+        //         'malumot' => $x
+        //     ];
+
+        // }
+        
+        $a = [];
+        $nationalities = Nationality::with(['cadries' => function ($query){
+            $query->where('status',true);
+        }])->get();
+
+        $d = '';
+        foreach ($nationalities as $nat) {
+            $r = $nat->cadries->count();
+            if($r!=0)
+            $d = $d . $nat->name . '-' . $r . "\n"; 
+        }
+        $a[] = [
+            'count' => $d
+        ];
+
+        $export = new ArrExport($a);
+        return Excel::download($export, 'export.xlsx');
+
        
     }
 

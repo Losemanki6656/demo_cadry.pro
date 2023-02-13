@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Education extends Model
 {
     use HasFactory;
+    public function cadries()
+    {
+        return $this->hasMany(Cadry::class);
+    }
 }
 
