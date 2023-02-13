@@ -15,11 +15,16 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $char = ['(', ')', ' '];
+        $replace = ['', '', ''];
+
+        $phone = str_replace($char, $replace, $this->userorganization->phone);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'photo' => url(asset($this->userorganization->photo)),
-            'phone' => $this->userorganization->phone,
+            'phone' => $phone,
             'email' => $this->email,
             'organization' => new OrganizationResource($this->userorganization->organization),
             'roles' => new RoleResource($this->roles->first())
