@@ -390,52 +390,40 @@ class ChatController extends Controller
     {
         $orgs = \App\Models\Railway::get();
 
-        // $a = [];
-        // foreach($orgs as $item)
-        // {
-        //     $nationalities = Nationality::with(['cadries' => function ($query) use ($item){
-        //         $query->where('railway_id',$item->id)->where('status',true);
-        //     }])->get();
-        //     $educations = \App\Models\Education::where('id','!=',2)->with(['cadries' => function ($query) use ($item) {
-        //         $query->where('railway_id',$item->id)->where('status',true);
-        //     }])->get();
-
-        //     $d = '';
-        //     foreach ($nationalities as $nat) {
-        //         $r = $nat->cadries->count();
-        //         if($r!=0)
-        //         $d = $d . $nat->name . '-' . $r . "\n"; 
-        //     }
-
-        //     $x = '';
-        //     foreach ($educations as $ed) {
-        //         $r = $ed->cadries->count();
-        //         $x = $x . $r . '#'; 
-        //     }
-
-
-        //     $a[] = [
-        //         'name' => $item->name,
-        //         'millat' => $d,
-        //         'malumot' => $x
-        //     ];
-
-        // }
-        
         $a = [];
-        $nationalities = Nationality::with(['cadries' => function ($query){
-            $query->where('status',true);
-        }])->get();
+        foreach($orgs as $item)
+        {
+            $nationalities = Nationality::with(['cadries' => function ($query) use ($item){
+                $query->where('railway_id',$item->id)->where('status',true);
+            }])->get();
+            // $educations = \App\Models\Education::where('id','!=',2)->with(['cadries' => function ($query) use ($item) {
+            //     $query->where('railway_id',$item->id)->where('status',true);
+            // }])->get();
 
-        $d = '';
-        foreach ($nationalities as $nat) {
-            $r = $nat->cadries->count();
-            if($r!=0)
-            $d = $d . $nat->name . '-' . $r . "\n"; 
+            $d = ''; $q = '';
+            foreach ($nationalities as $nat) {
+                $r = $nat->cadries->count();
+                // if($r!=0)
+                $d = $d  . $r . "#"; 
+                $q = $q . $nat->name . '#';
+            }
+
+            // $x = '';
+            // foreach ($educations as $ed) {
+            //     $r = $ed->cadries->count();
+            //     $x = $x . $r . '#'; 
+            // }
+
+
+            $a[] = [
+                'name' => $item->name,
+                'millat' => $d,
+                'nomi' => $q
+            ];
+
         }
-        $a[] = [
-            'count' => $d
-        ];
+        
+        
 
         $export = new ArrExport($a);
         return Excel::download($export, 'export.xlsx');
