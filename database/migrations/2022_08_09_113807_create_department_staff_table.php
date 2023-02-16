@@ -19,7 +19,6 @@ class CreateDepartmentStaffTable extends Migration
             $table->bigInteger('organization_id')->unsigned()->index()->nullable();
             $table->bigInteger('department_id')->unsigned()->index()->nullable();
             $table->bigInteger('staff_id')->unsigned()->index()->nullable();
-            $table->bigInteger('classification_id')->unsigned()->index()->nullable();
             $table->text('staff_full')->nullable();
             $table->double('stavka')->default(1);
             $table->boolean('status')->default(false);
@@ -28,7 +27,6 @@ class CreateDepartmentStaffTable extends Migration
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('staff_id')->references('id')->on('staff');
-            $table->foreign('classification_id')->references('id')->on('classifications');
             $table->timestamps();
         });
     }
