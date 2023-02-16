@@ -19,14 +19,14 @@ use App\Http\Controllers\TechnicalSchoolController;
 //Auth::routes();
 Auth::routes(['register' => false]);
 
-Route::get('/migrate', function () {
+// Route::get('/migrate', function () {
    
-    Schema::disableForeignKeyConstraints();
+//     Schema::disableForeignKeyConstraints();
 
-    Artisan::call('migrate:fresh');
-           Schema::enableForeignKeyConstraints();
+//     Artisan::call('migrate');
+//            Schema::enableForeignKeyConstraints();
 
-});
+// });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

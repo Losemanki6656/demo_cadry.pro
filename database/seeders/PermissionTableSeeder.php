@@ -22,7 +22,21 @@ class PermissionTableSeeder extends Seeder
            'management_statistics',
            'management_organizations',
            'management_turnicet',
-           'organization_cadries'
+           'organization_cadries',
+           'organization_statistics',
+           'organization_staffs',
+           'organization_departments',
+           'organization_vacations',          
+           'organization_meds',
+           'organization_incentives',
+           'organization_discips',
+           'cadry_leader_statistics',
+           'cadry_leader_cadries',
+           'organization_archive',
+           'admin',
+           'pereview_statistics',
+           'management_qualifications',
+           'management_professions'
         ];
      
         foreach ($permissions as $permission) {
