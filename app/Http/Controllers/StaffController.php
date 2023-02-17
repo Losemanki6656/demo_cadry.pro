@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\Category;
+use App\Models\DepartmentCadry;
+use App\Models\DepartmentStaff;
 use Auth;
 
 
@@ -19,6 +21,7 @@ class StaffController extends Controller
 
         $staffs = Staff::query()
         ->where('organization_id', Auth::user()->userorganization->organization_id)
+        ->where('status',true)
         ->when(\Request::input('name'),function($query,$search){
             $query
             ->where('name','like','%'.$search.'%');
@@ -68,20 +71,43 @@ class StaffController extends Controller
         ]);
     }
 
-    public function api_delete_staff(Staff $staff_id)
+    public function api_delete_staff($staff_id)
     {
-        try {
-            $staff_id->delete();
-
+        if (DepartmentCadry::where('staff_id', $staff_id)->count() ) {
+        
             return response()->json([
-                'message' => "Lavozim muvaffaqqiyatli o'chirildi !",
-            ]);
+                'status' => false,
+                'message' => "Ushbu lavozimga tegishli xodimlar mavjud!"
+            ], 403);
+    
+        } else
+                if (DepartmentStaff::where('staff_id', $staff_id)->count() ) {
+            
+                return response()->json([
+                    'status' => false,
+                    'message' => "Ushbu lavozim bo'limga biriktirilgan!"
+                ], 403);
+        
+            } else {
 
-        } catch(Exception $e) {
-            return response()->json([
-                'message' => 'Lavozimga tegishli xodimlar mavjud'
-            ],422);
+                    $x = Cadry::where('staff_id', $staff_id)->where('status',true);
+                    if( $x->count()) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => "Ushbu lavozimga tegishli xodim mavjud. Xodim ma'lumotlarini taxrirlab chiqishingiz zarur!",
+                        ], 403);
 
+                    } else {
+                            $staff = Staff::find($staff_id);
+                            $staff->status = false;
+                            $staff->save();
+
+                            return response()->json([
+                                'status' => true,
+                                'message' => "Muvaffaqqiyatli o'chirildi!"
+                            ], 200);
+                        }
+    
         }
        
     }
