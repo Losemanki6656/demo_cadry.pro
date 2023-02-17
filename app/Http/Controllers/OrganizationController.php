@@ -212,7 +212,7 @@ class OrganizationController extends Controller
 
     public function filter_api_org_staffs()
     {
-        $data = StaffResource::collection(Staff::where('organization_id',auth()->user()->userorganization->organization_id)->get());
+        $data = StaffResource::collection(Staff::where('organization_id',auth()->user()->userorganization->organization_id)->where('status',true)->get());
 
         return response()->json($data);
     }
