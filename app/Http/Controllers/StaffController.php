@@ -7,6 +7,7 @@ use App\Models\Staff;
 use App\Models\Category;
 use App\Models\DepartmentCadry;
 use App\Models\DepartmentStaff;
+use App\Models\Cadry;
 use Auth;
 
 
