@@ -1527,7 +1527,7 @@ class CadryController extends Controller
             $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
 
             $eduoliy = Cadry::OrgFilter()->where('education_id',1)->count();
-            $edumaxsus = Cadry::OrgFilter()->where('education_id',2)->count();
+            $edumaxsus = Cadry::OrgFilter()->where('education_id',3)->count();
 
             $birthdays = Cadry::OrgFilter()
                 ->whereMonth('birht_date', '=', now()->format('m'))

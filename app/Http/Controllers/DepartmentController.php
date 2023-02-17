@@ -66,7 +66,10 @@ class DepartmentController extends Controller
                     'message' => "Ushbu bo'limga tegishli " . $cadry . " xodim mavjud. Xodim ma'lumotlarini taxrirlab chiqishingiz zarur!",
                 ], 403);
             } else {
-                Department::find($department_id)->delete();
+                $dep = Department::find($department_id);
+                $dep->status = false;
+                $dep->save();
+                
                 return response()->json([
                     'status' => true,
                     'message' => "Muvaffaqqiyatli o'chirildi!"
@@ -90,23 +93,21 @@ class DepartmentController extends Controller
         if($org_id == 152) {
             $departments = Department::query()->where('id','!=',4304)
             ->where('organization_id', $org_id)
+            ->where('status',true)
             ->when(\Request::input('search'),function($query,$search){
                 $query
                 ->where('name','like','%'.$search.'%');
             })->with(['cadries','departmentstaff','departmentcadry'])->paginate($per_page, ['*'], 'page', $page);
             
-            $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
-            ->with(['departmentstaff','departmentstaff.cadry'])->get();
         } else {
             $departments = Department::query()
                 ->where('organization_id', $org_id)
+                ->where('status',true)
                 ->when(\Request::input('search'),function($query,$search){
                     $query
                     ->where('name','like','%'.$search.'%');
                 })->with(['cadries','departmentstaff','departmentcadry'])->paginate($per_page, ['*'], 'page', $page);
             
-            $alldepartments = Department::where('organization_id', $org_id)
-                ->with(['departmentstaff','departmentstaff.cadry'])->get();
         }
         
         return response()->json([
