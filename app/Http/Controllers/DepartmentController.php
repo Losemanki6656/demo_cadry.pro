@@ -59,7 +59,7 @@ class DepartmentController extends Controller
             ], 403);
     
         } else {
-            if(Cadry::where('department_id', $department_id)->count()) {
+            if(Cadry::where('department_id', $department_id)->where('status',true)->count()) {
                 $cadry = Cadry::where('department_id', $department_id)->first();
                 return response()->json([
                     'status' => false,
@@ -69,7 +69,7 @@ class DepartmentController extends Controller
                 $dep = Department::find($department_id);
                 $dep->status = false;
                 $dep->save();
-                
+
                 return response()->json([
                     'status' => true,
                     'message' => "Muvaffaqqiyatli o'chirildi!"
