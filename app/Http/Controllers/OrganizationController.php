@@ -226,7 +226,7 @@ class OrganizationController extends Controller
 
     public function filter_api_worklevels()
     {   
-        $data = WorkLevelResource::collection(WorkLevel::get());
+        $data = WorkLevel::get();
 
         // $data = WorkLevel::get();
 
@@ -349,7 +349,7 @@ class OrganizationController extends Controller
         $data6 = AcademicTitleResource::collection(AcademicTitle::get());
         $data7 = AcademicDegreeResource::collection(AcademicDegree::get());
         $data8 = PartyResource::collection(Party::get());
-        $data9 = WorkLevelResource::collection(WorkLevel::get());
+        $data9 = WorkLevel::get();
         
         // $data9 = WorkLevel::get();
 
