@@ -14,25 +14,12 @@ class EmmatCadry extends JsonResource
      */
     public function toArray($request)
     {
-        $cadry = $this->cadry;
-
-        if(count($cadry->allstaffs->where('staff_status',false)) > 0 )
-            $post_name = $cadry->allstaffs->where('staff_status',false)->first()->staff_full;
-        else  
-            if(count($cadry->allstaffs) > 0 )
-                $post_name = $cadry->allstaffs->first()->staff_full;
-        else $post_name = "";
-
-        if($this->token_bio == null) $status = false; else $status = true;
-
         return [
             'id' => $this->id,
-            'cadry_id' => $cadry->id,
-            'photo' => url(asset('storage/' . $cadry->photo)),
-            'fullname' => $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name,
-            'staff_full' => $post_name,
-            'status' => $status,
-            'token_bio' => $this->token_bio
+            'photo' => url(asset('storage/' . $this->photo)),
+            'fullname' => $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name,
+            'staff_full' => $this->post_name,
+            'department' => $this->department->name,
         ];
     }
 }

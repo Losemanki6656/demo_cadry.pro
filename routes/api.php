@@ -442,7 +442,7 @@ Route::group([
         ], function () {
         
         Route::get('/emmat/cadries', [EmmatController::class, 'emmat_cadries']);
-        Route::post('/emmat/cadry/addToken/{emmat_cadry_id}', [EmmatController::class, 'add_token_to_cadry']);
+        Route::get('/emmat/cadry/{cadry_id}', [EmmatController::class, 'cadry_view']);
        
     });
 
@@ -513,7 +513,7 @@ Route::group([
             ]
         ], function () {
         
-        Route::post('/admin/management/sms/{cadry_id0}/send', [SmsController::class, 'send_sms']);
+        // Route::post('/admin/management/sms/{cadry_id0}/send', [SmsController::class, 'send_sms']);
        
     });
 

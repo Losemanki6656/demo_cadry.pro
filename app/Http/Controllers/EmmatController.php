@@ -4,31 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cadry;
-use App\Models\BioCadry;
-use App\Http\Resources\EmmatCadry;
+use App\Http\Resources\EmmatCadryCollection;
+use App\Http\Resources\EmmatCadryViewResource;
 
 class EmmatController extends Controller
 {
      public function emmat_cadries()
      {
+        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $emmat_department = auth()->user()->emmat_department->emmat_department_id;
+        $user_org = auth()->user()->userorganization;
 
-        $cadries = BioCadry::where('emmat_department_id', $emmat_department)->with('cadry.allStaffs')->get();
+        $cadries = Cadry::where('organization_id', $user_org->organization_id)->with('allStaffs')->where('status',true)->paginate($per_page);
 
         return response()->json([
-            'cadries' =>  EmmatCadry::collection($cadries)
+            'cadries' =>  new EmmatCadryCollection($cadries)
         ]);
      }
 
-     public function add_token_to_cadry($emmat_cadry_id, Request $request)
+     public function cadry_view($cadry_id)
      {
-        $cadry = BioCadry::find($emmat_cadry_id);
-        $cadry->token_bio = $request->token_bio;
-        $cadry->save();
+        $cadry = Cadry::with('allstaffs')->find($cadry_id);
 
         return response()->json([
-            'message' =>  "Muvaffaqqiyatli!"
+            'cadry' =>  new EmmatCadryViewResource($cadry)
         ], 200);
      }
 }
