@@ -17,6 +17,7 @@ use App\Http\Resources\OrganizationCadryCollection;
 use App\Http\Resources\OrgStaffResource;
 use App\Http\Resources\OrgStaffCollection;
 use App\Http\Resources\DepartmentStaffCollection;
+use App\Http\Resources\DepartmentStaffsCollection;
 
 
 use App\Http\Resources\DepartmentCollection;
@@ -164,7 +165,7 @@ class DepartmentController extends Controller
         $department = DepartmentStaff::where('department_id', $department_id)->with(['cadry','staff','classification'])->paginate($per_page);
 
         return response()->json([
-            'department' => new DepartmentStaffCollection($department)
+            'department' => new DepartmentStaffsCollection($department)
         ]);
     }
 
