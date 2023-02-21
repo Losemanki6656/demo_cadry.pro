@@ -17,7 +17,7 @@ class UserApiResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'photo' => url(asset($this->userorganization->photo)),
+            'photo' => url(asset($this->userorganization->photo)) ?? null,
             'phone' => $this->userorganization->phone,
             'email' => $this->email,
             'organization' => new OrganizationResource($this->userorganization->organization),

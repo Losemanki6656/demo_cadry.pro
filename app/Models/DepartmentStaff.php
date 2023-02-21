@@ -104,7 +104,7 @@ class DepartmentStaff extends Model
                     'department_staff_id',
                     DB::raw('sum(stavka) as summ_stavka')
                 ])->where('status', false)
-                ->groupBy('department_staff_id');
+                    ->groupBy('department_staff_id');
 
         return self::where('organization_id', auth()->user()->userorganization->organization_id)
         ->select([
