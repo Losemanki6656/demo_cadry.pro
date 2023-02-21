@@ -14,13 +14,21 @@ class UserApiResource extends JsonResource
      */
     public function toArray($request)
     {
+        $phone = null; $photo = null; $organization = null;
+        
+        if($this->userorganization) {
+            $photo = url(asset($this->userorganization->photo));
+            $phone = $this->userorganization->phone;
+            $organization = new OrganizationResource($this->userorganization->organization);
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'photo' => url(asset($this->userorganization->photo)) ?? null,
-            'phone' => $this->userorganization->phone,
+            'photo' => $photo,
+            'phone' => $phone,
             'email' => $this->email,
-            'organization' => new OrganizationResource($this->userorganization->organization),
+            'organization' => $organization,
             'roles' => new RoleapiResource($this->roles->first())
         ];
     }
