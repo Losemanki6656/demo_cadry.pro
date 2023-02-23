@@ -22,6 +22,9 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TechnicalSchoolController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\CadryVacationController;
+
 
 
 /*
@@ -271,7 +274,27 @@ Route::group([
         Route::post('/organization/staff/add', [StaffController::class, 'api_add_staff']);
         Route::put('/organization/staff/{staff_id}/update', [StaffController::class, 'api_update_staff']);
         Route::delete('/organization/staff/{staff_id}/delete', [StaffController::class, 'api_delete_staff']);
+
         
+        Route::get('/organization/regions', [RegionController::class, 'api_regions']);
+        Route::post('/organization/region/create', [RegionController::class, 'region_create']);
+        Route::put('/organization/region/{region_id}/update', [RegionController::class, 'region_update']);
+        Route::delete('/organization/region/{region_id}/delete', [RegionController::class, 'region_delete']);
+        
+        
+        Route::get('/organization/cities', [RegionController::class, 'api_cities']);
+        Route::post('/organization/city/create', [RegionController::class, 'city_create']);
+        Route::put('/organization/city/{city_id}/update', [RegionController::class, 'city_update']);
+        Route::delete('/organization/city/{city_id}/delete', [RegionController::class, 'city_delete']);
+
+        
+        Route::get('/organization/vacation-cadries', [CadryVacationController::class, 'vacation_cadries_all']);
+        Route::get('/organization/vacation-cadries/{cadry_id}', [CadryVacationController::class, 'vacation_cadries']);
+
+        Route::post('/organization/vacation-cadry/{cadry_id}/create', [CadryVacationController::class, 'vacation_cadry_create']);
+        Route::put('/organization/vacation-cadries/{vacation_cadry_id}/update', [CadryVacationController::class, 'vacation_cadry_update']);
+        Route::delete('/organization/vacation-cadries/{vacation_cadry_id}/delete', [CadryVacationController::class, 'vacation_cadry_delete']);
+
     }); 
 
     Route::group([
