@@ -13,4 +13,9 @@ class Region extends Model
     {
         return $this->hasMany(Cadry::class,'address_region_id')->where(['status' => true]);
     }
+
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
 }

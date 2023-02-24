@@ -282,7 +282,7 @@ Route::group([
         Route::delete('/organization/region/{region_id}/delete', [RegionController::class, 'region_delete']);
         
         
-        Route::get('/organization/cities', [RegionController::class, 'api_cities']);
+        Route::get('/organization/{region_id}/cities', [RegionController::class, 'api_cities']);
         Route::post('/organization/city/create', [RegionController::class, 'city_create']);
         Route::put('/organization/city/{city_id}/update', [RegionController::class, 'city_update']);
         Route::delete('/organization/city/{city_id}/delete', [RegionController::class, 'city_delete']);

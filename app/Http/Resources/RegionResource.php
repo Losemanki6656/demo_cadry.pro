@@ -16,7 +16,8 @@ class RegionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'cities' => $this->cities->count()
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Models\City;
 use App\Models\Cadry;
 use App\Http\Resources\RegionCollection;
 use App\Http\Resources\CityCollection;
+use App\Http\Resources\RegionResource;
 
 class RegionController extends Controller
 {
@@ -18,9 +19,11 @@ class RegionController extends Controller
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
         $regions = Region::paginate($per_page);
+        $allregions = Region::get();
 
         return response()->json([
-            'regions' => new RegionCollection($regions)
+            'regions' => new RegionCollection($regions),
+            'allregions' => RegionResource::collection($allregions)
         ]);
     }
 
@@ -56,11 +59,11 @@ class RegionController extends Controller
     }
 
 
-    public function api_cities()
+    public function api_cities($region_id)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $cities = City::with('region')->paginate($per_page);
+        $cities = City::with('region')->where('region_id', $region_id)->paginate($per_page);
 
         return response()->json([
             'cities' => new CityCollection($cities)
