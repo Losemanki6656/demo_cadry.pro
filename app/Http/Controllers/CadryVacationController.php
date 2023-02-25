@@ -24,6 +24,28 @@ class CadryVacationController extends Controller
         ]);
     }
 
+    public function vacation_cadry_update($vacation_cadry_id, Request $request)
+    {
+        $item =  VacationCadry::find($vacation_cadry_id);
+        $item->period1 = $request->period1;
+        $item->period2 = $request->period2;
+        $item->date1 = $request->date1;
+        $item->save();
+
+        return response()->json([
+            'message' => 'successfully updated'
+        ]);
+    }
+
+    public function vacation_cadry_delete($vacation_cadry_id)
+    {
+        VacationCadry::find($vacation_cadry_id)->delete();
+
+        return response()->json([
+            'message' => 'successfully deleted'
+        ]);
+    }
+
     public function vacation_cadries($cadry_id)
     {
         $vacation_cadries = VacationCadry::where('cadry_id', $cadry_id)->get();
@@ -37,7 +59,10 @@ class CadryVacationController extends Controller
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $vacation_cadries = VacationCadry::with('cadry')->where('organization_id', auth()->user()->userorganization->organization_id)->paginate($per_page);
+        $vacation_cadries = VacationCadry::with('cadry')
+            ->where('organization_id', auth()->user()->userorganization->organization_id)
+            ->orderBy('date1')
+            ->paginate($per_page);
 
         return response()->json([
             'vacation_cadries' => new VacCadCollection($vacation_cadries)

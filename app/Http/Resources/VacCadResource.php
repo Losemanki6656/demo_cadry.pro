@@ -14,12 +14,17 @@ class VacCadResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($this->date1 < now()) $days = (-1)*($this->date1->diffInDays()); 
+            else
+        $days = $this->date1->diffInDays(); 
+
         return [
             'id' => $this->id,
             'cadry' => new CadryResource($this->cadry),
             'period1' => $this->period1,
             'period2' => $this->period2,
-            'date1' => $this->date1
+            'date1' => $this->date1->format('Y-m-d'),
+            'days' => $days
         ];
     }
 }

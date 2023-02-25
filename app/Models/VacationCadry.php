@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class VacationCadry extends Model
 {
     use HasFactory;
+    
+    protected $dates = ['date1'];
 
     public function cadry()
     {
