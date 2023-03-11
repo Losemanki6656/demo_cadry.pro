@@ -759,6 +759,7 @@ class BackApiController extends Controller
             $array['organization_id'] = $organ->organization_id;
             $array['post_name'] = $dep->staff_full;
             $array['staff_id'] = $dep->staff_id;
+            $array['middle_name'] = $request->middle_name ?? '';
 
             if($request->order == null) 
                 $array['order'] = 0; else $array['order'] = $request->order;

@@ -24,6 +24,7 @@ use App\Http\Controllers\TechnicalSchoolController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CadryVacationController;
+use App\Http\Controllers\TabelController;
 
 
 
@@ -48,6 +49,9 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
+    
+    Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
+    Route::post('/tabel/create', [TabelController::class, 'create_tabel_to_cadry']);
     
     Route::get('/1c/vacations', [VacationIntegrationController::class, 'vacations_1c_api']);
     Route::post('/1c/vacations/{vacation_id}/accept', [VacationIntegrationController::class, 'vacations_1c_api_success']);

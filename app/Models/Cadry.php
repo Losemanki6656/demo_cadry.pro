@@ -37,6 +37,11 @@ class Cadry extends Model
         return $this->hasOne(MedicalExamination::class)->where(['status' => true]);
     }
 
+    public function tabel()
+    {
+        return $this->hasOne(Tabel::class);
+    }
+
     public function notmed()
     {
         return $this->hasMany(MedicalExamination::class);
@@ -175,6 +180,14 @@ class Cadry extends Model
             $this->attributes['language'] = implode(',',$value);
         else $this->attributes['language'] = $value;
     }
+
+    public function setMiddleNameAttribute($value)
+    {   
+        if($value == null) 
+            $this->attributes['language'] = '';
+        else $this->attributes['language'] = $value;
+    }
+
 
     public function setAddressAttribute($value)
     {
