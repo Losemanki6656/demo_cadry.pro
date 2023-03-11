@@ -701,7 +701,6 @@ class BackApiController extends Controller
         $validated = $request->validate([
             'last_name' => ['required'],
             'first_name' => ['required'],
-            'middle_name' => ['required'],
             'birth_region_id' => ['required'],
             'birth_city_id' => ['required'],
             'address_region_id' => ['required'],

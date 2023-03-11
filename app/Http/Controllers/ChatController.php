@@ -389,42 +389,34 @@ class ChatController extends Controller
     public function control()
     {
         $orgs = \App\Models\Railway::get();
+        // ->withCount(['cadries' => function ($query) {
+        //     $query->where('status', true);
+        // }])
+        // ->get();
 
         $a = [];
-        foreach($orgs as $item)
-        {
-            $nationalities = Nationality::with(['cadries' => function ($query) use ($item){
-                $query->where('railway_id',$item->id)->where('status',true);
-            }])->get();
-            // $educations = \App\Models\Education::where('id','!=',2)->with(['cadries' => function ($query) use ($item) {
-            //     $query->where('railway_id',$item->id)->where('status',true);
-            // }])->get();
-
-            $d = ''; $q = '';
-            foreach ($nationalities as $nat) {
-                $r = $nat->cadries->count();
-                // if($r!=0)
-                $d = $d  . $r . "#"; 
-                $q = $q . $nat->name . '#';
-            }
-
-            // $x = '';
-            // foreach ($educations as $ed) {
-            //     $r = $ed->cadries->count();
-            //     $x = $x . $r . '#'; 
-            // }
-
-
+        foreach($orgs as $item) {
+            $cadry = Cadry::where('railway_id', $item->id)->where('status', true)->count();
+            $cadry30 = Cadry::where('railway_id', $item->id)->where('status', true)->where('birht_date','>=','1993-01-01')->count();
+            $cadry45 = Cadry::where('railway_id', $item->id)->where('status', true)->where('birht_date','>=','1978-01-01')->count();
+            $eduoliy = Cadry::where('railway_id', $item->id)->where('status', true)->where('education_id', 1)->count();
+            $edumaxsus = Cadry::where('railway_id', $item->id)->where('status', true)->where('education_id', 3)->count();
+            $orta = Cadry::where('railway_id', $item->id)->where('status', true)->where('education_id', 4)->count();
+            $cadry_ayol = Cadry::where('railway_id', $item->id)->where('status', true)->where('sex', false)->count();
             $a[] = [
-                'name' => $item->name,
-                'millat' => $d,
-                'nomi' => $q
+                'id' => $item->id,
+                'name' =>  $item->name,
+                'cadry' => $cadry,
+                'erkak' => $cadry - $cadry_ayol,
+                'ayol' => $cadry_ayol,
+                'cadry30' => $cadry30,
+                'cadry3045' => $cadry45 - $cadry30,
+                'cadry45' => $cadry - $cadry45,
+                'eduoliy' => $eduoliy,
+                'edumaxsus' => $edumaxsus,
+                'orta' => $orta,
             ];
-
         }
-        
-        
-
         $export = new ArrExport($a);
         return Excel::download($export, 'export.xlsx');
 
@@ -433,29 +425,27 @@ class ChatController extends Controller
 
     public function api_control()
     {
-        $orgs = \App\Models\Railway::query()
-            ->withCount(['cadries' => function ($query) {
-                $query->where('status', true);
-            }])
-            ->get();
+        $orgs = \App\Models\Organization::get();
+            // ->withCount(['cadries' => function ($query) {
+            //     $query->where('status', true);
+            // }])
+            // ->get();
 
             $a = [];
             foreach($orgs as $item) {
-                $cadry30 = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->count();
-                $cadry30_women = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('sex', false)->count();
-                $cadry30_leaders = Cadry::where('railway_id', $item->id)->where('status', true)->whereYear('birht_date', '>=', 1992)->where('post_name', 'LIKE', '%boshli%')->count();
+                $cadry = Cadry::where('organnization_id', $item->id)->where('status', true)->count();
+                $cadry_ayol = Cadry::where('organnization_id', $item->id)->where('status', true)->where('sex', false)->count();
                 $a[] = [
                     'id' => $item->id,
                     'name' =>  $item->name,
-                    'cadries_count' => $item->cadries_count,
-                    'cadry30_all' => $cadry30,
-                    'cadry30_man' => $cadry30 - $cadry30_women,
-                    'cadry30_women' => $cadry30_women,
-                    'cadry30_leaders' => $cadry30_leaders,
+                    'cadry' => $cadry,
+                    'erkak' => $cadry - $cadry_ayol,
+                    'ayol' => $cadry_ayol
 
                 ];
             }
-        return response()->json($a);
+            $export = new ArrExport($a);
+            return Excel::download($export, 'export.xlsx');
        
     }
 
