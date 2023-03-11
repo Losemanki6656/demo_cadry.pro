@@ -184,8 +184,8 @@ class Cadry extends Model
     public function setMiddleNameAttribute($value)
     {   
         if($value == null) 
-            $this->attributes['language'] = '';
-        else $this->attributes['language'] = $value;
+            $this->attributes['middle_name'] = '';
+        else $this->attributes['middle_name'] = $value;
     }
 
 
