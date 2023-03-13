@@ -403,6 +403,8 @@ class ChatController extends Controller
             $edumaxsus = Cadry::where('railway_id', $item->id)->where('status', true)->where('education_id', 3)->count();
             $orta = Cadry::where('railway_id', $item->id)->where('status', true)->where('education_id', 4)->count();
             $cadry_ayol = Cadry::where('railway_id', $item->id)->where('status', true)->where('sex', false)->count();
+            $nafaqaMan = Cadry::where('railway_id', $item->id)->where('status', true)->where('sex',1)->where('birht_date','<=','1963-01-01')->count();
+            $nafaqaWoman = Cadry::where('railway_id', $item->id)->where('status', true)->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
             $a[] = [
                 'id' => $item->id,
                 'name' =>  $item->name,
@@ -415,6 +417,8 @@ class ChatController extends Controller
                 'eduoliy' => $eduoliy,
                 'edumaxsus' => $edumaxsus,
                 'orta' => $orta,
+                'pensiya' => $nafaqaMan,
+                'pen_ayol' => $nafaqaWoman
             ];
         }
         $export = new ArrExport($a);

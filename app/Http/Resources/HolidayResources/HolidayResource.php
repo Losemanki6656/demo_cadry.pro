@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\TabelResources;
+namespace App\Http\Resources\HolidayResources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TabelCategoryResource extends JsonResource
+class HolidayResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,11 @@ class TabelCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'fullname' => '('.$this->category_code. '-'. $this->name. ') ' . $this->fullname,
-            'category_code' => $this->category_code,
-            'work_time' => $this->work_time,
+            'name' => $this->holiday_name,
+            'day' => (int)$this->holiday_date->format('d'),
+            'weekends' => $this->weekends,
+            'holiday' => $this->holiday,
+            'old_holiday' => $this->old_holiday
         ];
     }
 }

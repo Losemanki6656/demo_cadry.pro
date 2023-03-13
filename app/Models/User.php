@@ -80,9 +80,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Organization::class);
     }
 
-    public function emmat_department()
+    public function department()
     {
-        return $this->belongsTo(UserDepartment::class,'id','user_id');
+        return $this->belongsTo(DepartmentUser::class,'id','user_id');
     }
 
 }

@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TabelExport;
+
 use App\Models\Cadry;
 use App\Models\Tabel;
+use App\Models\Holiday;
 use App\Models\TabelCategory;
+use App\Models\UserDepartment;
 use App\Http\Resources\TableCadryResource;
 use App\Http\Resources\TabelResources\TabelCategoryResource;
+use App\Http\Resources\HolidayResources\HolidayResource;
 use DB;
 
 class TabelController extends Controller
@@ -29,27 +36,71 @@ class TabelController extends Controller
             5 => 'Ju',
             6 => 'Sh',
         ];
+  
+        $holidays = Holiday::whereYear('holiday_date', $year)->whereMonth('holiday_date',$month)->get();
 
-        $days = [];
+        $hols = $holidays;
+
+        $days = []; $cadry_days = [];
         for($i = 1; $i <= $number; $i++)
         {
             $dayOfTheWeek = \Carbon\Carbon::parse($year  . '-' . $month . '-' . $i)->dayOfWeek;
             $weekday = $weekMap[$dayOfTheWeek];
+            
+            $holiday = false; 
+            $before_day = false; 
+            $category_id = null;
+
+            foreach($hols as $hol)
+            {
+                if((int)$hol->holiday_date->format('d') == $i) {
+                    if(!$hol->old_holiday) {
+                        $category_id = 3;
+                        break;
+                    } else {
+                        $before_day = true;
+                        break;
+                    }    
+                } 
+            }
 
             $days[] = [
                 'day' => $i,
                 'weekday' => $weekday,
-                "type_work" => null,
-                "work_time" => null
+                "category_id" => $category_id,
+                "work_time" => null,
+                'before_day' => $before_day
+            ];
+
+            $cadry_days[] = [
+                'day' => $i,
+                'weekday' => $weekday,
+                "category_id" => $category_id,
+                "work_time" => null,
             ];
         }
-        $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
-            return $query->where('year', $year)->where('month',$month);
+        $user = auth()->user()->department;
+        if($user->status == 1) {
+            $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
+                return $query->where('year', $year)->where('month',$month);
+                }
+            ])
+            ->where('department_id', $user->department_id)
+            ->limit($request->limit)
+            ->get();
+    
         }
-        ])
-        ->where('department_id', 107)
-        ->get();
-
+        else if(auth()->user()->department->status == 2) {
+            $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
+                return $query->where('year', $year)->where('month',$month);
+                }
+            ])
+            ->where('organization_id', $user->organization_id)
+            ->limit($request->limit)
+            ->get();
+        }
+        
+       
         $tabel = [];
 
         foreach($cadries as $item)
@@ -60,9 +111,9 @@ class TabelController extends Controller
 
             $tabel[] = [
                 'id' => $item->id,
-                'fullname' => $item->last_name . ' ' . $item->fist_name . ' ' . $item->middle_name,
+                'fullname' => $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name,
                 'staff' => 'staff',
-                'days' => $days
+                'days' => $cadry_days
             ];
         }
 
@@ -77,18 +128,7 @@ class TabelController extends Controller
 
     public function create_tabel_to_cadry(Request $request)
     {
-       
-        // $input = [
-        //     'cadry_id' => $request->cadry_id,
-        //     'tabel_year' => $request->year,
-        //     'table_month' => $request->month,
-        //     'days' => $request->days
-        // ];
-
-        // dd($request->all());
-
-        // $json = $request->all();
-       
+              
 
         DB::transaction(function() use ($request) {
             foreach($request->all() as $item)
@@ -100,5 +140,19 @@ class TabelController extends Controller
         return response()->json([
             'message' => 'successfully',
         ]);
+    }
+
+    public function tabel_export()
+    {
+        $holidays = Holiday::whereYear('holiday_date', 2023)->whereMonth('holiday_date',3)->where('old_holiday',false)->get();
+        $days = [];
+        foreach($holidays as $item)
+        {
+            $days[] = $item->holiday_date->format('d');
+        }
+        
+
+        return Excel::download(new TabelExport($days), 'tabel.xlsx');
+
     }
 }

@@ -33,6 +33,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware' => ['auth']], function() {
     
+    Route::get('/tabel', [App\Http\Controllers\TabelController::class, 'tabel_export'])->name('tabel_export');
+
     Route::get('/cadry', [App\Http\Controllers\CadryController::class, 'index'])->name('cadry');
     Route::get('/regions', [App\Http\Controllers\CadryController::class, 'regions'])->name('regions');
     Route::post('/add-city', [App\Http\Controllers\CadryController::class, 'add_city'])->name('add_city');   

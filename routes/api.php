@@ -52,6 +52,7 @@ Route::group([
     
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
     Route::post('/tabel/create', [TabelController::class, 'create_tabel_to_cadry']);
+    Route::get('/tabel/export', [TabelController::class, 'tabel_export']);
     
     Route::get('/1c/vacations', [VacationIntegrationController::class, 'vacations_1c_api']);
     Route::post('/1c/vacations/{vacation_id}/accept', [VacationIntegrationController::class, 'vacations_1c_api_success']);
