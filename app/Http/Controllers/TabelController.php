@@ -80,6 +80,7 @@ class TabelController extends Controller
             ];
         }
         $user = auth()->user()->department;
+
         if($user->status == 1) {
             $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
                 return $query->where('year', $year)->where('month',$month);
@@ -112,7 +113,6 @@ class TabelController extends Controller
             $tabel[] = [
                 'id' => $item->id,
                 'fullname' => $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name,
-                'staff' => 'staff',
                 'days' => $cadry_days
             ];
         }
@@ -127,13 +127,18 @@ class TabelController extends Controller
     }
 
     public function create_tabel_to_cadry(Request $request)
-    {
-              
+    {    
 
         DB::transaction(function() use ($request) {
-            foreach($request->all() as $item)
+
+            foreach($request->cadries as $item)
             {
-                Tabel::create($item);
+                Tabel::create([
+                    'cadry_id' => $item['id'],
+                    'year' => $request->year,
+                    'month' => $request->month,
+                    'days' => $item['days']
+                ]);
             }
         });
 
