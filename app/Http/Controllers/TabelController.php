@@ -164,17 +164,16 @@ class TabelController extends Controller
         ]);
     }
 
-    public function tabel_export()
+    public function tabel_export(Request $request)
     {
-        $holidays = Holiday::whereYear('holiday_date', 2023)->whereMonth('holiday_date',3)->where('old_holiday',false)->get();
+        $holidays = Holiday::whereYear('holiday_date', $request->year)->whereMonth('holiday_date', $request->month)->where('old_holiday',false)->get();
         $days = [];
         foreach($holidays as $item)
         {
             $days[] = $item->holiday_date->format('d');
         }
-        
 
-        return Excel::download(new TabelExport($days), 'tabel.xlsx');
+        return Excel::download(new TabelExport($days), 'Tabel-'. $request->month . $request->year . '.xlsx');
 
     }
 }
