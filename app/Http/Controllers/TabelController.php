@@ -83,21 +83,19 @@ class TabelController extends Controller
 
         if($user->status == 1) {
             $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
-                return $query->where('year', $year)->where('month',$month);
+                    return $query->where('year', $year)->where('month',$month);
                 }
             ])
             ->where('department_id', $user->department_id)
-            ->limit($request->limit)
             ->get();
     
         }
         else if(auth()->user()->department->status == 2) {
             $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
-                return $query->where('year', $year)->where('month',$month);
+                    return $query->where('year', $year)->where('month',$month);
                 }
             ])
             ->where('organization_id', $user->organization_id)
-            ->limit($request->limit)
             ->get();
         }
         
@@ -108,12 +106,12 @@ class TabelController extends Controller
         {
             if($item->tabel) {
                 $cadry_tabel = $item->days;
-            } else $cadry_tabel = $days;
+            } else $cadry_tabel = $cadry_days;
 
             $tabel[] = [
                 'id' => $item->id,
                 'fullname' => $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name,
-                'days' => $cadry_days
+                'days' => $cadry_tabel
             ];
         }
 
