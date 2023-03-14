@@ -133,6 +133,24 @@ class TabelController extends Controller
 
             foreach($request->cadries as $item)
             {
+                $factCount = 0;
+                foreach($item['days'] as $day)
+                {
+                    // if($day['category_id'] && $day[''])
+                }
+                
+                $cadry = Tabel::where('cadry_id',$item['id'])->where('year',$request->year)->where('month',$request->month);
+
+                if($cadry->count())
+                {
+                    $cadry->first()->update([
+                        'cadry_id' => $item['id'],
+                        'year' => $request->year,
+                        'month' => $request->month,
+                        'days' => $item['days']
+                    ]);
+                }
+                else
                 Tabel::create([
                     'cadry_id' => $item['id'],
                     'year' => $request->year,
