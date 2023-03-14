@@ -128,7 +128,10 @@ class TabelController extends Controller
     public function create_tabel_to_cadry(Request $request)
     {    
 
-        DB::transaction(function() use ($request) {
+        $user = auth()->user();
+
+        DB::transaction(function() use ($request, $user) {
+
 
             foreach($request->cadries as $item)
             {
@@ -146,7 +149,8 @@ class TabelController extends Controller
                         'cadry_id' => $item['id'],
                         'year' => $request->year,
                         'month' => $request->month,
-                        'days' => $item['days']
+                        'days' => $item['days'],
+                        'send_user_id' => $user->id
                     ]);
                 }
                 else
@@ -154,7 +158,11 @@ class TabelController extends Controller
                     'cadry_id' => $item['id'],
                     'year' => $request->year,
                     'month' => $request->month,
-                    'days' => $item['days']
+                    'days' => $item['days'],
+                    'send_user_id' => $user->id,
+                    'railway_id' => $user->department->railway_id,
+                    'organization_id' => $user->department->organization_id,
+                    'department_id' => $user->department->department_id
                 ]);
             }
         });
@@ -168,12 +176,90 @@ class TabelController extends Controller
     {
         $holidays = Holiday::whereYear('holiday_date', $request->year)->whereMonth('holiday_date', $request->month)->where('old_holiday',false)->get();
         $days = [];
+
         foreach($holidays as $item)
         {
             $days[] = $item->holiday_date->format('d');
         }
+        
+        $cadries = $this->workers($request->year, $request->month);
 
-        return Excel::download(new TabelExport($days), 'Tabel-'. $request->month . $request->year . '.xlsx');
+        $x = 0; $a = [];
+        foreach ($cadries as $cadry)
+        {
+            $x ++;
+            $fullname = $cadry->cadry->last_name . ' ' . $cadry->cadry->fist_name . ' ' . $cadry->cadry->middle_name;
 
+            $a[] = [
+                $x,
+                $fullname,
+                $cadry->fact,
+                $cadry->selosmenix_prostov,
+                $cadry->ocherednoy_otpusk,
+                $cadry->bolezn,
+                $cadry->neyavki_razr,
+                $cadry->razr_admin,
+                $cadry->progul,
+                $cadry->vixod_prazd,
+                $cadry->tekush_pros,
+                $cadry->opazjanie,
+                $cadry->vsevo,
+                $cadry->sdelno,
+                $cadry->svixurochniy,
+                $cadry->nochnoy,
+                $cadry->prazdnichniy,
+                $cadry->tabel_number,
+                $cadry->ustanovleniy,
+                $cadry->ekonomie,
+                $cadry->vid_oplate,
+                $cadry->sxema_rascheta,
+                $cadry->dop_priznak,
+                $cadry->prosent_primi,
+                $cadry->dni_fact,
+                $cadry->chasi_fact,
+                $cadry->fact_rabot,
+                $cadry->vixod_priznich
+            ];
+
+            $a[] = [
+                ''
+            ];
+
+            $y = 0; $z = []; $q = [];
+            foreach ($cadry['days'] as $day)
+            {
+                $y ++;
+                if($y <= 15) {
+                    $z[] = $day['work_time'];
+                } else {
+                    $q[] = $day['work_time'];
+                }
+            }
+
+            $a[] = $z; 
+            $a[] = $q;
+        }
+
+        return Excel::download(new TabelExport($days, $a, $x), 'tabel.xlsx');
+
+    }
+
+    public function workers($year, $month)
+    {
+        $user = auth()->user()->department;
+
+        if($user->status == 1) {
+            $cadries = Tabel::where('year', $year)->where('month', $month)
+                ->where('department_id', $user->department_id)->with('cadry')
+                ->get();
+    
+        }
+        else if(auth()->user()->department->status == 2) {
+            $cadries = Tabel::where('year', $year)->where('month',$month)
+                ->where('organization_id', $user->organization_id)->with('cadry')
+                ->get();
+        }
+
+        return $cadries;
     }
 }

@@ -15,7 +15,13 @@ class CreateTabelsTable extends Migration
     {
         Schema::create('tabels', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('railway_id')->unsigned()->index()->nullable();
+            $table->bigInteger('organization_id')->unsigned()->index()->nullable();
+            $table->bigInteger('department_id')->unsigned()->index()->nullable();
             $table->bigInteger('cadry_id')->unsigned()->index()->nullable();
+            $table->bigInteger('send_user_id')->unsigned()->index()->nullable();
+            $table->bigInteger('cadry_user_id')->unsigned()->index()->nullable();
+            $table->bigInteger('bux_user_id')->unsigned()->index()->nullable();
             $table->year('year')->deault(0);
             $table->integer('month')->deault(0);
             $table->json('days')->nullable();
@@ -45,7 +51,15 @@ class CreateTabelsTable extends Migration
             $table->integer('chasi_fact')->default(0);
             $table->integer('fact_rabot')->default(0);
             $table->integer('vixod_priznich')->default(0);
+            $table->boolean('status_cadry')->default(false);
+            $table->boolean('status_bux')->default(false);
             $table->foreign('cadry_id')->references('id')->on('cadries');
+            $table->foreign('send_user_id')->references('id')->on('users');
+            $table->foreign('cadry_user_id')->references('id')->on('users');
+            $table->foreign('bux_user_id')->references('id')->on('users');
+            $table->foreign('railway_id')->references('id')->on('railways');
+            $table->foreign('organization_id')->references('id')->on('organizations');
+            $table->foreign('department_id')->references('id')->on('departments');
             $table->timestamps();
         });
     }

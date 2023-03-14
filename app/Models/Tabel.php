@@ -11,15 +11,55 @@ class Tabel extends Model
     use HasFactory;
 
     protected $fillable = [
+        'railway_id',
+        'organization_id',
+        'department_id',
         'cadry_id',
+        'send_user_id',
+        'cadry_user_id',
+        'bux_user_id',
         'year',
         'month',
-        'days'
+        'days',
+        'fact',
+        'selosmenix_prostov',
+        'ocherednoy_otpusk',
+        'bolezn',
+        'neyavki_razr',
+        'razr_admin',
+        'progul',  
+        'vixod_prazd',
+        'tekush_pros',
+        'opazjanie',
+        'vsevo',
+        'sdelno',
+        'svixurochniy',
+        'nochnoy',
+        'prazdnichniy',
+        'tabel_number',
+        'ustanovleniy',
+        'ekonomie',
+        'vid_oplate',
+        'sxema_rascheta',
+        'dop_priznak',
+        'prosent_primi',
+        'dni_fact',
+        'chasi_fact',
+        'fact_rabot',
+        'vixod_priznich',
+        'status_cadry',
+        'status_bux'
     ];
+    
 
     protected $casts = [
         'days' => 'array'
     ];
+
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
+    }
 
     // protected function data(): Attribute
     // {

@@ -17,11 +17,13 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
     * @return \Illuminate\Support\Collection
     */
     
-    protected $days;
+    protected $days, $arrm , $cCount;
 
-    public function __construct($days)
+    public function __construct($days, $arr, $cCount)
     {
         $this->days = $days;
+        $this->arr = $arr;
+        $this->cCount = $cCount;
     }
     
     // public function view(): View
@@ -35,11 +37,7 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
 
     public function array(): array
     {
-        return [
-            [
-
-            ]
-        ];
+        return $this->arr;
     }
 
     public function headings(): array
@@ -174,7 +172,7 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                     ],
                 ];
 
-                $event->sheet->getStyle('A1:AV9')->applyFromArray([
+                $event->sheet->getStyle('A1:AV'. (9 + ($this->cCount)*4) )->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -198,6 +196,44 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                     ]);
                 }
                 
+                for($i = 1; $i<=$this->cCount; $i++)
+                {
+                    $event->sheet->mergeCells('B' . (6 + $i*4) . ':Q' . (7 + $i*4));
+                    $event->sheet->mergeCells('A' . (6 + $i*4) . ':A' . (9 + $i*4));
+
+                    $event->sheet->mergeCells('R'. (6 + $i*4) .':R' . (9 + $i*4));
+                    $event->sheet->mergeCells('S'. (6 + $i*4) .':S' . (9 + $i*4));
+                    $event->sheet->mergeCells('T'. (6 + $i*4) .':T' . (9 + $i*4));
+                    $event->sheet->mergeCells('U'. (6 + $i*4) .':U' . (9 + $i*4));
+                    $event->sheet->mergeCells('V'. (6 + $i*4) .':V' . (9 + $i*4));
+                    $event->sheet->mergeCells('W'. (6 + $i*4) .':W' . (9 + $i*4));
+                    $event->sheet->mergeCells('X'. (6 + $i*4) .':X' . (9 + $i*4));
+                    $event->sheet->mergeCells('Y'. (6 + $i*4) .':Y' . (9 + $i*4));
+                    $event->sheet->mergeCells('Z'. (6 + $i*4) .':Z' . (9 + $i*4));
+                    $event->sheet->mergeCells('AA'. (6 + $i*4) .':AA' . (9 + $i*4));
+                    $event->sheet->mergeCells('AB'. (6 + $i*4) .':AB' . (9 + $i*4));
+                    $event->sheet->mergeCells('AC'. (6 + $i*4) .':AC' . (9 + $i*4));
+                    $event->sheet->mergeCells('AD'. (6 + $i*4) .':AD' . (9 + $i*4));
+                    $event->sheet->mergeCells('AE'. (6 + $i*4) .':AE' . (9 + $i*4));
+                    $event->sheet->mergeCells('AF'. (6 + $i*4) .':AF' . (9 + $i*4));
+                    $event->sheet->mergeCells('AG'. (6 + $i*4) .':AG' . (9 + $i*4));
+                    $event->sheet->mergeCells('AH'. (6 + $i*4) .':AH' . (9 + $i*4));
+                    $event->sheet->mergeCells('AI'. (6 + $i*4) .':AI' . (9 + $i*4));
+                    $event->sheet->mergeCells('AJ'. (6 + $i*4) .':AJ' . (9 + $i*4));
+                    $event->sheet->mergeCells('AK'. (6 + $i*4) .':AK' . (9 + $i*4));
+                    $event->sheet->mergeCells('AL'. (6 + $i*4) .':AL' . (9 + $i*4));
+                    $event->sheet->mergeCells('AM'. (6 + $i*4) .':AM' . (9 + $i*4));
+                    $event->sheet->mergeCells('AN'. (6 + $i*4) .':AN' . (9 + $i*4));
+                    $event->sheet->mergeCells('AO'. (6 + $i*4) .':AO' . (9 + $i*4));
+                    $event->sheet->mergeCells('AP'. (6 + $i*4) .':AP' . (9 + $i*4));
+                    $event->sheet->mergeCells('AQ'. (6 + $i*4) .':AQ' . (9 + $i*4));
+                    $event->sheet->mergeCells('AR'. (6 + $i*4) .':AR' . (9 + $i*4));
+                    $event->sheet->mergeCells('AS'. (6 + $i*4) .':AS' . (9 + $i*4));
+                    $event->sheet->mergeCells('AT'. (6 + $i*4) .':AT' . (9 + $i*4));
+                    $event->sheet->mergeCells('AU'. (6 + $i*4) .':AU' . (9 + $i*4));
+                    $event->sheet->mergeCells('AV'. (6 + $i*4) .':AV' . (9 + $i*4));
+                }
+                
 
                 $event->sheet->getDelegate()->getStyle('R7:Y7')->getFont()->setSize(9);
                 $event->sheet->getDelegate()->getStyle('AH5:AT5')->getFont()->setSize(9);
@@ -217,9 +253,13 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                 $event->sheet->getDelegate()->getRowDimension('8')->setRowHeight(25);
                 $event->sheet->getDelegate()->getRowDimension('9')->setRowHeight(25);
 
-                $event->sheet->getDelegate()->getStyle('A1:AV9')
+                $event->sheet->getDelegate()->getStyle('A1:AV' . (9 + ($this->cCount) * 4))
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                $event->sheet->getDelegate()->getStyle('R10:AV'. (9 + ($this->cCount) * 4))
+                    ->getAlignment()
+                    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
 
                 $cells = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
