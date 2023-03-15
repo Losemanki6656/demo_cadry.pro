@@ -198,7 +198,7 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                 
                 for($i = 1; $i<=$this->cCount; $i++)
                 {
-                    $event->sheet->getStyle('B'.(6 + ($this->cCount)*4) )->getFont()->setFontBold(true);
+                    $event->sheet->getDelegate()->getStyle('B'.(6 + ($this->cCount)*4) )->getFont()->setFontBold(true);
 
                     $event->sheet->mergeCells('B' . (6 + $i*4) . ':Q' . (7 + $i*4));
                     $event->sheet->mergeCells('A' . (6 + $i*4) . ':A' . (9 + $i*4));
