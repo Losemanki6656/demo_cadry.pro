@@ -138,10 +138,10 @@ class TabelController extends Controller
                 {
                     if($day['category_id'] && $day['work_time']) {
                         $factCount ++;
-                        $hours = $hours + $day['work_time'];
+                        $hours = $hours + (int)$day['work_time'];
 
-                        if($day['category_id'] == 3) $rp = $rp + $day['work_time'];
-                        if($day['category_id'] == 2) $n = $n + $day['work_time'];
+                        if($day['category_id'] == 3) $rp = $rp + (int)$day['work_time'];
+                        if($day['category_id'] == 2) $n = $n + (int)$day['work_time'];
                     }
                 }
                 
@@ -279,5 +279,5 @@ class TabelController extends Controller
         return $cadries;
     }
 
-    
+
 }
