@@ -241,7 +241,9 @@ class TabelController extends Controller
             $a[] = $q;
         }
 
-        return Excel::download(new TabelExport($days, $a, $x), 'tabel.xlsx');
+        $organization = auth()->user()->department->organization->name;
+
+        return Excel::download(new TabelExport($days, $a, $x, $request->year, $request->month, $organization), 'tabel.xlsx');
 
     }
 

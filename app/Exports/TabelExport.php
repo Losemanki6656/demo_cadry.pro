@@ -17,13 +17,16 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
     * @return \Illuminate\Support\Collection
     */
     
-    protected $days, $arrm , $cCount;
+    protected $days, $arrm , $cCount, $year, $month, $organization;
 
-    public function __construct($days, $arr, $cCount)
+    public function __construct($days, $arr, $cCount, $year, $month, $organization)
     {
         $this->days = $days;
         $this->arr = $arr;
         $this->cCount = $cCount;
+        $this->year = $year;
+        $this->month = $month;
+        $this->organization = $organization;
     }
     
     // public function view(): View
@@ -44,10 +47,10 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
     {
         return [
             [
-                'ОТДЕЛ ОБЕСПЕЧЕНИЯ ИНФОРМАЦИОННОЙ БЕЗОПАСНОСТИ'
+                $this->organization
             ],
             [
-                'ОТДЕЛ ОБЕСПЕЧЕНИЯ ИНФОРМАЦИОННОЙ БЕЗОПАСНОСТИ'
+                $this->organization
             ],
             [
                'Пердприятие','','','','','','','','','','','','','','','','','','','','','','',
@@ -59,10 +62,10 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                'Форма ФТУ №3'
             ],
             [
-               'Отдел ИБ (ВЦ)','','','','','','','','','','','','','','','','','','','','','','',
-               '12','','',
-               '2023','','','',
-               '20'
+                $this->organization,'','','','','','','','','','','','','','','','','','','','','','',
+                $this->month,'','',
+                $this->year,'','','',
+                ''
             ],
             [
                 '1 -я  стр',
