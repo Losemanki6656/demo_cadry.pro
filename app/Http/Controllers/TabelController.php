@@ -127,43 +127,56 @@ class TabelController extends Controller
 
     public function create_tabel_to_cadry(Request $request)
     {    
-
         $user = auth()->user();
 
         DB::transaction(function() use ($request, $user) {
 
-
             foreach($request->cadries as $item)
             {
-                $factCount = 0;
+                $factCount = 0; $hours = 0; $rp = 0; $n = 0;
                 foreach($item['days'] as $day)
                 {
-                    // if($day['category_id'] && $day[''])
+                    if($day['category_id'] && $day['work_time']) {
+                        $factCount ++;
+                        $hours = $hours + $day['work_time'];
+
+                        if($day['category_id'] == 3) $rp = $rp + $day['work_time'];
+                        if($day['category_id'] == 2) $n = $n + $day['work_time'];
+                    }
                 }
                 
-                $cadry = Tabel::where('cadry_id',$item['id'])->where('year',$request->year)->where('month',$request->month);
+                if($factCount){
+                    $cadry = Tabel::where('cadry_id',$item['id'])->where('year',$request->year)->where('month',$request->month);
 
-                if($cadry->count())
-                {
-                    $cadry->first()->update([
+                    if($cadry->count())
+                    {
+                        $cadry->first()->update([
+                            'cadry_id' => $item['id'],
+                            'year' => $request->year,
+                            'month' => $request->month,
+                            'days' => $item['days'],
+                            'send_user_id' => $user->id,
+                            'fact' => $factCount,
+                            'vsevo' => $rp,
+                            'nochnoy' => $n
+                        ]);
+                    }
+                    else
+                    Tabel::create([
                         'cadry_id' => $item['id'],
                         'year' => $request->year,
                         'month' => $request->month,
                         'days' => $item['days'],
-                        'send_user_id' => $user->id
+                        'send_user_id' => $user->id,
+                        'fact' => $factCount,
+                        'vsevo' => $rp,
+                        'nochnoy' => $n,
+                        'railway_id' => $user->department->railway_id,
+                        'organization_id' => $user->department->organization_id,
+                        'department_id' => $user->department->department_id
                     ]);
                 }
-                else
-                Tabel::create([
-                    'cadry_id' => $item['id'],
-                    'year' => $request->year,
-                    'month' => $request->month,
-                    'days' => $item['days'],
-                    'send_user_id' => $user->id,
-                    'railway_id' => $user->department->railway_id,
-                    'organization_id' => $user->department->organization_id,
-                    'department_id' => $user->department->department_id
-                ]);
+                
             }
         });
 
@@ -265,4 +278,6 @@ class TabelController extends Controller
 
         return $cadries;
     }
+
+    
 }
