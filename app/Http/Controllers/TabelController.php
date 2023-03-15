@@ -207,7 +207,7 @@ class TabelController extends Controller
 
             $a[] = [
                 $x,
-                $fullname,
+                $fullname, '','','','','', '','','','','', '','','','','',
                 $cadry->fact,
                 $cadry->selosmenix_prostov,
                 $cadry->ocherednoy_otpusk,
