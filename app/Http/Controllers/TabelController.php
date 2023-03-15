@@ -177,7 +177,7 @@ class TabelController extends Controller
                         'organization_id' => $user->department->organization_id,
                         'department_id' => $user->department->department_id
                     ]);
-                }
+                } else Tabel::where('cadry_id',$item['id'])->where('year',$request->year)->where('month',$request->month)->delete();
                 
             }
         });
