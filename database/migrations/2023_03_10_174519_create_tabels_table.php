@@ -42,7 +42,7 @@ class CreateTabelsTable extends Migration
             $table->integer('nochnoy')->default(0);
             $table->integer('prazdnichniy')->default(0);
             $table->string('tabel_number')->nullable();
-            $table->string('ustanovleniy')->default(0);
+            $table->string('ustanovleniy')->nullable();
             $table->string('ekonomie')->nullable();
             $table->string('vid_oplate')->nullable();
             $table->string('sxema_rascheta')->nullable();
