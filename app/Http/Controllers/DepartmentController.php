@@ -19,11 +19,83 @@ use App\Http\Resources\OrgStaffCollection;
 use App\Http\Resources\DepartmentStaffCollection;
 use App\Http\Resources\DepartmentStaffsCollection;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DepartmentExport;
+
 
 use App\Http\Resources\DepartmentCollection;
 
 class DepartmentController extends Controller
 {
+
+    public function department_export()
+    {
+        $user = auth()->user()->userorganization;
+        $departments = Department::where('organization_id', $user->organization_id)->with(['departmentstaff.cadry','departmentcadry.cadry'])->get();
+
+        $arr = [];
+        foreach($departments as $item)
+        {
+            $price = 0;
+
+            $arr[] = [
+                ' ', $item->name, '','','','','','','','','','',''
+            ];
+
+            $x = 0;
+            foreach($item->departmentcadry as $staff)
+            {
+                $fullname = $staff->cadry->last_name . ' ' . $staff->cadry->first_name . ' ' . $staff->cadry->middle_name;
+                $summ = $staff->koef * $staff->min_sum;
+                $price = $price + $summ;
+                $x ++;
+                $arr[] = [
+                    ' ',
+                    $x,
+                    $staff->staff->name,
+                    $staff->stavka,
+                    $fullname,
+                    $staff->razryad,
+                    $staff->koef,
+                    $staff->min_sum,
+                    $summ, '','','',''
+                ];
+            }
+            
+            foreach($item->departmentstaff as $vac)
+            {
+                $cadry = $vac->cadry->sum('stavka');
+                if($vac->stavka > $cadry) {
+                    $vacant = $vac->stavka - $cadry;
+
+                    $x ++;
+                    $arr[] = [
+                        ' ',
+                        $x,
+                        $vac->staff->name,
+                        '', 
+                        '',
+                        '','','','',
+                        '','','','',
+                        $vacant, 'Вакансия','',''
+                    ];
+                }
+            }
+
+            $arr[] = [
+                ' ',
+                'Итого:',
+                '',
+                $item->departmentcadry->count(),
+                '','','','',
+                $price, '','','',''
+            ];
+        }
+
+        // return $arr;
+
+        return Excel::download(new DepartmentExport($arr), 'ШТАТКА.xlsx');
+    }
 
     public function add_department(Request $request)
     {
@@ -39,6 +111,7 @@ class DepartmentController extends Controller
             'message' => "Bo'lim muvaffaqqiyatli qo'shildi!"
         ]);
     }
+
     public function update_department(Request $request, $department_id)
     {
         $editDepartment =  Department::find($department_id);
