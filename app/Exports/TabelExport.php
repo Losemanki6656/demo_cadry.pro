@@ -198,6 +198,8 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                 
                 for($i = 1; $i<=$this->cCount; $i++)
                 {
+                    $event->sheet->getStyle('B'.(6 + ($this->cCount)*4) )->getFont()->setFontBold(true);
+
                     $event->sheet->mergeCells('B' . (6 + $i*4) . ':Q' . (7 + $i*4));
                     $event->sheet->mergeCells('A' . (6 + $i*4) . ':A' . (9 + $i*4));
 
@@ -234,6 +236,8 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                     $event->sheet->mergeCells('AV'. (6 + $i*4) .':AV' . (9 + $i*4));
                 }
                 
+                
+                $event->sheet->getStyle('A10:A'.(9 + ($this->cCount)*4) )->getAlignment()->setTextRotation(90);
 
                 $event->sheet->getDelegate()->getStyle('R7:Y7')->getFont()->setSize(9);
                 $event->sheet->getDelegate()->getStyle('AH5:AT5')->getFont()->setSize(9);
@@ -261,6 +265,9 @@ class TabelExport implements FromArray,WithHeadings,WithStyles,WithEvents
                     ->getAlignment()
                     ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
+                $event->sheet->getDelegate()->getStyle('A10:A'. (9 + ($this->cCount) * 4))
+                    ->getAlignment()
+                    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
                 $cells = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
                         
