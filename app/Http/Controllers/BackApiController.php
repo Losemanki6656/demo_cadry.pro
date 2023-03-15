@@ -778,6 +778,9 @@ class BackApiController extends Controller
             $newItem->staff_id = $dep->staff_id;
             $newItem->staff_full = $dep->staff_full;
             $newItem->staff_date = $request->post_date;
+            $newItem->razryad = $request->rank ?? 0;
+            $newItem->koef = $request->coefficient ?? 0;
+            $newItem->min_sum = $request->min_sum ?? 0;
 
             if ($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka)
                 $newItem->status_sv = true;
@@ -940,6 +943,9 @@ class BackApiController extends Controller
             ],
             'rate' => $item->stavka,
             'staff_status' => $staff_status,
+            'rank' => $item->razryad,
+            'coefficient' => $item->koef,
+            'min_sum' => $item->min_sum,
             'status_sverx' => $item->status_sv,
             'status_for_decret' => $item->status,
             'status_decret' => $item->status_decret,
@@ -1014,6 +1020,12 @@ class BackApiController extends Controller
         $newItem->staff_full = $editstaff->staff_full;
         $newItem->staff_status = $request->staff_status;
         $newItem->staff_date = $request->staff_date;
+
+        
+        $newItem->razryad = $request->rank ?? 0;
+        $newItem->koef = $request->coefficient ?? 0;
+        $newItem->min_sum = $request->min_sum ?? 0;
+
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
             $newItem->status_sv = true;
