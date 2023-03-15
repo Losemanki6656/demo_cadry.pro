@@ -226,6 +226,7 @@ class TabelController extends Controller
             ];
 
             $y = 0; $z = []; $q = [];
+            $z[] = ''; $q[] = '';
             foreach ($cadry['days'] as $day)
             {
                 $y ++;
