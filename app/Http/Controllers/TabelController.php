@@ -136,12 +136,12 @@ class TabelController extends Controller
                 $factCount = 0; $hours = 0; $rp = 0; $n = 0;
                 foreach($item['days'] as $day)
                 {
-                    if($day['category_id'] && $day['work_time']) {
+                    if($day['category_id']!=null && $day['work_time']!=null) {
                         $factCount ++;
-                        $hours = $hours + (int)$day['work_time'];
+                        $hours = $hours + $day['work_time'];
 
-                        if($day['category_id'] == 3) $rp = $rp + (int)$day['work_time'];
-                        if($day['category_id'] == 2) $n = $n + (int)$day['work_time'];
+                        if($day['category_id'] == 3) $rp = $rp + $day['work_time'];
+                        if($day['category_id'] == 2) $n = $n + $day['work_time'];
                     }
                 }
                 
@@ -157,7 +157,8 @@ class TabelController extends Controller
                             'days' => $item['days'],
                             'send_user_id' => $user->id,
                             'fact' => $factCount,
-                            'vsevo' => $rp,
+                            'vsevo' => $hours,
+                            'prazdnichniy' => $rp,
                             'nochnoy' => $n
                         ]);
                     }
@@ -169,7 +170,8 @@ class TabelController extends Controller
                         'days' => $item['days'],
                         'send_user_id' => $user->id,
                         'fact' => $factCount,
-                        'vsevo' => $rp,
+                        'vsevo' => $hours,
+                        'prazdnichniy' => $rp,
                         'nochnoy' => $n,
                         'railway_id' => $user->department->railway_id,
                         'organization_id' => $user->department->organization_id,
