@@ -28,6 +28,7 @@ class CreateTabelsTable extends Migration
             $table->integer('fact')->default(0);
             $table->integer('selosmenix_prostov')->default(0);
             $table->integer('ocherednoy_otpusk')->default(0);
+            $table->integer('otsusk_s_rodam')->default(0);
             $table->integer('bolezn')->default(0);
             $table->integer('neyavki_razr')->default(0);
             $table->integer('razr_admin')->default(0);
@@ -42,11 +43,15 @@ class CreateTabelsTable extends Migration
             $table->integer('prazdnichniy')->default(0);
             $table->string('tabel_number')->nullable();
             $table->string('ustanovleniy')->default(0);
-            $table->string('ekonomie')->default(0);
-            $table->string('vid_oplate')->default(0);
-            $table->string('sxema_rascheta')->default(0);
-            $table->string('dop_priznak')->default(0);
-            $table->string('prosent_primi')->default(0);
+            $table->string('ekonomie')->nullable();
+            $table->string('vid_oplate')->nullable();
+            $table->string('sxema_rascheta')->nullable();
+            $table->string('sintecheskiy')->nullable();
+            $table->string('statya_rasxoda')->nullable();
+            $table->string('dop_priznak')->nullable();
+            $table->string('kod_primi')->nullable();
+            $table->string('prosent_iz_primi')->nullable();
+            $table->string('prosent_primi_iz')->nullable();
             $table->integer('dni_fact')->default(0);
             $table->integer('chasi_fact')->default(0);
             $table->integer('fact_rabot')->default(0);
