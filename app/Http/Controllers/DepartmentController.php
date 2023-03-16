@@ -33,7 +33,7 @@ class DepartmentController extends Controller
         $user = auth()->user()->userorganization;
         $departments = Department::where('organization_id', $user->organization_id)->with(['departmentstaff.cadry','departmentcadry.cadry'])->get();
 
-        $arr = [];
+        $arr = []; $col = []; $count = 0;
         foreach($departments as $item)
         {
             $price = 0;
@@ -76,11 +76,13 @@ class DepartmentController extends Controller
                         '', 
                         '',
                         '','','','',
-                        '','','','',
                         $vacant, 'Вакансия','',''
                     ];
                 }
             }
+
+            $col[] = $x; 
+            $count = $count + $x + 2;
 
             $arr[] = [
                 ' ',
@@ -92,9 +94,7 @@ class DepartmentController extends Controller
             ];
         }
 
-        // return $arr;
-
-        return Excel::download(new DepartmentExport($arr), 'ШТАТКА.xlsx');
+        return Excel::download(new DepartmentExport($arr, $col, $count), 'ШТАТКА.xlsx');
     }
 
     public function add_department(Request $request)
