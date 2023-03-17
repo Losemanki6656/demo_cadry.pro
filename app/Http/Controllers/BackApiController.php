@@ -875,8 +875,11 @@ class BackApiController extends Controller
 
         if($request->work_status_id == 2)
         {
+            $newItem->work_status_id = $request->work_status_id;
             $newItem->work_date1 = $request->work_date1;
             $newItem->work_date2 = $request->work_date2;
+        } else {
+            $newItem->work_status_id = $request->work_status_id;
         }
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
@@ -1044,9 +1047,10 @@ class BackApiController extends Controller
 
         if($request->work_status_id == 2)
         {
+            $newItem->work_status_id = $request->work_status_id;
             $newItem->work_date1 = $request->work_date1;
             $newItem->work_date2 = $request->work_date2;
-        }
+        } else $newItem->work_status_id = $request->work_status_id;
 
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
