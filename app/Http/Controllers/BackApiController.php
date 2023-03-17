@@ -40,6 +40,7 @@ use App\Models\AbroadStudy;
 use App\Models\AcademiStudy;
 use App\Models\Abroad;
 use App\Models\AcademicName;
+use App\Models\WorkStatus;
 use App\Models\DepartmentStaff;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
@@ -75,6 +76,7 @@ use App\Http\Resources\AcademicResource;
 use App\Http\Resources\MedicalResource;
 use App\Http\Resources\DepartmentStaffResource;
 use App\Http\Resources\CadryStaffResource;
+use App\Http\Resources\WorkStatusResource;
 
 class BackApiController extends Controller
 {
@@ -832,9 +834,12 @@ class BackApiController extends Controller
     public function apiNewStaffToCadry($cadry_id)
     {
 
+        $work_statuses = WorkStatusResource::collection(WorkStatus::get());
+
         $items =  DepartmentCadry::where('cadry_id', $cadry_id)->get();
 
         return response()->json([
+            'work_statuses' => $work_statuses,
             'staffs' => CadryStaffResource::collection($items),
             'staff_statuts' => [
                 [
@@ -867,6 +872,12 @@ class BackApiController extends Controller
         $newItem->razryad = $request->rank ?? 0;
         $newItem->koef = $request->coefficient ?? 0;
         $newItem->min_sum = $request->min_sum ?? 0;
+
+        if($request->work_status_id == 2)
+        {
+            $newItem->work_date1 = $request->work_date1;
+            $newItem->work_date2 = $request->work_date2;
+        }
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
             $newItem->status_sv = true;
@@ -924,6 +935,7 @@ class BackApiController extends Controller
 
     public function apiStaffCadryEdit($id)
     {
+        $work_statuses = WorkStatusResource::collection(WorkStatus::get());
         $item =  DepartmentCadry::with('department')->find($id);
         $staff = DepartmentStaff::find($item->department_staff_id);
         $staffs = DepartmentStaff::where('department_id', $item->department_id)->get();
@@ -940,6 +952,7 @@ class BackApiController extends Controller
 
         return response()->json([
             'department_id' => new DepResource($item->department),
+            'work_statuses' => $work_statuses,
             'staff_id' => [
                 'id' => $staff->id,
                 'staff_fullname' => $staff->staff_full
@@ -1028,6 +1041,12 @@ class BackApiController extends Controller
         $newItem->razryad = $request->rank ?? 0;
         $newItem->koef = $request->coefficient ?? 0;
         $newItem->min_sum = $request->min_sum ?? 0;
+
+        if($request->work_status_id == 2)
+        {
+            $newItem->work_date1 = $request->work_date1;
+            $newItem->work_date2 = $request->work_date2;
+        }
 
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
