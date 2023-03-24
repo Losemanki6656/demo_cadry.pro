@@ -32,6 +32,7 @@ use App\Models\Nationality;
 use App\Models\AbroadStudy;
 use App\Models\AcademiStudy;
 use App\Models\Abroad;
+use App\Models\WorkStatus;
 use App\Models\AcademicName;
 use App\Models\MedicalExamination;
 use App\Models\Party;
@@ -78,6 +79,7 @@ use App\Http\Resources\AcademicResource;
 use App\Http\Resources\DepartmentStaffResource;
 use App\Http\Resources\DisciplinaryActionResource;
 use App\Http\Resources\IncentiveResource;
+use App\Http\Resources\WorkStatusResource;
 use Auth;
 use File;
 use DB;
@@ -336,6 +338,7 @@ class OrganizationController extends Controller
 
     public function cadries_info()
     {
+        $work_statuses = WorkStatusResource::collection(WorkStatus::get());
         $data1 = RegionResource::collection(Region::get());
         $data2 = CityResource::collection(City::get());
         $data3 = DepResource::collection(Department::where('organization_id',auth()->user()->userorganization->organization_id)->get());
@@ -352,6 +355,7 @@ class OrganizationController extends Controller
         $data10 = EducationResource::collection(Education::get());
 
         return response()->json([
+            'work_statuses' => $work_statuses,
             'regions' => $data1,
             'cities' => $data2,
             'departments' => $data3,
