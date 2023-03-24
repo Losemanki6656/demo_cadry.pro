@@ -966,6 +966,10 @@ class BackApiController extends Controller
             'name' => "O'rindosh"
         ];
 
+        if($item->work_status) {
+            $work_status_id = new WorkStatusResource($item->work_status);
+        } else $work_status_id = null;
+
         return response()->json([
             'department_id' => new DepResource($item->department),
             'work_statuses' => $work_statuses,
@@ -978,7 +982,7 @@ class BackApiController extends Controller
             'rank' => $item->razryad,
             'coefficient' => $item->koef,
             'min_sum' => $item->min_sum,
-            'work_status_id' => new WorkStatusResource($item->work_status),
+            'work_status_id' => $work_status_id,
             'work_date1' => $item->work_date1,
             'work_date2' => $item->work_date2,
             'status_sverx' => $item->status_sv,
