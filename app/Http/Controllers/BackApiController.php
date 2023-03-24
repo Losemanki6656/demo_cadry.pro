@@ -791,6 +791,8 @@ class BackApiController extends Controller
                 $newItem->work_date2 = $request->work_date2;
             } else {
                 $newItem->work_status_id = $request->work_status_id;
+                $newItem->work_date1 = null;
+                $newItem->work_date2 = null;
             }
 
             if ($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka)
@@ -889,6 +891,8 @@ class BackApiController extends Controller
             $newItem->work_date2 = $request->work_date2;
         } else {
             $newItem->work_status_id = $request->work_status_id;
+            $newItem->work_date1 = null;
+            $newItem->work_date2 = null;
         }
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
@@ -1062,7 +1066,11 @@ class BackApiController extends Controller
             $newItem->work_status_id = $request->work_status_id;
             $newItem->work_date1 = $request->work_date1;
             $newItem->work_date2 = $request->work_date2;
-        } else $newItem->work_status_id = $request->work_status_id;
+        } else {
+            $newItem->work_status_id = $request->work_status_id;
+            $newItem->work_date1 = null;
+            $newItem->work_date2 = null;
+        }
 
 
         if ($editstaff->stavka <= $editstaff->cadry->sum('stavka') + $request->st_1)
