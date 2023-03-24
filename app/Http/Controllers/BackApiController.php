@@ -784,6 +784,15 @@ class BackApiController extends Controller
             $newItem->koef = $request->coefficient ?? 0;
             $newItem->min_sum = $request->min_sum ?? 0;
 
+            if($request->work_status_id == 2)
+            {
+                $newItem->work_status_id = $request->work_status_id;
+                $newItem->work_date1 = $request->work_date1;
+                $newItem->work_date2 = $request->work_date2;
+            } else {
+                $newItem->work_status_id = $request->work_status_id;
+            }
+
             if ($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka)
                 $newItem->status_sv = true;
             else
@@ -965,6 +974,9 @@ class BackApiController extends Controller
             'rank' => $item->razryad,
             'coefficient' => $item->koef,
             'min_sum' => $item->min_sum,
+            'work_status_id' => $item->work_status,
+            'work_date1' => $item->work_date1,
+            'work_date2' => $item->work_date2,
             'status_sverx' => $item->status_sv,
             'status_for_decret' => $item->status,
             'status_decret' => $item->status_decret,

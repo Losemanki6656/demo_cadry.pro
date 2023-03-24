@@ -29,4 +29,9 @@ class DepartmentCadry extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function work_status()
+    {
+        return $this->belongsTo(WorkStatus::class);
+    }
 }

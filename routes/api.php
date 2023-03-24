@@ -25,6 +25,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CadryVacationController;
 use App\Http\Controllers\TabelController;
+use App\Http\Controllers\DeadlineController;
 
 
 
@@ -53,6 +54,9 @@ Route::group([
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
     Route::post('/tabel/create', [TabelController::class, 'create_tabel_to_cadry']);
     Route::get('/tabel/export', [TabelController::class, 'tabel_export']);
+
+    
+    Route::get('/deadlines', [DeadlineController::class, 'deadlines']);
    
     Route::get('/cadry/export/department', [DepartmentController::class, 'department_export']);
     

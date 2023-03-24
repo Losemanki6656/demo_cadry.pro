@@ -57,6 +57,11 @@ class Cadry extends Model
         return $this->hasMany(AbroadStudy::class);
     }
 
+    public function vacationCadry()
+    {
+        return $this->hasOne(VacationCadry::class);
+    }
+
     public function vacation()
     {
         return $this->hasOne(Vacation::class)->where('status',true);
