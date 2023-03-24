@@ -38,19 +38,26 @@ class DeadlineController extends Controller
         ];
 
         if($request->category_id == 1){
-            $cadries = VacationCadry::with('cadry')
-                ->where('organization_id', $user->organization_id)
-                ->orderBy('date1')
-                ->paginate($per_page);
-        } else {
             
+            $cadries = new DeadlineVacationCollection(
+                VacationCadry::with('cadry')
+                    ->where('organization_id', $user->organization_id)
+                    ->orderBy('date1')
+                    ->paginate($per_page)
+                );
+        
+        } else {
+            $cadries = DepartmentCadry::with('cadry')
+                ->where('organization_id', $user->organization_id)
+                ->orderBy('work_date2')
+                ->paginate($per_page);
         }
 
         
 
         return response()->json([
             'categories' => $elements,
-            'cadries' => new DeadlineVacationCollection($cadries)
+            'cadries' => $cadries
         ]);
 
     }

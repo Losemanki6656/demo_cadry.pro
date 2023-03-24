@@ -49,7 +49,7 @@ class DepartmentCadryResource extends JsonResource
             'staff_full' => $this->staff_full,
             'staff_date' => $this->staff_date,
             'rate' => $this->stavka,
-            'work_status_id' => $this->work_status,
+            'work_status_id' => new WorkStatusResource($this->work_status),
             'work_date1' => $this->work_date1,
             'work_date2' => $this->work_date2,
             'staff_status' => $status,
