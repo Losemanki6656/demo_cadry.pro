@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DeadlineVacationResource extends JsonResource
+class DeadlineWorkStatusResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,20 +14,19 @@ class DeadlineVacationResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->date1) {
-            if($this->date1 < now()) 
-                $days = (-1)*($this->date1->diffInDays()); 
+        if($this->work_date2) {
+            if($this->work_date2 < now()) 
+                $days = (-1)*($this->work_date2->diffInDays()); 
             else
-                $days = $this->date1->diffInDays(); 
+                $days = $this->work_date2->diffInDays(); 
         } else $days = null;
+       
 
         return [
             'id' => $this->id,
             'photo' => url(asset('storage/' . $this->cadry->photo)),
             'fullname' => $this->cadry->last_name . ' ' . $this->cadry->first_name . ' ' . $this->cadry->middle_name,
-            'period1' => $this->period1,
-            'period2' => $this->period2,
-            'date' => $this->date1->format('Y-m-d'),
+            'date' => optional($this->work_date2)->format('Y-m-d'),
             'days' => $days
         ];
     }

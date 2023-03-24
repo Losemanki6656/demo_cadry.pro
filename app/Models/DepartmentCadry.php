@@ -10,6 +10,8 @@ class DepartmentCadry extends Model
 {
     use HasFactory,RevisionableTrait;
 
+    protected $dates = ['work_date2'];
+
     public function cadry()
     {
         return $this->belongsTo(Cadry::class);

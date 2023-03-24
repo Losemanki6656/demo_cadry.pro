@@ -56,7 +56,7 @@ Route::group([
     Route::get('/tabel/export', [TabelController::class, 'tabel_export']);
 
     
-    Route::get('/deadlines', [DeadlineController::class, 'deadlines']);
+    Route::get('/deadline/cadries', [DeadlineController::class, 'deadlines']);
    
     Route::get('/cadry/export/department', [DepartmentController::class, 'department_export']);
     
