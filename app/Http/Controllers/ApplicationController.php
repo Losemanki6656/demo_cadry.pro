@@ -15,9 +15,11 @@ use App\Models\AcademicDegree;
 use App\Models\Party;
 use App\Models\Education;
 use App\Models\WorkLevel;
+use App\Models\Relative;
 
 use Illuminate\Support\Str;
 use App\Http\Resources\SlugCollection;
+use App\Http\Resources\CadryRelativeResource;
 use App\Http\Resources\WorkStatusResource;
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\CityResource;
@@ -108,6 +110,8 @@ class ApplicationController extends Controller
                 ], 404);
 
             } else {
+                
+                $relatives =  CadryRelativeResource::collection(Relative::all());
                 $work_statuses = WorkStatusResource::collection(WorkStatus::get());
                 $data1 = RegionResource::collection(Region::get());
                 $data2 = CityResource::collection(City::get());
@@ -130,7 +134,8 @@ class ApplicationController extends Controller
                     'academicdegree' => $data7,
                     'parties' => $data8,
                     'worklevels' => $data9,
-                    'educations' => $data10
+                    'educations' => $data10,
+                    'relatives' => $relatives
                 ]);
             }
             
