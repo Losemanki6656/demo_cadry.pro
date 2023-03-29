@@ -51,6 +51,12 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    Route::get('/cadry/slugs', [ApplicationController::class, 'slugs']);
+    Route::post('/cadry/slug/create', [ApplicationController::class, 'slug_create']);
+    Route::get('/cadry/slug/{slug}/accept', [ApplicationController::class, 'accept_slug']);
+    Route::delete('/cadry/slug/{slug}/delete', [ApplicationController::class, 'delete_slug']);
+
+    
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
     Route::post('/tabel/create', [TabelController::class, 'create_tabel_to_cadry']);
     Route::get('/tabel/export', [TabelController::class, 'tabel_export']);
@@ -565,6 +571,9 @@ Route::group([
 
     
 });
+
+Route::get('/odas/reception/{slug}', [ApplicationController::class, 'slug_click']);
+Route::post('/odas/reception/{slug}', [ApplicationController::class, 'slug_add_worker']);
 
 
 // Route::post('control', function (Request $request) {
