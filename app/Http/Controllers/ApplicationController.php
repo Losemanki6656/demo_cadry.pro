@@ -62,9 +62,9 @@ class ApplicationController extends Controller
         $randomString = Str::random(60);
         
         $slug = new Slug();
-        $slug->railway_id = 3;
-        $slug->organization_id = 152;
-        $slug->user_id = 1;
+        $slug->railway_id = auth()->user()->userorganization->railway_id;
+        $slug->organization_id = auth()->user()->userorganization->organization_id;
+        $slug->user_id = auth()->user()->id;
         $slug->name = $randomString;
         $slug->expires_at = 3600;
         $slug->save();
