@@ -68,7 +68,7 @@ class ApplicationController extends Controller
         $slug->organization_id = auth()->user()->userorganization->organization_id;
         $slug->user_id = auth()->user()->id;
         $slug->name = $randomString;
-        $slug->expires_at = 3600;
+        $slug->expires_at = 21600;
         $slug->save();
 
         return response()->json([
@@ -111,6 +111,7 @@ class ApplicationController extends Controller
 
             } else {
                 
+
                 $relatives =  CadryRelativeResource::collection(Relative::all());
                 $work_statuses = WorkStatusResource::collection(WorkStatus::get());
                 $data1 = RegionResource::collection(Region::get());
@@ -135,7 +136,9 @@ class ApplicationController extends Controller
                     'parties' => $data8,
                     'worklevels' => $data9,
                     'educations' => $data10,
-                    'relatives' => $relatives
+                    'relatives' => $relatives,
+                    'experis_at' => $item->experis_at,
+                    'created_at' => $item->created_at
                 ]);
             }
             
