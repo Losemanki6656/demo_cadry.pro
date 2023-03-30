@@ -17,6 +17,9 @@ use App\Models\Education;
 use App\Models\WorkLevel;
 use App\Models\Relative;
 use App\Models\SlugCadry;
+use App\Models\InfoEducation;
+use App\Models\Career;
+use App\Models\CadryRelative;
 
 use Illuminate\Support\Str;
 use App\Http\Resources\SlugCollection;
@@ -240,6 +243,42 @@ class ApplicationController extends Controller
 
                     
                     $cadry = Cadry::create($array);
+
+                    foreach($request->institut as $item)
+                    {
+                        $neweducation = new InfoEducation();
+                        $neweducation->cadry_id = $cadry->id;
+                        $neweducation->sort = 0;
+                        $neweducation->date1 = $item['date1'];
+                        $neweducation->date2 = $item['date2'];
+                        $neweducation->institut = $item['name'];
+                        $neweducation->speciality = $item['spec'];
+                        $neweducation->save();
+                    }
+
+                    foreach($request->career as $car)
+                    {
+                        $career = new Career();
+                        $career->cadry_id = $cadry->id;
+                        $career->sort = 0;
+                        $career->date1 = $car['date1'];
+                        $career->date2 = $car['date2'];
+                        $career->staff = $car['staff'];
+                        $career->save();
+                    }
+
+                    foreach($request->relatives as $relative)
+                    {
+                        $rel = new CadryRelative();
+                        $rel->cadry_id = $cadry->id;
+                        $rel->relative_id = $relative['relative_id'];
+                        $rel->sort = 0;
+                        $rel->fullname = $relative['fullname'];
+                        $rel->birth_place = $relative['birth_place'];
+                        $rel->post = $relative['post'];
+                        $rel->address = $relative['address'];
+                        $rel->save();
+                    }
 
                     $slug = new SlugCadry();
                     $slug->railway_id = $organ->railway_id;
