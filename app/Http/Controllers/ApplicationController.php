@@ -16,6 +16,7 @@ use App\Models\Party;
 use App\Models\Education;
 use App\Models\WorkLevel;
 use App\Models\Relative;
+use App\Models\SlugCadry;
 
 use Illuminate\Support\Str;
 use App\Http\Resources\SlugCollection;
@@ -48,19 +49,24 @@ class ApplicationController extends Controller
         return app(\App\Http\Controllers\OrganizationController::class)->word_export_api($cadry->id);
     }
 
-    public function slugs()
+    public function slug_cadries()
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
-        $slugs = Slug::where('status', false)->orderBy('created_at','desc')->with(['cadry','user','railway','organization'])->paginate($per_page);
+        $slugs = SlugCadry::where('status', false)->orderBy('created_at','desc')->with(['cadry','user','railway','organization'])->paginate($per_page);
+        $slug = Slug::where('user_id', auth()->user()->id)->first();
+        if($slug) $slug = $slug->name; else $slug = null;
 
         return response()->json([
-            'slugs' => new SlugCollection($slugs)
+            'slug' => $slug,
+            'slug_cadries' => new SlugCollection($slugs)
         ]);
     }
 
     public function slug_create()
     {
+        Slug::where('organization_id',auth()->user()->userorganization->organization_id)->delete();
+
         $randomString = Str::random(60);
         
         $slug = new Slug();
@@ -73,24 +79,43 @@ class ApplicationController extends Controller
 
         return response()->json([
             'message' => 'successfully gnerated',
-            'url' => url(asset('odas/reception/' . $randomString)),
+            'url' => $randomString,
+            'expires_at' => $slug->expires_at,
+            'created_at' => $slug->created_at
         ]);
     }
 
-    public function delete_slug($slug)
+    public function delete_slug_cadry($slug_cadry_id)
     {
-        $slug = Slug::find($slug)->delete();
+        $slug = SlugCadry::find($slug_cadry_id);
+        $cadry_id = $slug->cadry_id;
+        $slug->delete();
 
+        DepartmentCadry::where('cadry_id',$cadry_id)->delete();
+        Career::where('cadry_id',$cadry_id)->delete();
+        CadryRelative::where('cadry_id',$cadry_id)->delete();
+        DemoCadry::where('cadry_id',$cadry_id)->delete();
+        CadryCreate::where('cadry_id',$cadry_id)->delete();
+        Cadry::find($cadry_id)->delete();
+        
         return response()->json([
             'message' => 'successfully deleted'
         ]);
     }
 
-    public function accept_slug($slug)
+    public function accept_slug_cadry($slug_cadry_id)
     {
-        $slug = Slug::find($slug);
+        $slug = SlugCadry::find($slug_cadry_id);
+        $slug->user_id = auth()->user()->id;
         $slug->status = true;
         $slug->save();
+
+        if($slug->cadry_id) 
+        {   
+            $cadry = Cadry::find($slug->cadry_id);
+            $cadry->status = true;
+            $cadry->save();
+        }
 
         return response()->json([
             'message' => 'successfully accepted'
@@ -99,7 +124,7 @@ class ApplicationController extends Controller
 
     public function slug_click($slug)
     {
-        $item = Slug::where('status', false)->where('name', $slug)->first();
+        $item = Slug::where('name', $slug)->first();
         
         if($item) {
 
@@ -111,8 +136,7 @@ class ApplicationController extends Controller
 
             } else {
                 
-
-                $relatives =  CadryRelativeResource::collection(Relative::all());
+                $relatives = CadryRelativeResource::collection(Relative::all());
                 $work_statuses = WorkStatusResource::collection(WorkStatus::get());
                 $data1 = RegionResource::collection(Region::get());
                 $data2 = CityResource::collection(City::get());
@@ -152,8 +176,7 @@ class ApplicationController extends Controller
     }
 
     public function slug_add_worker($slug, Request $request)
-    {      
-        
+    {             
         $validated = $request->validate([
             'last_name' => ['required'],
             'first_name' => ['required'],
@@ -165,23 +188,19 @@ class ApplicationController extends Controller
             'pass_region_id' => ['required'],
             'pass_city_id' => ['required'],
             'jshshir' => ['required', 'min:14'],
-            'job_date' => ['required', 'date'],
-            'department_id' => ['required'],
-            'staff_id' => ['required'],
-            'post_date' => ['required', 'date'],
             'education_id' => ['required'],
             'academictitle_id' => ['required'],
             'academicdegree_id' => ['required'],
             'nationality_id' => ['required'],
             'language' => ['required'],
-            'worklevel_id' => ['required'],
             'party_id' => ['required'],
             'military_rank' => ['required'],
             'deputy' => ['required'],
             'phone' => ['required'],
+            'photo' => ['file']
         ]);
 
-        $organ = Slug::where('name', $slug)->where('status', false)->fisrt();
+        $organ = Slug::where('name', $slug)->first();
 
         if($organ) {
 
@@ -215,24 +234,38 @@ class ApplicationController extends Controller
                     $array['staff_id'] = null;
                     $array['middle_name'] = $request->middle_name ?? '';
                     $array['status'] = false;
+                    $array['stavka'] = 1;
+                    $array['post_date'] = now();
+                    $array['job_date'] = now();
 
                     
                     $cadry = Cadry::create($array);
 
+                    $slug = new SlugCadry();
+                    $slug->railway_id = $organ->railway_id;
+                    $slug->organization_id = $organ->organization_id;
+                    $slug->user_id = $organ->user_id;
+                    $slug->cadry_id = $cadry->id;
+                    $slug->save();
+
                     return response()->json([
-                        'status' => 4,
+                        'status' => 3,
                         'message' => "Xodim muvaffaqqiyatli qo'shildi!"
                     ]);;
                 }
 
-
+            } else {
+                return response()->json([
+                    'message' => 'Not Found',
+                ], 404);
             }
 
+        } else {
+            return response()->json([
+                'message' => 'Not Found',
+            ], 404);
         }
-       
-
-
-      
+            
     }
 
 }

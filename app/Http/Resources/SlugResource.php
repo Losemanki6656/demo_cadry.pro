@@ -16,11 +16,10 @@ class SlugResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'railway' => $this->railway->name,
+            'organization' => $this->organization_name,
             'user' => new UserInfoResource($this->user),
-            'name' => $this->name,
-            'url' => url(asset('odas/reception/' . $this->name)),
-            'expires_at' => $this->expires_at,
-            'created_at' => $this->created_at
+            'cadry' => $this->cadry->last_name . ' ' . $this->cadry->first_name . ' ' . $this->cadry->middle_name
         ];
     }
 }

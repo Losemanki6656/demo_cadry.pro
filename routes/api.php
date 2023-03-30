@@ -52,11 +52,12 @@ Route::group([
 ], function ($router) {
     
     Route::get('/cadry/download/resume/{cadry_id}', [OrganizationController::class, 'download_resume']);
-    
-    Route::get('/cadry/slugs', [ApplicationController::class, 'slugs']);
+
+    Route::get('/cadry/slug-cadries', [ApplicationController::class, 'slug_cadries']);
+
     Route::post('/cadry/slug/create', [ApplicationController::class, 'slug_create']);
-    Route::get('/cadry/slug/{slug}/accept', [ApplicationController::class, 'accept_slug']);
-    Route::delete('/cadry/slug/{slug}/delete', [ApplicationController::class, 'delete_slug']);
+    Route::get('/cadry/slug/{slug_cadry_id}/accept', [ApplicationController::class, 'accept_slug_cadry']);
+    Route::delete('/cadry/slug/{slug_cadry_id}/delete', [ApplicationController::class, 'delete_slug_cadry']);
 
     
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
