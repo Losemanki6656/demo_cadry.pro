@@ -137,7 +137,7 @@ class ApplicationController extends Controller
                     'worklevels' => $data9,
                     'educations' => $data10,
                     'relatives' => $relatives,
-                    'experis_at' => $item->experis_at,
+                    'expires_at' => $item->expires_at,
                     'created_at' => $item->created_at
                 ]);
             }
