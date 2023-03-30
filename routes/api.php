@@ -51,6 +51,8 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    Route::get('/cadry/download/resume/{cadry_id}', [OrganizationController::class, 'download_resume']);
+    
     Route::get('/cadry/slugs', [ApplicationController::class, 'slugs']);
     Route::post('/cadry/slug/create', [ApplicationController::class, 'slug_create']);
     Route::get('/cadry/slug/{slug}/accept', [ApplicationController::class, 'accept_slug']);

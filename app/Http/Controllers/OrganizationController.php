@@ -336,6 +336,117 @@ class OrganizationController extends Controller
         return response()->json($data, 200);
     }
 
+    public function download_resume($cadry_id){
+
+        $cadry = Cadry::with([
+            'allstaffs',
+            'birth_region',
+            'birth_city',
+            'nationality',
+            'party',
+            'education',
+            'instituts',
+            'cadry_degree',
+            'cadry_title',
+            'incentives',
+            'careers',
+            'relatives',
+            'relatives.relative'
+        ])->find($cadry_id);
+
+        $languages = Language::all();
+
+        $my_template = new \PhpOffice\PhpWord\TemplateProcessor(public_path('example_resume.docx'));
+        $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
+        $fullname_rel = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name . 'ning';
+
+        if(count($cadry->allstaffs->where('staff_status',false)) > 0 )
+            $post = $cadry->allstaffs->where('staff_status',false)->first();
+        else 
+            $post = $cadry->allstaffs->first();
+        $birth_address = $cadry->birth_region->name . ', ' . $cadry->birth_city->name;
+
+        $instituts = '';
+        $i = 0;
+        foreach($cadry->instituts as $ins)
+        {
+            if($i != 0) $instituts = $instituts . ', ';
+            $instituts = $instituts . $ins->date2 . ' yil,' . $ins->institut;
+            $i ++; 
+        }
+        $specs = $cadry->instituts->pluck('speciality')->toArray();
+        $specs = implode(',',$specs);
+
+        $lan = '';
+        foreach ($languages as $language) {
+           if (in_array($language->id, explode(',',$cadry->language) )) 
+                $lan = $lan.$language->name.',';
+        }
+        $lan = substr_replace($lan ,'', -1);
+
+        $types = $cadry->incentives->pluck('type_action')->toArray();
+        $type_actions = implode(',', $types);
+        if(!$type_actions) $type_actions = 'taqdirlanmagan';
+
+        
+        $careers = $cadry->careers;
+        $car = []; 
+        foreach($careers as $career)
+        {
+            if($career->date2 == '') $dat = $career->date1 . ' h/v '; else $dat = $career->date1 . '-' . $career->date2 . ' yy - ';
+
+            $car[] = [
+                        'career_date' => $dat, 
+                        'career_name' => $career->staff
+                    ];
+        }
+        $my_template->cloneRowAndSetValues('career_date', $car);
+
+        $cadry_relatives = $cadry->relatives;
+        $rels = []; 
+        foreach($cadry_relatives as $rel)
+        {
+            $rels[] = [
+                        'relative' => $rel->relative->name, 
+                        'relative_name' => $rel->fullname, 
+                        'relative_date' => $rel->birth_place, 
+                        'relative_staff' => $rel->post, 
+                        'relative_address' => $rel->address
+                    ];
+        }
+        $my_template->cloneRowAndSetValues('relative', $rels);
+
+        $my_template->setValue('fullname', $fullname);
+        $my_template->setImageValue('photo', array('path' => public_path('storage/'. $cadry->photo), 'width' => 113, 'height' => 149, 'ratio' => false));
+        $my_template->setValue('staff_date', $post->staff_date . 'dan');
+        $my_template->setValue('staff_full', $post->staff_full);
+        $my_template->setValue('birth_date', $cadry->birht_date);
+        $my_template->setValue('birth_address', $birth_address);
+        $my_template->setValue('nationality', $cadry->nationality->name);
+        $my_template->setValue('party', $cadry->party->name);
+        $my_template->setValue('education', $cadry->education->name);
+        $my_template->setValue('institut', $instituts);
+        $my_template->setValue('speciality', $specs);
+        $my_template->setValue('academic_degree', $cadry->cadry_degree->name);
+        $my_template->setValue('academic_title', $cadry->cadry_title->name);
+        $my_template->setValue('languages', $lan);
+        $my_template->setValue('incent', $type_actions);
+        $my_template->setValue('military_rank', $cadry->military_rank);
+        $my_template->setValue('deputy', $cadry->deputy);
+        $my_template->setValue('fullname_rel', $fullname_rel);       
+     
+        try{
+            $my_template->saveAs(public_path('storage/resumes/' . $cadry->jshshir . '.docx'));
+        }catch (Exception $e){
+        }
+    
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+
+        return response()->download(public_path('storage/resumes/' .  $cadry->jshshir  . '.docx'), $fullname .'.docx', $headers)->deleteFileAfterSend(true);
+    }
+
     public function cadries_info()
     {
         $work_statuses = WorkStatusResource::collection(WorkStatus::get());
