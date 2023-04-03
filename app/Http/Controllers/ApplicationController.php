@@ -180,7 +180,7 @@ class ApplicationController extends Controller
 
     public function slug_add_worker($slug, Request $request)
     {             
-        // return response()->json($request->institut);
+        return response()->json($request->institut);
 
         $validated = $request->validate([
             'last_name' => ['required'],
