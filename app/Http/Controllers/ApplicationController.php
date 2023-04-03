@@ -180,7 +180,6 @@ class ApplicationController extends Controller
 
     public function slug_add_worker($slug, Request $request)
     {             
-        return response()->json($request->institut);
 
         $validated = $request->validate([
             'last_name' => ['required'],
@@ -245,40 +244,40 @@ class ApplicationController extends Controller
 
                     
                     $cadry = Cadry::create($array);
-
-                    foreach($request->institut as $item)
+                    
+                    foreach(json_decode($request->institut) as $item)
                     {
                         $neweducation = new InfoEducation();
                         $neweducation->cadry_id = $cadry->id;
                         $neweducation->sort = 0;
-                        $neweducation->date1 = $item['date1'];
-                        $neweducation->date2 = $item['date2'];
-                        $neweducation->institut = $item['name'];
-                        $neweducation->speciality = $item['spec'];
+                        $neweducation->date1 = $item->date1;
+                        $neweducation->date2 = $item->date2;
+                        $neweducation->institut = $item->name;
+                        $neweducation->speciality = $item->spec;
                         $neweducation->save();
                     }
 
-                    foreach($request->career as $car)
+                    foreach(json_decode($request->career) as $car)
                     {
                         $career = new Career();
                         $career->cadry_id = $cadry->id;
                         $career->sort = 0;
-                        $career->date1 = $car['date1'];
-                        $career->date2 = $car['date2'];
-                        $career->staff = $car['staff'];
+                        $career->date1 = $car->date1;
+                        $career->date2 = $car->date2;
+                        $career->staff = $car->staff;
                         $career->save();
                     }
 
-                    foreach($request->relatives as $relative)
+                    foreach(json_decode($request->relatives) as $relative)
                     {
                         $rel = new CadryRelative();
                         $rel->cadry_id = $cadry->id;
-                        $rel->relative_id = $relative['relative_id'];
+                        $rel->relative_id = $relative->relative_id;
                         $rel->sort = 0;
-                        $rel->fullname = $relative['fullname'];
-                        $rel->birth_place = $relative['birth_place'];
-                        $rel->post = $relative['post'];
-                        $rel->address = $relative['address'];
+                        $rel->fullname = $relative->fullname;
+                        $rel->birth_place = $relative->birth_place;
+                        $rel->post = $relative->post;
+                        $rel->address = $relative->address;
                         $rel->save();
                     }
 
