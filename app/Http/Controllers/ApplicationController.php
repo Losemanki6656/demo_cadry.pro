@@ -20,6 +20,9 @@ use App\Models\SlugCadry;
 use App\Models\InfoEducation;
 use App\Models\Career;
 use App\Models\CadryRelative;
+use App\Models\DepartmentStaff;
+use App\Models\DepartmentCadry;
+use App\Models\CadryCreate;
 
 use Illuminate\Support\Str;
 use App\Http\Resources\SlugCollection;
@@ -106,22 +109,65 @@ class ApplicationController extends Controller
         ]);
     }
 
-    public function accept_slug_cadry($slug_cadry_id)
+    public function accept_slug_cadry($slug_cadry_id, Request $request)
     {
         $slug = SlugCadry::find($slug_cadry_id);
         $slug->user_id = auth()->user()->id;
         $slug->status = true;
         $slug->save();
 
-        if($slug->cadry_id) 
-        {   
-            $cadry = Cadry::find($slug->cadry_id);
-            $cadry->status = true;
-            $cadry->save();
-        }
+        $org = auth()->user()->userorganization;
+
+        $dep = DepartmentStaff::with('cadry')->find($request->department_staff_id);
+
+        $newItem = new DepartmentCadry();
+        $newItem->railway_id = $org->railway_id;
+        $newItem->organization_id = $org->organization_id;
+        $newItem->department_id = $request->department_id;
+        $newItem->department_staff_id = $request->department_staff_id;
+        $newItem->staff_id = $dep->staff_id;
+        $newItem->staff_full = $dep->staff_full;
+        $newItem->staff_date = $request->staff_date;
+        $newItem->staff_status = $request->staff_status;
+        $newItem->command_number = $request->command_number;
+
+        if($dep->stavka < $dep->cadry->sum('stavka') +  $request->rate) 
+            $newItem->status_sv = true; 
+        else
+            $newItem->status_sv = false;
+
+        $newItem->cadry_id = $slug->cadry_id;
+        $newItem->stavka = $request->rate;
+        $newItem->save();
+                
+        $cadr = Cadry::find($slug->cadry_id);
+        $cadr->railway_id = $org->railway_id;
+        $cadr->organization_id = $org->organization_id;
+        $cadr->department_id = $request->department_id;
+        $cadr->post_name = $dep->staff_full;
+        $cadr->status = true;
+        $cadr->save();
+
+        $cadryCreate = new CadryCreate();
+        $cadryCreate->railway_id = $org->railway_id;
+        $cadryCreate->organization_id = $org->organization_id;
+        $cadryCreate->cadry_id = $cadr->id;
+        $cadryCreate->command_number = $request->command_number;
+        $cadryCreate->comment = $request->comment;
+        $cadryCreate->save();
+        
+
+        $x = Career::where('cadry_id', $slug->cadry_id)->count();
+        $y = new Career();
+        $y->sort = $x + 1;
+        $y->cadry_id = $slug->cadry_id;
+        $y->date1 = $request->staff_date;
+        $y->date2 = '';
+        $y->staff = $dep->staff_full;
+        $y->save();
 
         return response()->json([
-            'message' => 'successfully accepted'
+            'message' => "Xodim ma'lumotlari muvaffaqqiyatli yuklandi!"
         ]);
     }
 
