@@ -19,17 +19,17 @@ use App\Http\Controllers\TechnicalSchoolController;
 //Auth::routes();
 Auth::routes(['register' => false]);
 
-// Route::get('/migrate', function () {
+Route::get('/migrate', function () {
    
-//     Schema::disableForeignKeyConstraints();
+    Schema::disableForeignKeyConstraints();
 
-//     Artisan::call('migrate:refresh');
+    Artisan::call('migrate:fresh --force');
     
-//      Schema::enableForeignKeyConstraints();
+     Schema::enableForeignKeyConstraints();
 
-// });
+});
 
-// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route::group(['middleware' => ['auth']], function() {
