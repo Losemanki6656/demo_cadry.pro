@@ -219,14 +219,15 @@ class ApplicationController extends Controller
                     {
                         return response()->json([
                             'status' => 1,
-                            'fullname' => $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name,
-                            'organization' => $validator->organization->name
+                            'message' => "Xurmatli " . $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name . ". Sizning ma'lumotlaringiz " .  $validator->organization->name 
+                            . " korxonasi ma'lumotlar bazasida mavjud. 
+                            Xodimlar bo'limi bilan bo'g'lanishingizni so'raymiz!"
                         ], 200);
                     } else {
                         return response()->json([
                             'status' => 2,
-                            'fullname' =>  $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name,
-                            'message' => "Ushbu xodim arxivda mavjud"
+                            'message' => "Xurmatli " . $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name . ". Sizning ma'lumotlaringiz ma'lumotlar bazasi arxivida mavjud. 
+                            Xodimlar bo'limi bilan bo'g'lanishingizni so'raymiz!"
                         ], 200);
                     }
 
