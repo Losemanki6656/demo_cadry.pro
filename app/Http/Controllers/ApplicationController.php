@@ -225,6 +225,7 @@ class ApplicationController extends Controller
                     } else {
                         return response()->json([
                             'status' => 2,
+                            'fullname' =>  $validator->last_name . ' ' . $validator->first_name . ' ' . $validator->middle_name,
                             'message' => "Ushbu xodim arxivda mavjud"
                         ], 200);
                     }
@@ -244,7 +245,7 @@ class ApplicationController extends Controller
 
                     
                     $cadry = Cadry::create($array);
-                    
+
                     foreach(json_decode($request->institut) as $item)
                     {
                         $neweducation = new InfoEducation();
