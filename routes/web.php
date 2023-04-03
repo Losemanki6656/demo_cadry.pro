@@ -23,9 +23,9 @@ Route::get('/migrate', function () {
    
     Schema::disableForeignKeyConstraints();
 
-    Artisan::call('migrate:refresh --seed');
+    Artisan::call('migrate:refresh');
     
-    Schema::enableForeignKeyConstraints();
+    // Schema::enableForeignKeyConstraints();
 
 });
 
