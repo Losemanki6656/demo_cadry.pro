@@ -269,9 +269,9 @@ class TechnicalSchoolController extends Controller
         ]);
     }
 
-    public function delete_dual($dual_id)
+    public function delete_dual(Dual $dual_id)
     {           
-        $newUpgrade = Dual::find($dual_id)->delete();
+        $dual_id->delete();
 
         return response()->json([
             'message' => "Muvaffaqqiyatli o'chirildi!"
