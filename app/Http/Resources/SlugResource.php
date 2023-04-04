@@ -19,7 +19,9 @@ class SlugResource extends JsonResource
             'railway' => $this->railway->name,
             'organization' => $this->organization_name,
             'user' => new UserInfoResource($this->user),
-            'cadry' => $this->cadry->last_name . ' ' . $this->cadry->first_name . ' ' . $this->cadry->middle_name
+            'fullname' => $this->cadry->last_name . ' ' . $this->cadry->first_name . ' ' . $this->cadry->middle_name,
+            'photo' => url(asset('storage/' . $this->cadry->photo)),
+            'created_at' => $this->created_at
         ];
     }
 }
