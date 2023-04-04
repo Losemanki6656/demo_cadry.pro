@@ -36,6 +36,10 @@ use App\Http\Resources\AcademicTitleResource;
 use App\Http\Resources\AcademicDegreeResource;
 use App\Http\Resources\PartyResource;
 use App\Http\Resources\EducationResource;
+use App\Http\Resources\ViewSlugResource;
+use App\Http\Resources\InfoEducationResource;
+use App\Http\Resources\CareerResource;
+use App\Http\Resources\RelativesResource;
 
 class ApplicationController extends Controller
 {
@@ -106,6 +110,30 @@ class ApplicationController extends Controller
         
         return response()->json([
             'message' => 'successfully deleted'
+        ]);
+    }
+
+    public function view_slug_cadry(SlugCadry $slug_cadry_id)
+    {
+        $id = $slug_cadry_id->cadry_id;
+
+        $languages = Language::all();
+        $cadry = new ViewSlugResource(Cadry::with(['birth_city','birth_region','instituts'])->find($id));
+        $lan = "";
+        foreach ($languages as $language) {
+           if (in_array($language->id, explode(',',$cadry->language) )) 
+                $lan = $lan.$language->name.',';
+        }
+        $lan = substr_replace($lan ,"", -1);
+        $carers = Career::where('cadry_id',$id)->orderBy('sort','asc')->get();
+        $cadry_relatives = CadryRelative::where('cadry_id',$id)->with('relative')->orderBy('sort','asc')->get();
+
+        return response()->json([
+            'cadry' => $cadry,
+            'lan' => $lan,
+            'educations' =>  InfoEducationResource::collection($cadry->instituts),
+            'carers' => CareerResource::collection($carers),
+            'relatives' =>  RelativesResource::collection($cadry_relatives),
         ]);
     }
 

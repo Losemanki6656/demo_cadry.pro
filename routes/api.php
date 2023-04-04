@@ -58,6 +58,7 @@ Route::group([
     Route::post('/cadry/slug/create', [ApplicationController::class, 'slug_create']);
     Route::post('/cadry/slug/{slug_cadry_id}/accept', [ApplicationController::class, 'accept_slug_cadry']);
     Route::delete('/cadry/slug/{slug_cadry_id}/delete', [ApplicationController::class, 'delete_slug_cadry']);
+    Route::get('/cadry/slug/{slug_cadry_id}/view', [ApplicationController::class, 'view_slug_cadry']);
 
     
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
