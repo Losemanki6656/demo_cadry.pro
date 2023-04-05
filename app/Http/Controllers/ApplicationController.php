@@ -23,6 +23,8 @@ use App\Models\CadryRelative;
 use App\Models\DepartmentStaff;
 use App\Models\DepartmentCadry;
 use App\Models\CadryCreate;
+use App\Models\DemoCadry;
+use App\Models\Department;
 
 use Illuminate\Support\Str;
 use App\Http\Resources\SlugCollection;
@@ -40,6 +42,7 @@ use App\Http\Resources\ViewSlugResource;
 use App\Http\Resources\InfoEducationResource;
 use App\Http\Resources\CareerResource;
 use App\Http\Resources\RelativesResource;
+use App\Http\Resources\DepResource;
 
 class ApplicationController extends Controller
 {
@@ -70,6 +73,26 @@ class ApplicationController extends Controller
         return response()->json([
             'slug' => $slug,
             'slug_cadries' => new SlugCollection($slugs)
+        ]);
+    }
+
+    public function accept_cadry()
+    {
+        $work_statuses = WorkStatusResource::collection(WorkStatus::get());
+        $departments = Department::where('organization_id',auth()->user()->userorganization->organization_id)->get();
+        return response()->json([
+            'work_statuses' => $work_statuses,
+            'staff_statuts' => [
+                [
+                    'id' => 0,
+                    'name' => "Asosiy"
+                ],
+                [
+                    'id' => 1,
+                    'name' => "O'rindosh"
+                ]
+            ],
+            'departments' => DepResource::collection($departments),
         ]);
     }
 
@@ -105,7 +128,7 @@ class ApplicationController extends Controller
         Career::where('cadry_id',$cadry_id)->delete();
         CadryRelative::where('cadry_id',$cadry_id)->delete();
         DemoCadry::where('cadry_id',$cadry_id)->delete();
-        CadryCreate::where('cadry_id',$cadry_id)->delete();
+        CadryCreate::where('cadry_id', $cadry_id)->delete();
         Cadry::find($cadry_id)->delete();
         
         return response()->json([
@@ -158,6 +181,20 @@ class ApplicationController extends Controller
         $newItem->staff_date = $request->staff_date;
         $newItem->staff_status = $request->staff_status;
         $newItem->command_number = $request->command_number;
+        $newItem->razryad = $request->rank ?? 0;
+        $newItem->koef = $request->coefficient ?? 0;
+        $newItem->min_sum = $request->min_sum ?? 0;
+
+        if($request->work_status_id == 2)
+        {
+            $newItem->work_status_id = $request->work_status_id;
+            $newItem->work_date1 = $request->work_date1;
+            $newItem->work_date2 = $request->work_date2;
+        } else {
+            $newItem->work_status_id = $request->work_status_id;
+            $newItem->work_date1 = null;
+            $newItem->work_date2 = null;
+        }
 
         if($dep->stavka < $dep->cadry->sum('stavka') +  $request->rate) 
             $newItem->status_sv = true; 

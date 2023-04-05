@@ -26,6 +26,7 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CadryVacationController;
 use App\Http\Controllers\TabelController;
 use App\Http\Controllers\DeadlineController;
+use App\Http\Controllers\CommanderController;
 
 
 
@@ -51,25 +52,34 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    //resume new downlaoad
     Route::get('/cadry/download/resume/{cadry_id}', [OrganizationController::class, 'download_resume']);
 
+    //slug cadries
     Route::get('/cadry/slug-cadries', [ApplicationController::class, 'slug_cadries']);
-
     Route::post('/cadry/slug/create', [ApplicationController::class, 'slug_create']);
+    Route::get('/cadry/slug/accept', [ApplicationController::class, 'accept_cadry']);
     Route::post('/cadry/slug/{slug_cadry_id}/accept', [ApplicationController::class, 'accept_slug_cadry']);
     Route::delete('/cadry/slug/{slug_cadry_id}/delete', [ApplicationController::class, 'delete_slug_cadry']);
     Route::get('/cadry/slug/{slug_cadry_id}/view', [ApplicationController::class, 'view_slug_cadry']);
 
-    
+    //tabel
     Route::get('/tabel/cadries', [TabelController::class, 'tabel_cadries']);
     Route::post('/tabel/create', [TabelController::class, 'create_tabel_to_cadry']);
     Route::get('/tabel/export', [TabelController::class, 'tabel_export']);
 
-    
+    //deadline
     Route::get('/deadline/cadries', [DeadlineController::class, 'deadlines']);
    
+    //departmentexport
     Route::get('/cadry/export/department', [DepartmentController::class, 'department_export']);
     
+    //commander
+    Route::get('/cadry/commanders', [CommanderController::class, 'commanders']);
+    Route::post('/cadry/commander/create/{cadry}', [CommanderController::class, 'add_commander']);
+
+
+
     Route::get('/1c/vacations', [VacationIntegrationController::class, 'vacations_1c_api']);
     Route::post('/1c/vacations/{vacation_id}/accept', [VacationIntegrationController::class, 'vacations_1c_api_success']);
     Route::post('/1c/vacations/{vacation_id}/refuse', [VacationIntegrationController::class, 'vacations_1c_api_refuse']);
@@ -412,6 +422,8 @@ Route::group([
         
         Route::get('/organization/archive/cadries', [ArchiveController::class, 'archive_cadries']);
         Route::put('/organization/archive/cadry/{archive_cadry_id}/update', [ArchiveController::class, 'archive_cadry_pinfl_update']);
+
+        
         
     }); 
     //cadry statistics
