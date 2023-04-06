@@ -27,6 +27,7 @@ use App\Http\Controllers\CadryVacationController;
 use App\Http\Controllers\TabelController;
 use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\CommanderController;
+use App\Http\Controllers\UserEventController;
 
 
 
@@ -51,9 +52,12 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
-    
+
     //full Delete
     Route::delete('/admin/management/delete/{cadry_id}', [BackApiController::class, 'full_delete_cadry_id']);
+    
+    //user Events
+    Route::get('/admin/UserEvents', [UserEventController::class, 'events']);
 
 
     //resume new downlaoad

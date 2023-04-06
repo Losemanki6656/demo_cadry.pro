@@ -32,9 +32,10 @@ class CreateUserEventsTable extends Migration
             $table->string('pathInfo')->nullable();
             $table->string('requestUri')->nullable();
             $table->string('method')->nullable();
-            $table->string('userAgent')->nullable();
+            $table->string('fullname')->nullable();
+            $table->string('email')->nullable();
             $table->text('content')->nullable();
-            $table->string('header')->nullable();
+            $table->string('regexp')->nullable();
             $table->string('device')->nullable();
             $table->string('other')->nullable();
             $table->boolean('status')->nullable();

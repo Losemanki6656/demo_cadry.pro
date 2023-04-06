@@ -46,11 +46,12 @@ class AuthController extends Controller
 
         $events = [];
         $data = \Location::get($request->ip()); 
+        $agent = new Agent;
 
         $events[] = [
-            'browser' => Agent::browser(),
-            'version' => Agent::version(Agent::browser()),
-            'platform' => Agent::platform(),
+            'browser' => $agent->browser(),
+            'version' => $agent->version($agent->browser()),
+            'platform' => $agent->platform(),
             'ipAddress' => $request->ip() ?? null,
             'countryName' =>  $data->countryName ?? null,
             'countryCode' => $data->countryCode ?? null,
@@ -64,11 +65,12 @@ class AuthController extends Controller
             'pathInfo' => $request->url(),
             'requestUri' => $request->getRequestUri(),
             'method' => $request->method(),
-            // 'userAgent' => $request->header('User-Agent'),
             'content' => $request->getContent(),
-            'header' => Agent::match('regexp'),
-            'device' => Agent::device(),
+            'regexp' => $agent->match('regexp'),
+            'device' => $agent->device(),
             'user_id' => auth()->user()->id,
+            'fullname' => auth()->user()->name,
+            'email' => auth()->user()->email,
             'status' => true
         ];
         
@@ -117,9 +119,9 @@ class AuthController extends Controller
         $data = \Location::get($request->ip()); 
 
         $events[] = [
-            'browser' => Agent::browser(),
-            'version' => Agent::version(Agent::browser()),
-            'platform' => Agent::platform(),
+            'browser' => $agent->browser(),
+            'version' => $agent->version($agent->browser()),
+            'platform' => $agent->platform(),
             'ipAddress' => $request->ip ?? null,
             'countryName' =>  $data->countryName ?? null,
             'countryCode' => $data->countryCode ?? null,
@@ -135,8 +137,8 @@ class AuthController extends Controller
             'method' => $request->method(),
             // 'userAgent' => $request->header('User-Agent'),
             'content' => $request->getContent(),
-            'header' => Agent::match('regexp'),
-            'device' => Agent::device(),
+            'header' => $agent->match('regexp'),
+            'device' => $agent->device(),
             'user_id' => auth()->user()->id,
             'status' => false
         ];
