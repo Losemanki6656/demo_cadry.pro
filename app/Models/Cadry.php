@@ -12,7 +12,11 @@ class Cadry extends Model
 {
     use HasFactory;
     use HasUploadFields;
-    //use RevisionableTrait;
+    use RevisionableTrait;
+
+    protected $revisionEnabled = true;
+    protected $revisionForceDeleteEnabled = true;
+    protected $revisionCreationsEnabled = true;
    
     protected $guarded = ['id'];
     
