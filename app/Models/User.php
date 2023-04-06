@@ -15,6 +15,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles, RevisionableTrait, AuthenticationLoggable;
 
+    protected $revisionEnabled = true;
+    protected $revisionForceDeleteEnabled = true;
+    protected $revisionCreationsEnabled = true;
+    
     /**
      * The attributes that are mass assignable.
      *

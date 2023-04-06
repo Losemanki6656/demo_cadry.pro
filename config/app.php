@@ -178,7 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         Laradevsbd\Zkteco\ZktecoServiceProvider::class,
-
+        Stevebauman\Location\LocationServiceProvider::class,
     ],
 
     /*
@@ -234,7 +234,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        'Location' => 'Stevebauman\Location\Facades\Location',
     ],
 
 ];

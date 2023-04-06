@@ -26,4 +26,29 @@ class Commander extends Model
         'reason',
         'status'
     ];
+
+    public function cadry()
+    {
+        return $this->belongsTo(Cadry::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function commander_payment()
+    {
+        return $this->belongsTo(CommanderPayment::class);
+    }
+
+    public function commander_pupose()
+    {
+        return $this->belongsTo(CommanderPupose::class);
+    }
 }

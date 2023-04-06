@@ -77,6 +77,10 @@ Route::group([
     //commander
     Route::get('/cadry/commanders', [CommanderController::class, 'commanders']);
     Route::post('/cadry/commander/create/{cadry}', [CommanderController::class, 'add_commander']);
+    Route::get('/cadry/commanders/{cadry_id}', [CommanderController::class, 'cadry_commanders']);
+    Route::get('/cadry/commander/{commander}/accept', [CommanderController::class, 'commander_accept']);
+    Route::put('/cadry/commander/{commander}/update', [CommanderController::class, 'commander_update']);
+    Route::delete('/cadry/commander/{commander}/delete', [CommanderController::class, 'commander_delete']);
 
 
 
