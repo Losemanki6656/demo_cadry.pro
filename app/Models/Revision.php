@@ -11,11 +11,11 @@ class Revision extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsto(User::class, 'user_id');
     }
 
-    public function cadry()
-    {
-        return $this->belongsTo(Cadry::class,'revisionable_id');
-    }
+    // public function cadry()
+    // {
+    //     return $this->belongsTo(Cadry::class,'revisionable_id');
+    // }
 }

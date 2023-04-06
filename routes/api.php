@@ -60,6 +60,10 @@ Route::group([
     Route::get('/admin/authentication-log', [UserEventController::class, 'events_admin']);
 
     
+    //user revisionable
+    Route::get('/admin/revisionable/users', [UserEventController::class, 'revisionables']);
+
+    
     //user Events users
     Route::get('/user/authentication-log', [UserEventController::class, 'events_organization']);
 

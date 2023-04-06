@@ -33,7 +33,8 @@ class UserEventLogResource extends JsonResource
             'areaCode' => $this->areaCode,
             'timezone' => $this->timezone,
             'device' => $this->device,
-            'status' => true
+            'status' => true,
+            'created_at' => $this->created_at
         ];
     }
 }
