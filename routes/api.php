@@ -63,6 +63,9 @@ Route::group([
     //user revisionable
     Route::get('/admin/revisionable/users', [UserEventController::class, 'revisionables']);
 
+    //user revisionable
+    Route::put('/user/update', [AuthController::class, 'update_user']);
+
     
     //user Events users
     Route::get('/user/authentication-log', [UserEventController::class, 'events_organization']);

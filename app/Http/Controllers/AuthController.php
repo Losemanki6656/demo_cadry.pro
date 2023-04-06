@@ -3,12 +3,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserOrganization;
 use Validator;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\RoleResource;
 
 use Jenssegers\Agent\Facades\Agent;
 use App\Models\UserEvent;
+use Storage;
+use File;
 
 class AuthController extends Controller
 {
@@ -180,4 +183,56 @@ class AuthController extends Controller
             'created_at' => now()
         ]);
     }
+
+
+    public function update_user(Request $request)
+    {
+
+        $validated = $request->validate([
+            'email' => ['required','unique:users,email,'.auth()->user()->id],
+            'photo' => ['file'],
+            'password' => ['required', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'],
+            'name' => 'required',
+            'phone' => ['required','regex:/[0-9]/','regex:/[()+-]/','not_regex:/[a-z]/','not_regex:/[A-Z]/','not_regex:/[@$!%*#?&]/','min:18']
+        ]);
+
+        $user = auth()->user();
+      
+        if($request->photo) {
+
+            $fileName   = time() . $request->photo->getClientOriginalName();
+            Storage::disk('public')->put('users/' . $fileName, File::get($request->photo));
+            $file_name  = $request->photo->getClientOriginalName();
+            $file_type  = $request->photo->getClientOriginalExtension();
+            $filePath   = 'storage/users/' . $fileName;
+
+            $user->update($request->all());
+
+            $userOrgan = UserOrganization::where('user_id', $user->id)->first();
+            $userOrgan->update([
+                'photo' => $filePath,
+                'phone' => $request->phone,
+                'post_id' => $request->password,
+            ]);
+
+            return response()->json([
+                'message' => 'success'
+            ]);
+
+        } else  {
+
+            $user->update($request->all());
+
+            $userOrgan = UserOrganization::where('user_id', $user->id)->first();
+            $userOrgan->update([
+                'phone' => $request->phone,
+                'post_id' => $request->password,
+            ]);
+
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+    }
+
 }

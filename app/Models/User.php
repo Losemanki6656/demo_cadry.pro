@@ -89,4 +89,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(DepartmentUser::class,'id','user_id');
     }
 
+    public function setPasswordAttribute($value)
+    {   
+       $this->attributes['password'] = bcrypt($value);
+    }
+
 }

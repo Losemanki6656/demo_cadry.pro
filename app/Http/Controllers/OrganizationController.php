@@ -781,7 +781,7 @@ class OrganizationController extends Controller
         ]);   
     }
 
-    public function user_edit_success($id,Request $request)
+    public function user_edit_success($id, Request $request)
     {
       
         if($request->photo) {
