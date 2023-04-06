@@ -110,7 +110,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function logout(Request $request) {
         auth('api')->logout();
 
         $events = [];
