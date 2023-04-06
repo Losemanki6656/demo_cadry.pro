@@ -51,7 +51,7 @@ class AuthController extends Controller
             'browser' => Agent::browser(),
             'version' => Agent::version(Agent::browser()),
             'platform' => Agent::platform(),
-            'ipAddress' => $request->ip ?? null,
+            'ipAddress' => $request->ip() ?? null,
             'countryName' =>  $data->countryName ?? null,
             'countryCode' => $data->countryCode ?? null,
             'regionCode' => $data->regionCode ?? null,
