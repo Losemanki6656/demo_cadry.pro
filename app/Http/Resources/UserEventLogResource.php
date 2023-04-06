@@ -32,7 +32,6 @@ class UserEventLogResource extends JsonResource
             'longitude' => $this->longitude,
             'areaCode' => $this->areaCode,
             'timezone' => $this->timezone,
-            'requestUri' => $this->requestUri,
             'device' => $this->device,
             'status' => true
         ];
