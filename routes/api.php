@@ -52,6 +52,10 @@ Route::group([
     'middleware' => 'auth:api'
 ], function ($router) {
     
+    //full Delete
+    Route::delete('/admin/management/delete/{cadry_id}', [BackApiController::class, 'full_delete_cadry_id']);
+
+
     //resume new downlaoad
     Route::get('/cadry/download/resume/{cadry_id}', [OrganizationController::class, 'download_resume']);
 

@@ -42,6 +42,7 @@ use App\Models\Abroad;
 use App\Models\AcademicName;
 use App\Models\WorkStatus;
 use App\Models\DepartmentStaff;
+use App\Models\SlugCadry;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\RailwayResource;
 use App\Http\Resources\OrganizationResource;
@@ -80,6 +81,21 @@ use App\Http\Resources\WorkStatusResource;
 
 class BackApiController extends Controller
 {
+
+    public function full_delete_cadry_id($cadry_id)
+    {
+        DepartmentCadry::where('cadry_id',$cadry_id)->delete();
+        Career::where('cadry_id',$cadry_id)->delete();
+        CadryRelative::where('cadry_id',$cadry_id)->delete();
+        DemoCadry::where('cadry_id',$cadry_id)->delete();
+        CadryCreate::where('cadry_id',$cadry_id)->delete();
+        SlugCadry::where('cadry_id',$cadry_id)->delete();
+        Cadry::find($cadry_id)->delete();
+
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
 
     public function api_permissions()
     {
