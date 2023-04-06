@@ -42,7 +42,7 @@ class AuthController extends Controller
         return $this->createNewToken($token);
     }
 
-    public function userProfile(){
+    public function userProfile(Request $request){
 
         $events = [];
         $data = \Location::get($request->ip()); 
