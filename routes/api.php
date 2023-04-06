@@ -56,8 +56,12 @@ Route::group([
     //full Delete
     Route::delete('/admin/management/delete/{cadry_id}', [BackApiController::class, 'full_delete_cadry_id']);
     
-    //user Events
-    Route::get('/admin/UserEvents', [UserEventController::class, 'events']);
+    //user Events admin
+    Route::get('/admin/authentication-log', [UserEventController::class, 'events_admin']);
+
+    
+    //user Events users
+    Route::get('/user/authentication-log', [UserEventController::class, 'events_organization']);
 
 
     //resume new downlaoad
