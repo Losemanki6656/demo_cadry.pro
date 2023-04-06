@@ -7,6 +7,9 @@ use Validator;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\RoleResource;
 
+use Jenssegers\Agent\Facades\Agent;
+use App\Models\UserEvent;
+
 class AuthController extends Controller
 {
     /**
@@ -35,17 +38,47 @@ class AuthController extends Controller
         if (! $token = auth('api')->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 404);
         }
+
         return $this->createNewToken($token);
     }
 
     public function userProfile(){
+
+        $events = [];
+        $data = \Location::get($request->ip()); 
+
+        $events[] = [
+            'browser' => Agent::browser(),
+            'version' => Agent::version(Agent::browser()),
+            'platform' => Agent::platform(),
+            'ipAddress' => $request->ip ?? null,
+            'countryName' =>  $data->countryName ?? null,
+            'countryCode' => $data->countryCode ?? null,
+            'regionCode' => $data->regionCode ?? null,
+            'regionName' => $data->regionName ?? null,
+            'cityName' => $data->cityName ?? null,
+            'latitude' => $data->latitude ?? null,
+            'longitude' => $data->longitude ?? null,
+            'areaCode' => $data->areaCode ?? null,
+            'timezone' => $data->timezone ?? null,
+            'pathInfo' => $request->url(),
+            'requestUri' => $request->getRequestUri(),
+            'method' => $request->method(),
+            // 'userAgent' => $request->header('User-Agent'),
+            'content' => $request->getContent(),
+            'header' => Agent::match('regexp'),
+            'device' => Agent::device(),
+            'user_id' => auth()->user()->id,
+            'status' => true
+        ];
+        
+        UserEvent::create($events[0]);
 
         $user = new UserResource(User::find(auth()->user()->id));
 
         return response()->json($user);
 
     }
-
 
     /**
      * Register a User.
@@ -79,6 +112,40 @@ class AuthController extends Controller
      */
     public function logout() {
         auth('api')->logout();
+
+        $events = [];
+        $data = \Location::get($request->ip()); 
+
+        $events[] = [
+            'browser' => Agent::browser(),
+            'version' => Agent::version(Agent::browser()),
+            'platform' => Agent::platform(),
+            'ipAddress' => $request->ip ?? null,
+            'countryName' =>  $data->countryName ?? null,
+            'countryCode' => $data->countryCode ?? null,
+            'regionCode' => $data->regionCode ?? null,
+            'regionName' => $data->regionName ?? null,
+            'cityName' => $data->cityName ?? null,
+            'latitude' => $data->latitude ?? null,
+            'longitude' => $data->longitude ?? null,
+            'areaCode' => $data->areaCode ?? null,
+            'timezone' => $data->timezone ?? null,
+            'pathInfo' => $request->url(),
+            'requestUri' => $request->getRequestUri(),
+            'method' => $request->method(),
+            // 'userAgent' => $request->header('User-Agent'),
+            'content' => $request->getContent(),
+            'header' => Agent::match('regexp'),
+            'device' => Agent::device(),
+            'user_id' => auth()->user()->id,
+            'status' => false
+        ];
+        
+        UserEvent::create($events[0]);
+
+        $user = new UserResource(User::find(auth()->user()->id));
+
+
         return response()->json(['message' => 'User successfully signed out']);
     }
     /**
@@ -104,7 +171,6 @@ class AuthController extends Controller
      */
     protected function createNewToken($token){
 
-       
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
