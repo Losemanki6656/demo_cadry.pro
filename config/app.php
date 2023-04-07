@@ -179,6 +179,7 @@ return [
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         Laradevsbd\Zkteco\ZktecoServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -235,6 +236,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Location' => 'Stevebauman\Location\Facades\Location',
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

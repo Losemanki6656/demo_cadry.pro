@@ -8,7 +8,8 @@ use Validator;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\RoleResource;
 
-use Jenssegers\Agent\Facades\Agent;
+use Jenssegers\Agent\Agent;
+
 use App\Models\UserEvent;
 use Storage;
 use File;
@@ -49,7 +50,7 @@ class AuthController extends Controller
 
         $events = [];
         $data = \Location::get($request->ip()); 
-        $agent = new Agent;
+        $agent = new Agent();
 
         $events[] = [
             'browser' => $agent->browser(),
