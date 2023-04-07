@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 
 use App\Models\Commander;
 use App\Models\Cadry;
+use App\Models\Country;
+use App\Models\CommanderPayment;
+use App\Models\CommanderPupose;
 
 use App\Http\Resources\CommanderCollection;
 use App\Http\Resources\CommanderResource;
+use App\Http\Resources\CommanderPaymentResource;
+use App\Http\Resources\CommanderPuposeResource;
+use App\Http\Resources\CountryResource;
 
 
 class CommanderController extends Controller
@@ -31,6 +37,19 @@ class CommanderController extends Controller
 
         return response()->json([
             'commanders' => CommanderResource::collection($commanders)
+        ]);
+    }
+
+    public function commander_info()
+    {
+        $countries = CountryResource::collection(Country::get());
+        $commander_payments = CommanderPaymentResource::collection(CommanderPayment::get());
+        $commander_puposes = CommanderPuposeResource::collection(CommanderPupose::get());
+
+        return response()->json([
+            'countries' => $countries,
+            'commander_payments' => $commander_payments,
+            'commander_puposes' => $commander_puposes
         ]);
     }
 

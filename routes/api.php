@@ -95,6 +95,7 @@ Route::group([
     
     //commander
     Route::get('/cadry/commanders', [CommanderController::class, 'commanders']);
+    Route::get('/cadry/commander/info', [CommanderController::class, 'commander_info']);
     Route::post('/cadry/commander/create/{cadry}', [CommanderController::class, 'add_commander']);
     Route::get('/cadry/commanders/{cadry_id}', [CommanderController::class, 'cadry_commanders']);
     Route::get('/cadry/commander/{commander}/accept', [CommanderController::class, 'commander_accept']);
