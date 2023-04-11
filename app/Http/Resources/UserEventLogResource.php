@@ -17,8 +17,8 @@ class UserEventLogResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'fullname' => $this->name,
-            'email' => $this->email,
+            'fullname' => $this->user->name,
+            'email' => $this->user->email,
             'browser' => $this->browser,
             'version' => $this->version,
             'platform' => $this->platform,
