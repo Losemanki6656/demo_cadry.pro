@@ -20,7 +20,7 @@ class Cadry extends Model
    
     protected $guarded = ['id'];
     
-    protected $dates = ['date1','date2','date_inostrans','pass_date2'];
+    protected $dates = ['date1','date2','date_inostrans'];
     
     protected $casts = [
         'stavka' => 'double'
