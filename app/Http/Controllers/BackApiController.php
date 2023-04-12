@@ -900,7 +900,7 @@ class BackApiController extends Controller
         $newItem->koef = $request->coefficient ?? 0;
         $newItem->min_sum = $request->min_sum ?? 0;
 
-        if($request->work_status_id == 2)
+        if($request->work_status_id != 1)
         {
             $newItem->work_status_id = $request->work_status_id;
             $newItem->work_date1 = $request->work_date1;
@@ -1081,7 +1081,7 @@ class BackApiController extends Controller
         $newItem->koef = $request->coefficient ?? 0;
         $newItem->min_sum = $request->min_sum ?? 0;
 
-        if($request->work_status_id == 2)
+        if($request->work_status_id != 1)
         {
             $newItem->work_status_id = $request->work_status_id;
             $newItem->work_date1 = $request->work_date1;
