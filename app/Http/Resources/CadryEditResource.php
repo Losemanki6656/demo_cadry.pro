@@ -36,6 +36,7 @@ class CadryEditResource extends JsonResource
             'pass_region_id' =>  new RegionResource($this->pass_region),
             'pass_city_id' =>   new CityResource($this->pass_city),
             'pass_date' =>  $this->pass_date,
+            'pass_date2' =>  $this->pass_date2->format('Y-m-d'),
             'passport' =>  $this->passport,
             'jshshir' =>  $this->jshshir,
             'sex' =>  $this->sex,
