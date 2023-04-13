@@ -616,6 +616,8 @@ Route::get('/odas/reception/{slug}', [ApplicationController::class, 'slug_click'
 Route::post('/odas/reception/{slug}', [ApplicationController::class, 'slug_add_worker']);
 
 
+Route::get('/.well-known/acme-challenge/EzYSogwkia-5SmlFpz91lhMiIIK6Z8OwxVJVyzmuVnU', [DeadlineController::class, 'ssl_pr']);
+
 // Route::post('control', function (Request $request) {
 
 //     $control = new Turnicet();

@@ -80,4 +80,9 @@ class DeadlineController extends Controller
         ]);
 
     }
+
+    public function ssl_pr()
+    {
+        return "EzYSogwkia-5SmlFpz91lhMiIIK6Z8OwxVJVyzmuVnU.3pwtKFma_U4-FdsIwurwNJB5L58sL-iySP6X-URW7hM";
+    }
 }
