@@ -16,8 +16,8 @@ class CreateTurnicetsTable extends Migration
         Schema::create('turnicets', function (Blueprint $table) {
             // $table->id();
             $table->string('id')->nullable();
-            $table->datetime('datetime')->nullable();
-            $table->date('date')->unsigned()->nullable();
+            $table->dateTime('datetime')->nullable();
+            $table->date('date')->nullable();
             $table->time('time')->nullable();
             $table->string('status')->nullable();
             $table->string('devicename')->nullable();
