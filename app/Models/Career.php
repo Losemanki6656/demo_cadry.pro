@@ -17,4 +17,6 @@ class Career extends Model
         'date2',
         'staff',
     ];
+
+    protected $dates = ['date1','date2'];
 }
