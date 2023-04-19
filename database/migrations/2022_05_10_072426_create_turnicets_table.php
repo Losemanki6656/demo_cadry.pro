@@ -15,13 +15,15 @@ class CreateTurnicetsTable extends Migration
     {
         Schema::create('turnicets', function (Blueprint $table) {
             $table->id();
-            $table->integer('railway_id')->unsigned()->nullable();
-            $table->integer('organization_id')->unsigned()->nullable();
-            $table->integer('department_id')->unsigned()->nullable();
-            $table->string(('organization_name'));
-            $table->string(('department_name'));
-            $table->integer(('tabel'));
-            $table->string(('fullname'));
+            $table->string('id')->nullable();
+            $table->datetime('datetime')->nullable();
+            $table->date('date')->unsigned()->nullable();
+            $table->time('time')->nullable();
+            $table->string('status')->nullable();
+            $table->string('devicename')->nullable();
+            $table->string('devicesn')->nullable();
+            $table->string('name')->nullable();
+            $table->string('jshr')->nullable();
             $table->timestamps();
         });
     }
