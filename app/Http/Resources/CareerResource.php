@@ -16,8 +16,8 @@ class CareerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date1' => $this->date1,
-            'date2' => $this->date2,
+            'date1' => $this->date1->format('Y-m-d'),
+            'date2' => $this->date2->format('Y-m-d'),
             'staff_name' => $this->staff,
         ];
     }

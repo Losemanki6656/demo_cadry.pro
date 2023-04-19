@@ -28,6 +28,7 @@ use App\Http\Controllers\TabelController;
 use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\CommanderController;
 use App\Http\Controllers\UserEventController;
+use App\Http\Controllers\IntegrationAuthController;
 
 
 
@@ -47,6 +48,10 @@ Route::group([
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    
+    Route::post('/integration/login', [IntegrationAuthController::class, 'login']);
+    Route::post('/integration/logout', [IntegrationAuthController::class, 'logout']);
 });
 
 Route::group([
@@ -63,7 +68,7 @@ Route::group([
     //user revisionable
     Route::get('/admin/revisionable/users', [UserEventController::class, 'revisionables']);
 
-    //user revisionable
+    //user update
     Route::put('/user/update', [AuthController::class, 'update_user']);
 
     
@@ -611,6 +616,13 @@ Route::group([
 
     
 });
+
+Route::group([
+    'middleware' => 'auth:integrations'
+], function ($router) {
+    Route::get('/integration/demo', [IntegrationAuthController::class, 'demo']);
+});
+
 
 Route::get('/odas/reception/{slug}', [ApplicationController::class, 'slug_click']);
 Route::post('/odas/reception/{slug}', [ApplicationController::class, 'slug_add_worker']);

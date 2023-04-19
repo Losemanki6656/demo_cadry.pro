@@ -18,6 +18,11 @@ return [
         'passwords' => 'users',
     ],
 
+    'integration'=>[
+        'driver'=>'eloquent',
+        'model'=> App\Models\Integration::class,
+     ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -45,6 +50,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'integrations' => [
+            'driver' => 'jwt',
+            'provider' => 'integrations',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -70,10 +80,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'integrations' => [
+            'driver'=>'eloquent',
+            'model'=> App\Models\Integration::class,
+        ],
     ],
 
     /*
@@ -97,6 +107,10 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+        ],
+        'admins'=>[
+            'driver'=>'eloquent',
+            'model'=>App\Models\Integration::class,
         ],
     ],
 
