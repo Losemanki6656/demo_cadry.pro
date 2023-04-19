@@ -356,7 +356,7 @@ class OrganizationController extends Controller
 
         $languages = Language::all();
 
-        $my_template = new \PhpOffice\PhpWord\TemplateProcessor(base_path('public_html/example_resume.docx'));
+        $my_template = new \PhpOffice\PhpWord\TemplateProcessor(base_path('public/example_resume.docx'));
         $fullname = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name;
         $fullname_rel = $cadry->last_name . ' ' . $cadry->first_name . ' ' . $cadry->middle_name . 'ning';
 
@@ -417,7 +417,7 @@ class OrganizationController extends Controller
         $my_template->cloneRowAndSetValues('relative', $rels);
 
         $my_template->setValue('fullname', $fullname);
-        $my_template->setImageValue('photo', array('path' => base_path('public_html/storage/'. $cadry->photo), 'width' => 113, 'height' => 149, 'ratio' => false));
+        $my_template->setImageValue('photo', array('path' => base_path('public/storage/'. $cadry->photo), 'width' => 113, 'height' => 149, 'ratio' => false));
         $my_template->setValue('staff_date', $post->staff_date . 'dan');
         $my_template->setValue('staff_full', $post->staff_full);
         $my_template->setValue('birth_date', $cadry->birht_date);
@@ -436,7 +436,7 @@ class OrganizationController extends Controller
         $my_template->setValue('fullname_rel', $fullname_rel);       
      
         try{
-            $my_template->saveAs(base_path('public_html/storage/resumes/' . $cadry->jshshir . '.docx'));
+            $my_template->saveAs(base_path('public/storage/resumes/' . $cadry->jshshir . '.docx'));
         }catch (Exception $e){
         }
     
@@ -444,7 +444,7 @@ class OrganizationController extends Controller
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ];
 
-        return response()->download(base_path('public_html/storage/resumes/' .  $cadry->jshshir  . '.docx'), $fullname .'.docx', $headers)->deleteFileAfterSend(true);
+        return response()->download(base_path('public/storage/resumes/' .  $cadry->jshshir  . '.docx'), $fullname .'.docx', $headers)->deleteFileAfterSend(true);
     }
 
     public function cadries_info()
