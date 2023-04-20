@@ -393,7 +393,7 @@ class OrganizationController extends Controller
         $car = []; 
         foreach($careers as $career)
         {
-            if($career->date2 == '') $dat = $career->date1 . ' h/v '; else $dat = $career->date1 . '-' . $career->date2 . ' yy - ';
+            if($career->date2 == '') $dat = $career->date1->format('d/m/Y') . ' h/v '; else $dat = $career->date1->format('d/m/Y') . '-' . $career->date2->format('d/m/Y') . ' yy - ';
 
             $car[] = [
                         'career_date' => $dat, 
