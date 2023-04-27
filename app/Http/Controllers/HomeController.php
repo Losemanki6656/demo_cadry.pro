@@ -17,6 +17,7 @@ use App\Models\Organization;
 use App\Models\Department;
 use App\Models\Railway;
 use App\Models\UserOrganization;
+use DB;
 
 class HomeController extends Controller
 {
@@ -37,6 +38,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $users = DB::connection('mysql2')->table("ivms")->limit(10)->get();
+
+        return $users;
+
         // return redirect()->to('https://exodim.netlify.app/');
         //$all = User::find(1)->lastLoginIp();
         //dd($all);
