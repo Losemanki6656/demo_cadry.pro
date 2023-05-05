@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Turnicet;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ArchiveCadryCollection extends ResourceCollection
+class TurnicetCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

@@ -29,6 +29,7 @@ use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\CommanderController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\IntegrationAuthController;
+use App\Http\Controllers\TurnicetController;
 
 
 
@@ -64,6 +65,9 @@ Route::group([
     //user Events admin
     Route::get('/admin/authentication-log', [UserEventController::class, 'events_admin']);
 
+    
+    //Turnicet
+    Route::get('/cadry/turnicet', [TurnicetController::class, 'index']);
     
     //user revisionable
     Route::get('/admin/revisionable/users', [UserEventController::class, 'revisionables']);
