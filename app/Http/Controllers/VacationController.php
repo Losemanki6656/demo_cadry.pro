@@ -13,6 +13,7 @@ use Auth;
 use App\Http\Resources\VacationCadryResource;
 use App\Http\Resources\VacationCadryCollection;
 use App\Http\Resources\CadrySearchCollection;
+use App\Http\Resources\VaccResource;
 
 class VacationController extends Controller
 {
@@ -31,7 +32,7 @@ class VacationController extends Controller
       $vacations = Vacation::where('cadry_id',$cadry_id)->get();
 
       return response()->json([
-         'vacations' => $vacations
+         'vacations' => VaccResource::collection($vacations)
       ]);
    }
 
@@ -89,9 +90,37 @@ class VacationController extends Controller
             [
                 'id' => 1,
                 'name' => "Bola parvarishlash ta'tili"
-            ]
             ],
-      ]);
+            [
+               'id' => 2,
+               'name' => "Xomiladorlik va tug'ish ta'tili"
+            ],
+            [
+               'id' => 3,
+               'name' => "Ish haqi saqlanmaydigan ta'til"
+            ],
+            [
+               'id' => 4,
+               'name' => "Ish haqi qisman saqlanadigan ta'til"
+            
+            ],
+            [
+               'id' => 5,
+               'name' => "O'quv ta'tili"
+            
+            ],
+            [
+               'id' => 6,
+               'name' => "Ijodiy ta'tili"
+            
+            ],
+            [
+               'id' => 7,
+               'name' => "Kasallik ta'tili"
+            
+            ]
+      ]
+            ]);
    }
 
    public function api_vacations_add_post(Request $request)
@@ -172,6 +201,7 @@ class VacationController extends Controller
       if($item->status_decret == 1 && $item->cadry_id != $request->cadry_id) 
       {
          $cadries = DepartmentCadry::where('cadry_id', $item->cadry_id)->get();
+
          foreach($cadries as $cadry){
             $cadry->status_decret = false;
             $cadry->save();
@@ -409,9 +439,6 @@ class VacationController extends Controller
             ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
             ->orderBy('medical_examinations.date2')
             ->paginate(10);
-
-         //$cadries = Cadry::SeFilter()->where('cadries.status',true)->has('med')->with('med')->paginate(10);
-        // dd($cadries);
          
       return view('vacations.meds',[
          'cadries' => $cadries

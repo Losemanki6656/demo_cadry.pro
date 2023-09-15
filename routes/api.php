@@ -67,7 +67,21 @@ Route::group([
 
     
     //Turnicet
-    Route::get('/cadry/turnicet', [TurnicetController::class, 'index']);
+    
+    Route::get('/cadry/tabel-turnicet', [TabelController::class, 'cadries_turnicet']);
+    Route::get('/cadry/tabel/turnicet-load', [TabelController::class, 'tabel_turnicet_load']);
+    Route::get('/tabel/turnicet-download', [TabelController::class, 'tabel_turnicet_download']);
+
+    Route::group([
+        'middleware' => [
+            'permission:turnicet'
+            ]
+        ], function () {
+        
+            Route::get('/cadry/turnicet', [TurnicetController::class, 'index']);
+            Route::get('/cadry/turnicet/download', [TurnicetController::class, 'download']);
+
+    });
     
     //user revisionable
     Route::get('/admin/revisionable/users', [UserEventController::class, 'revisionables']);
@@ -98,6 +112,7 @@ Route::group([
 
     //deadline
     Route::get('/deadline/cadries', [DeadlineController::class, 'deadlines']);
+    Route::get('/deadline/notific', [DeadlineController::class, 'notific_deadlines']);
    
     //departmentexport
     Route::get('/cadry/export/department', [DepartmentController::class, 'department_export']);
@@ -161,6 +176,9 @@ Route::group([
         Route::get('/management/control-all', [ChatController::class, 'api_control_all']);
 
     }); 
+
+     
+
 
     Route::group([
         'middleware' => [

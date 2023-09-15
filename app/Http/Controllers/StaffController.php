@@ -74,6 +74,15 @@ class StaffController extends Controller
 
     public function api_delete_staff($staff_id)
     {
+        $staff = Staff::find($staff_id);
+                            $staff->status = false;
+                            $staff->save();
+
+                            return response()->json([
+                                'status' => true,
+                                'message' => "Muvaffaqqiyatli o'chirildi!"
+                            ], 200);
+                            
         if (DepartmentCadry::where('staff_id', $staff_id)->count() ) {
         
             return response()->json([

@@ -12,4 +12,6 @@ class Turnicet extends Model
     protected $connection = 'mysql2';
 
     protected $table = 'ivms';
+
+    protected $dates = ['datetime'];
 }
