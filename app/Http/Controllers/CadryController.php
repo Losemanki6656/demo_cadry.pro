@@ -1298,8 +1298,7 @@ class CadryController extends Controller
             $eduorta = Cadry::ApiFilter()->where('education_id',4)->count();
 
             $birthdays = Cadry::ApiFilter()
-                ->whereMonth('birht_date', '=', now()->format('m'))
-                ->whereDay('birht_date', '=', now()->format('d'));
+                ->whereMonth('birht_date', '=', now()->format('m'));
 
             $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
 
@@ -1529,8 +1528,7 @@ class CadryController extends Controller
             $edumaxsus = Cadry::OrgFilter()->where('education_id',3)->count();
 
             $birthdays = Cadry::OrgFilter()
-                ->whereMonth('birht_date', '=', now()->format('m'))
-                ->whereDay('birht_date', '=', now()->format('d'));
+                ->whereMonth('birht_date', '=', now()->format('m'));
 
             $newcadries = Cadry::OrgFilter()->whereDate('created_at',now()->format('Y-m-d'));
 
