@@ -71,18 +71,18 @@ class CadryController extends Controller
         $cadries = Cadry::FullFilter()->with(['vacation' => function ($query) {
             $query->where('status', true);
         },'allStaffs','department','birth_region','staff'])->paginate(10, ['*'], 'page', $page);
-    
+
         return view('cadry.cadry',[
             'cadries' => $cadries
         ]);
     }
 
 
-    
+
     public function decret_cadry($id)
     {
         $org_id = UserOrganization::where('user_id',Auth::user()->id)->value('organization_id');
-       
+
         $fullcadries = Cadry::where('organization_id', $org_id)->where('status',true)->get();
         $item = Cadry::find($id);
 
@@ -171,7 +171,7 @@ class CadryController extends Controller
                 $query
                 ->where('name','like','%'.$search.'%');
             })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
-            
+
             $alldepartments = Department::where('id','!=',4304)->where('organization_id', $org_id)
             ->with(['departmentstaff','departmentstaff.cadry'])->get();
         } else {
@@ -181,12 +181,12 @@ class CadryController extends Controller
                     $query
                     ->where('name','like','%'.$search.'%');
                 })->with(['cadries','departmentstaff','departmentcadry'])->paginate(10, ['*'], 'page', $page);
-            
+
             $alldepartments = Department::where('organization_id', $org_id)
             ->with(['departmentstaff','departmentstaff.cadry'])->get();
         }
-        
-        $a = []; $b = []; $plan = []; 
+
+        $a = []; $b = []; $plan = [];
         foreach ($alldepartments as $item)
         {
             $z = 0; $q = 0; $x = 0; $y = 0;$p = 0; $q = 0;
@@ -197,14 +197,14 @@ class CadryController extends Controller
                 if($x>$l) $z = $z + $x - $l;
                 if($x<$y) $q = $q + $y - $x;
             }
-            
+
             $a[$item->id] = $z;
             $b[$item->id] = $q;
             $all = $all + $z;
             $allSv =  $allSv + $q;
             $plan[$item->id] = $p;
         }
-        
+
 
         return view('cadry.departments',[
             'departments' => $departments,
@@ -374,7 +374,7 @@ class CadryController extends Controller
             $relatives = Relative::all();
             $regions = Region::all();
             $cities = City::all();
-    
+
             return view('cadry.edit_cadry',[
                 'cadry' => $cadry,
                 'departments' => $departments,
@@ -389,9 +389,9 @@ class CadryController extends Controller
                 'worklevel' => $worklevel,
                 'staffs' => $staffs
             ]);
-        } else 
+        } else
         return redirect()->back();
-       
+
     }
 
 
@@ -436,14 +436,14 @@ class CadryController extends Controller
         $academics = AcademiStudy::where('cadry_id', $id)->with('academicname')->get();
         $abroads = AbroadStudy::where('cadry_id',$id)->with('typeabroad')->get();
         $infoeducations = InfoEducation::where('cadry_id',$id)->get();
-        
+
         $abroadnames = Abroad::all();
         $academicnames = AcademicName::all();
 
         return response()->json([
 
         ]);
-       
+
     }
 
     public function add_abroad_cadry($id,Request $request)
@@ -514,7 +514,7 @@ class CadryController extends Controller
     public function cadry_career($id)
     {
         $cadry = Cadry::find($id);
-     
+
         $careers = Career::where('cadry_id',$id)
             ->orderBy('sort','asc')->get();
 
@@ -581,7 +581,7 @@ class CadryController extends Controller
             ],403);
         }
 
-        
+
     }
 
     public function addworker()
@@ -630,8 +630,8 @@ class CadryController extends Controller
         } else
         if ( count($validator) > 0 ) {
             return redirect()->back()->with([
-                'msg' => 4, 
-                'name' => $validator[0]->organization->name , 
+                'msg' => 4,
+                'name' => $validator[0]->organization->name ,
                 'cadry_name' => $validator[0]->last_name . ' ' . $validator[0]->first_name . ' ' . $validator[0]->middle_name
             ]);
         } else if(count($validator2) > 0) {
@@ -645,7 +645,7 @@ class CadryController extends Controller
             $array['organization_id'] = auth()->user()->userorganization->organization_id;
             $array['post_name'] = $dep->staff_full ?? '';
             $array['staff_id'] = $dep->staff_id;
-            if($request->order == null) 
+            if($request->order == null)
                 $array['order'] = 0;
                 else $array['order'] = $request->order;
             $array['status_dec'] = $request->status_dec ?? 0;
@@ -661,23 +661,23 @@ class CadryController extends Controller
             $newItem->staff_full = $dep->staff_full;
             $newItem->staff_date = $request->post_date;
             $newItem->command_number = $request->command_number ?? '';
-            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka) 
-                $newItem->status_sv = true; 
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->stavka)
+                $newItem->status_sv = true;
             else
                 $newItem->status_sv = false;
                 $newItem->cadry_id = $cadry->id;
                 $newItem->stavka = $request->stavka;
                 $newItem->save();
-        
+
             return redirect()->route('cadry_edit',[$cadry->id])->with('msg',3);
         }
 
-       
+
     }
 
     public function edit_cadry_us(Request $request, Cadry $cadry)
     {
-        
+
         $cadry->update($request->all());
 
         return redirect()->back()->with('msg' ,1);
@@ -718,14 +718,14 @@ class CadryController extends Controller
         return redirect()->back()->with('msg' ,1);
     }
 
-  
+
     public function delete_med_cadry($id)
     {
         $med = MedicalExamination::find($id)->delete();
 
         return redirect()->back()->with('msg' ,1);
     }
-    
+
     public function add_incentive_cadry(Request $request, $id)
     {
         $org = auth()->user()->userorganization;
@@ -802,7 +802,7 @@ class CadryController extends Controller
         $cadry = Cadry::find($id);
         $cadry->status = false;
         $cadry->save();
-        
+
         DepartmentCadry::where('cadry_id',$id)->delete();
 
         $arr = Cadry::find($id)->toArray();
@@ -810,9 +810,9 @@ class CadryController extends Controller
         $arr['comment'] = $request->comment ?? '';
         $arr['cadry_id'] = $request->id;
 
-        if($request->blackStatus == 'on') 
+        if($request->blackStatus == 'on')
             $arr['status'] = true;
-            
+
         DemoCadry::create($arr);
 
         return redirect()->route('cadry');
@@ -833,7 +833,7 @@ class CadryController extends Controller
 
     public function cadry_career_edit(Request $request,$id)
     {
-        
+
         $editcareer = Career::find($id);
         $editcareer->date1 = $request->date1;
         $editcareer->date2 = $request->date2 ?? '';
@@ -848,7 +848,7 @@ class CadryController extends Controller
         $cadry = Career::where('id', $request->order[0]['id'])->value('cadry_id');
         $tasks = Career::where('cadry_id', $cadry)->get();
         foreach ($tasks as $task) {
-            $task->timestamps = false; 
+            $task->timestamps = false;
             $id = $task->id;
 
             foreach ($request->order as $order) {
@@ -857,9 +857,9 @@ class CadryController extends Controller
                 }
             }
         }
-        return response()->json(['Update Successfully.', 200]);   
+        return response()->json(['Update Successfully.', 200]);
     }
-    
+
     public function cadry_career_delete($id)
     {
         Career::find($id)->delete();
@@ -901,7 +901,7 @@ class CadryController extends Controller
         $tasks = CadryRelative::where('cadry_id', $cadry)->get();
 
         foreach ($tasks as $task) {
-            $task->timestamps = false; 
+            $task->timestamps = false;
             $id = $task->id;
 
             foreach ($request->order as $order) {
@@ -910,8 +910,8 @@ class CadryController extends Controller
                 }
             }
         }
-        
-        return response('Update Successfully.', 200);   
+
+        return response('Update Successfully.', 200);
     }
 
     public function delete_relative_cadry($id)
@@ -967,7 +967,7 @@ class CadryController extends Controller
         // {
         //     $h = "";
         //     $r = $item[7];
-            
+
         //     $top = Cadry::query()->where('organization_id',152)->where('passport', 'LIKE', "%{$r}%");
 
         //     if($top->first()) {
@@ -978,8 +978,8 @@ class CadryController extends Controller
         //                 $item[19] = $item[19] . '; ' . $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
         //             else
         //                 $item[19] = $z->number . ',' . $z->date_action . ' йил,' . $z->type_action;
-        //         }        
-        //     } 
+        //         }
+        //     }
         // }
 
         $cadries = Cadry::SeFilter()
@@ -1034,7 +1034,7 @@ class CadryController extends Controller
 
             $cadry30 = Cadry::filter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::filter()->where('birht_date','>=','1977-01-01')->count();
-            
+
             $nafaqaMan = Cadry::filter()->where('sex',1)->where('birht_date','<=','1962-01-01')->count();
             $nafaqaWoman = Cadry::filter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
 
@@ -1046,10 +1046,10 @@ class CadryController extends Controller
                 ->whereDay('birht_date', '=', now()->format('d'));
 
             $newcadries = Cadry::filter()->whereDate('created_at',now()->format('Y-m-d'));
-       
+
             $democadries = DemoCadry::filter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::filter()->where('status',1);
-            
+
             $vacations = Vacation::OrgFilter();
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
@@ -1078,15 +1078,15 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-                
+
             if($request->railway_id == 3) {
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
                 $careersCount = Cadry::filter()->has('careers', '=', 0)->count();
                 $relativesCount = Cadry::filter()->has('relatives', '=', 0)->count();
-            } 
-        
+            }
+
             $academic1 = AcademiStudy::where('institute',1)->count();
             $academic2 = AcademiStudy::where('institute',2)->count();
             $academic3 = AcademiStudy::where('institute',3)->count();
@@ -1104,7 +1104,7 @@ class CadryController extends Controller
 
                 $news[$i] = Cadry::filter()->whereYear('created_at', '=', now()->format('Y'))->whereMonth('created_at', '=', $i)->count();
             }
-                
+
             $mednotCount = Cadry::filter()->has('med','=',0)->count();
 
         return view('uty.statistics', [
@@ -1158,7 +1158,7 @@ class CadryController extends Controller
 
             $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1993-01-01')->count();
             $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1978-01-01')->count();
-            
+
             $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1958-01-01')->count();
             $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
 
@@ -1167,14 +1167,13 @@ class CadryController extends Controller
             $eduorta = Cadry::ApiFilter()->where('education_id',4)->count();
 
             $birthdays = Cadry::ApiFilter()
-                ->whereMonth('birht_date', '=', now()->format('m'))
-                ->whereDay('birht_date', '=', now()->format('d'));
+                ->whereMonth('birht_date', '=', now()->format('m'));
 
             $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
-       
+
             $democadries = DemoCadry::ApiFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::ApiBlackFilter();
-            
+
             $vacations = Vacation::ApiFilter();
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
@@ -1203,30 +1202,30 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-                
-           
+
+
             $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
             $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
             $not_passport_files = Cadry::ApiFilter()->has('passports', '=', 0)->count();
-            
+
             $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
 
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
-            
+
             $upgrades = Upgrade::query()
                 ->where('dataqual', now()->format('Y'))
                 ->when(request('railway_id'), function ( $query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);    
+                    return $query->where('railway_id', $railway_id);
                 })
                 ->when(request('organization_id'), function ( $query, $organization_id) {
                     return $query->where('organization_id', $organization_id);
                 });
 
-            $upgrades_count = $upgrades->count();     
+            $upgrades_count = $upgrades->count();
             $bedroom = $upgrades->where('status_bedroom', false)->count();
-            
+
             $news = [];
             for($i = 1; $i <= 12; $i ++)
             {
@@ -1240,7 +1239,7 @@ class CadryController extends Controller
                 ];
 
             }
-                
+
             $mednotCount = Cadry::ApiFilter()->has('notmed','=',0)->count();
 
         return response()->json([
@@ -1290,7 +1289,7 @@ class CadryController extends Controller
 
             $cadry30 = Cadry::ApiFilter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::ApiFilter()->where('birht_date','>=','1977-01-01')->count();
-            
+
             $nafaqaMan = Cadry::ApiFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
             $nafaqaWoman = Cadry::ApiFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
 
@@ -1303,10 +1302,10 @@ class CadryController extends Controller
                 ->whereDay('birht_date', '=', now()->format('d'));
 
             $newcadries = Cadry::ApiFilter()->whereDate('created_at',now()->format('Y-m-d'));
-       
+
             $democadries = DemoCadry::ApiFilter()->where('status',0)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::ApiFilter()->where('status',1);
-            
+
             $vacations = Vacation::ApiFilter();
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
@@ -1335,33 +1334,33 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-                
+
             if($request->railway_id == 3) {
                 $careersCount = 0;
                 $relativesCount = 0;
             } else {
                 $careersCount = Cadry::ApiFilter()->has('careers', '=', 0)->count();
                 $relativesCount = Cadry::ApiFilter()->has('relatives', '=', 0)->count();
-            } 
-        
+            }
+
             $abroads = AbroadStatisticResource::collection(Abroad::with('abroads')->get());
             $academics = AcademicStatisticResource::collection(AcademicName::with('academics')->get());
 
             $not_staff_files = Cadry::ApiFilter()->has('staff_files', '=', 0)->count();
 
-            
+
             $not_passport_files = Cadry::ApiFilter()->has('passports', '=', 0)->count();
 
             $upgrades = Upgrade::query()
                 ->where('dataqual', now()->format('Y'))
                 ->when(request('railway_id'), function ( $query, $railway_id) {
-                    return $query->where('railway_id', $railway_id);    
+                    return $query->where('railway_id', $railway_id);
                 })
                 ->when(request('organization_id'), function ( $query, $organization_id) {
                     return $query->where('organization_id', $organization_id);
                 });
 
-            $upgrades_count = $upgrades->count();     
+            $upgrades_count = $upgrades->count();
             $bedroom = $upgrades->where('status_bedroom', false)->count();
 
             $news = [];
@@ -1377,7 +1376,7 @@ class CadryController extends Controller
                 ];
 
             }
-                
+
             $mednotCount = Cadry::ApiFilter()->has('notmed','=',0)->count();
 
         return response()->json([
@@ -1426,7 +1425,7 @@ class CadryController extends Controller
 
             $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1992-01-01')->count();
             $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1977-01-01')->count();
-            
+
             $nafaqaMan = Cadry::OrgFilter()->where('sex',1)->where('birht_date','<=','1957-01-01')->count();
             $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1967-01-01')->count();
 
@@ -1438,13 +1437,13 @@ class CadryController extends Controller
                 ->whereDay('birht_date', '=', now()->format('d'));
 
             $newcadries = Cadry::OrgFilter()->whereDate('created_at',now()->format('Y-m-d'));
-       
+
             $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
 
             $allStaffs = DepartmentStaff::CadryFilter();
             $plan = $allStaffs->sum('stavka');
-           
+
             $sverx = DepartmentStaff::CadryFilter()
                 ->whereRaw('stavka < summ_stavka');
 
@@ -1462,7 +1461,7 @@ class CadryController extends Controller
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
 
-            
+
             $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
@@ -1470,7 +1469,7 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-                
+
             $mednotCount = Cadry::where('status',true)
                 ->where('organization_id',auth()->user()->userorganization->organization_id)
                 ->has('med','=', 0)
@@ -1482,7 +1481,7 @@ class CadryController extends Controller
             $vacations = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)
                 ->where('status', true)
                 ->whereDate( 'date2' , '>=' ,now());
-            
+
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
 
@@ -1522,7 +1521,7 @@ class CadryController extends Controller
 
             $cadry30 = Cadry::OrgFilter()->where('birht_date','>=','1993-01-01')->count();
             $cadry45 = Cadry::OrgFilter()->where('birht_date','>=','1978-01-01')->count();
-            
+
             $nafaqaMan = Cadry::OrgFilter()->where('sex',1)->where('birht_date','<=','1958-01-01')->count();
             $nafaqaWoman = Cadry::OrgFilter()->where('sex',0)->where('birht_date','<=','1968-01-01')->count();
 
@@ -1534,13 +1533,13 @@ class CadryController extends Controller
                 ->whereDay('birht_date', '=', now()->format('d'));
 
             $newcadries = Cadry::OrgFilter()->whereDate('created_at',now()->format('Y-m-d'));
-       
+
             $democadries = DemoCadry::OrgFilter()->where('status',false)->whereDate('created_at',now()->format('Y-m-d'));
             $democadriesback = DemoCadry::OrgFilter()->where('status', 1);
 
             $allStaffs = DepartmentStaff::CadryFilter();
             $plan = $allStaffs->sum('stavka');
-           
+
             $sverx = DepartmentStaff::CadryFilter()
                 ->whereRaw('stavka < summ_stavka');
 
@@ -1558,7 +1557,7 @@ class CadryController extends Controller
             $y = $vacant->sum('summ_stavka');
             $vacanCount = $x - $y;
 
-            
+
             $meds = Cadry::where('organization_id',auth()->user()->userorganization->organization_id)
                 ->select(['cadries.*', 'medical_examinations.*'])
                 ->where('cadries.status',true)
@@ -1566,7 +1565,7 @@ class CadryController extends Controller
                 ->join('medical_examinations', 'medical_examinations.cadry_id', '=', 'cadries.id')
                 ->orderBy('medical_examinations.date2')
                 ->whereDate('medical_examinations.date2','<=', now())->count();
-                
+
             $mednotCount = Cadry::where('status',true)
                 ->where('organization_id',auth()->user()->userorganization->organization_id)
                 ->has('notmed','=', 0)
@@ -1578,7 +1577,7 @@ class CadryController extends Controller
             $vacations = Vacation::where('organization_id',auth()->user()->userorganization->organization_id)
                 ->where('status', true)
                 ->whereDate( 'date2' , '>=' ,now());
-            
+
             $vac = $vacations->count();
             $vacDec = $vacations->where('status_decret', true)->count();
 
@@ -1595,9 +1594,9 @@ class CadryController extends Controller
                     return $query->where('organization_id', $organization_id);
                 });
 
-            $upgrades_count = $upgrades->count();     
+            $upgrades_count = $upgrades->count();
             $bedroom = $upgrades->where('status_bedroom', false)->count();
-            
+
             $news = [];
             for($i = 1; $i <= 12; $i ++)
             {
@@ -1649,9 +1648,9 @@ class CadryController extends Controller
         ]);
     }
 
-    public function archive_cadry(Request $request) 
+    public function archive_cadry(Request $request)
     {
-        if($request->jshshir) 
+        if($request->jshshir)
            {
             $cadries = Cadry::query()
                 ->where('status', false)
@@ -1664,7 +1663,7 @@ class CadryController extends Controller
              else {
                 $cadries = Cadry::where('jshshir', 777777777777)->where('status',false);
              }
-        
+
         $page = request('page', session('cadry_page', 1));
         session(['cadry_page' => $page]);
 
@@ -1673,7 +1672,7 @@ class CadryController extends Controller
         ]);
     }
 
-    public function cadry_archive_load($id) 
+    public function cadry_archive_load($id)
     {
 
         $cadry = Cadry::find($id);
@@ -1700,15 +1699,15 @@ class CadryController extends Controller
             $newItem->staff_date = $request->staff_date;
             $newItem->staff_status = $request->staff_status;
 
-            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->st_1) 
-                $newItem->status_sv = true; 
+            if($dep->stavka < $dep->cadry->sum('stavka') +  $request->st_1)
+                $newItem->status_sv = true;
             else
                 $newItem->status_sv = false;
 
                 $newItem->cadry_id = $id;
                 $newItem->stavka = $request->st_1;
                 $newItem->save();
-                
+
                 $cadr = Cadry::find($id);
                 $cadr->railway_id = $rail_id;
                 $cadr->organization_id = $org_id;
@@ -1730,12 +1729,12 @@ class CadryController extends Controller
     }
 
     public function ssss(Request $request)
-    { 
+    {
         set_time_limit(3000);
 
         $cadries = Cadry::where('status', true)->where('organization_id',4)->with(['relatives','relatives.relative'])->get();
         $a = []; $x = 0;
-        
+
         foreach($cadries as $item)
         {
             $x ++;
@@ -1765,12 +1764,12 @@ class CadryController extends Controller
     {
 
         set_time_limit(3000);
-       
+
         $cadries = CadryRelative::select('cadry_id')->groupBy('cadry_id')->get();
         $x = 0; $a = [];
         foreach($cadries as $item)
         {
-            if(!Cadry::find($item->cadry_id)) 
+            if(!Cadry::find($item->cadry_id))
             {
                 //CadryRelative::where('cadry_id',$item->cadry_id)->delete();
                 $x++; $a[$x] = $item->cadry_id;
@@ -1780,7 +1779,7 @@ class CadryController extends Controller
         dd($x);
 
         set_time_limit(600);
-       
+
         $cadries = Cadry::where('status',true)->has('careers', '=', 0)->with('organization')->get();
 
         $x = []; $y = 0;
