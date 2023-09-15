@@ -10,7 +10,7 @@ class DepartmentCadry extends Model
 {
     use HasFactory,RevisionableTrait;
 
-    protected $dates = ['work_date2'];
+    protected $dates = ['work_date2','staff_date'];
 
     public function cadry()
     {

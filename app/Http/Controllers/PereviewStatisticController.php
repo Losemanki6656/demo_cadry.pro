@@ -30,13 +30,13 @@ class PereviewStatisticController extends Controller
                     $query->where(function ($query) use ($sex) {
                         if($sex == true)
                             return $query->where('sex', true)->where('birht_date','<=','1957-01-01');
-                        else 
+                        else
                             return $query->where('sex', false)->where('birht_date','<=','1967-01-01');
-                    
+
                     });
                 });
        } else {
-        
+
             $cadries = Cadry::ApiFilter()
                 ->where(function($query) {
                     $query->where([
@@ -54,7 +54,7 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_contractors(Request $request)
@@ -67,7 +67,7 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_domestic_workers(Request $request)
@@ -80,7 +80,7 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_not_meds(Request $request)
@@ -99,7 +99,7 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryMedCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_expired_meds(Request $request)
@@ -111,13 +111,13 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_vacations(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         if($request->status_decret != null)
             $vacations = Vacation::ApiFilter()->where('status_decret', $request->status_decret);
         else $vacations = Vacation::ApiFilter();
@@ -125,54 +125,52 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new VacationCadryCollection($vacations->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_not_careers(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = Cadry::ApiFilter()->has('careers', '=', 0);
 
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
     public function pereview_not_relatives(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = Cadry::ApiFilter()->has('relatives', '=', 0);
 
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_birthdays(Request $request)
     {
-        if($request->birth_date) 
+        if($request->birth_date)
         $birth_date = strtotime($request->birth_date); else $birth_date = now();
-        $dateMonth = date('m', $birth_date);
-        $dateDay = date('d', $birth_date);
 
-        if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
-        $cadries = Cadry::ApiFilter()->whereMonth('birht_date', '=', $dateMonth)
-            ->whereDay('birht_date', '=', $dateDay);
+        $dateMonth = (int) date('m', $birth_date);
+
+        $cadries = Cadry::ApiFilter()
+            ->whereMonth('birht_date', '=', $dateMonth);
 
         return response()->json([
-            'cadries' => new CadryCollection($cadries->paginate($per_page))
+            'cadries' => new CadryCollection($cadries->paginate(request('per_page',10)))
         ]);
-        
+
     }
 
     public function pereview_new_cadries(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = Cadry::ApiFilter()
             ->whereDate('created_at','>=', $request->date1)
             ->whereDate('created_at','<=', $request->date2);
@@ -180,13 +178,13 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new CadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_delete_cadries(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = DemoCadry::ApiFilter()
             ->whereDate('created_at','>=', $request->date1)
             ->whereDate('created_at','<=', $request->date2);
@@ -194,13 +192,13 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new DeleteCadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function pereview_delete_black_cadries(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = DemoCadry::ApiBlackFilter()
             ->whereDate('created_at','>=', $request->date1)
             ->whereDate('created_at','<=', $request->date2);
@@ -208,14 +206,14 @@ class PereviewStatisticController extends Controller
         return response()->json([
             'cadries' => new DeleteCadryCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
 
     public function pereview_vacancies(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = DepartmentStaff::ApiFilter()
                 ->where(function ($query) {
                     $query->whereRaw('stavka > summ_stavka')
@@ -231,16 +229,16 @@ class PereviewStatisticController extends Controller
             'vacancies_count' => $vacancies_count,
             'vacancies' => new DepartmentStaffCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
-    
+
     public function pereview_over(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = DepartmentStaff::ApiFilter()->whereRaw('stavka < summ_stavka');
-        
+
         $x = $cadries->sum('stavka');
         $y = $cadries->sum('summ_stavka');
         $over_count = $y - $x;
@@ -249,13 +247,13 @@ class PereviewStatisticController extends Controller
             'over_count' => $over_count,
             'over' => new DepartmentStaffCollection($cadries->paginate($per_page))
         ]);
-        
+
     }
 
     public function stafffiles(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $stafffiles = Cadry::ApiFilter()->has('staff_files', '=', 0);
 
         return response()->json([
@@ -281,25 +279,25 @@ class PereviewStatisticController extends Controller
 
     public function task_delete($task_id)
     {
-        
+
         if(!UserTask::find($task_id))
             return response()->json([
                 'message' => "Bunday topshiriq topilmadi!"
             ],404);
-           
+
         UserTask::find($task_id)->delete();
 
         return response()->json([
             'message' => "Topshiriq muvaffaqqiyatli o'chirildi!"
         ]);
-        
+
     }
 
 
     public function pereview_passports(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $passports = Cadry::ApiFilter()->has('passports', '=', 0);
 
         return response()->json([
@@ -310,7 +308,7 @@ class PereviewStatisticController extends Controller
     public function pereview_upgrades(Request $request)
     {
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
-        
+
         $cadries = Upgrade::OrgFilter()->paginate($per_page);
 
         return response()->json([

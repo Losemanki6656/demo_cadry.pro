@@ -17,15 +17,15 @@ class Cadry extends Model
     protected $revisionEnabled = true;
     protected $revisionForceDeleteEnabled = true;
     protected $revisionCreationsEnabled = true;
-   
+
     protected $guarded = ['id'];
-    
+
     protected $dates = ['date1','date2','date_inostrans'];
-    
+
     protected $casts = [
         'stavka' => 'double'
     ];
-    
+
     protected static function boot()
     {
         parent::boot();
@@ -153,11 +153,21 @@ class Cadry extends Model
         return $this->hasMany(DepartmentCadry::class);
     }
 
+    public function fullname()
+    {
+        return $this->last_name . ' ' . $this->first_name . ' ' . $this->middle_name;
+    }
+
+    public function resume_staff()
+    {
+        return $this->hasOne(DepartmentCadry::class);
+    }
+
     public function cadry_staff()
     {
         return $this->hasOne(DepartmentCadry::class);
     }
-    
+
     public function careers()
     {
         return $this->hasMany(Career::class);
@@ -183,17 +193,17 @@ class Cadry extends Model
     {
         return $this->belongsTo(Railway::class,'railway_id');
     }
-       
+
     public function setLanguageAttribute($value)
-    {   
-        if(is_array($value) == true) 
+    {
+        if(is_array($value) == true)
             $this->attributes['language'] = implode(',',$value);
         else $this->attributes['language'] = $value;
     }
 
     public function setMiddleNameAttribute($value)
-    {   
-        if($value == null) 
+    {
+        if($value == null)
             $this->attributes['middle_name'] = '';
         else $this->attributes['middle_name'] = $value;
     }
@@ -208,16 +218,16 @@ class Cadry extends Model
 
     public function setPhotoAttribute($value)
     {
-        if($value == null)  $this->setPhotoAttribute = ''; 
-            else 
+        if($value == null)  $this->setPhotoAttribute = '';
+            else
             {
                 $attribute_name = "photo";
                 $disk = "public";
-                $destination_path = 'cadry-photos'; 
+                $destination_path = 'cadry-photos';
                 $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
             }
-    }    
-    
+    }
+
     public function scopeFilter()
     {
         return self::query()
@@ -228,11 +238,11 @@ class Cadry extends Model
                         ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
                         ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%')
                         ->orWhere('post_name', 'LIKE', '%'.$name_se.'%');
-                
+
                 });
             })->when(request('railway_id'), function ( $query, $railway_id) {
                     return $query->where('railway_id', $railway_id);
-                    
+
             })->when(request('org_id'), function ( $query, $org_id) {
                     return $query->where('organization_id', $org_id);
 
@@ -266,7 +276,7 @@ class Cadry extends Model
         return self::query()
             ->when(request('railway_id'), function ( $query, $railway_id) {
                     return $query->where('railway_id', $railway_id);
-                    
+
             })->when(request('org_id'), function ( $query, $org_id) {
                     return $query->where('organization_id', $org_id);
 
@@ -281,7 +291,7 @@ class Cadry extends Model
         return self::query()
             ->when(request('railway_id'), function ( $query, $railway_id) {
                     return $query->where('railway_id', $railway_id);
-                    
+
             })->when(request('organization_id'), function ( $query, $organization_id) {
                     return $query->where('organization_id', $organization_id);
 
@@ -297,19 +307,19 @@ class Cadry extends Model
             ->where('status',true)
             ->when(request('last_name'), function ( $query, $last_name) {
                 return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-                
+
             })->when(request('middle_name'), function ( $query, $middle_name) {
                 return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-                
+
             })->when(request('first_name'), function ( $query, $first_name) {
                 return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
-                
+
             })->when(request('post_name'), function ( $query, $post_name) {
                 return $query->where('post_name', 'LIKE', '%'. $post_name .'%');
-                
+
             })->when(request('railway_id'), function ( $query, $railway_id) {
                 return $query->where('railway_id', $railway_id);
-                    
+
             })->when(request('organization_id'), function ( $query, $organization_id) {
                 return $query->where('organization_id', $organization_id);
 
@@ -354,10 +364,10 @@ class Cadry extends Model
         ->where('organization_id', auth()->user()->userorganization->organization_id)
         ->when(request('last_name'), function ( $query, $last_name) {
             return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-            
+
         })->when(request('middle_name'), function ( $query, $middle_name) {
             return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-            
+
         })->when(request('first_name'), function ( $query, $first_name) {
             return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
 
@@ -412,10 +422,10 @@ class Cadry extends Model
 
             })->when(request('last_name'), function ( $query, $last_name) {
                 return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-                
+
             })->when(request('middle_name'), function ( $query, $middle_name) {
                 return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-                
+
             })->when(request('first_name'), function ( $query, $first_name) {
                 return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
 
@@ -459,16 +469,16 @@ class Cadry extends Model
         return self::query()
             ->when(request('last_name'), function ( $query, $last_name) {
                 return $query->where('last_name', 'LIKE', '%'. $last_name .'%');
-                
+
             })->when(request('middle_name'), function ( $query, $middle_name) {
                 return $query->where('middle_name', 'LIKE', '%'. $middle_name .'%');
-                
+
             })->when(request('first_name'), function ( $query, $first_name) {
                 return $query->where('first_name', 'LIKE', '%'. $first_name .'%');
-                
+
             })->when(request('railway_id'), function ( $query, $railway_id) {
                 return $query->where('railway_id', $railway_id);
-                    
+
             })->when(request('organization_id'), function ( $query, $organization_id) {
                 return $query->where('organization_id', $organization_id);
 
@@ -508,7 +518,7 @@ class Cadry extends Model
                     $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
                         ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
                         ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-                
+
                 });
             })->when(request('staff_se'), function ($query, $staff_se) {
                 return $query->where('staff_id', $staff_se);
@@ -560,7 +570,7 @@ class Cadry extends Model
                 $query->orWhere('last_name', 'LIKE', '%'. $name_se .'%')
                         ->orWhere('first_name', 'LIKE', '%'.$name_se.'%')
                         ->orWhere('middle_name', 'LIKE', '%'.$name_se.'%');
-                
+
             });
             });
     }
@@ -574,7 +584,7 @@ class Cadry extends Model
                 $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
                         ->orWhere('first_name', 'LIKE', '%'.$search.'%')
                         ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
-                
+
             });
             });
     }
@@ -590,7 +600,7 @@ class Cadry extends Model
                 $query->orWhere('last_name', 'LIKE', '%'. $search .'%')
                         ->orWhere('first_name', 'LIKE', '%'.$search.'%')
                         ->orWhere('middle_name', 'LIKE', '%'.$search.'%');
-                
+
             });
             });
     }
