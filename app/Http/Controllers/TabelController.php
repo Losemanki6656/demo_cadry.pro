@@ -652,7 +652,8 @@ class TabelController extends Controller
 
         $user = auth()->user()->department;
 
-        if($user->status == 1) {
+        if ($user) {
+           if($user->status == 1) {
             $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
                     return $query->where('year', $year)->where('month', $month);
                 }
@@ -660,7 +661,7 @@ class TabelController extends Controller
             ->where('department_id', $user->department_id)
             ->where('status', true)
             ->get();
-    
+
         }
         else if(auth()->user()->department->status == 2) {
             $cadries = Cadry::with(['tabel' => function($query) use ($year, $month) {
@@ -671,8 +672,8 @@ class TabelController extends Controller
             ->where('status', true)
             ->get();
         }
-        
-       
+
+
         $tabel = [];
 
         foreach($cadries as $item)
@@ -693,11 +694,11 @@ class TabelController extends Controller
 
                     $dayOfTheWeek = $datetime->dayOfWeek;
                     $weekday = $weekMap[$dayOfTheWeek];
-                    
-                    $holiday = false; 
-                    $before_day = false; 
+
+                    $holiday = false;
+                    $before_day = false;
                     $category_id = null;
-        
+
                     foreach($hols as $hol)
                     {
                         if((int)$hol->holiday_date->format('d') == $i) {
@@ -707,14 +708,14 @@ class TabelController extends Controller
                             } else {
                                 $before_day = true;
                                 break;
-                            }    
-                        } 
+                            }
+                        }
                     }
-                    
+
                     // $turnicets = Turnicet::where('datetime','>=', $datetime->format('Y-m-d 00:00:01'))
                     //     ->where('datetime','<=', $datetime->format('Y-m-d 23:59:59'))
                     //     ->where('jshr', $item->jshshir)->orderBy('datetime','asc');
-                    
+
                     // if($turnicets->count() > 0) {
 
                     //     $hoursTime = []; $minutTime = [];
@@ -731,8 +732,8 @@ class TabelController extends Controller
                     //             $hoursTime[] = $mejdu->format('%H');
                     //             $minutTime[] = $mejdu->format('%i');
                     //             $status = false;
-                    //         } 
-                    //         else 
+                    //         }
+                    //         else
                     //         if($tur->status == 'IN') {
                     //             $lastTime = new Datetime($tur->datetime);
                     //             $status = true;
@@ -754,8 +755,8 @@ class TabelController extends Controller
                     //         "category_id" => $category_id ?? 1,
                     //         "work_time" => $summHours + intdiv($summMin, 60),
                     //     ];
-                    // } 
-                    // else 
+                    // }
+                    // else
                     $cadry_days[] = [
                         'day' => $i,
                         'weekday' => $weekday,
@@ -771,7 +772,8 @@ class TabelController extends Controller
                 ];
             }
 
-           
+
+        }
         }
 
         $categories = TabelCategoryResource::collection(TabelCategory::get());
@@ -779,7 +781,7 @@ class TabelController extends Controller
         return response()->json([
             'categories' => $categories,
             'days' => $days,
-            'cadries' => $tabel
+            'cadries' => $tabel ?? []
         ]);
     }
 

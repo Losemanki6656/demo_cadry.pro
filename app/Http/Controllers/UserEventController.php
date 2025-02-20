@@ -15,6 +15,7 @@ class UserEventController extends Controller
         if(request('per_page')) $per_page = request('per_page'); else $per_page = 10;
 
         $users = UserEvent::query()
+            ->where('user_id', auth()->user()->id)
             ->when(\Request::input('search'),function($query,$search){
                 $query->orWhere('name', 'LIKE', '%'. $search .'%')
                     ->orWhere('browser', 'LIKE', '%'. $search .'%')

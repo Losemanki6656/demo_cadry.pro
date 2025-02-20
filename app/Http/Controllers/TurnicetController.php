@@ -12,23 +12,33 @@ class TurnicetController extends Controller
 {
     public function index()
     {
-        $cadries = Turnicet::query()
+        $cadries = [];
+        if (auth()->user()->userorganization->organization_id === 1) {
+            $cadries = Turnicet::query()
             ->when(request('search'),function($query, $search){
-                $query->where('name','like','%'.$search.'%');
+                $query->where('FirstName','like','%'.$search.'%')->orWhere('LastName','like','%'.$search.'%');
             })
             ->when(request('status'),function($query, $status){
-                $query->where('status', $status);
+                if ($status === "IN") {
+                    $query->where('Direction', 'in');
+                } else {
+
+                    $query->where('Direction', 'out');
+                }
+
             })
             ->when(request('datetime1'),function($query, $datetime1){
-                $query->where('datetime', '>=', $datetime1);
+                $query->where('AccessDateandTime', '>=', $datetime1);
             })
             ->when(request('datetime2'),function($query, $datetime2){
-                $query->where('datetime', '<=', $datetime2);
+                $query->where('AccessDateandTime', '<=', $datetime2);
             })
-            ->orderBy('datetime','desc')
+            ->orderBy('AccessDateandTime','desc')
             ->paginate(10);
 
         $cadries = new TurnicetCollection($cadries);
+        }
+
 
         return response()->json([
             'cadries' => $cadries
